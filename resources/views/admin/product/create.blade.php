@@ -51,6 +51,18 @@
                     </div><!-- end card header -->
 
                     <div class="card-body">
+                        <h2>
+                        @if (session('success'))
+                            <div>
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                        @if (session('error'))
+                            <div>
+                                {{ session('error') }}
+                            </div>
+                        @endif
+                        </h2>
                         <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row gy-3">
@@ -68,10 +80,10 @@
                                 <div class="col-lg-12">
                                     <div>
                                         <label class="form-label mb-0">Danh Mục Sản Phẩm</label>
-                                        <select name="catelogues_id" id="catelogues_id" style="width: 100%;">
+                                        <select name="catalogues_id" id="catalogues_id" style="width: 100%;">
                                             @foreach ($listCate as $category)
                                                 <option value="{{ $category->id }}"
-                                                    @if ($category->id == old('catelogues_id')) selected @endif>{{ $category->name }}
+                                                    @if ($category->id == old('catalogues_id')) selected @endif>{{ $category->name }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -84,7 +96,7 @@
                                 <div class="col-lg-12">
                                     <div>
                                         <label class="form-label mb-0">Giá Sản Phẩm Gốc</label>
-                                        <input type="number" class="form-control" name="price" id="price"
+                                        <input type="number" class="form-control" name="price_regular" id="price_regular"
                                             step="0.01" required data-provider="flatpickr" data-date-format="d M, Y">
                                     </div>
                                 </div>
@@ -102,7 +114,7 @@
                                 <!-- end col -->
                             </div><br>
                             <!-- end row -->
-                            <div class="row gy-3">
+                            {{-- <div class="row gy-3">
                                 <div class="col-lg-12">
                                     <div>
                                         <label class="form-label mb-0">Số Lượng</label>
@@ -111,13 +123,13 @@
                                     </div>
                                 </div>
                                 <!-- end col -->
-                            </div><br>
+                            </div><br> --}}
                             <!-- end row -->
                             <div class="row gy-3">
                                 <div class="col-lg-12">
                                     <div>
                                         <label class="form-label mb-0">Ảnh sản phẩm</label>
-                                        <input type="file" class="form-control" name="image" id="image"
+                                        <input type="file" class="form-control" name="img_thumbnail" id="img_thumbnail"
                                             data-provider="flatpickr" data-date-format="d M, Y">
                                     </div>
                                 </div>
@@ -140,7 +152,7 @@
                                 <div class="col-lg-12">
                                     <div>
                                         <label class="form-label" for="des-info-description-input">Hướng dẫn sử dụng</label>
-                                        <textarea class="form-control" placeholder="Enter Description" id="user_manual" rows="3" required></textarea>
+                                        <textarea class="form-control" placeholder="Enter Description" name="user_manual" id="user_manual" rows="3" required></textarea>
                                     </div>
                                 </div>
                                 <!-- end col -->

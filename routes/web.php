@@ -36,3 +36,6 @@ Route::controller(ProductController::class)
         Route::delete('{id}/destroy', 'destroy')
             ->name('destroy');
     });
+
+
+

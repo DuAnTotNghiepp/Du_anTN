@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
@@ -12,7 +13,7 @@ class Product extends Model
     protected $primaryKey = 'id';
     Protected $fillable=[
         'id',
-        'catelogues_id',
+        'catalogues_id',
         'name',
         'slug',
         'sku',
@@ -35,7 +36,7 @@ class Product extends Model
 
     public function catelogues()
     {
-        return $this->belongsTo(Catalogues::class);
+        return $this->belongsTo(Catalogues::class,'catalogues_id');
     }
     public function loadDataWithPager(){
         $query = Product::query()
@@ -45,7 +46,6 @@ class Product extends Model
     }
     public function insertDataProduct($params){
         $params['is_active'] = 1;
-        $params['created_at'] = date('Y-m-d H:i:s');
         $res = Product::query()->create($params);
         return $res;
     }

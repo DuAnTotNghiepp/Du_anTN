@@ -14,9 +14,8 @@
         <th scope="col">Giá Khuyến Mãi</th>
         <th scope="col">Danh Mục Sản Phẩm</th>
         <th scope="col">Ảnh Sản Phẩm</th>
-        <th scope="col">Số Lượng Sản Phẩm</th>
-        <th scope="col">Nội Dung Chi Tiết</th>
         <th scope="col">Mô Tả Sản Phẩm</th>
+        <th scope="col">Nội Dung Chi Tiết</th>
         <th scope="col">Đường Dẫn URL Thân Thiện</th>
         <th scope="col">Hướng Dẫn Sử Dụng Cho Người Dùng</th>
         <th scope="col">Mã Sản Phẩm Sản Phẩm</th>
@@ -27,37 +26,40 @@
       </tr>
     </thead>
     <tbody>
-        @foreach ($listPro as $item)
+        @foreach($listPro as $pr)
         <tr>
-            <th scope="row">{{$item->id}}</th>
-            <td>{{$item->name}}</td>
-            <td>{{$item->price}}</td>
-            <td>{{$item->quantity}}</td>
+            <th scope="row">{{$pr->id}}</th>
+            <td>{{$pr->name}}</td>
+            <td>{{$pr->price_regular}}</td>
+            <td>{{$pr->price_sale}}</td>
+            <td>{{$pr->catelogues->name}}</td>
             <td>
-                @if (!isset($item->image))
+                @if (!isset($pr->img_thumbnail))
                     khong co hinh anh
                 @else
-                <img width="100px" height="100px" src="{{Storage::url($item->image)}}">
+                <img width="100px" height="100px" src="{{Storage::url($pr->img_thumbnail)}}">
                 @endif
             </td>
-                    <td>{{$item->loadAllCategory->name}}</td>
-                    {{--<td>{{$item->catename}}</td> --}}
-                    {{-- <td>{{$listCate[$item->category_id]}}</td> --}}
-            <td>{{$item->status}}</td>
-            <td><a href="{{route('product.edit', ['id'=>$item->id])}}">Edit</a>
-                <form action="{{route('product.destroy', ['id'=>$item->id])}}" method="POST">
+            <td>{{$pr->description}}</td>
+            <td>{{$pr->content}}</td>
+            <td>{{$pr->slug}}</td>
+            <td>{{$pr->user_manual}}</td>
+            <td>{{$pr->sku}}</td>
+            <td>{{$pr->material}}</td>
+            <td>{{$pr->is_active}}</td>
+            <td>{{$pr->view}}</td>
+            <td><a href="{{route('product.edit', ['id'=>$pr->id])}}">Edit</a>
+                <form action="{{route('product.destroy', ['id'=>$pr->id])}}" method="POST">
                     @csrf
                     @method('DELETE')
                      <button type="submit">DELETE</button>
-                </form>
-            </td>
+                </form></td>
 
-          </tr>
+        </tr>
         @endforeach
-
     </tbody>
   </table>
-  {{$listPro->links()}}
+
 
 @endsection
 

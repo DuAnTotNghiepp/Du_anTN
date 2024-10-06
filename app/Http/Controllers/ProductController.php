@@ -7,6 +7,8 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Catalogues;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Storage;
+
 class ProductController extends Controller
 {
     /**
@@ -19,17 +21,8 @@ class ProductController extends Controller
     }
     public function index()
     {
-        //
-        $objPro = new Product();
-        $this->view['listPro'] = $objPro->loadDataWithPager();
-        $objCate = new Catalogues();
-        $listCate = $objCate->loadAllCate();
-        $arrayCate = [];
-        foreach ($listCate as $value){
-            $arrayCate[$value->id] = $value->name;
-        }
-        $this->view['listCate'] =  $arrayCate;
-        return view('admin.product.index', $this->view);
+        $listPro = Product::query()->latest('id')->get();
+        return view('admin.product.index', compact('listPro'));
     }
 
     /**
@@ -46,26 +39,31 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    private function uploadFile($file){
-        $fileName = time().'_'.$file->getClientOriginalName();
-        return $file->storeAs('image_product', $fileName, 'public');
-    }
     public function store(StoreProductRequest $request)
     {
-        //
-        $data = $request->except('image');
-        if ($request->hasFile('image') && $request->file('image')->isValid()){
-            $data['image'] = $this->uploadFile($request->file('image'));
+        if ($request->isMethod('post')) {
+            $params = $request->except('_token');
+            $params['is_active'] = $request->has('is_active') ? 1 : 0;
+            $params['is_hot_deal'] = $request->has('is_hot_deal') ? 1 : 0;
+            $params['is_good_deal'] = $request->has('is_good_deal') ? 1 : 0;
+            $params['is_new'] = $request->has('is_new') ? 1 : 0;
+            $params['is_show_home'] = $request->has('is_show_home') ? 1 : 0;
+            if ($request->hasFile('img_thumbnail')) {
+                $flag = true;
+                $params['img_thumbnail'] = $request->file('img_thumbnail')->store('products', 'public');
+            } else {
+                $params['img_thumbnail'] = null;
+            }
         }
-        $objPro = new Product();
-        $res = $objPro->insertDataProduct($data);
+        $res = Product::query()->create($params);
 
-        if($res){
+
+        if ($res) {
             return redirect()->back()->with('success', 'Sản phẩm đã được thêm mới thành công');
-        }else{
+        } else {
             return redirect()->back()->with('error', 'Sản phẩm đã được thêm mới không thành công');
         }
-
+        // return redirect()->route('product.index');
     }
 
     /**
@@ -79,17 +77,63 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit(int $id)
     {
         //
+        $objCate = new Catalogues();
+        $this->view['listCate'] = $objCate->loadAllCate();
+        $objPro = new Product();
+        $this->view['listPro'] = $objPro->getDataProductById($id);
+        return view('admin.product.edit', $this->view);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(UpdateProductRequest $request, int $id)
     {
         //
+        // Lấy thông tin sản phẩm cần cập nhật
+        $product = Product::find($id);
+
+        if ($product) {
+            $imageOld = $product->img_thumbnail;
+
+            // Lấy dữ liệu từ request
+            $params = $request->except('_token');
+            $params['is_active'] = $request->has('is_active') ? 1 : 0;
+            $params['is_hot_deal'] = $request->has('is_hot_deal') ? 1 : 0;
+            $params['is_good_deal'] = $request->has('is_good_deal') ? 1 : 0;
+            $params['is_new'] = $request->has('is_new') ? 1 : 0;
+            $params['is_show_home'] = $request->has('is_show_home') ? 1 : 0;
+
+            // Kiểm tra xem có ảnh mới được tải lên không
+            if ($request->hasFile('img_thumbnail') && $request->file('img_thumbnail')->isValid()) {
+                // Lưu ảnh mới vào thư mục 'products' trên disk 'public'
+                $params['img_thumbnail'] = $request->file('img_thumbnail')->store('products', 'public');
+
+                // Xóa ảnh cũ nếu tồn tại
+                if ($imageOld && Storage::disk('public')->exists($imageOld)) {
+                    Storage::disk('public')->delete($imageOld);
+                }
+            } else {
+                // Không có ảnh mới thì giữ nguyên ảnh cũ
+                $params['img_thumbnail'] = $imageOld;
+            }
+
+            // Cập nhật dữ liệu sản phẩm
+            $res = $product->update($params);
+
+            // Kiểm tra kết quả
+            if ($res) {
+                return redirect()->back()->with('success', 'Sản phẩm đã được chỉnh sửa thành công');
+            } else {
+                return redirect()->back()->with('error', 'Sản phẩm đã được chỉnh sửa không thành công');
+            }
+        } else {
+            // Không tìm thấy sản phẩm
+            return redirect()->back()->with('error', 'ID sản phẩm không phù hợp');
+        }
     }
 
     /**
@@ -98,5 +142,20 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+        // Kiểm tra xem sản phẩm có hình ảnh hay không
+        if ($product->img_thumbnail && Storage::disk('public')->exists($product->img_thumbnail)) {
+            // Xóa hình ảnh từ thư mục 'public'
+            Storage::disk('public')->delete($product->img_thumbnail);
+        }
+
+        // Xóa sản phẩm khỏi cơ sở dữ liệu
+        $res = $product->delete();
+
+        // Kiểm tra kết quả và phản hồi cho người dùng
+        if ($res) {
+            return redirect()->back()->with('success', 'Sản phẩm đã được xóa thành công');
+        } else {
+            return redirect()->back()->with('error', 'Sản phẩm xóa không thành công');
+        }
     }
 }

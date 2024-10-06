@@ -26,6 +26,7 @@
 
         <!-- start page title -->
         <div class="row">
+
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                     <h4 class="mb-sm-0">Quản Lý Sản Phẩm</h4>
@@ -50,12 +51,26 @@
                     </div><!-- end card header -->
 
                     <div class="card-body">
-                        <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
+                        <h2>
+                        @if (session('success'))
+                            <div>
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                        @if (session('error'))
+                            <div>
+                                {{ session('error') }}
+                            </div>
+                        @endif
+                        </h2>
+                        <form action="{{ route('product.update', ['id' => $listPro->id]) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
                             <div class="row gy-3">
                                 <div class="col-lg-12">
                                     <div>
                                         <label class="form-label mb-0">Tên Sản Phẩm</label>
-                                        <input type="text" class="form-control" name="name" id="name"
+                                        <input type="text" class="form-control" name="name" id="name" value="{{$listPro->name}}"
                                             data-provider="flatpickr" data-date-format="d M, Y">
                                     </div>
                                 </div>
@@ -66,10 +81,11 @@
                                 <div class="col-lg-12">
                                     <div>
                                         <label class="form-label mb-0">Danh Mục Sản Phẩm</label>
-                                        <select class="form-select mb-3" name="category_id">
-                                            @foreach($listCate as $item)
-
-                                                <option value="{{$item->id}}" @if($item->id == $listPro->category_id) selected @endif>{{$item->name}}</option>
+                                        <select name="catalogues_id" id="catalogues_id" style="width: 100%;">
+                                            @foreach ($listCate as $category)
+                                                <option value="{{ $category->id }}"
+                                                    @if ($category->id == $listPro->catalogues_id) selected @endif>{{ $category->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -81,7 +97,7 @@
                                 <div class="col-lg-12">
                                     <div>
                                         <label class="form-label mb-0">Giá Sản Phẩm Gốc</label>
-                                        <input type="number" class="form-control" name="price" id="price"
+                                        <input type="number" class="form-control" name="price_regular" id="price_regular" value="{{$listPro->price_regular}}"
                                             step="0.01" required data-provider="flatpickr" data-date-format="d M, Y">
                                     </div>
                                 </div>
@@ -92,14 +108,14 @@
                                 <div class="col-lg-12">
                                     <div>
                                         <label class="form-label mb-0">Giá Sản Phẩm Khuyến Mãi</label>
-                                        <input type="number" class="form-control" name="price_sale" id="price_sale"
+                                        <input type="number" class="form-control" name="price_sale" id="price_sale" value="{{$listPro->price_sale}}"
                                             step="0.01" required data-provider="flatpickr" data-date-format="d M, Y">
                                     </div>
                                 </div>
                                 <!-- end col -->
                             </div><br>
                             <!-- end row -->
-                            <div class="row gy-3">
+                            {{-- <div class="row gy-3">
                                 <div class="col-lg-12">
                                     <div>
                                         <label class="form-label mb-0">Số Lượng</label>
@@ -108,14 +124,15 @@
                                     </div>
                                 </div>
                                 <!-- end col -->
-                            </div><br>
+                            </div><br> --}}
                             <!-- end row -->
                             <div class="row gy-3">
                                 <div class="col-lg-12">
                                     <div>
                                         <label class="form-label mb-0">Ảnh sản phẩm</label>
-                                        <input type="file" class="form-control" name="image" id="name">
-                                        <img src="{{ Storage::url($listPro->image) }}" style="width: 100px;">
+                                        <input type="file" class="form-control" name="img_thumbnail" id="img_thumbnail"
+                                            data-provider="flatpickr" data-date-format="d M, Y">
+                                        <img src="{{Storage::url($listPro->img_thumbnail)}}" width="100px" alt="">
                                     </div>
                                 </div>
                                 <!-- end col -->
@@ -125,7 +142,7 @@
                                 <div class="col-lg-12">
                                     <div>
                                         <label class="form-label mb-0">Chất liệu</label>
-                                        <input type="text" class="form-control" name="material" id="material" required
+                                        <input type="text" class="form-control" name="material" id="material" required value="{{$listPro->material}}"
                                             data-provider="flatpickr" data-date-format="d M, Y">
                                     </div>
                                 </div>
@@ -137,7 +154,7 @@
                                 <div class="col-lg-12">
                                     <div>
                                         <label class="form-label" for="des-info-description-input">Hướng dẫn sử dụng</label>
-                                        <textarea class="form-control" placeholder="Enter Description" id="user_manual" rows="3" required></textarea>
+                                        <textarea class="form-control" placeholder="Enter Description" name="user_manual" id="user_manual" rows="3" required>$listPro->user_manual</textarea>
                                     </div>
                                 </div>
                                 <!-- end col -->
@@ -147,8 +164,7 @@
                                 <div class="col-lg-12">
                                     <div>
                                         <label class="form-label mb-0">Mã sản phẩm (SKU)</label>
-                                        <input type="text" class="form-control" name="sku" id="sku"
-                                            required>
+                                        <input type="text" class="form-control" name="sku" id="sku" required value="{{$listPro->sku}}">
                                     </div>
                                 </div>
                                 <!-- end col -->
@@ -162,7 +178,7 @@
                                     </div>
                                     <div>
                                         <label class="form-label mb-0">URL</label>
-                                        <input type="text" class="form-control" name="slug" id="slug"
+                                        <input type="text" class="form-control" name="slug" id="slug" value="{{$listPro->slug}}"
                                             readonly>
                                     </div>
                                 </div>
@@ -173,7 +189,7 @@
                                 <div class="col-lg-12">
                                     <div>
                                         <label class="form-label mb-0">Mô tả sản phẩm</label>
-                                        <textarea name="description" id="description" rows="4"></textarea><br><br>
+                                        <textarea name="description" id="description" rows="4">$listPro->description</textarea><br><br>
                                     </div>
                                 </div>
                                 <!-- end col -->
@@ -183,7 +199,7 @@
                                 <div class="col-lg-12">
                                     <div>
                                         <label class="form-label mb-0">Nội dung chi tiết</label>
-                                        <textarea name="content" id="content" rows="10" cols="80"></textarea><br><br>
+                                        <textarea name="content" id="content" rows="10" cols="80">$listPro->content</textarea><br><br>
                                     </div>
                                 </div>
                                 <!-- end col -->
@@ -222,7 +238,7 @@
                                 <!-- end col -->
                             </div><br>
                             <!-- end row -->
-                            <button class="btn btn-info" type="submit">Thêm sản phẩm</button>
+                            <button class="btn btn-info" type="submit">Sửa sản phẩm</button>
                         </form><!-- end form -->
 
                     </div><!-- end card-body -->
