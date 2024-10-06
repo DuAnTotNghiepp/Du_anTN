@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $table = 'products';
     protected $primaryKey = 'id';
     Protected $fillable=[
@@ -17,6 +18,7 @@ class Product extends Model
         'name',
         'slug',
         'sku',
+        'quantity',
         'img_thumbnail',
         'price_regular',
         'price_sale',
@@ -44,22 +46,22 @@ class Product extends Model
         ->paginate(10);
         return $query;
     }
-    public function insertDataProduct($params){
-        $params['is_active'] = 1;
-        $res = Product::query()->create($params);
-        return $res;
-    }
-    public function getDataProductById($id){
-        $query = Product::query()->find($id);
-        return $query;
-    }
-    public function updateDataProduc($params, $id){
-        $params['updated_at'] = date('Y-m-d H:i:s');
-       $res =  Product::query()
-           ->find($id)
-           ->update($params);
-       return $res;
-    }
+    // public function insertDataProduct($params){
+    //     $params['is_active'] = 1;
+    //     $res = Product::query()->create($params);
+    //     return $res;
+    // }
+    // public function getDataProductById($id){
+    //     $query = Product::query()->find($id);
+    //     return $query;
+    // }
+    // public function updateDataProduc($params, $id){
+    //     $params['updated_at'] = date('Y-m-d H:i:s');
+    //    $res =  Product::query()
+    //        ->find($id)
+    //        ->update($params);
+    //    return $res;
+    // }
     public function deleteDataProduct($id){
         $res = Product::query()->find($id)->delete();
         return $res;

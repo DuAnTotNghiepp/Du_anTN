@@ -14,6 +14,7 @@
         <th scope="col">Giá Khuyến Mãi</th>
         <th scope="col">Danh Mục Sản Phẩm</th>
         <th scope="col">Ảnh Sản Phẩm</th>
+        <th scope="col">Số Lượng</th>
         <th scope="col">Mô Tả Sản Phẩm</th>
         <th scope="col">Nội Dung Chi Tiết</th>
         <th scope="col">Đường Dẫn URL Thân Thiện</th>
@@ -40,6 +41,7 @@
                 <img width="100px" height="100px" src="{{Storage::url($pr->img_thumbnail)}}">
                 @endif
             </td>
+            <td>{{$pr->quantity}}</td>
             <td>{{$pr->description}}</td>
             <td>{{$pr->content}}</td>
             <td>{{$pr->slug}}</td>
@@ -49,10 +51,10 @@
             <td>{{$pr->is_active}}</td>
             <td>{{$pr->view}}</td>
             <td><a href="{{route('product.edit', ['id'=>$pr->id])}}">Edit</a>
-                <form action="{{route('product.destroy', ['id'=>$pr->id])}}" method="POST">
+                <form action="{{ route('product.destroy', $pr->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">
                     @csrf
                     @method('DELETE')
-                     <button type="submit">DELETE</button>
+                    <button class="btn btn-info" type="submit">Xóa sản phẩm</button>
                 </form></td>
 
         </tr>

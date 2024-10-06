@@ -139,23 +139,23 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product, int $id)
     {
         //
-        // Kiểm tra xem sản phẩm có hình ảnh hay không
+        $product = Product::find($id);
+
+    if ($product) {
+        // Xóa ảnh thumbnail nếu tồn tại
         if ($product->img_thumbnail && Storage::disk('public')->exists($product->img_thumbnail)) {
-            // Xóa hình ảnh từ thư mục 'public'
             Storage::disk('public')->delete($product->img_thumbnail);
         }
 
-        // Xóa sản phẩm khỏi cơ sở dữ liệu
-        $res = $product->delete();
+        // Xóa sản phẩm
+        $product->delete();
 
-        // Kiểm tra kết quả và phản hồi cho người dùng
-        if ($res) {
-            return redirect()->back()->with('success', 'Sản phẩm đã được xóa thành công');
-        } else {
-            return redirect()->back()->with('error', 'Sản phẩm xóa không thành công');
-        }
+        return redirect()->back()->with('success', 'Sản phẩm đã được xóa thành công.');
+    } else {
+        return redirect()->back()->with('error', 'Sản phẩm không tồn tại.');
+    }
     }
 }

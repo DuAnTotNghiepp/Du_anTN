@@ -115,7 +115,7 @@
                                 <!-- end col -->
                             </div><br>
                             <!-- end row -->
-                            {{-- <div class="row gy-3">
+                            <div class="row gy-3">
                                 <div class="col-lg-12">
                                     <div>
                                         <label class="form-label mb-0">Số Lượng</label>
@@ -124,7 +124,7 @@
                                     </div>
                                 </div>
                                 <!-- end col -->
-                            </div><br> --}}
+                            </div><br>
                             <!-- end row -->
                             <div class="row gy-3">
                                 <div class="col-lg-12">
