@@ -186,8 +186,8 @@
                             <div class="row gy-3">
                                 <div class="col-lg-12">
                                     <div>
-                                        <label class="form-label mb-0">Mô tả sản phẩm</label>
-                                        <textarea name="description" id="description" rows="4"></textarea><br><br>
+                                        <label class="form-label" for="des-info-description-input">Mô tả Sản Phẩm</label>
+                                        <textarea class="form-control" placeholder="Enter Description" name="description" id="description" rows="3" required></textarea>
                                     </div>
                                 </div>
                                 <!-- end col -->
@@ -251,7 +251,6 @@
 
         <script>
             // Tích hợp CKEditor với trường 'content'
-            CKEDITOR.replace('description');
             CKEDITOR.replace('content');
         </script>
         <script>
