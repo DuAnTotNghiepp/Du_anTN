@@ -80,17 +80,14 @@ class ProductController extends Controller
     public function edit(int $id)
     {
         //
-        $objCate = new Catalogues();
-        $this->view['listCate'] = $objCate->loadAllCate(); // Load danh sách danh mục sản phẩm
-
+        // $objCate = new Catalogues();
+        // $this->view['listCate'] = $objCate->loadAllCate(); // Load danh sách danh mục sản phẩm
+        $listCate = Catalogues::all();
         // Lấy thông tin sản phẩm
         $listPro = Product::find($id);
 
         // Trả về view với dữ liệu danh mục và sản phẩm
-        return view('admin.product.edit', [
-            'listPro' => $listPro,
-            'listCate' => $this->view['listCate'],
-        ]);
+        return view('admin.product.edit', compact('listPro', 'listCate'));
     }
 
     /**

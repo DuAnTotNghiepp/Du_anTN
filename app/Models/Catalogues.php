@@ -28,10 +28,10 @@ class Catalogues extends Model
         return $this->hasMany(Product::class);
     }
     public $timestamps = false;
-    public function loadAllCate(){
-        $query = DB::table($this->table)
-            ->select($this->fillable)
-            ->get();
-        return $query;
-    }
+    // public function loadAllCate(){
+    //     $query = DB::table($this->table)
+    //         ->select($this->fillable)
+    //         ->get();
+    //     return $query;
+    // }
 }

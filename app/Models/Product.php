@@ -40,12 +40,12 @@ class Product extends Model
     {
         return $this->belongsTo(Catalogues::class,'catalogues_id');
     }
-    public function loadDataWithPager(){
-        $query = Product::query()
-        ->latest('id')
-        ->paginate(10);
-        return $query;
-    }
+    // public function loadDataWithPager(){
+    //     $query = Product::query()
+    //     ->latest('id')
+    //     ->paginate(10);
+    //     return $query;
+    // }
     // public function insertDataProduct($params){
     //     $params['is_active'] = 1;
     //     $res = Product::query()->create($params);
@@ -62,8 +62,8 @@ class Product extends Model
     //        ->update($params);
     //    return $res;
     // }
-    public function deleteDataProduct($id){
-        $res = Product::query()->find($id)->delete();
-        return $res;
-    }
+    // public function deleteDataProduct($id){
+    //     $res = Product::query()->find($id)->delete();
+    //     return $res;
+    // }
 }
