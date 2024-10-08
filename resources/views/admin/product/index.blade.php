@@ -87,7 +87,7 @@
                     <div class="row g-3">
                         <div class="col-md-4">
                             <div class="search-box">
-                                <input type="text" class="form-control search" placeholder="Search for contact...">
+                                <input type="text" class="form-control search" id="searchInput" placeholder="Search for contact...">
                                 <i class="ri-search-line search-icon"></i>
                             </div>
                         </div>
@@ -119,7 +119,7 @@
                                         <th class="sort" data-sort="name" scope="col">Tên Sản Phẩm</th>
                                         <th class="sort" data-sort="company_name" scope="col">Giá Thường</th>
                                         <th class="sort" data-sort="email_id" scope="col">Giá Khuyến Mãi</th>
-                                        <th class="sort" data-sort="email_id" scope="col">Danh Mục Sản Phẩm</th>
+                                        <th class="sort" data-sort="category_name" scope="col">Danh Mục Sản Phẩm</th>
                                         <th class="sort" data-sort="phone" scope="col">Số Lượng</th>
                                         <th class="sort" data-sort="lead_score" scope="col">Mã Sản Phẩm</th>
                                         <th class="sort" data-sort="tags" scope="col">Trạng Thái</th>
@@ -153,7 +153,7 @@
                                             </td>
                                             <td class="company_name">{{ $pr->price_regular }}</td>
                                             <td class="email_id">{{ $pr->price_sale }}</td>
-                                            <td class="email_id">{{ $pr->catelogues->name }}</td>
+                                            <td class="category_name">{{ $pr->catelogues->name }}</td>
                                             <td class="phone">{{ $pr->quantity }}</td>
                                             <td class="lead_score">{{ $pr->sku }}</td>
                                             <td class="tags">
@@ -363,6 +363,26 @@
     </div>
     <!-- end main content-->
     <script>
+
+document.getElementById('searchInput').addEventListener('input', function () {
+    let filter = this.value.toLowerCase();
+    let rows = document.querySelectorAll('#customerTable tbody tr');
+
+    rows.forEach(function (row) {
+        let productName = row.querySelector('.name .flex-grow-1').textContent.toLowerCase();
+        let productPrice = row.querySelector('.company_name').textContent.toLowerCase();
+        let productCate = row.querySelector('.category_name').textContent.toLowerCase();
+        // Kiểm tra nếu tên sản phẩm hoặc giá khớp với giá trị tìm kiếm
+        if (productName.includes(filter) || productPrice.includes(filter) || productCate.includes(filter)) {
+            row.style.display = ''; // Hiển thị nếu tên hoặc giá khớp với kết quả tìm kiếm
+        } else {
+            row.style.display = 'none'; // Ẩn nếu không khớp
+        }
+    });
+});
+
+
+
         document.querySelectorAll('.delete-btn').forEach(button => {
         button.addEventListener('click', function() {
             var productId = this.getAttribute('data-id');
