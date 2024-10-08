@@ -4,199 +4,398 @@
     Danh Sách Sản Phẩm
 @endsection
 @section('content')
-    <html lang="en">
+    <!-- start page title -->
+    <div class="row">
 
-    <head>
-        <meta charset="utf-8" />
-        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-        <title>
-            Product List
-        </title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
-    </head>
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <h4 class="mb-sm-0">Quản Lý Sản Phẩm</h4>
 
-    <body class="bg-gray-100">
-        <div class="container mx-auto p-4">
-            <div class="flex justify-between items-center mb-4">
-                <a href="{{ route('product.create') }}" class="bg-green-500 text-white px-4 py-2 rounded">
-                    + Add Product
-                </a>
-                <div class="relative">
-                    <input class="border border-gray-300 rounded px-4 py-2" placeholder="Search Products..."
-                        type="text" />
-                    <i class="fas fa-search absolute right-3 top-3 text-gray-400">
-                    </i>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Quản Lý Sản Phẩm</a></li>
+                        <li class="breadcrumb-item active">Danh Sách Sản Phẩm</li>
+                    </ol>
                 </div>
+
             </div>
-            <div class="bg-white shadow rounded-lg overflow-hidden">
-                <table class="min-w-full bg-white">
-                    <thead>
-                        <tr>
-                            <th class="py-2 px-4 border-b border-gray-200">
-                                #
-                            </th>
-                            <th class="py-2 px-4 border-b border-gray-200">
-                                Product
-                            </th>
-                            <th class="py-2 px-4 border-b border-gray-200">
-                                Giá Cố Định
-                            </th>
-                            <th class="py-2 px-4 border-b border-gray-200">
-                                Giá Khuyến Mãi
-                            </th>
-                            <th class="py-2 px-4 border-b border-gray-200">
-                                Số Lượng
-                            </th>
-                            <th class="py-2 px-4 border-b border-gray-200">
-                                Mã Sản Phẩm
-                            </th>
-                            <th class="py-2 px-4 border-b border-gray-200">
-                                Trạng Thái
-                            </th>
-                            <th class="py-2 px-4 border-b border-gray-200">
-                                View
-                            </th>
-                            <th class="py-2 px-4 border-b border-gray-200">
-                                Action
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($listPro as $pr)
-                            <tr>
-                                <td class="py-2 px-4 border-b border-gray-200">
-                                    <input type="checkbox" />
-                                </td>
-                                <td class="py-2 px-4 border-b border-gray-200 flex items-center">
-                                    @if (!isset($pr->img_thumbnail))
-                                        khong co hinh anh
-                                    @else
-                                        <img alt="Half Sleeve Round Neck T-Shirts" class="w-10 h-10 rounded mr-2"
-                                            height="40" src="{{ Storage::url($pr->img_thumbnail) }}" width="40" />
-                                    @endif
-                                    <div>
-                                        <div>
-                                            {{ $pr->name }}
-                                        </div>
-                                        <div class="text-gray-500 text-sm">
-                                            Category: {{ $pr->catelogues->name }}
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="py-2 px-4 border-b border-gray-200">
-                                    {{ $pr->price_regular }}
-                                </td>
-                                <td class="py-2 px-4 border-b border-gray-200">
-                                    {{ $pr->price_sale }}
-                                </td>
-                                <td class="py-2 px-4 border-b border-gray-200">
-                                    {{ $pr->quantity }}
-                                </td>
-                                <td class="py-2 px-4 border-b border-gray-200">
-                                    {{ $pr->sku }}
-                                </td>
-                                <td class="py-2 px-4 border-b border-gray-200">
-                                    <span class="flex items-center">
-                                        {{ $pr->is_active }}
-                                    </span>
-                                </td>
-                                <td class="py-2 px-4 border-b border-gray-200">
-                                    {{ $pr->view }}
-                                </td>
-                                <td class="py-2 px-4 border-b border-gray-200">
-                                    <a class="btn btn-info" href="{{ route('product.edit', ['id' => $pr->id]) }}">Edit</a>
-                                    <form action="{{ route('product.destroy', $pr->id) }}" method="POST"
-                                        onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-info" type="submit">Xóa sản phẩm</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <div class="flex justify-between items-center p-4">
-                    <div class="text-gray-600">
-                        Showing 1 to 10 of 12 results
-                    </div>
-                    <div class="flex items-center">
-                        <button class="bg-gray-200 text-gray-600 px-3 py-1 rounded mr-2">
-                            Previous
-                        </button>
-                        <button class="bg-blue-500 text-white px-3 py-1 rounded">
-                            1
-                        </button>
-                        <button class="bg-gray-200 text-gray-600 px-3 py-1 rounded ml-2">
-                            2
-                        </button>
-                        <button class="bg-gray-200 text-gray-600 px-3 py-1 rounded ml-2">
-                            Next
-                        </button>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <!-- Modal Xác Nhận Xóa -->
+    <div class="modal fade" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-5 text-center">
+                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                        colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+                    <div class="mt-4 text-center">
+                        <h4 class="fs-semibold">Bạn có chắc chắn muốn xóa sản phẩm này không?</h4>
+                        <p class="text-muted fs-14 mb-4 pt-1">Xóa sản phẩm này sẽ xóa tất cả thông tin của sản phẩm khỏi cơ
+                            sở dữ liệu.</p>
+                        <div class="hstack gap-2 justify-content-center remove">
+                            <button class="btn btn-link link-success fw-medium text-decoration-none"
+                                data-bs-dismiss="modal">
+                                <i class="ri-close-line me-1 align-middle"></i> Đóng
+                            </button>
+                            <button class="btn btn-danger" id="confirmDelete">Đồng ý, Xóa!</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center flex-wrap gap-2">
+                        <div class="flex-grow-1">
+                            <a href="{{ route('product.create') }}" class="btn btn-info add-btn"><i
+                                    class="ri-add-fill me-1 align-bottom"></i> Add Product</a>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <div class="hstack text-nowrap gap-2">
+                                <button class="btn btn-soft-danger" id="remove-actions" onClick="deleteMultiple()"><i
+                                        class="ri-delete-bin-2-line"></i></button>
+                                <button class="btn btn-danger"><i class="ri-filter-2-line me-1 align-bottom"></i>
+                                    Filters</button>
+                                <button class="btn btn-soft-success">Import</button>
+                                <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown"
+                                    aria-expanded="false" class="btn btn-soft-info"><i class="ri-more-2-fill"></i></button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                    <li><a class="dropdown-item" href="#">All</a></li>
+                                    <li><a class="dropdown-item" href="#">Last Week</a></li>
+                                    <li><a class="dropdown-item" href="#">Last Month</a></li>
+                                    <li><a class="dropdown-item" href="#">Last Year</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end col-->
+        <div class="col-xxl-12">
+            <div class="card" id="contactList">
+                <div class="card-header">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="search-box">
+                                <input type="text" class="form-control search" placeholder="Search for contact...">
+                                <i class="ri-search-line search-icon"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-auto ms-auto">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="text-muted">Sort by: </span>
+                                <select class="form-control mb-0" data-choices data-choices-search-false
+                                    id="choices-single-default">
+                                    <option value="Name">Name</option>
+                                    <option value="Company">Company</option>
+                                    <option value="Lead">Lead</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <div class="table-responsive table-card mb-3">
+                            <table class="table align-middle table-nowrap mb-0" id="customerTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col" style="width: 50px;">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="checkAll"
+                                                    value="option">
+                                            </div>
+                                        </th>
+                                        <th class="sort" data-sort="name" scope="col">Tên Sản Phẩm</th>
+                                        <th class="sort" data-sort="company_name" scope="col">Giá Thường</th>
+                                        <th class="sort" data-sort="email_id" scope="col">Giá Khuyến Mãi</th>
+                                        <th class="sort" data-sort="email_id" scope="col">Danh Mục Sản Phẩm</th>
+                                        <th class="sort" data-sort="phone" scope="col">Số Lượng</th>
+                                        <th class="sort" data-sort="lead_score" scope="col">Mã Sản Phẩm</th>
+                                        <th class="sort" data-sort="tags" scope="col">Trạng Thái</th>
+                                        <th class="sort" data-sort="date" scope="col">View</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="list form-check-all">
+                                    @foreach ($listPro as $pr)
+                                        <tr>
+                                            <th scope="row">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="chk_child"
+                                                        value="option1">
+                                                </div>
+                                            </th>
+                                            <td class="id" style="display:none;"><a href="javascript:void(0);"
+                                                    class="fw-medium link-primary">#VZ001</a></td>
+                                            <td class="name">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex-shrink-0">
+                                                        @if (!isset($pr->img_thumbnail))
+                                                            khong co hinh anh
+                                                        @else
+                                                            <img src="{{ Storage::url($pr->img_thumbnail) }}"
+                                                                alt="" class="avatar-xs rounded-circle">
+                                                        @endif
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-2 name">{{ $pr->name }}</div>
+                                                </div>
+                                            </td>
+                                            <td class="company_name">{{ $pr->price_regular }}</td>
+                                            <td class="email_id">{{ $pr->price_sale }}</td>
+                                            <td class="email_id">{{ $pr->catelogues->name }}</td>
+                                            <td class="phone">{{ $pr->quantity }}</td>
+                                            <td class="lead_score">{{ $pr->sku }}</td>
+                                            <td class="tags">
+                                                {{ $pr->is_active }}
+                                            </td>
+                                            <td>{{ $pr->view }}</td>
+                                            <td>
+                                                <ul class="list-inline hstack gap-2 mb-0">
+                                                    <li class="list-inline-item">
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-soft-secondary btn-sm dropdown"
+                                                                type="button" data-bs-toggle="dropdown"
+                                                                aria-expanded="false">
+                                                                <i class="ri-more-fill align-middle"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                                <li><a class="dropdown-item edit-item-btn"
+                                                                        href="{{ route('product.edit', ['id' => $pr->id]) }}"><i
+                                                                            class="ri-pencil-fill align-bottom me-2 text-muted"></i>
+                                                                        Edit</a></li>
+                                                                <li>
+                                                                    <button class="dropdown-item delete-btn"
+                                                                        data-id="{{ $pr->id }}"><i
+                                                                            class="ri-delete-bin-2-line"></i> Xóa</button>
+                                                                </li>
+
+
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            <div class="noresult" style="display: none">
+                                <div class="text-center">
+                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
+                                        colors="primary:#121331,secondary:#08a88a"
+                                        style="width:75px;height:75px"></lord-icon>
+                                    <h5 class="mt-2">Sorry! No Result Found</h5>
+                                    <p class="text-muted mb-0">We've searched more than 150+ contacts We did not find any
+                                        contacts for you search.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end mt-3">
+                            <div class="pagination-wrap hstack gap-2">
+                                <a class="page-item pagination-prev disabled" href="#">
+                                    Previous
+                                </a>
+                                <ul class="pagination listjs-pagination mb-0"></ul>
+                                <a class="page-item pagination-next" href="#">
+                                    Next
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content border-0">
+                                <div class="modal-header bg-info-subtle p-3">
+                                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                        id="close-modal"></button>
+                                </div>
+                                <form class="tablelist-form" autocomplete="off">
+                                    <div class="modal-body">
+                                        <input type="hidden" id="id-field" />
+                                        <div class="row g-3">
+                                            <div class="col-lg-12">
+                                                <div class="text-center">
+                                                    <div class="position-relative d-inline-block">
+                                                        <div class="position-absolute  bottom-0 end-0">
+                                                            <label for="customer-image-input" class="mb-0"
+                                                                data-bs-toggle="tooltip" data-bs-placement="right"
+                                                                title="Select Image">
+                                                                <div class="avatar-xs cursor-pointer">
+                                                                    <div
+                                                                        class="avatar-title bg-light border rounded-circle text-muted">
+                                                                        <i class="ri-image-fill"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </label>
+                                                            <input class="form-control d-none" value=""
+                                                                id="customer-image-input" type="file"
+                                                                accept="image/png, image/gif, image/jpeg">
+                                                        </div>
+                                                        <div class="avatar-lg p-1">
+                                                            <div class="avatar-title bg-light rounded-circle">
+                                                                <img src="assets/images/users/user-dummy-img.jpg"
+                                                                    id="customer-img"
+                                                                    class="avatar-md rounded-circle object-fit-cover" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label for="name-field" class="form-label">Name</label>
+                                                    <input type="text" id="customername-field" class="form-control"
+                                                        placeholder="Enter name" required />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div>
+                                                    <label for="company_name-field" class="form-label">Company
+                                                        Name</label>
+                                                    <input type="text" id="company_name-field" class="form-control"
+                                                        placeholder="Enter company name" required />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div>
+                                                    <label for="designation-field" class="form-label">Designation</label>
+                                                    <input type="text" id="designation-field" class="form-control"
+                                                        placeholder="Enter Designation" required />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div>
+                                                    <label for="email_id-field" class="form-label">Email ID</label>
+                                                    <input type="text" id="email_id-field" class="form-control"
+                                                        placeholder="Enter email" required />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div>
+                                                    <label for="phone-field" class="form-label">Phone</label>
+                                                    <input type="text" id="phone-field" class="form-control"
+                                                        placeholder="Enter phone no" required />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div>
+                                                    <label for="lead_score-field" class="form-label">Lead Score</label>
+                                                    <input type="text" id="lead_score-field" class="form-control"
+                                                        placeholder="Enter value" required />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div>
+                                                    <label for="taginput-choices"
+                                                        class="form-label font-size-13 text-muted">Tags</label>
+                                                    <select class="form-control" name="taginput-choices"
+                                                        id="taginput-choices" multiple>
+                                                        <option value="Lead">Lead</option>
+                                                        <option value="Partner">Partner</option>
+                                                        <option value="Exiting">Exiting</option>
+                                                        <option value="Long-term">Long-term</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="hstack gap-2 justify-content-end">
+                                            <button type="button" class="btn btn-light"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-success" id="add-btn">Add
+                                                Contact</button>
+                                            <!-- <button type="button" class="btn btn-success" id="edit-btn">Update</button> -->
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end add modal-->
+
+                    <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="btn-close" id="deleteRecord-close"
+                                        data-bs-dismiss="modal" aria-label="Close" id="btn-close"></button>
+                                </div>
+                                <div class="modal-body p-5 text-center">
+                                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                                        colors="primary:#405189,secondary:#f06548"
+                                        style="width:90px;height:90px"></lord-icon>
+                                    <div class="mt-4 text-center">
+                                        <h4 class="fs-semibold">You are about to delete a contact ?</h4>
+                                        <p class="text-muted fs-14 mb-4 pt-1">Deleting your contact will remove all of your
+                                            information from our database.</p>
+                                        <div class="hstack gap-2 justify-content-center remove">
+                                            <button class="btn btn-link link-success fw-medium text-decoration-none"
+                                                id="deleteRecord-close" data-bs-dismiss="modal"><i
+                                                    class="ri-close-line me-1 align-middle"></i> Close</button>
+                                            <button class="btn btn-danger" id="delete-record">Yes, Delete It!!</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end delete modal -->
+
+                </div>
+            </div>
+            <!--end card-->
+        </div>
+        <!--end col-->
+
+        <!--end col-->
+    </div>
+    <!-- end main content-->
+    <script>
+        document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            var productId = this.getAttribute('data-id');
+            var deleteModal = new bootstrap.Modal(document.getElementById('deleteRecordModal'));
+            deleteModal.show();
+
+            document.getElementById('confirmDelete').onclick = function() {
+                fetch('/admin/products/' + productId + '/destroy', {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(data.message);
+                            window.location.reload(); // Reload lại trang sau khi xóa
+                        } else {
+                            alert('Lỗi: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Có lỗi xảy ra:', error);
+                    });
+            };
+        });
+    });
+    </script>
+
+
+
 
     </html>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">ID Sản Phẩm</th>
-                <th scope="col">Tên Sản Phẩm</th>
-                <th scope="col">Giá Thường</th>
-                <th scope="col">Giá Khuyến Mãi</th>
-                <th scope="col">Danh Mục Sản Phẩm</th>
-                <th scope="col">Ảnh Sản Phẩm</th>
-                <th scope="col">Số Lượng</th>
-                <th scope="col">Mô Tả Sản Phẩm</th>
-                <th scope="col">Nội Dung Chi Tiết</th>
-                <th scope="col">Đường Dẫn URL Thân Thiện</th>
-                <th scope="col">Hướng Dẫn Sử Dụng Cho Người Dùng</th>
-                <th scope="col">Mã Sản Phẩm Sản Phẩm</th>
-                <th scope="col">Chất Liệu Phẩm Sản Phẩm</th>
-                <th scope="col">Trạng Thái</th>
-                <th scope="col">Lượt Xem</th>
-                <th scope="col">Thao Tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($listPro as $pr)
-                <tr>
-                    <th scope="row">{{ $pr->id }}</th>
-                    <td>{{ $pr->name }}</td>
-                    <td>{{ $pr->price_regular }}</td>
-                    <td>{{ $pr->price_sale }}</td>
-                    <td>{{ $pr->catelogues->name }}</td>
-                    <td>
-                        @if (!isset($pr->img_thumbnail))
-                            khong co hinh anh
-                        @else
-                            <img width="100px" height="100px" src="{{ Storage::url($pr->img_thumbnail) }}">
-                        @endif
-                    </td>
-                    <td>{{ $pr->quantity }}</td>
-                    <td>{{ $pr->description }}</td>
-                    <td>{{ $pr->content }}</td>
-                    <td>{{ $pr->slug }}</td>
-                    <td>{{ $pr->user_manual }}</td>
-                    <td>{{ $pr->sku }}</td>
-                    <td>{{ $pr->material }}</td>
-                    <td>{{ $pr->is_active }}</td>
-                    <td>{{ $pr->view }}</td>
-                    <td><a href="{{ route('product.edit', ['id' => $pr->id]) }}">Edit</a>
-                        <form action="{{ route('product.destroy', $pr->id) }}" method="POST"
-                            onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-info" type="submit">Xóa sản phẩm</button>
-                        </form>
-                    </td>
-
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
 @endsection

@@ -31,9 +31,10 @@ class ProductController extends Controller
     public function create()
     {
         //
-        $objCate = new Catalogues();
-        $this->view['listCate'] = $objCate->loadAllCate();
-        return view('admin.product.create', $this->view);
+        $listCate = Catalogues::all();
+        // $objCate = new Catalogues();
+        // $this->view['listCate'] = $objCate->loadAllCate();
+        return view('admin.product.create', compact('listCate'));
     }
 
     /**
@@ -142,23 +143,33 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product, int $id)
+    public function destroy($id)
     {
-        //
         $product = Product::find($id);
-
         if ($product) {
-            // Xóa ảnh thumbnail nếu tồn tại
-            if ($product->img_thumbnail && Storage::disk('public')->exists($product->img_thumbnail)) {
-                Storage::disk('public')->delete($product->img_thumbnail);
-            }
-
-            // Xóa sản phẩm
             $product->delete();
-
-            return redirect()->back()->with('success', 'Sản phẩm đã được xóa thành công.');
+            return response()->json(['success' => true, 'message' => 'Sản phẩm đã được xóa thành công']);
         } else {
-            return redirect()->back()->with('error', 'Sản phẩm không tồn tại.');
+            return response()->json(['success' => false, 'message' => 'Sản phẩm không tồn tại']);
         }
     }
+    // public function destroy(Product $product, int $id)
+    // {
+    //     //
+    //     $product = Product::find($id);
+
+    //     if ($product) {
+    //         // Xóa ảnh thumbnail nếu tồn tại
+    //         if ($product->img_thumbnail && Storage::disk('public')->exists($product->img_thumbnail)) {
+    //             Storage::disk('public')->delete($product->img_thumbnail);
+    //         }
+
+    //         // Xóa sản phẩm
+    //         $product->delete();
+
+    //         return redirect()->back()->with('success', 'Sản phẩm đã được xóa thành công.');
+    //     } else {
+    //         return redirect()->back()->with('error', 'Sản phẩm không tồn tại.');
+    //     }
+    // }
 }

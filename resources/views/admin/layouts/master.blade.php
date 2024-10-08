@@ -27,9 +27,6 @@
     <!-- custom Css-->
     <link href="{{ asset('theme/admin/assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
 
-    <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('theme/admin/assets/images/favicon.ico') }}">
-
     <!-- jsvectormap css -->
     <link href="{{ asset('theme/admin/assets/libs/jsvectormap/css/jsvectormap.min.css') }}" rel="stylesheet"
           type="text/css"/>
@@ -37,17 +34,6 @@
     @yield('style-libs')
     <!--Swiper slider css-->
 
-
-    <!-- Layout config Js -->
-    <script src="{{ asset('theme/admin/assets/js/layout.js') }}"></script>
-    <!-- Bootstrap Css -->
-    <link href="{{ asset('theme/admin/assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
-    <!-- Icons Css -->
-    <link href="{{ asset('theme/admin/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css"/>
-    <!-- App Css-->
-    <link href="{{ asset('theme/admin/assets/css/app.min.css') }}" rel="stylesheet" type="text/css"/>
-    <!-- custom Css-->
-    <link href="{{ asset('theme/admin/assets/css/custom.min.css') }}" rel="stylesheet" type="text/css"/>
 
     @yield('style')
 </head>
@@ -116,6 +102,15 @@
 <script>
     const PATH_ROOT = '{{ asset('theme/admin') }}';
 </script>
+{{-- <script>
+    $(document).ready(function() {
+    $('.add-btn').on('click', function() {
+        console.log('Add Contacts button clicked');
+        $('#showModal').modal('show');
+    });
+});
+
+</script> --}}
 <!-- JAVASCRIPT -->
 <script src="{{ asset('theme/admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('theme/admin/assets/libs/simplebar/simplebar.min.js') }}"></script>
@@ -130,13 +125,6 @@ z
 
 <!-- App js -->
 <script src="{{ asset('theme/admin/assets/js/app.js') }}"></script>
-<!-- JAVASCRIPT -->
-<script src="{{ asset('theme/admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('theme/admin/assets/libs/simplebar/simplebar.min.js') }}"></script>
-<script src="{{ asset('theme/admin/assets/libs/node-waves/waves.min.js') }}"></script>
-<script src="{{ asset('theme/admin/assets/libs/feather-icons/feather.min.js') }}"></script>
-<script src="{{ asset('theme/admin/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
-<script src="{{ asset('theme/admin/assets/js/plugins.js') }}"></script>
 
 <!-- nouisliderribute js -->
 <script src="{{ asset('theme/admin/assets/libs/nouislider/nouislider.min.js') }}"></script>
@@ -148,8 +136,6 @@ z
 <!-- ecommerce product list -->
 <script src="{{ asset('theme/admin/assets/js/pages/ecommerce-product-list.init.js') }}"></script>
 
-<!-- App js -->
-<script src="{{ asset('theme/admin/assets/js/app.js') }}"></script>
 </body>
 
 </html>
