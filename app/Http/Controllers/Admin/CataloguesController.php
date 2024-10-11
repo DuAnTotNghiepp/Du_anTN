@@ -1,12 +1,15 @@
-
 <?php
 
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCataloguesRequest;
+use App\Http\Requests\UpdateCataloguesRequest;
 use App\Models\Catalogues;
+use App\Models\Catelogue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+
 class CataloguesController extends Controller
 {
     const PATH_UPLOAD = 'catalogues.';

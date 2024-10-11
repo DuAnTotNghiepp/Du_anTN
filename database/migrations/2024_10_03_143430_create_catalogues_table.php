@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('catalogues', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('cover')->nullable();
+            $table->string('cover')->nullable()->comment('bia');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
