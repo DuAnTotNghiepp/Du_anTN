@@ -40,30 +40,5 @@ class Product extends Model
     {
         return $this->belongsTo(Catalogues::class,'catalogues_id');
     }
-    // public function loadDataWithPager(){
-    //     $query = Product::query()
-    //     ->latest('id')
-    //     ->paginate(10);
-    //     return $query;
-    // }
-    // public function insertDataProduct($params){
-    //     $params['is_active'] = 1;
-    //     $res = Product::query()->create($params);
-    //     return $res;
-    // }
-    // public function getDataProductById($id){
-    //     $query = Product::query()->find($id);
-    //     return $query;
-    // }
-    // public function updateDataProduc($params, $id){
-    //     $params['updated_at'] = date('Y-m-d H:i:s');
-    //    $res =  Product::query()
-    //        ->find($id)
-    //        ->update($params);
-    //    return $res;
-    // }
-    // public function deleteDataProduct($id){
-    //     $res = Product::query()->find($id)->delete();
-    //     return $res;
-    // }
+
 }

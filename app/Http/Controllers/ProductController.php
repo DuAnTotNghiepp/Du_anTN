@@ -30,10 +30,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+
         $listCate = Catalogues::all();
-        // $objCate = new Catalogues();
-        // $this->view['listCate'] = $objCate->loadAllCate();
         return view('admin.product.create', compact('listCate'));
     }
 
@@ -64,7 +62,7 @@ class ProductController extends Controller
         } else {
             return redirect()->back()->with('error', 'Sản phẩm đã được thêm mới không thành công');
         }
-        // return redirect()->route('product.index');
+
     }
 
     /**
@@ -80,9 +78,7 @@ class ProductController extends Controller
      */
     public function edit(int $id)
     {
-        //
-        // $objCate = new Catalogues();
-        // $this->view['listCate'] = $objCate->loadAllCate(); // Load danh sách danh mục sản phẩm
+
         $listCate = Catalogues::all();
         // Lấy thông tin sản phẩm
         $listPro = Product::find($id);
@@ -153,23 +149,5 @@ class ProductController extends Controller
             return response()->json(['success' => false, 'message' => 'Sản phẩm không tồn tại']);
         }
     }
-    // public function destroy(Product $product, int $id)
-    // {
-    //     //
-    //     $product = Product::find($id);
 
-    //     if ($product) {
-    //         // Xóa ảnh thumbnail nếu tồn tại
-    //         if ($product->img_thumbnail && Storage::disk('public')->exists($product->img_thumbnail)) {
-    //             Storage::disk('public')->delete($product->img_thumbnail);
-    //         }
-
-    //         // Xóa sản phẩm
-    //         $product->delete();
-
-    //         return redirect()->back()->with('success', 'Sản phẩm đã được xóa thành công.');
-    //     } else {
-    //         return redirect()->back()->with('error', 'Sản phẩm không tồn tại.');
-    //     }
-    // }
 }
