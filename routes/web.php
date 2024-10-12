@@ -15,6 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+        return view('welcome');
+})->name('welcome');
+
+
 Route::get('/admin', function () {
     return view('admin.content');
 })->name('content');
@@ -36,6 +41,8 @@ Route::controller(ProductController::class)
         Route::delete('{id}/destroy', 'destroy')
             ->name('destroy');
     });
+
+
 
 
 

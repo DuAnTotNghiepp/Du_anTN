@@ -31,21 +31,23 @@
             </div>
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Sản Phẩm</span>
+                    <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                        <i class="ri-apps-2-line"></i> <span data-key="t-apps">Danh mục</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarDashboards">
+                    <div class="collapse menu-dropdown" id="sidebarApps">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('product.index') }}" class="nav-link" data-key="t-analytics"> Danh Sách Sản Phẩm </a>
+                                <a href="{{route('admin.index')}}" class="nav-link" data-key="t-api-key">Danh sách danh mục</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('product.create') }}" class="nav-link" data-key="t-analytics"> Thêm Sản Phẩm </a>
+                                <a href="apps-api-key.html" class="nav-link" data-key="t-api-key">Thêm mới</a>
                             </li>
                         </ul>
                     </div>
-                </li> <!-- end Dashboard Menu -->
+                </li>
+
 
             </ul>
         </div>
