@@ -28,6 +28,14 @@ Route::get('register', [AuthController::class, 'showFormRegister']);
 Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('password/forgot', [AuthController::class, 'showForgotPasswordForm'])->name('password.forgot');
+Route::post('password/forgot', [AuthController::class, 'sendResetLinkEmail']);
+
+Route::get('password/reset/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
+Route::post('password/reset', [AuthController::class, 'reset']);
+
+Route::get('login/facebook', [AuthController::class, 'redirectToFacebook']);
+Route::get('login/facebook/callback', [AuthController::class ,'handleFacebookCallback']);
 
 Route::get('/admin', function () {
     return view('admin.content');
