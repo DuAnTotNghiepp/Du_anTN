@@ -159,7 +159,7 @@
                                             <td class="phone">{{ $pr->quantity }}</td>
                                             <td class="lead_score">{{ $pr->sku }}</td>
                                             <td class="tags">
-                                                {{ $pr->is_active }}
+                                                {{ $pr->is_active ? 'Còn hàng' : 'Hết hàng' }}
                                             </td>
                                             <td>{{ $pr->view }}</td>
                                             <td>
