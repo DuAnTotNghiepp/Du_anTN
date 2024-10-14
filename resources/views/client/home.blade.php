@@ -1,10 +1,6 @@
 @extends('client.layouts.app')
 
 @section('content')
-
-
-
-
 <div class="hero-area ml-110">
     <div class="row">
         <div class="col-xxl-10 col-xl-9 col-lg-9 p-0">
@@ -14,7 +10,7 @@
                     <div class="swiper-wrapper">
                         <div
                             class="swiper-slide hero-slider-item slider-item1 d-flex justify-content-center align-items-center position-relative">
-                            <div class="slider-image-layer">
+                            <div class="slidear-image-layer">
                             </div>
                             <div class="slider-content position-relative text-center">
                                 <h5 class="slider-sub-title">Trending Product</h5>

@@ -8,18 +8,18 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="assets/images/favicon.png" type="image/png" sizes="20x20">
-    <link rel="stylesheet" href="assets/css/swiper.css">
+    <link rel="icon" href="{{asset('assets/images/favicon.png')}}" type="image/png" sizes="20x20">
+    <link rel="stylesheet" href="{{asset('assets/css/swiper.css')}}">
 
-    <link rel="stylesheet" href="assets/font/flaticon.css">
+    <link rel="stylesheet" href="{{asset('assets/font/flaticon.css')}}">
 
-    <link rel="stylesheet" href="assets/css/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{asset('assets/css/bootstrap-icons.css')}}">
 
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
 
-    <link rel="stylesheet" href="assets/css/global.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="{{asset('assets/css/global.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/responsive.css')}}">
 </head>
 
 <body>
@@ -71,7 +71,7 @@
                 <ul class="cart-product-grid">
                     <li class="single-cart-product">
                         <div class="cart-product-info d-flex align-items-center">
-                            <div class="product-img"><img src="assets/images/product/cart-p1.png" alt class="img-fluid">
+                            <div class="product-img"><img src="{{asset('assets/images/product/cart-p1.png')}}" alt class="img-fluid">
                             </div>
                             <div class="product-info">
                                 <a href="product-details.html">
@@ -94,7 +94,7 @@
                     </li>
                     <li class="single-cart-product">
                         <div class="cart-product-info d-flex align-items-center">
-                            <div class="product-img"><img src="assets/images/product/cart-p3.png" alt class="img-fluid">
+                            <div class="product-img"><img src="{{asset('assets/images/product/cart-p3.png')}}" alt class="img-fluid">
                             </div>
                             <div class="product-info">
                                 <a href="product-details.html">
@@ -117,7 +117,7 @@
                     </li>
                     <li class="single-cart-product">
                         <div class="cart-product-info d-flex align-items-center">
-                            <div class="product-img"><img src="assets/images/product/cart-p2.png" alt class="img-fluid">
+                            <div class="product-img"><img src="{{asset('assets/images/product/cart-p2.png')}}" alt class="img-fluid">
                             </div>
                             <div class="product-info">
                                 <a href="product-details.html">
@@ -308,7 +308,7 @@
                         class="col-xl-2 col-lg-12 col-md-12 col-sm-12 col-xs-12 d-xl-flex align-items-center justify-content-center">
                         <div class="main-logo d-flex justify-content-between align-items-center">
                             <a href="/">
-                                <img src="assets/images/Logo.png" alt>
+                                <img src="{{asset('assets/images/Logo.png')}}" alt>
                             </a>
                             <div class="mobile-menu d-flex ">
                                 <a href="javascript:void(0)" class="hamburger d-block d-xl-none">
@@ -322,7 +322,7 @@
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 d-flex justify-content-center">
                         <nav class="main-nav">
                             <div class="inner-logo">
-                                <a href="/"><img src="assets/images/logo-w.png" alt></a>
+                                <a href="/"><img src="{{asset('assets/images/logo-w.png')}}" alt></a>
                             </div>
                             <ul class="nav-item-list">
                                 <li><a href="/">Home</a></li>
@@ -495,10 +495,10 @@
                             class="footer-bottom-paymant-option d-flex align-items-center justify-content-end flex-wrap">
                             <p>We Using Safe Payment For:</p>
                             <ul class="payment-options d-flex">
-                                <li><img src="assets/images/payment/payment-1.png" alt></li>
-                                <li><img src="assets/images/payment/payment-2.png" alt></li>
-                                <li><img src="assets/images/payment/payment-3.png" alt></li>
-                                <li><img src="assets/images/payment/payment-2.png" alt></li>
+                                <li><img src="{{asset('assets/images/payment/payment-1.png')}}" alt></li>
+                                <li><img src="{{asset('assets/images/payment/payment-2.png')}}" alt></li>
+                                <li><img src="{{asset('assets/images/payment/payment-3.png')}}" alt></li>
+                                <li><img src="{{asset('assets/images/payment/payment-2.png')}}" alt></li>
                             </ul>
                         </div>
                     </div>
@@ -509,14 +509,14 @@
 
 
     <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-    <script src="assets/js/jquery-3.6.0.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/swiper.js"></script>
-    <script src="assets/js/jquery-ui.min.js"></script>
-    <script src="assets/js/jquery.fancybox.min.js"></script>
+    <script src="{{asset('assets/js/jquery-3.6.0.min.js')}}"></script>
+    <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('assets/js/popper.min.js')}}"></script>
+    <script src="{{asset('assets/js/swiper.js')}}"></script>
+    <script src="{{asset('assets/js/jquery-ui.min.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.fancybox.min.js')}}"></script>
 
-    <script src="assets/js/main.js"></script>
+    <script src="{{asset('assets/js/main.js')}}"></script>
 </body>
 
 <!-- Mirrored from demo-egenslab.b-cdn.net/html/eg-shop-fashion/v1/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 14 Jul 2024 08:24:04 GMT -->
