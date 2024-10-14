@@ -199,7 +199,7 @@
                                     </button>
                                     <button type="button" class="btn btn-soft-secondary btn-sm">
                                         6M
-                                    </button>
+                                        </button>
                                     <button type="button" class="btn btn-soft-primary btn-sm">
                                         1Y
                                     </button>
