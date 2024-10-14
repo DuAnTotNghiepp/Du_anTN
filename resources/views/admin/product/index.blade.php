@@ -116,6 +116,7 @@
                                                     value="option">
                                             </div>
                                         </th>
+                                        <th class="sort" data-sort="idsanpham" scope="col">ID Sản Phẩm</th>
                                         <th class="sort" data-sort="name" scope="col">Tên Sản Phẩm</th>
                                         <th class="sort" data-sort="company_name" scope="col">Giá Thường</th>
                                         <th class="sort" data-sort="email_id" scope="col">Giá Khuyến Mãi</th>
@@ -138,6 +139,7 @@
                                             </th>
                                             <td class="id" style="display:none;"><a href="javascript:void(0);"
                                                     class="fw-medium link-primary">#VZ001</a></td>
+                                            <td>{{ $pr->id }}</td>
                                             <td class="name">
                                                 <div class="d-flex align-items-center">
                                                     <div class="flex-shrink-0">

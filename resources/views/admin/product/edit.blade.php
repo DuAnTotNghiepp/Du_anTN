@@ -125,28 +125,28 @@
                                             style="display: flex; justify-content: space-between; align-items: center;">
                                             <!-- Switches Color -->
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" value="{{$listPro->is_hot_deal}}"
+                                                <input class="form-check-input" type="checkbox" role="switch" {{ $listPro->is_hot_deal ? 'checked' : '' }}
                                                     name="is_hot_deal" id="is_hot_deal">
                                                 <label class="form-check-label" for="SwitchCheck1">Sản phẩm hot</label>
                                             </div>
                                             <div class="form-check form-switch form-switch-secondary">
-                                                <input class="form-check-input" type="checkbox" role="switch" value="{{$listPro->is_good_deal}}"
+                                                <input class="form-check-input" type="checkbox" role="switch" {{ $listPro->is_good_deal ? 'checked' : '' }}
                                                     name="is_good_deal" id="is_good_deal">
                                                 <label class="form-check-label" for="SwitchCheck2">Sản phẩm tốt</label>
                                             </div>
                                             <div class="form-check form-switch form-switch-success">
-                                                <input class="form-check-input" type="checkbox" role="switch" value="{{$listPro->is_new}}"
+                                                <input class="form-check-input" type="checkbox" role="switch" {{ $listPro->is_new ? 'checked' : '' }}
                                                     name="is_new" id="is_new">
                                                 <label class="form-check-label" for="SwitchCheck3">Sản phẩm mới</label>
                                             </div>
                                             <div class="form-check form-switch form-switch-warning">
-                                                <input class="form-check-input" type="checkbox" role="switch" value="{{$listPro->is_active}}"
+                                                <input class="form-check-input" type="checkbox" role="switch" {{ $listPro->is_active ? 'checked' : '' }}
                                                     name="is_active" id="is_active" checked>
                                                 <label class="form-check-label" for="SwitchCheck4">Trạng thái hoạt
                                                     động</label>
                                             </div>
                                             <div class="form-check form-switch form-switch-danger">
-                                                <input class="form-check-input" type="checkbox" role="switch" value="{{$listPro->is_show_home}}"
+                                                <input class="form-check-input" type="checkbox" role="switch" {{ $listPro->is_show_home ? 'checked' : '' }}
                                                     name="is_show_home" id="is_show_home">
                                                 <label class="form-check-label" for="SwitchCheck5">Hiển thị trên trang
                                                     chủ</label>
