@@ -1,9 +1,7 @@
 <?php
-
-use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Client\ClientController;
 use App\Http\Middleware\CheckRoleAdminMiddleware;
 
 /*
@@ -17,10 +15,11 @@ use App\Http\Middleware\CheckRoleAdminMiddleware;
 |
 */
 
-Route::get('/', function () {
-        return view('welcome');
-});
+Route::get('/',[ClientController::class, 'index'])->name('index');
 
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/admin', function () {
     return view('admin.content');
