@@ -100,6 +100,9 @@
                                             :'<span class="badge bg-primary ">No</span>' !!}</td>
 
                                         <td>
+                                            @if(session('model'))
+                                                @php $model = session('model'); @endphp
+                                            @endif
                                             <ul class="list-inline hstack gap-2 mb-0">
 
                                                 <li class="list-inline-item">
@@ -114,7 +117,7 @@
                                                                    href="javascript:void(0);"><i
                                                                         class="ri-eye-fill align-bottom me-2 text-muted"></i>View</a>
                                                             </li>
-                                                            <li><a class="dropdown-item edit-item-btn" href="#showModal"
+                                                            <li><a class="dropdown-item edit-item-btn" href="#showModal1"
                                                                    data-bs-toggle="modal"><i
                                                                         class="ri-pencil-fill align-bottom me-2 text-muted"></i>
                                                                     Edit</a></li>
@@ -224,6 +227,7 @@
                             </div>
                         </div>
                     </div>
+                    @yield('update')
                     <!--end add modal-->
 
                     <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
