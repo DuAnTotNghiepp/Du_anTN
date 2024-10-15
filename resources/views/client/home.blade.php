@@ -1996,12 +1996,13 @@
 </div>
 
 
+
 <div class="tranding-product-wrapper ml-110 mt-70 position-relative">
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12 mb-50">
                 <div class="section-head">
-                    <h2 class="section-title">Our Trending Product</h2>
+                    <h2 class="section-title">Tất Cả Sản Phẩm</h2>
                 </div>
             </div>
         </div>
@@ -2009,10 +2010,11 @@
             <div class="swiper-tranding-container overflow-hidden pb-30">
 
                 <div class="swiper-wrapper">
+                    @foreach ($listSp as $item)
                     <div class="swiper-slide">
                         <div class="product-card-xl">
                             <div class="product-img-xl">
-                                <a href="product-details.html"><img src="assets/images/product/pxl-1.png" alt
+                                <a href="product-details.html"><img src="{{ Storage::url($item->img_thumbnail) }}" alt
                                         class="img-fluid"></a>
                                 <div class="product-actions-xl">
                                     <a href="#"><i class="flaticon-heart"></i></a>
@@ -2028,17 +2030,44 @@
                                     <li><i class="bi bi-star-fill"></i></li>
                                     <li><i class="bi bi-star"></i></li>
                                 </ul>
-                                <a href="product-details.html" class="product-title">Woman Dirty Casual Dress</a>
+                                <a href="product-details.html" class="product-title">{{ $item->name }}</a>
                                 <div class="product-price">
-                                    <del class="old-price">$302.74</del><ins class="new-price">$290.05</ins>
+                                    <del class="old-price">{{ $item->price_sale }}</del><ins class="new-price">{{ $item->price_regular }}</ins>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    @endforeach
+                </div>
+
+                <!-- Hiển thị điều khiển phân trang -->
+                <div class="pagination-wrapper">
+                    {{ $listSp->links() }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tranding-product-wrapper ml-110 mt-70 position-relative">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 mb-50">
+                <div class="section-head">
+                    <h2 class="section-title">Tất Các Sản Phẩm Hot</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="swiper-tranding-container overflow-hidden pb-30">
+
+                <div class="swiper-wrapper">
+                    @foreach ($listHot as $item)
                     <div class="swiper-slide">
                         <div class="product-card-xl">
                             <div class="product-img-xl">
-                                <a href="product-details.html"><img src="assets/images/product/pxl-2.png" alt
+                                <a href="product-details.html"><img src="{{ Storage::url($item->img_thumbnail) }}" alt
                                         class="img-fluid"></a>
                                 <div class="product-actions-xl">
                                     <a href="#"><i class="flaticon-heart"></i></a>
@@ -2054,117 +2083,14 @@
                                     <li><i class="bi bi-star-fill"></i></li>
                                     <li><i class="bi bi-star"></i></li>
                                 </ul>
-                                <a href="product-details.html" class="product-title">Lined Zipper Hoodie</a>
+                                <a href="product-details.html" class="product-title">{{ $item->name }}</a>
                                 <div class="product-price">
-                                    <del class="old-price">$302.74</del><ins class="new-price">$290.05</ins>
+                                    <del class="old-price">{{ $item->price_sale}}</del><ins class="new-price">{{ $item->price_regular}}</ins>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="swiper-slide">
-                        <div class="product-card-xl">
-                            <div class="product-img-xl">
-                                <a href="product-details.html"><img src="assets/images/product/pxl-3.png" alt
-                                        class="img-fluid"></a>
-                                <div class="product-actions-xl">
-                                    <a href="#"><i class="flaticon-heart"></i></a>
-                                    <a href="product-details.html"><i class="flaticon-search"></i></a>
-                                    <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
-                                </div>
-                            </div>
-                            <div class="product-content-xl text-center">
-                                <ul class="d-flex product-rating-xl">
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star"></i></li>
-                                </ul>
-                                <a href="product-details.html" class="product-title">Super Kids Collection</a>
-                                <div class="product-price">
-                                    <del class="old-price">$302.74</del><ins class="new-price">$290.05</ins>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="product-card-xl">
-                            <div class="product-img-xl">
-                                <a href="product-details.html"><img src="assets/images/product/pxl-4.png" alt
-                                        class="img-fluid"></a>
-                                <div class="product-actions-xl">
-                                    <a href="#"><i class="flaticon-heart"></i></a>
-                                    <a href="product-details.html"><i class="flaticon-search"></i></a>
-                                    <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
-                                </div>
-                            </div>
-                            <div class="product-content-xl text-center">
-                                <ul class="d-flex product-rating-xl">
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star"></i></li>
-                                </ul>
-                                <a href="product-details.html" class="product-title">Women Mannequin Tops</a>
-                                <div class="product-price">
-                                    <del class="old-price">$302.74</del><ins class="new-price">$290.05</ins>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="product-card-xl">
-                            <div class="product-img-xl">
-                                <a href="product-details.html"><img src="assets/images/product/pxl-7.png" alt
-                                        class="img-fluid"></a>
-                                <div class="product-actions-xl">
-                                    <a href="#"><i class="flaticon-heart"></i></a>
-                                    <a href="product-details.html"><i class="flaticon-search"></i></a>
-                                    <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
-                                </div>
-                            </div>
-                            <div class="product-content-xl text-center">
-                                <ul class="d-flex product-rating-xl">
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star"></i></li>
-                                </ul>
-                                <a href="product-details.html" class="product-title">Ghost Mannequin Pant</a>
-                                <div class="product-price">
-                                    <del class="old-price">$302.74</del><ins class="new-price">$290.05</ins>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="product-card-xl">
-                            <div class="product-img-xl">
-                                <a href="product-details.html"><img src="assets/images/product/pxl-6.png" alt
-                                        class="img-fluid"></a>
-                                <div class="product-actions-xl">
-                                    <a href="#"><i class="flaticon-heart"></i></a>
-                                    <a href="product-details.html"><i class="flaticon-search"></i></a>
-                                    <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
-                                </div>
-                            </div>
-                            <div class="product-content-xl text-center">
-                                <ul class="d-flex product-rating-xl">
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star"></i></li>
-                                </ul>
-                                <a href="product-details.html" class="product-title">Women Renta Winter Coat </a>
-                                <div class="product-price">
-                                    <del class="old-price">$302.74</del><ins class="new-price">$290.05</ins>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
 
 
