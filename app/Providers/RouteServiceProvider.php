@@ -35,6 +35,8 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+
+                // Cấu hình cái admin ở đây nếu tạo thêm routes
         });
     }
 }
