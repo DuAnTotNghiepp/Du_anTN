@@ -19,37 +19,22 @@ use App\Http\Middleware\CheckRoleAdminMiddleware;
 
 Route::get('/', function () {
         return view('welcome');
-})->name('welcome');
-
-Route::get('login', [AuthController::class, 'showFormLogin']);
-Route::post('login', [AuthController::class, 'login'])->name('login');
-
-Route::get('register', [AuthController::class, 'showFormRegister']);
-Route::post('register', [AuthController::class, 'register'])->name('register');
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+});
 
 
 Route::get('/admin', function () {
     return view('admin.content');
 })->name('content');
 
-Route::controller(ProductController::class)
-    ->name('product.')
-    ->prefix('admin/products/')
-    ->group(function () {
-        Route::get('/', 'index')
-            ->name('index');
-        Route::get('create', 'create')
-            ->name('create');
-        Route::post('store', 'store')
-            ->name('store');
-        Route::get('{id}/edit', 'edit')
-            ->name('edit');
-        Route::put('{id}/update', 'update')
-            ->name('update');
-        Route::delete('{id}/destroy', 'destroy')
-            ->name('destroy');
-    });
+
+Route::get('login', [AuthController::class, 'showFormLogin']);
+Route::post('login', [AuthController::class, 'login'])->name('login');
+Route::get('register', [AuthController::class, 'showFormRegister']);
+Route::post('register', [AuthController::class, 'register'])->name('register');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+
+
 
 
 

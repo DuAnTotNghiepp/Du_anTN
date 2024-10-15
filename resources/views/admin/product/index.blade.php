@@ -116,7 +116,7 @@
                                                     value="option">
                                             </div>
                                         </th>
-                                        <th class="sort" data-sort="idsanpham" scope="col">ID Sản Phẩm</th>
+                                        <th class="sort" data-sort="idsanpham" scope="col">ID</th>
                                         <th class="sort" data-sort="name" scope="col">Tên Sản Phẩm</th>
                                         <th class="sort" data-sort="company_name" scope="col">Giá Thường</th>
                                         <th class="sort" data-sort="email_id" scope="col">Giá Khuyến Mãi</th>
