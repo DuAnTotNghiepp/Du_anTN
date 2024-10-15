@@ -10,7 +10,7 @@ class Catalogues extends Model
     protected  $fillable=[
         'name',
         'cover',
-        'gia'
+
     ];
     protected $casts=[
         'is_active'=>'boolean',

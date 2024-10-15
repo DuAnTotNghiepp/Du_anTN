@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AuthController;
+use App\Http\Middleware\CheckRoleAdminMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,9 +17,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+        return view('welcome');
+});
+
+
 Route::get('/admin', function () {
     return view('admin.content');
 })->name('content');
-Route::get('/', function () {
-    return view('welcome');
-});
+
+
+
+Route::get('login', [AuthController::class, 'showFormLogin']);
+Route::post('login', [AuthController::class, 'login'])->name('login');
+Route::get('register', [AuthController::class, 'showFormRegister']);
+Route::post('register', [AuthController::class, 'register'])->name('register');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+
