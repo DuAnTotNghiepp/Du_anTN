@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
@@ -43,6 +44,15 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 
 
+// Group routes under admin middleware
+Route::middleware('auth', 'admin')->group(function () {
+    Route::get('admin/accounts', [AdminController::class, 'index'])->name('admin.accounts');
+    Route::get('admin/accounts/create', [AdminController::class, 'create'])->name('admin.accounts.create');
+    Route::post('admin/accounts', [AdminController::class, 'store'])->name('admin.accounts.store');
+    Route::get('admin/accounts/{user}/edit', [AdminController::class, 'edit'])->name('admin.accounts.edit');
+    Route::put('admin/accounts/{user}', [AdminController::class, 'update'])->name('admin.accounts.update');
+    Route::delete('admin/accounts/{user}', [AdminController::class, 'destroy'])->name('admin.accounts.destroy');
+});
 
 
 
