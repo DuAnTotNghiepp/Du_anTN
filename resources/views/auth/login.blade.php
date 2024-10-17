@@ -143,7 +143,7 @@
                                 <div class="text-center">
                                     <p>or sign up with:</p>
                                     <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
-                                        <i class="fab fa-facebook-f"></i>
+                                        <a href="login/facebook"><i class="fab fa-facebook-f"></i></a>
                                     </button>
                                     <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
                                         <i class="fab fa-google"></i>
