@@ -1,8 +1,8 @@
 <?php
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
+
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Client\ClientController;
-use App\Http\Middleware\CheckRoleAdminMiddleware;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +15,6 @@ use App\Http\Middleware\CheckRoleAdminMiddleware;
 |
 */
 
-Route::get('/',[ClientController::class, 'index'])->name('index');
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
 Route::get('/admin', function () {
     return view('admin.content');
@@ -31,6 +26,11 @@ Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::get('register', [AuthController::class, 'showFormRegister']);
 Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+//client
+Route::get('/', [ClientController::class, 'index'])->name('index');
+Route::get('/product/detail', [ClientController::class, 'product'])->name('product.detail');
+
 
 
 

@@ -23,4 +23,8 @@ class ClientController extends Controller
     return view('client.home', compact(['listSp', 'listHot', 'data']));
     }
 
+    public function product(){
+        return view('client.product_detail');
+    }
+
 }
