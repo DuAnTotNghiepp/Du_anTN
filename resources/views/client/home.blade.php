@@ -2011,10 +2011,10 @@
 
                 <div class="swiper-wrapper">
                     @foreach ($listSp as $item)
-                    <div class="swiper-slide">
+                    <div class="swiper">
                         <div class="product-card-xl">
                             <div class="product-img-xl">
-                                <a href="product-details.html"><img src="{{ Storage::url($item->img_thumbnail) }}" alt
+                                <a href="product-details.html"><img width="300px" height="300px" src="{{ Storage::url($item->img_thumbnail) }}" alt
                                         class="img-fluid"></a>
                                 <div class="product-actions-xl">
                                     <a href="#"><i class="flaticon-heart"></i></a>
@@ -2044,6 +2044,8 @@
                 <div class="pagination-wrapper">
                     {{ $listSp->links() }}
                 </div>
+                <div class="swiper-button-next"><i class="flaticon-arrow-pointing-to-right"></i></div>
+                <div class="swiper-button-prev"><i class="flaticon-arrow-pointing-to-left"></i></div>
 
             </div>
         </div>
@@ -2064,10 +2066,10 @@
 
                 <div class="swiper-wrapper">
                     @foreach ($listHot as $item)
-                    <div class="swiper-slide">
+                    <div class="swiper">
                         <div class="product-card-xl">
                             <div class="product-img-xl">
-                                <a href="product-details.html"><img src="{{ Storage::url($item->img_thumbnail) }}" alt
+                                <a href="product-details.html"><img width="300px" height="300px" src="{{ Storage::url($item->img_thumbnail) }}" alt
                                         class="img-fluid"></a>
                                 <div class="product-actions-xl">
                                     <a href="#"><i class="flaticon-heart"></i></a>
@@ -2093,7 +2095,9 @@
                     @endforeach
                 </div>
 
-
+                <div class="pagination-wrapper">
+                    {{ $listSp->links() }}
+                </div>
                 <div class="swiper-button-next"><i class="flaticon-arrow-pointing-to-right"></i></div>
                 <div class="swiper-button-prev"><i class="flaticon-arrow-pointing-to-left"></i></div>
 
