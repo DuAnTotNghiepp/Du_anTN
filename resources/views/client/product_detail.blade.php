@@ -33,25 +33,25 @@
                         <div class="product-switcher-wrap">
                             <div class="nav product-tab" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                 <div class="product-variation active" id="v-pills-home-tab" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-home" role="tab" aria-controls="v-pills-home">
+                                     data-bs-target="#v-pills-home" role="tab" aria-controls="v-pills-home">
                                     <div class="pd-showcase-img">
                                         <img src="assets/images/product/pd-sm1.png" alt>
                                     </div>
                                 </div>
                                 <div class="product-variation" id="v-pills-profile-tab" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-profile" role="tab" aria-controls="v-pills-profile">
+                                     data-bs-target="#v-pills-profile" role="tab" aria-controls="v-pills-profile">
                                     <div class="pd-showcase-img">
                                         <img src="assets/images/product/pd-sm2.png" alt>
                                     </div>
                                 </div>
                                 <div class="product-variation" id="v-pills-messages-tab" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-messages" role="tab" aria-controls="v-pills-messages">
+                                     data-bs-target="#v-pills-messages" role="tab" aria-controls="v-pills-messages">
                                     <div class="pd-showcase-img">
                                         <img src="assets/images/product/pd-sm3.png" alt>
                                     </div>
                                 </div>
                                 <div class="product-variation" id="v-pills-settings-tab" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-settings" role="tab" aria-controls="v-pills-settings">
+                                     data-bs-target="#v-pills-settings" role="tab" aria-controls="v-pills-settings">
                                     <div class="pd-showcase-img">
                                         <img src="assets/images/product/pd-sm4.png" alt>
                                     </div>
@@ -59,25 +59,25 @@
                             </div>
                             <div class="tab-content" id="v-pills-tabContent">
                                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
-                                    aria-labelledby="v-pills-home-tab">
+                                     aria-labelledby="v-pills-home-tab">
                                     <div class="pd-preview-img">
                                         <img src="assets/images/product/pd-xl2.png" alt>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
-                                    aria-labelledby="v-pills-profile-tab">
+                                     aria-labelledby="v-pills-profile-tab">
                                     <div class="pd-preview-img">
                                         <img src="assets/images/product/pd-xl3.png" alt>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
-                                    aria-labelledby="v-pills-messages-tab">
+                                     aria-labelledby="v-pills-messages-tab">
                                     <div class="pd-preview-img">
                                         <img src="assets/images/product/pd-xl14.png" alt>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-settings" role="tabpanel"
-                                    aria-labelledby="v-pills-settings-tab">
+                                     aria-labelledby="v-pills-settings-tab">
                                     <div class="pd-preview-img">
                                         <img src="assets/images/product/pd-xl1.png" alt>
                                     </div>
@@ -138,16 +138,15 @@
                                     </li>
                                     <li class="d-flex align-items-center pd-cart-btns">
                                         <div class="quantity">
-                                            <input type="number" min="1" max="90" step="10"
-                                                value="1">
+                                            <input type="number" min="1" max="90" step="10" value="1">
                                         </div>
-                                        <button type="submit" class="pd-add-cart"><a href="cart"
-                                                style="color:white">Add to cart</a></button>
+                                        <button type="submit" class="pd-add-cart"><a href="cart" style="color:white">Add
+                                                to cart</a></button>
                                     </li>
                                     <li class="pd-type">Product Type: <span>Woman Winter Dress</span></li>
                                     <li class="pd-type">Catagories: <span> Clothing, Hoodies</span></li>
-                                    <li class="pd-type">Availabile: <span>89</span> </li>
-                                    <li class="pd-type">Material : <span>100% Cotton, Jens</span> </li>
+                                    <li class="pd-type">Availabile: <span>89</span></li>
+                                    <li class="pd-type">Material : <span>100% Cotton, Jens</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -158,24 +157,26 @@
                 <div class="row">
                     <div class="col-xxl-3 col-xl-3">
                         <div class="nav flex-column nav-pills discription-bar" id="v-pills-tab2" role="tablist"
-                            aria-orientation="vertical">
+                             aria-orientation="vertical">
                             <button class="nav-link active" id="pd-discription3" data-bs-toggle="pill"
-                                data-bs-target="#pd-discription-pill3" role="tab"
-                                aria-controls="pd-discription-pill3"> Discription
+                                    data-bs-target="#pd-discription-pill3" role="tab"
+                                    aria-controls="pd-discription-pill3"> Discription
                             </button>
                             <button class="nav-link" id="pd-discription2" data-bs-toggle="pill"
-                                data-bs-target="#pd-discription-pill2" role="tab"
-                                aria-controls="pd-discription-pill2">Additional
-                                Information</button>
+                                    data-bs-target="#pd-discription-pill2" role="tab"
+                                    aria-controls="pd-discription-pill2">Additional
+                                Information
+                            </button>
                             <button class="nav-link" id="pd-discription1" data-bs-toggle="pill"
-                                data-bs-target="#pd-discription-pill1" role="tab"
-                                aria-controls="pd-discription-pill1">Our Review (2)</button>
+                                    data-bs-target="#pd-discription-pill1" role="tab"
+                                    aria-controls="pd-discription-pill1">Our Review (2)
+                            </button>
                         </div>
                     </div>
                     <div class="col-xxl-9 col-xl-9">
                         <div class="tab-content discribtion-tab-content" id="v-pills-tabContent2">
                             <div class="tab-pane fade show active" id="pd-discription-pill3" role="tabpanel"
-                                aria-labelledby="pd-discription3">
+                                 aria-labelledby="pd-discription3">
                                 <div class="discription-texts">
                                     <p>Aenean dolor massa, rhoncus ut tortor in, pretium tempus neque. Vestibulum
                                         venenatis leo et dictum finibus. Nulla vulputate dolor sit amet tristique
@@ -198,13 +199,14 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="pd-discription-pill2" role="tabpanel"
-                                aria-labelledby="pd-discription2">
+                                 aria-labelledby="pd-discription2">
                                 <div class="additional-discription">
                                     <ul>
                                         <li>
                                             <h5 class="additition-name">Color</h5>
                                             <div class="additition-variant"><span>:</span>Red, Green, Blue, Yellow,
-                                                pink, </div>
+                                                pink,
+                                            </div>
                                         </li>
                                         <li>
                                             <h5 class="additition-name">Size</h5>
@@ -212,13 +214,13 @@
                                         </li>
                                         <li>
                                             <h5 class="additition-name">Material</h5>
-                                            <div class="additition-variant"><span>:</span>100% Cotton, Jens </div>
+                                            <div class="additition-variant"><span>:</span>100% Cotton, Jens</div>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="tab-pane fade " id="pd-discription-pill1" role="tabpanel"
-                                aria-labelledby="pd-discription1">
+                                 aria-labelledby="pd-discription1">
                                 <div class="discription-review">
                                     <div class="clients-review-cards">
                                         <div class="row">
@@ -230,7 +232,7 @@
                                                         </div>
                                                         <div class="client-info">
                                                             <h5 class="client-name">Jenny Wilson <span
-                                                                    class="review-date">- 8th Jan 2021</span> </h5>
+                                                                    class="review-date">- 8th Jan 2021</span></h5>
                                                             <ul class="review-rating d-flex">
                                                                 <li><i class="bi bi-star-fill"></i></li>
                                                                 <li><i class="bi bi-star-fill"></i></li>
@@ -260,7 +262,7 @@
                                                         </div>
                                                         <div class="client-info">
                                                             <h5 class="client-name">Jenny Wilson <span
-                                                                    class="review-date">- 8th Jan 2021</span> </h5>
+                                                                    class="review-date">- 8th Jan 2021</span></h5>
                                                             <ul class="review-rating d-flex">
                                                                 <li><i class="bi bi-star-fill"></i></li>
                                                                 <li><i class="bi bi-star-fill"></i></li>
@@ -294,19 +296,20 @@
                                                     <div class="review-input-group">
                                                         <label for="fname">First Name</label>
                                                         <input type="text" name="fname" id="fname"
-                                                            placeholder="Your first name">
+                                                               placeholder="Your first name">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="review-input-group">
                                                         <label for="lname">Last Name</label>
                                                         <input type="text" name="lname" id="lname"
-                                                            placeholder="Your last name ">
+                                                               placeholder="Your last name ">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-12">
                                                     <div class="review-input-group">
-                                                        <textarea name="review-area" id="review-area" cols="30" rows="7" placeholder="Your message"></textarea>
+                                                        <textarea name="review-area" id="review-area" cols="30" rows="7"
+                                                                  placeholder="Your message"></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-12">
@@ -335,4 +338,5 @@
             </div>
         </div>
     </div>
+
 @endsection
