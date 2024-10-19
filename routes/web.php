@@ -1,7 +1,9 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BinhLuanController;
 use App\Http\Controllers\Client\ClientController;
+use App\Http\Controllers\ProductController;
 use App\Http\Middleware\CheckRoleAdminMiddleware;
 
 /*
@@ -33,7 +35,12 @@ Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 
+//chi tiet test 
+Route::get('/product/{slug}',[ProductController::class,'detail'])->name('product.detail');
+Route::post('product/comment/{id}',[BinhLuanController::class,'store'])->name('comment.store');
 
+
+//end tesst chi tiet
 
 
 

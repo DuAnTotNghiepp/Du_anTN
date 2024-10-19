@@ -2014,7 +2014,7 @@
                     <div class="swiper-slide">
                         <div class="product-card-xl">
                             <div class="product-img-xl">
-                                <a href="product-details.html"><img src="{{ Storage::url($item->img_thumbnail) }}" alt
+                                <a href="{{route('product.detail',$item->slug)}}"><img src="{{ Storage::url($item->img_thumbnail) }}" alt
                                         class="img-fluid"></a>
                                 <div class="product-actions-xl">
                                     <a href="#"><i class="flaticon-heart"></i></a>
