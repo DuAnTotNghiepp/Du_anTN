@@ -1,7 +1,6 @@
 @extends('client.layouts.app')
 
 @section('content')
-
     <div class="container-fluid p-0">
         <div class="row">
             <div class="col-lg-12">
@@ -22,7 +21,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
     <div class="product-details-area mt-100 ml-110">
@@ -50,7 +48,6 @@
                                         <img src="{{$product->img_thumbnail}}" alt>
                                     </div>
                                 </div>
-
                             </div>
                             <div class="tab-content" id="v-pills-tabContent">
                                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
@@ -59,7 +56,6 @@
                                         <img src="{{$product->img_thumbnail}}" alt>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -67,50 +63,45 @@
                         <div class="product-details-wrap">
                             <div class="pd-top">
                                 <ul class="product-rating d-flex align-items-center">
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star"></i></li>
-                                    <li class="count-review">(<span>23</span> Review)</li>
+                                    <li>
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <i class="bi bi-star{{ $i <= $averageRating ? '-fill' : '' }}" style="color: {{ $i <= $averageRating ? 'gold' : 'gray' }};"></i>
+                                        @endfor
+                                    </li>
+                                    <li class="count-review"> ({{ count($comments) }} Review)</li>
                                 </ul>
                                 <h3 class="pd-title">{{$product->name}}</h3>
                                 <h5 class="pd-price">{{$product->price_sale}}</h5>
 
-                                    <p class="pd-small-info">
-                                        {{$product->description}}
+                                <p class="pd-small-info">
+                                    {{$product->description}}
                                 </p>
                             </div>
                             <div class="pd-quick-discription">
                                 <ul>
-                                        <form action="#" method="post">
-                                            @csrf
-                                            <input type="hidden" name="product_id" value="{{$product->id}}">
+                                    <form action="#" method="post">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{$product->id}}">
 
-                                            <li class="d-flex align-items-center">
-                                                    <span>Color :</span>
-                                          
-                                            </li>
+                                        <li class="d-flex align-items-center">
+                                            <span>Color :</span>
+                                        </li>
 
+                                        <li class="d-flex align-items-center">
+                                            <span>Size :</span>
+                                        </li>
 
-                                            <li class="d-flex align-items-center">
-                                                <span>Size :</span>
-                                         
-                                            </li>
-
-                                            <li class="d-flex align-items-center pd-cart-btns">
-                                                <div class="quantity">
-                                                    <label for="quantity"></label>
-                                                    <input id="quantity" name="quantity" type="number" min="1" max="100"  value="1">
-                                                </div>
-                                                <button type="submit" class="pd-add-cart">Add
-                                                        to cart</button>
-                                            </li>
-                                        </form>
-
+                                        <li class="d-flex align-items-center pd-cart-btns">
+                                            <div class="quantity">
+                                                <label for="quantity"></label>
+                                                <input id="quantity" name="quantity" type="number" min="1" max="100" value="1">
+                                            </div>
+                                            <button type="submit" class="pd-add-cart">Add to cart</button>
+                                        </li>
+                                    </form>
 
                                     <li class="pd-type">Product Type: <span>Woman Winter Dress</span></li>
-                                    <li class="pd-type">Catagories: <span> {{$product->catelogues->name }}</span></li>
+                                    <li class="pd-type">Catagories: <span>{{$product->catelogues->name }}</span></li>
                                     <li class="pd-type">Material : <span>{{$product->material}}</span></li>
                                 </ul>
                             </div>
@@ -147,7 +138,6 @@
                                         Dễ dàng phối với những trang phục và phù hợp với mọi cuộc picnic, đi biển hay hòa mình vào những lễ hội âm nhạc sôi động đậm chất mùa hè. Bấy nhiêu đây, áo khoác bohemian đã đủ chinh phục bạn chưa?
                                     </p>
                                     {{$product->content}}
-
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="pd-discription-pill2" role="tabpanel"
@@ -156,92 +146,68 @@
                                     <ul>
                                         <li>
                                             <h5 class="additition-name">Color</h5>
-                                            <div class="additition-variant"><span>:</span>Red, Green, Blue, Yellow,
-                                                pink,
-                                            </div>
+                                            <div class="additition-variant"><span>:</span>Red, Green, Blue, Yellow, Pink</div>
                                         </li>
                                         <li>
                                             <h5 class="additition-name">Size</h5>
-                                            <div class="additition-variant"><span>:</span>S, M, L, Xl, XXL</div>
+                                            <div class="additition-variant"><span>:</span>S, M, L, XL, XXL</div>
                                         </li>
                                         <li>
                                             <h5 class="additition-name">Material</h5>
-                                            <div class="additition-variant"><span>:</span>100% Cotton, Jens</div>
+                                            <div class="additition-variant"><span>:</span>100% Cotton, Jeans</div>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
-                            <div class="tab-pane fade " id="pd-discription-pill1" role="tabpanel"
+                            <div class="tab-pane fade" id="pd-discription-pill1" role="tabpanel"
                                  aria-labelledby="pd-discription1">
-                                <div class="discription-review">
-                                    <div class="clients-review-cards">
-                                        <div class="row">   
-                                            @foreach($comments as $comment)
-                                                <div class="col-lg-6">
-                                                    <div class="client-review-card">
-                                                        <div class="review-card-head">
-                                                            <div class="client-img">
-                                                                <img  style="height: 48px; width: 48px;border-radius: 100px" src="https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-dep-thien-nhien-3d-003.jpg" alt>
-                                                            </div>
-                                                            <div class="client-info">
-                                                                <h5 class="client-name"> {{$comment->user->name}} <span
-                                                                        @php
-                                            $date = explode(' ', $comment->created_at) @endphp
-                                                                        class="review-date">{{$date[0]}}</span></h5>
-                                                                <ul class="review-rating d-flex">
-                                                                    <li><i class="bi bi-star-fill"></i></li>
-                                                                    <li><i class="bi bi-star-fill"></i></li>
-                                                                    <li><i class="bi bi-star-fill"></i></li>
-                                                                    <li><i class="bi bi-star-fill"></i></li>
-                                                                    <li><i class="bi bi-star"></i></li>
-                                                                </ul>
-                                                            </div>
+                                <div class="review-area">
+                                    <h5 class="review-title">Reviews</h5>
+                                    <div class="review-wrap">
+                                        @foreach($comments as $comment)
+                                            <div class="single-review d-flex align-items-start">
+                                                <div class="client-review">
+                                                    <div class="client-reviewer d-flex align-items-center">
+                                                        <div class="client-reviewer-img">
+                                                            <img src="{{$comment->user->avatar}}" alt>
                                                         </div>
-                                                        <p class="review-text">
-                                                            {{$comment->noidung}}
-                                                        </p>
-                                                        <ul class="review-actions d-flex align-items-center">
-                                                            <li><a href="#"><i class="flaticon-like"></i></a></li>
-                                                            <li><a href="#"><i class="flaticon-heart"></i></a></li>
-                                                            <li><a href="#">Reply</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                    <div class="review-form-wrap">
-                                        <h5>Bình luận</h5>
-                                        <h3>Leave A Comment</h3>
-                                        <p>Your email address will not be published. Required fields are marked *</p>
-                                        <form action="{{route('comment.store', $product->id)}}" method="POST" class="review-form">
-                                            @csrf
-                                            <div class="row">
-
-                                                <div class="col-lg-12">
-                                                    <div class="review-input-group">
-                                                        <textarea name="content" id="review-area" cols="30" rows="7"
-                                                                  placeholder="Your message"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    <div class="review-rating">
-                                                        <p>Your Rating</p>
-                                                        <ul class="d-flex">
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="submit-btn">
-                                                        <input type="submit" value="Post Comment">
+                                                        <div class="client-reviewer-info">
+                                                            <h6>{{$comment->user->name}}</h6>
+                                                            <div class="client-rating">
+                                                                @for ($i = 1; $i <= 5; $i++)
+                                                                    <i class="bi bi-star{{ $i <= $comment->rating ? '-fill' : '' }}" style="color: {{ $i <= $comment->rating ? 'gold' : 'gray' }};"></i>
+                                                                @endfor
+                                                            </div>
+                                                            <p>{{$comment->content}}</p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </form>
+                                        @endforeach
                                     </div>
+                                    <h5 class="leave-review-title">Để lại bình luận</h5>
+                                    <form action="{{ route('comment.store', $product->id) }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        <div class="form-group">
+                                            <label for="rating">Đánh giá:</label>
+                                            <div class="d-flex align-items-center">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    <div class="form-check" style="margin-right: 5px;">
+                                                        <input type="radio" class="form-check-input" name="rating" value="{{ $i }}" id="rating{{ $i }}" style="display: none;">
+                                                        <label class="form-check-label" for="rating{{ $i }}">
+                                                            <i class="bi bi-star-fill" style="font-size: 1.5rem; color: gray;" data-rating="{{ $i }}"></i>
+                                                        </label>
+                                                    </div>
+                                                @endfor
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="content">Bình luận:</label>
+                                            <textarea name="content" id="content" rows="4" required></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Gửi bình luận</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -249,6 +215,61 @@
                 </div>
             </div>
         </div>
-    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stars = document.querySelectorAll('.form-check-label i');
+
+            stars.forEach(star => {
+                star.addEventListener('mouseover', function() {
+                    const rating = this.getAttribute('data-rating');
+                    updateStarColors(rating, 'gold'); // Màu vàng cho sao khi hover
+                });
+
+                star.addEventListener('mouseout', function() {
+                    const ratingInput = document.querySelector('input[name="rating"]:checked');
+                    const selectedRating = ratingInput ? ratingInput.value : 0;
+                    updateStarColors(selectedRating, 'gray'); // Màu xám cho sao khi không hover
+                });
+
+                star.addEventListener('click', function() {
+                    const rating = this.getAttribute('data-rating');
+                    document.querySelector('input[name="rating"][value="' + rating + '"]').checked = true;
+                    updateStarColors(rating, 'gold'); // Đánh dấu sao được chọn
+                });
+            });
+
+            function updateStarColors(maxRating, color) {
+                stars.forEach(star => {
+                    if (star.getAttribute('data-rating') <= maxRating) {
+                        star.style.color = color;
+                    } else {
+                        star.style.color = 'gray'; // Màu xám cho sao chưa chọn
+                    }
+                });
+            }
+        });
+    </script>
 
 @endsection
+
+
+
+{{--  <form action="{{ route('comment.store', $product->id) }}" method="POST" class="review-form mt-4">
+    @csrf
+    <div class="form-group">
+        <label for="content">Nội dung bình luận:</label>
+        <textarea id="content" name="noidung" class="form-control" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="rating">Đánh giá:</label>
+        <div class="d-flex">
+            @for ($i = 1; $i <= 5; $i++)
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" name="rating" value="{{ $i }}" id="rating{{ $i }}">
+                    <label class="form-check-label" for="rating{{ $i }}">{{ $i }} <i class="bi bi-star-fill"></i></label>
+                </div>
+            @endfor
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Gửi bình luận</button>  --}}

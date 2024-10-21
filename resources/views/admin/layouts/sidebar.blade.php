@@ -48,10 +48,10 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                    <a class="nav-link menu-link" href="#sidebarProducts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarProducts">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Sản Phẩm</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarDashboards">
+                    <div class="collapse menu-dropdown" id="sidebarProducts">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{ route('product.index') }}" class="nav-link" data-key="t-analytics"> Danh Sách Sản Phẩm </a>
@@ -61,7 +61,22 @@
                             </li>
                         </ul>
                     </div>
-                </li> <!-- end Dashboard Menu -->
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarComments" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarComments">
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Bình Luận</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarComments">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('comment.index') }}" class="nav-link" data-key="t-analytics"> Danh Sách Sản Phẩm </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- end Dashboard Menu -->
 
 
             </ul>

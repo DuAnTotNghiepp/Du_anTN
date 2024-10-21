@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BinhLuanController;
@@ -37,7 +39,11 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 //chi tiet test 
 Route::get('/product/{slug}',[ProductController::class,'detail'])->name('product.detail');
-Route::post('product/comment/{id}',[BinhLuanController::class,'store'])->name('comment.store');
+Route::post('product/comment/{id}', [BinhLuanController::class, 'store'])->name('comment.store');
+Route::get('admin/comment/index', [AdminProductController::class, 'indexWithComments'])->name('comment.index');
+Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComments'])->name('product.comments');
+
+
 
 
 //end tesst chi tiet
