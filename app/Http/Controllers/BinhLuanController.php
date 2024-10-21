@@ -77,19 +77,7 @@ class BinhLuanController extends Controller
 
         return view('admin.comment.show', compact('product'));
     }
-    public function show($id)
-{
-    $product = Product::findOrFail($id);
     
-    // Lấy tất cả các bình luận cho sản phẩm
-    $comments = $product->comments()->with('user')->get();
-
-    // Tính toán rating trung bình
-    $averageRating = $comments->count() > 0 ? $comments->avg('rating') : 0; // Nếu không có bình luận thì cho trung bình là 0
-
-    return view('client.product.show', compact('product', 'comments', 'averageRating'));
-}
-
 
     /**
      * Show the form for creating a new resource.
@@ -102,7 +90,10 @@ class BinhLuanController extends Controller
     /**
      * Display the specified resource.
      */
-   
+    public function show(BinhLuan $binhLuan)
+    {
+        // Logic to show a specific comment (if needed)
+    }
 
     /**
      * Show the form for editing the specified resource.
