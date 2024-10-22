@@ -94,7 +94,7 @@ return [
         'array' => 'The :attribute field must not have more than :max items.',
         'file' => 'The :attribute field must not be greater than :max kilobytes.',
         'numeric' => 'The :attribute field must not be greater than :max.',
-        'string' => 'The :attribute field must not be greater than :max characters.',
+        'string' => 'Trường :attribute trường không được lớn hơn :max ký tự.',
     ],
     'max_digits' => 'The :attribute field must not have more than :max digits.',
     'mimes' => 'The :attribute field must be a file of type: :values.',
@@ -102,8 +102,8 @@ return [
     'min' => [
         'array' => 'The :attribute field must have at least :min items.',
         'file' => 'The :attribute field must be at least :min kilobytes.',
-        'numeric' => 'The :attribute field must be at least :min.',
-        'string' => 'The :attribute field must be at least :min characters.',
+        'numeric' => 'Trường :attribute phải có ít nhất :min. giá trị',
+        'string' => 'Trường :attribute trường phải có ít nhất :min ký tự.',
     ],
     'min_digits' => 'The :attribute field must have at least :min digits.',
     'missing' => 'The :attribute field must be missing.',
@@ -131,7 +131,7 @@ return [
     'prohibited_if' => 'The :attribute field is prohibited when :other is :value.',
     'prohibited_unless' => 'The :attribute field is prohibited unless :other is in :values.',
     'prohibits' => 'The :attribute field prohibits :other from being present.',
-    'regex' => 'The :attribute field format is invalid.',
+    'regex' => 'Trường :attribute không đúng định dạng.',
     'required' => 'Trường :attribute không được bỏ trống.',
     'required_array_keys' => 'The :attribute field must contain entries for: :values.',
     'required_if' => 'The :attribute field is required when :other is :value.',
@@ -188,7 +188,13 @@ return [
 
     'attributes' => [
         'name' => 'tên',
-        
+        'description' => 'mô tả',
+        'price_regular' => 'giá bán',
+        'price_sale' => 'giá giảm',
+        'material' => 'chất liệu',
+        'content' => 'nội dung',
+        'user_manual' => 'hướng dẫn sử dụng',
+        'quantity' => 'số lượng',
     ],
 
 ];

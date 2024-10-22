@@ -41,18 +41,6 @@
         </div>
         <!-- end page title -->
         <div class="row">
-            <p>
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-            </p>
-
             <div class="col-lg-8">
                 <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -72,6 +60,9 @@
                                 <input class="form-control" id="project-thumbnail-img" name="img_thumbnail" type="file"
                                     accept="image/png, image/gif, image/jpeg">
                                 <img id="imgPreview" src="" style="width: 100px; margin-top: 10px;">
+                                @error('img_thumbnail')
+                                    <span style="color: red">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
@@ -79,6 +70,9 @@
                                 <div id="ckeditor-classic">
                                     <textarea class="form-control" placeholder="Enter Description" name="description" id="description" rows="3"></textarea>
                                 </div>
+                                @error('description')
+                                    <span style="color: red">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <div class="row">
@@ -95,8 +89,10 @@
                                 <div class="col-lg-4">
                                     <div class="mb-3 mb-lg-0">
                                         <label for="choices-status-input" class="form-label">Giá Khuyến Mãi</label>
-                                        <input type="number" class="form-control" name="price_sale" id="price_sale"
-                                            step="0.01" data-provider="flatpickr" data-date-format="d M, Y">
+                                        <input type="number" class="form-control" name="price_sale" id="price_sale">
+                                        @error('price_sale')
+                                            <span style="color: red">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -104,6 +100,9 @@
                                         <label for="datepicker-deadline-input" class="form-label">Số Lượng</label>
                                         <input type="number" class="form-control" name="quantity" id="quantity"
                                             data-provider="flatpickr" data-date-format="d M, Y">
+                                        @error('quantity')
+                                            <span style="color: red">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div><br>
@@ -122,6 +121,9 @@
                                 <div id="ckeditor-classic">
                                     <textarea name="content" id="content" rows="10" cols="80"></textarea>
                                 </div>
+                                @error('content')
+                                    <span style="color: red">{{ $message }}</span>
+                                @enderror
                             </div><br>
                             <div class="mb-3">
                                 <div id="ckeditor-classic">
@@ -132,6 +134,7 @@
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
                                                     name="is_hot_deal" id="is_hot_deal">
+
                                                 <label class="form-check-label" for="SwitchCheck1">Sản phẩm hot</label>
                                             </div>
                                             <div class="form-check form-switch form-switch-secondary">
