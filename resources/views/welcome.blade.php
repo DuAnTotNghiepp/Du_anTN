@@ -2007,7 +2007,6 @@
             </div>
             <div class="row">
                 <div class="swiper-tranding-container overflow-hidden pb-30">
-
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <div class="product-card-xl">

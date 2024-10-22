@@ -16,10 +16,12 @@ class ProductController extends Controller
      * Display a listing of the resource.
      */
     private $view;
+
     public function __construct()
     {
         $this->view = [];
     }
+
     public function index()
     {
         $listPro = Product::query()->latest('id')->get();
@@ -142,12 +144,18 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
+        $totalQuantity = Product::sum('quantity');
         $product = Product::find($id);
+
         if ($product) {
-            $product->delete();
-            return response()->json(['success' => true, 'message' => 'Sản phẩm đã được xóa thành công']);
+            if ($totalQuantity <= 5) {
+                $product->delete();
+                return response()->json(['success' => true, 'message' => 'Sản phẩm đã được xóa thành công']);
+            }
+            return response()->json(['success' => false, 'message' => 'Sản phẩm không được dưới 5']);
         } else {
             return response()->json(['success' => false, 'message' => 'Sản phẩm không tồn tại']);
+
         }
     }
 
