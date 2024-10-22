@@ -47,6 +47,12 @@ Route::get('/', [ClientController::class, 'index'])->name('index');
 Route::get('/product/detail', [ClientController::class, 'product'])->name('product.detail');
 
 
+//chi tiet test
+Route::get('/product/{slug}',[ProductController::class,'detail'])->name('product.detail');
+Route::post('product/comment/{id}', [BinhLuanController::class, 'store'])->name('comment.store');
+Route::get('admin/comment/index', [AdminProductController::class, 'indexWithComments'])->name('comment.index');
+Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComments'])->name('product.comments');
+
 
 
 // Group routes under admin middleware

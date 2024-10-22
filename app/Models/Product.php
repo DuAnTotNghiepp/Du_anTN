@@ -40,5 +40,8 @@ class Product extends Model
     {
         return $this->belongsTo(Catalogues::class,'catalogues_id');
     }
-
+    public function binh_luans()
+    {
+        return $this->hasMany(BinhLuan::class, 'product_id'); 
+    }
 }
