@@ -30,6 +30,7 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 //client
 Route::get('/', [ClientController::class, 'index'])->name('index');
 Route::get('/product/detail', [ClientController::class, 'product'])->name('product.detail');
+Route::get('/product/checkout', [ClientController::class, 'checkout'])->name('product.checkout');
 
 
 
