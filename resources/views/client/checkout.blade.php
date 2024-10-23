@@ -78,30 +78,6 @@
                             </div>
                         </div>
                     </form>
-                    <form class="different-address-form">
-                        <h5 class="checkout-title">
-                            Ship to a Different Address?
-                        </h5>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="eg-input-group">
-                                    <label for="first-name-d">First Name</label>
-                                    <input type="text" id="first-name-d" placeholder="Your first name">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="eg-input-group">
-                                    <label for="last-name-d">Last Name</label>
-                                    <input type="text" id="last-name-d" placeholder="Your last name">
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="eg-input-group mb-0">
-                                    <textarea cols="30" rows="6" placeholder="Order Notes (Optional)"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
                 </div>
                 <div class="col-xxl-4 col-xl-4">
                     <div class="order-summary">
@@ -117,39 +93,6 @@
                                     <div class="product-info">
                                         <h5 class="product-title"><a href="product.html">Something Yellow Party Dress</a>
                                         </h5>
-                                        <div class="product-total">
-                                            <div class="quantity">
-                                                <input type="number" min="1" max="90" step="10"
-                                                    value="1">
-                                            </div>
-                                            <strong> <i class="bi bi-x-lg"></i> <span
-                                                    class="product-price">$22.36</span></strong>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="single-product">
-                                    <div class="product-img">
-                                        <img src="assets/images/product/added-p2.png" alt>
-                                    </div>
-                                    <div class="product-info">
-                                        <h5 class="product-title"><a href="product.html">Women Yellow Pattern Shirt</a>
-                                        </h5>
-                                        <div class="product-total">
-                                            <div class="quantity">
-                                                <input type="number" min="1" max="90" step="10"
-                                                    value="1">
-                                            </div>
-                                            <strong> <i class="bi bi-x-lg"></i> <span
-                                                    class="product-price">$22.36</span></strong>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="single-product">
-                                    <div class="product-img">
-                                        <img src="assets/images/product/added-p3.png" alt>
-                                    </div>
-                                    <div class="product-info">
-                                        <h5 class="product-title"><a href="product.html">Man Mannequin Casual</a></h5>
                                         <div class="product-total">
                                             <div class="quantity">
                                                 <input type="number" min="1" max="90" step="10"
@@ -179,29 +122,42 @@
                             <div class="payment-methods">
                                 <div class="form-check payment-check">
                                     <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                        id="flexRadioDefault1">
-                                    <label class="form-check-label" for="flexRadioDefault1">
-                                        Check payments
-                                    </label>
-                                    <p>Please send a check to Store Name, Store Street, Store Town, Store State / County,
-                                        Store Postcode.</p>
-                                </div>
-                                <div class="form-check payment-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
                                         id="flexRadioDefault2" checked>
                                     <label class="form-check-label" for="flexRadioDefault2">
                                         Cash on delivery
                                     </label>
                                     <p>Pay with cash upon delivery.</p>
                                 </div>
-                                <div class="form-check payment-check paypal">
+                                <div class="form-check payment-check">
                                     <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                        id="flexRadioDefault3" checked>
-                                    <label class="form-check-label" for="flexRadioDefault3">
-                                        PayPal
+                                        id="flexRadioDefault2" checked>
+                                    <label class="form-check-label" for="flexRadioDefault2">
+                                        Credit / Debit Card
                                     </label>
-                                    <img src="assets/images/payment/payment-cards.png" alt>
-                                    <a href="#" class="about-paypal">What is PayPal</a>
+                                    <p>
+                                        <div class="row gy-3">
+                                            <div class="col-md-12">
+                                                <label for="cc-name" class="form-label">Name on card</label>
+                                                <input type="text" class="form-control" id="cc-name" placeholder="Enter name">
+                                                <small class="text-muted">Full name as displayed on card</small>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <label for="cc-number" class="form-label">Credit card number</label>
+                                                <input type="text" class="form-control" id="cc-number" placeholder="xxxx xxxx xxxx xxxx">
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="cc-expiration" class="form-label">Expiration</label>
+                                                <input type="text" class="form-control" id="cc-expiration" placeholder="MM/YY">
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="cc-cvv" class="form-label">CVV</label>
+                                                <input type="text" class="form-control" id="cc-cvv" placeholder="xxx">
+                                            </div>
+                                        </div>
+                                    </p>
                                 </div>
                             </div>
                             <div class="place-order-btn">
