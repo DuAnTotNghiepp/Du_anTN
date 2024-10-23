@@ -58,7 +58,7 @@
 
         <div class="page-content">
             <div class="container-fluid">
-                @yield('content');
+                @yield('content')
 
             </div> <!-- end .h-100-->
 

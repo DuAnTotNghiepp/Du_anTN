@@ -18,18 +18,24 @@ class AuthController extends Controller
 
     public function login(Request $request) {
         $user = $request->validate([
-            'email' => 'required|string|email|max:255',
+            'email' => 'required|string|email|max:255', 
             'password' => 'required|string'
         ]);
-
+    
         if (Auth::attempt($user)) {
-            return redirect()->intended('home');
+            // Kiểm tra nếu là admin thì chuyển hướng tới trang admin
+            if (Auth::user()->role === User::ROLE_ADMIN) {
+                return redirect()->intended('/admin');
+            }
+    
+            return redirect()->intended('/');
         }
-
+    
         return redirect()->back()->withErrors([
             'email' => 'Thông tin người dùng không đúng'
         ]);
     }
+    
     // Đằng ký
     public function showFormRegister() {
         return view('auth.register');
@@ -47,14 +53,19 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->intended('home');
+        return redirect()->intended('/');
     }
 
     // Đăng xuất
-    public function logout(Request $request) {
-        Auth::logout();
-        return redirect('/login');
+    public function logout(Request $request)
+    {
+        Auth::logout(); // Đăng xuất người dùng
+        $request->session()->invalidate(); // Hủy phiên hiện tại
+        $request->session()->regenerateToken(); // Tạo lại token CSRF mới
+    
+        return redirect('/login'); // Chuyển hướng người dùng đến trang đăng nhập
     }
+    
 
     //qmk
     public function showForgotPasswordForm()
