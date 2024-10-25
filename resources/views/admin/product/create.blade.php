@@ -47,13 +47,14 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="mb-3">
-                                <label class="form-label" for="project-title-input">Tên Sản Phẩm</label>
+                                <label class="form-label" for="project-title-input">Tên Sản phẩm</label>
                                 <input type="text" class="form-control" id="project-title-input" name="name"
-                                    placeholder="Enter Tên Sản Phẩm">
+                                    placeholder="Nhập Tên Sản phẩm" value="{{ old('name') }}">
                                 @error('name')
                                     <span style="color: red">{{ $message }}</span>
                                 @enderror
                             </div>
+
 
                             <div class="mb-3">
                                 <label class="form-label" for="project-thumbnail-img">Ảnh Sản Phẩm</label>
@@ -68,10 +69,10 @@
                             <div class="mb-3">
                                 <label class="form-label">Mô Tả Sản Phẩm</label>
                                 <div id="ckeditor-classic">
-                                    <textarea class="form-control" placeholder="Enter Description" name="description" id="description" rows="3"></textarea>
+                                    <textarea class="form-control" placeholder="Enter Description" name="description" id="description" rows="3">{{ old('description') }}</textarea>
                                 </div>
                                 @error('description')
-                                    <span style="color: red">{{ $message }}</span>
+                                    <span id="description-error" style="color: red">{{ $message }}</span>
                                 @enderror
                             </div>
 
@@ -79,50 +80,49 @@
                                 <div class="col-lg-4">
                                     <div class="mb-3 mb-lg-0">
                                         <label for="choices-priority-input" class="form-label">Giá Thường</label>
-                                        <input type="number" class="form-control" name="price_regular" id="price_regular"
-                                            step="0.01" data-provider="flatpickr" data-date-format="d M, Y">
+                                        <input type="number" class="form-control" name="price_regular" id="price_regular" step="0.01" data-provider="flatpickr" data-date-format="d M, Y" value="{{ old('price_regular') }}">
+                                        @error('price_regular')
+                                            <span id="price-regular-error" style="color: red">{{ $message }}</span>
+                                        @enderror
                                     </div>
-                                    @error('price_regular')
-                                        <span style="color: red">{{ $message }}</span>
-                                    @enderror
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="mb-3 mb-lg-0">
                                         <label for="choices-status-input" class="form-label">Giá Khuyến Mãi</label>
-                                        <input type="number" class="form-control" name="price_sale" id="price_sale">
+                                        <input type="number" class="form-control" name="price_sale" id="price_sale" value="{{ old('price_sale') }}">
+                                        <span id="priceSaleError" style="color: red; display: none;">Giá khuyến mãi không được lớn hơn giá thường.</span>
                                         @error('price_sale')
-                                            <span style="color: red">{{ $message }}</span>
+                                            <span id="price-sale-error" style="color: red">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div>
                                         <label for="datepicker-deadline-input" class="form-label">Số Lượng</label>
-                                        <input type="number" class="form-control" name="quantity" id="quantity"
-                                            data-provider="flatpickr" data-date-format="d M, Y">
+                                        <input type="number" class="form-control" name="quantity" id="quantity" data-provider="flatpickr" data-date-format="d M, Y" value="{{ old('quantity') }}">
                                         @error('quantity')
-                                            <span style="color: red">{{ $message }}</span>
+                                            <span id="quantity-error" style="color: red">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
-                            </div><br>
+                            </div> <br>
 
                             <div class="mb-3">
                                 <label class="form-label">Hướng Dẫn Sử Dụng</label>
                                 <div id="ckeditor-classic">
-                                    <textarea class="form-control" placeholder="Enter User_manual" name="user_manual" id="user_manual" rows="3"></textarea>
+                                    <textarea class="form-control" placeholder="Enter User_manual" name="user_manual" id="user_manual" rows="3">{{ old('user_manual') }}</textarea>
                                 </div>
                                 @error('user_manual')
-                                    <span style="color: red">{{ $message }}</span>
+                                    <span id="user-manual-error" style="color: red">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Nội Dung Chi Tiết</label>
                                 <div id="ckeditor-classic">
-                                    <textarea name="content" id="content" rows="10" cols="80"></textarea>
+                                    <textarea name="content" id="content" rows="10" cols="80">{{ old('content') }}</textarea>
                                 </div>
                                 @error('content')
-                                    <span style="color: red">{{ $message }}</span>
+                                    <span id="content-error" style="color: red">{{ $message }}</span>
                                 @enderror
                             </div><br>
                             <div class="mb-3">
@@ -240,7 +240,7 @@
                                 <button type="button" class="btn btn-outline-secondary" id="generateSKU">Random</button>
                             </div>
                             @error('sku')
-                                <span style="color: red">{{ $message }}</span>
+                                <span id="sku-error" style="color: red">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -252,11 +252,10 @@
                     </div>
                     <div class="card-body">
                         <div>
-                            <input type="text" class="form-control" name="material" id="material"
-                                data-provider="flatpickr" data-date-format="d M, Y">
+                            <input type="text" class="form-control" name="material" id="material" data-provider="flatpickr" data-date-format="d M, Y">
                         </div>
                         @error('material')
-                            <span style="color: red">{{ $message }}</span>
+                            <span id="material-error" style="color: red">{{ $message }}</span>
                         @enderror
                     </div>
                     <!-- end card body -->
@@ -293,10 +292,12 @@
                             <div>
                                 <label class="form-label mb-0">URL</label>
                                 <input type="text" class="form-control" name="slug" id="slug" readonly>
+                                @error('slug')
+                                    <span id="slug-error" style="color: red">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     </div>
-                    <!-- end card body -->
                 </div>
                 <!-- end card -->
 
@@ -406,7 +407,181 @@
                 document.getElementById('slug').value = slug;
             });
         </script>
+        <script>
+            document.getElementById('price_sale').addEventListener('input', function() {
+                var priceRegular = parseFloat(document.getElementById('price_regular').value);
+                var priceSale = parseFloat(this.value);
+                var priceSaleError = document.getElementById('priceSaleError');
 
+                if (priceSale > priceRegular) {
+                    priceSaleError.style.display = 'block';
+                    this.classList.add('is-invalid'); // Thêm class 'is-invalid' để highlight input
+                } else {
+                    priceSaleError.style.display = 'none';
+                    this.classList.remove('is-invalid');
+                }
+            });
+        </script>
+        <script>
+            var nameInput = document.getElementById('project-title-input');
+            var nameError = document.querySelector('#project-title-input + span'); // Tìm element span kế tiếp của input
+
+            nameInput.addEventListener('input', function() {
+                if (this.value.trim() === '') {
+                    nameError.style.display = 'block';
+                    this.classList.add('is-invalid');
+                } else {
+                    nameError.style.display = 'none';
+                    this.classList.remove('is-invalid');
+                }
+            });
+
+            nameInput.addEventListener('focus', function() {
+                if (this.value.trim() === '') {
+                    nameError.style.display = 'block';
+                    this.classList.add('is-invalid');
+                }
+            });
+        </script>
+        <script>
+            var descriptionInput = document.getElementById('description');
+            var descriptionError = document.getElementById('description-error');
+
+            descriptionInput.addEventListener('blur', function() {
+                if (this.value.trim() === '') {
+                    descriptionError.style.display = 'block';
+                }
+            });
+
+            descriptionInput.addEventListener('focus', function() {
+                descriptionError.style.display = 'none';
+            });
+        </script>
+        <script>
+            var priceRegularInput = document.getElementById('price_regular');
+            var priceRegularError = document.getElementById('price-regular-error');
+
+            priceRegularInput.addEventListener('focus', function() {
+                priceRegularError.style.display = 'none';
+            });
+        </script>
+        <script>
+            var priceSaleInput = document.getElementById('price_sale');
+            var priceSaleError = document.getElementById('priceSaleError');
+            var priceSaleErrorSpan = document.getElementById('price-sale-error');
+
+            priceSaleInput.addEventListener('focus', function() {
+                priceSaleError.style.display = 'none';
+                if (priceSaleErrorSpan) {
+                    priceSaleErrorSpan.style.display = 'none';
+                }
+            });
+        </script>
+<script>
+    var quantityInput = document.getElementById('quantity');
+    var quantityError = document.getElementById('quantity-error');
+
+    quantityInput.addEventListener('focus', function() {
+        if (quantityError) {
+            quantityError.style.display = 'none';
+        }
+    });
+</script>
+ <script>
+    var userManualInput = document.getElementById('user_manual');
+    var userManualError = document.getElementById('user-manual-error');
+
+    userManualInput.addEventListener('focus', function() {
+        if (userManualError) {
+            userManualError.style.display = 'none';
+        }
+    });
+
+    userManualInput.addEventListener('blur', function() {
+        if (userManualInput.value.trim() === '' && userManualError) {
+            userManualError.style.display = 'block';
+        }
+    });
+</script>
+<script>
+    var skuInput = document.getElementById('sku');
+    var skuError = document.getElementById('sku-error');
+    var generateButton = document.getElementById('generateSKU');
+
+    skuInput.addEventListener('focus', function() {
+        if (skuError) {
+            skuError.style.display = 'none';
+        }
+    });
+
+    skuInput.addEventListener('blur', function() {
+        if (skuInput.value.trim() === '' && skuError) {
+            skuError.style.display = 'block';
+        }
+    });
+
+    generateButton.addEventListener('click', function() {
+        if (skuError) {
+            skuError.style.display = 'none';
+        }
+    });
+
+    generateButton.addEventListener('focus', function() {
+        if (skuError) {
+            skuError.style.display = 'none';
+        }
+    });
+
+    generateButton.addEventListener('blur', function() {
+        if (skuInput.value.trim() === '' && skuError) {
+            skuError.style.display = 'block';
+        }
+    });
+</script>
+<script>
+    var materialInput = document.getElementById('material');
+    var materialError = document.getElementById('material-error');
+
+    materialInput.addEventListener('focus', function() {
+        if (materialError) {
+            materialError.style.display = 'none';
+        }
+    });
+
+    materialInput.addEventListener('blur', function() {
+        if (materialInput.value.trim() === '' && materialError) {
+            materialError.style.display = 'block';
+        }
+    });
+
+    document.addEventListener('click', function(event) {
+        if (event.target.type !== 'text' && materialInput.value.trim() === '' && materialError) {
+            materialError.style.display = 'block';
+        }
+    });
+</script>
+<script>
+    var slugInput = document.getElementById('slug');
+    var slugError = document.getElementById('slug-error');
+
+    slugInput.addEventListener('focus', function() {
+        if (slugError) {
+            slugError.style.display = 'none';
+        }
+    });
+
+    slugInput.addEventListener('blur', function() {
+        if (slugInput.value.trim() === '' && slugError) {
+            slugError.style.display = 'block';
+        }
+    });
+
+    document.addEventListener('click', function(event) {
+        if (event.target !== slugInput && slugInput.value.trim() === '' && slugError) {
+            slugError.style.display = 'block';
+        }
+    });
+</script>
     </body>
 
     </html>

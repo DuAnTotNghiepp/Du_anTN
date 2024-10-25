@@ -22,7 +22,7 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:50|min:3|regex:/^(?=.*[a-zA-Z])(?=.*[0-9]).+$',
+            'name' => 'required|string|max:50|min:3',
             'sku' => 'required|string|max:255|unique:products,sku',
             'img_thumbnail' => 'nullable|image|max:2048', // Tối đa kích thước của ảnh là 2048KB (2Mb)
             'price_regular' => 'required|numeric|min:0',  // numeric: phải là 1 số
@@ -32,12 +32,7 @@ class StoreProductRequest extends FormRequest
             'content' => 'required|string',
             'user_manual' => 'required|string|max:255',
             'quantity' => 'required|integer|min:0',
-        ];
-    }
-
-    public function messages(){
-        return [
-            'name.regex' => 'Tên sản phẩm phải bao gồm cả chữ và số.',
+            'slug' => 'required|string|max:255|unique',
         ];
     }
 }
