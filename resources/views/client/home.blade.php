@@ -2117,11 +2117,9 @@
                             </div>
                         @endforeach
                     </div>
+                    <div class="swiper-button-next"><i class="flaticon-arrow-pointing-to-right"></i></div>
+                    <div class="swiper-button-prev"><i class="flaticon-arrow-pointing-to-left"></i></div>
 
-                    <!-- Hiển thị điều khiển phân trang -->
-                    <div class="pagination-wrapper">
-                        {{ $listSp->links() }}
-                    </div>
 
                 </div>
             </div>
@@ -2144,7 +2142,7 @@
                             <div class="swiper-slide">
                                 <div class="product-card-xl">
                                     <div class="product-img-xl">
-                                        <a href="{{route('product.detail',$listHot->id)}}"><img
+                                        <a href="{{route('product.detail',$item->id)}}"><img
                                                 src="{{ Storage::url($item->img_thumbnail) }}"  alt
                                                 class="img-fluid"></a>
                                         <div class="product-actions-xl">
