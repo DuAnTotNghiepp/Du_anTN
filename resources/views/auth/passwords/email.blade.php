@@ -1,4 +1,4 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -44,4 +44,11 @@
         </div>
     </div>
 </div>
-@endsection
+@endsection --}}
+
+
+Click on the link below to reset your password:
+
+{{ url('/password/reset/'.$token) }}
+
+If you did not request a password reset, please ignore this email.

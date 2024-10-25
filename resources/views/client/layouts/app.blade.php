@@ -13,7 +13,7 @@
 
     <link rel="stylesheet" href="{{asset('assets/font/flaticon.css')}}">
 
-    <link rel="stylesheet" href="{{asset('assets/css/bootstrap-icons.css')}}">
+    <link rel="stylesheet" href="{{asset('assegit ts/css/bootstrap-icons.css')}}">
 
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
 

@@ -147,7 +147,7 @@
                                                             khong co hinh anh
                                                         @else
                                                             <img src="{{ Storage::url($pr->img_thumbnail) }}"
-                                                                alt="" class="avatar-xs rounded-circle">
+                                                                alt="" class="avatar-xs rounded-circle"  >
                                                         @endif
                                                     </div>
                                                     <div class="flex-grow-1 ms-2 name">{{ $pr->name }}</div>
