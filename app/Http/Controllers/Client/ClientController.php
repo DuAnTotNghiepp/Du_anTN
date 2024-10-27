@@ -26,5 +26,8 @@ class ClientController extends Controller
     public function product(){
         return view('client.product_detail');
     }
+    public function checkout(){
+        return view('client.checkout');
+    }
 
 }
