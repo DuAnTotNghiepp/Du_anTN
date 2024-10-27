@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CataloguesController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -33,3 +34,11 @@ Route::controller(ProductController::class)
         Route::delete('{id}/destroy', 'destroy')
             ->name('destroy');
     });
+Route::middleware('auth', 'admin')->group(function () {
+    Route::get('admin/accounts', [AdminController::class, 'index'])->name('admin.accounts');
+    Route::get('admin/accounts/create', [AdminController::class, 'create'])->name('admin.accounts.create');
+    Route::post('admin/accounts', [AdminController::class, 'store'])->name('admin.accounts.store');
+    Route::get('admin/accounts/{user}/edit', [AdminController::class, 'edit'])->name('admin.accounts.edit');
+    Route::put('admin/accounts/{user}', [AdminController::class, 'update'])->name('admin.accounts.update');
+    Route::delete('admin/accounts/{user}', [AdminController::class, 'destroy'])->name('admin.accounts.destroy');
+});
