@@ -55,13 +55,13 @@ class AdminController extends Controller
             'password' => $request->password ? Hash::make($request->password) : $user->password,  // Mã hóa mật khẩu nếu thay đổi
         ]);
 
-        return redirect()->route('admin.accounts')->with('success', 'Tài khoản đã được cập nhật.');
+        return redirect()->route('accounts.index')->with('success', 'Tài khoản đã được cập nhật.');
     }
 
     public function destroy(User $user)
     {
         $user->delete();
 
-        return redirect()->route('admin.accounts')->with('success', 'Tài khoản đã được xóa.');
+        return redirect()->route('accounts.index')->with('success', 'Tài khoản đã được xóa.');
     }
 }
