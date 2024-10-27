@@ -12,7 +12,7 @@ class Product extends Model
     use SoftDeletes;
     protected $table = 'products';
     protected $primaryKey = 'id';
-    Protected $fillable=[
+    protected $fillable = [
         'id',
         'catalogues_id',
         'name',
@@ -38,7 +38,10 @@ class Product extends Model
 
     public function catelogues()
     {
-        return $this->belongsTo(Catalogues::class,'catalogues_id');
+        return $this->belongsTo(Catalogues::class, 'catalogues_id');
     }
-
+    // public function variants()
+    // {
+    //     return $this->hasMany(Variants::class);
+    // }
 }

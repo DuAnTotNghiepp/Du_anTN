@@ -7,6 +7,8 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Catalogues;
 use App\Models\Product;
+use App\Models\Product_Variant;
+use App\Models\Variants;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -34,7 +36,9 @@ class ProductController extends Controller
     {
 
         $listCate = Catalogues::all();
-        return view('admin.product.create', compact('listCate'));
+        $Color = Variants::where('name','Color')->get();
+        $Size = Variants::where('name','Size')->get();
+        return view('admin.product.create', compact('listCate','Color','Size'));
     }
 
     /**
@@ -42,6 +46,7 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
+        // dd($request->all());
         if ($request->isMethod('post')) {
             $params = $request->except('_token');
             $params['is_active'] = $request->has('is_active') ? 1 : 0;
@@ -58,6 +63,12 @@ class ProductController extends Controller
         }
         $res = Product::query()->create($params);
 
+        foreach ($request->id_variant as $value) {
+            Product_Variant::create([
+                'product_id' => $res->id,
+                'variants_id'=>$value
+            ]);
+        }
 
         if ($res) {
             return redirect()->back()->with('success', 'Sản phẩm đã được thêm mới thành công');
