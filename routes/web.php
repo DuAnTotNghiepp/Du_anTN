@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\ClientController;
 use App\Http\Middleware\CheckRoleAdminMiddleware;
 
 /*
@@ -29,6 +30,11 @@ Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('register', [AuthController::class, 'showFormRegister']);
 Route::post('register', [AuthController::class, 'register'])->name('register');
+
+// Client Routes
+Route::get('/', [ClientController::class, 'index'])->name('index');
+Route::get('/product/detail', [ClientController::class, 'product'])->name('product.detail');
+Route::get('/product/checkout', [ClientController::class, 'checkout'])->name('product.checkout');
 
 // Password Reset Routes
 Route::get('password/forgot', [AuthController::class, 'showForgotPasswordForm'])->name('password.forgot');
