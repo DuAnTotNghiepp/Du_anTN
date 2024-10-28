@@ -94,13 +94,11 @@
                                     <li><i class="bi bi-star-fill"></i></li>
                                     <li><i class="bi bi-star-fill"></i></li>
                                     <li><i class="bi bi-star"></i></li>
-                                    <li class="count-review">(<span>23</span> Review)</li>
+                                    {{-- <li class="count-review">(<span>23</span> Review)</li> --}}
                                 </ul>
-                                <h3 class="pd-title">Ghost Mannequin Winter Dress</h3>
-                                <h5 class="pd-price">$41.36</h5>
-                                <p class="pd-small-info"><strong>RIBCAGE STR ANK RAINBOW -</strong> B lue High-rise
-                                    straight-leg jeans Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                    eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                <h1>{{ $product->name }}</h1>
+                                <p><strong>Giá:</strong> {{ $product->price_regular }}</p>
+                                <p><strong>Mô tả:</strong> {{ $product->description }}</p>
                             </div>
                             <div class="pd-quick-discription">
                                 <ul>
@@ -178,24 +176,7 @@
                             <div class="tab-pane fade show active" id="pd-discription-pill3" role="tabpanel"
                                  aria-labelledby="pd-discription3">
                                 <div class="discription-texts">
-                                    <p>Aenean dolor massa, rhoncus ut tortor in, pretium tempus neque. Vestibulum
-                                        venenatis leo et dictum finibus. Nulla vulputate dolor sit amet tristique
-                                        dapibus. Maecenas posuere luctus leo, non consequat felis ullamcorper non.
-                                        Aliquam erat volutpat. Donec vitae porta enim. Cras eu volutpat dolor, vitae
-                                        accumsan tellus. Donec pulvinar auctor nunc, et gravida elit porta non. Aliquam
-                                        erat volutpat. Proin facilisis interdum felis, sit amet pretium purus feugiat
-                                        ac. Donec in leo metus. Sed quis dui nec justo ullamcorper molestie. Mauris
-                                        consequat lacinia est, eget tincidunt leo ornare sed. Sed sagittis, neque ac
-                                        euismod sollicitudin, mauris orci semper sem, a molestie nisi mi sit amet magna.
-                                    </p>
-                                    <p>Aenean dolor massa, rhoncus ut tortor in, pretium tempus neque. Vestibulum
-                                        venenatis leo et dictum finibus. Nulla vulputate dolor sit amet tristique
-                                        dapibus. Maecenas posuere luctus leo, non consequat felis ullamcorper non.
-                                        Aliquam erat volutpat. Donec vitae porta enim. Cras eu volutpat dolor, vitae
-                                        accumsan tellus. Donec pulvinar auctor nunc, et gravida elit porta non. Aliquam
-                                        erat volutpat.</p>
-                                    <p>Aenean dolor massa, rhoncus ut tortor in, pretium tempus neque. Vestibulum
-                                        venenatis leo et dictum finibus. Nulla vulputate dolor sit amet tristique</p>
+                                    <p><strong>Nội dung:</strong> {{ $product->content }}</p>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="pd-discription-pill2" role="tabpanel"
@@ -213,8 +194,9 @@
                                             <div class="additition-variant"><span>:</span>S, M, L, Xl, XXL</div>
                                         </li>
                                         <li>
-                                            <h5 class="additition-name">Material</h5>
-                                            <div class="additition-variant"><span>:</span>100% Cotton, Jens</div>
+                                            {{-- <h5 class="additition-name">Material</h5>
+                                            <div class="additition-variant"><span>:</span>100% Cotton, Jens</div> --}}
+                                            <p><strong>Chất liệu:</strong> {{ $product->material }}</p>
                                         </li>
                                     </ul>
                                 </div>

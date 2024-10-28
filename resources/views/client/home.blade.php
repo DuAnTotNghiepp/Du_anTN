@@ -2089,7 +2089,8 @@
                             <div class="swiper-slide">
                                 <div class="product-card-xl">
                                     <div class="product-img-xl">
-                                        <a href="{{route('product.detail')}}">
+                                        <a href="{{ route('client.product_detail', ['id' => $item->id]) }}">
+
                                             <img
                                                 src="{{ Storage::url($item->img_thumbnail) }}" alt
                                                 class="img-fluid" style="width: 200px; height: 320px"></a>

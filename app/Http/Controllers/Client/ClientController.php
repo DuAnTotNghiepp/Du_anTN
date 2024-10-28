@@ -23,8 +23,13 @@ class ClientController extends Controller
     return view('client.home', compact(['listSp', 'listHot', 'data']));
     }
 
-    public function product(){
-        return view('client.product_detail');
+    public function show($id)
+    {
+        // Tìm sản phẩm theo ID
+        $product = Product::findOrFail($id);
+
+        // Trả về view chi tiết sản phẩm cùng với dữ liệu của sản phẩm
+        return view('client.product_detail', compact('product'));
     }
     public function checkout(){
         return view('client.checkout');
