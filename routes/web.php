@@ -42,19 +42,7 @@ Route::get('login/facebook', [AuthController::class, 'redirectToFacebook']);
 Route::get('login/facebook/callback', [AuthController::class, 'handleFacebookCallback']);
 
 // Admin Routes (Requires auth and admin middleware)
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin', function () {
-        return view('admin.content');
-    })->name('content');
 
-    // Admin account management
-    Route::get('admin/accounts', [AdminController::class, 'index'])->name('accounts.index');
-    Route::get('admin/accounts/create', [AdminController::class, 'create'])->name('accounts.create');
-    Route::post('admin/accounts', [AdminController::class, 'store'])->name('accounts.store');
-    Route::get('admin/accounts/{user}/edit', [AdminController::class, 'edit'])->name('accounts.edit');
-    Route::put('admin/accounts/{user}', [AdminController::class, 'update'])->name('accounts.update');
-    Route::delete('admin/accounts/{user}', [AdminController::class, 'destroy'])->name('accounts.destroy');
-});
 Route::get('/admin', function () {
     return view('admin.content');
 })->name('content');
