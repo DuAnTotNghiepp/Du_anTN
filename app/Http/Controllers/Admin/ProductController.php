@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\BinhLuan;
 use App\Models\Catalogues;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
@@ -160,6 +161,14 @@ class ProductController extends Controller
             return response()->json(['success' => false, 'message' => 'Sản phẩm không tồn tại']);
 
         }
+    }
+
+
+    //binh luan
+    public function indexWithComments()
+    {
+        $listPro = Product::withCount('binh_luans')->latest('id')->get();
+        return view('admin.comment.index', compact('listPro'));
     }
 
 }

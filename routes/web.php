@@ -2,10 +2,19 @@
 
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AdminController;
+
 use App\Http\Controllers\Client\ClientController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\AuthController;
+//hhhh
+use App\Http\Controllers\Auth\AuthController as AuthAuthController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BinhLuanController;
+use App\Http\Controllers\ProductController as ControllersProductController;
+//hhhhh
 use App\Http\Middleware\CheckRoleAdminMiddleware;
 
 /*
@@ -43,16 +52,17 @@ Route::get('login/facebook/callback', [AuthController::class, 'handleFacebookCal
 
 // Admin Routes (Requires auth and admin middleware)
 
+
 Route::get('/admin', function () {
     return view('admin.content');
 })->name('content');
 
 
-Route::get('login', [AuthController::class, 'showFormLogin']);
-Route::post('login', [AuthController::class, 'login'])->name('login');
-Route::get('register', [AuthController::class, 'showFormRegister']);
-Route::post('register', [AuthController::class, 'register'])->name('register');
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('login', [AuthAuthController::class, 'showFormLogin']);
+Route::post('login', [AuthAuthController::class, 'login'])->name('login');
+Route::get('register', [AuthAuthController::class, 'showFormRegister']);
+Route::post('register', [AuthAuthController::class, 'register'])->name('register');
+Route::post('logout', [AuthAuthController::class, 'logout'])->name('logout');
 
 //client
 Route::get('/', [ClientController::class, 'index'])->name('index');
@@ -60,6 +70,13 @@ Route::get('/product/detail', [ClientController::class, 'product'])->name('produ
 Route::get('/product/checkout', [ClientController::class, 'checkout'])->name('product.checkout');
 
 
+//chi tiet test
+Route::get('/product/{slug}',[ControllersProductController::class,'detail'])->name('product.detail');
+Route::post('product/comment/{id}', [BinhLuanController::class, 'store'])->name('comment.store');
+Route::get('admin/comment/index', [ProductController::class, 'indexWithComments'])->name('comment.index');
+Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComments'])->name('product.comments');
+
 
 
 // Group routes under admin middleware
+
