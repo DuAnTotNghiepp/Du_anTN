@@ -35,4 +35,19 @@ class ClientController extends Controller
         return view('client.checkout');
     }
 
+    public function show_variants($id)
+    {
+        // Lấy sản phẩm và các biến thể của sản phẩm
+    $product = Product::with('variants')->findOrFail($id);
+
+    // Lọc biến thể theo `color` và `size`
+    $colors = $product->variants->where('name', 'color')->pluck('value')->unique();
+    $sizes = $product->variants->where('name', 'size')->pluck('value')->unique();
+    
+       // Kiểm tra dữ liệu
+      // dd($product, $colors, $sizes);
+    // Trả về view với dữ liệu
+    return view('client.product_detail', compact('product', 'colors', 'sizes'));
+    }
+
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
 class Product extends Model
 {
     use HasFactory;
@@ -40,8 +41,9 @@ class Product extends Model
     {
         return $this->belongsTo(Catalogues::class, 'catalogues_id');
     }
-    // public function variants()
-    // {
-    //     return $this->hasMany(Variants::class);
-    // }
+    public function variants()
+    {
+        return $this->belongsToMany(Variants::class, 'product__variants', 'product_id', 'variants_id');
+    }
+
 }

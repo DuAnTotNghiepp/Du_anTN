@@ -13,15 +13,12 @@ return new class extends Migration
     {
         Schema::create('product__variants', function (Blueprint $table) {
             $table->id();
-            $table->integer('product_id');
-            $table->integer('variants_id');
+            $table->unsignedBigInteger('product_id'); // Sửa kiểu dữ liệu ở đây
+            $table->unsignedBigInteger('variants_id'); // Sửa kiểu dữ liệu ở đây
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('product__variants');

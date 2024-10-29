@@ -102,50 +102,45 @@
                             </div>
                             <div class="pd-quick-discription">
                                 <ul>
+                                    <!-- Lựa chọn màu sắc -->
                                     <li class="d-flex align-items-center">
                                         <span>Color :</span>
                                         <div class="color-option d-flex align-items-center">
-                                            <input type="radio" name="color" id="color1" value="red" checked>
-                                            <label for="color1"><span class="c1 p-color"></span></label>
-                                            <input type="radio" name="color" id="color2" value="red">
-                                            <label for="color2"><span class="c2 p-color"></span></label>
-                                            <input type="radio" name="color" id="color4" value="red">
-                                            <label for="color4"><span class="c4 p-color"></span></label>
+                                            @foreach ($colors as $index => $color)
+                                                <input type="radio" name="color" id="color{{ $index }}" value="{{ $color }}" {{ $index === 0 ? 'checked' : '' }}>
+                                                <label for="color{{ $index }}"><span class="p-color" style="background-color: {{ $color }}"></span></label>
+                                            @endforeach
                                         </div>
                                     </li>
+                                
+                                    <!-- Lựa chọn kích thước -->
                                     <li class="d-flex align-items-center">
                                         <span>Size :</span>
                                         <div class="size-option d-flex align-items-center">
-                                            <input type="radio" name="size" id="size1" value="red" checked>
-                                            <label for="size1">
-                                                <span class="p-size">M</span>
-                                            </label>
-                                            <input type="radio" name="size" id="size2" value="red">
-                                            <label for="size2">
-                                                <span class="p-size">L</span>
-                                            </label>
-                                            <input type="radio" name="size" id="size3" value="red">
-                                            <label for="size3">
-                                                <span class="p-size">XL</span>
-                                            </label>
-                                            <input type="radio" name="size" id="size4" value="red">
-                                            <label for="size4">
-                                                <span class="p-size">XXL</span>
-                                            </label>
+                                            @foreach ($sizes as $index => $size)
+                                                <input type="radio" name="size" id="size{{ $index }}" value="{{ $size }}" {{ $index === 0 ? 'checked' : '' }}>
+                                                <label for="size{{ $index }}"><span class="p-size">{{ $size }}</span></label>
+                                            @endforeach
                                         </div>
                                     </li>
+                                
+                                    <!-- Số lượng và thêm vào giỏ hàng -->
                                     <li class="d-flex align-items-center pd-cart-btns">
                                         <div class="quantity">
                                             <input type="number" min="1" max="90" step="10" value="1">
                                         </div>
-                                        <button type="submit" class="pd-add-cart"><a href="cart" style="color:white">Add
-                                                to cart</a></button>
+                                        <button type="submit" class="pd-add-cart">
+                                            <a href="cart" style="color:white">Add to cart</a>
+                                        </button>
                                     </li>
-                                    <li class="pd-type">Product Type: <span>Woman Winter Dress</span></li>
-                                    <li class="pd-type">Catagories: <span> Clothing, Hoodies</span></li>
-                                    <li class="pd-type">Availabile: <span>89</span></li>
-                                    <li class="pd-type">Material : <span>100% Cotton, Jens</span></li>
+                                
+                                    <!-- Thông tin sản phẩm khác -->
+                                    <li class="pd-type">Product Type: <span>{{ $product->type ?? 'N/A' }}</span></li>
+                                    <li class="pd-type">Categories: <span>{{ implode(', ', $product->categories ?? ['N/A']) }}</span></li>
+                                    <li class="pd-type">Available: <span>{{ $product->stock ?? 'N/A' }}</span></li>
+                                    <li class="pd-type">Material : <span>{{ $product->material ?? 'N/A' }}</span></li>
                                 </ul>
+                                
                             </div>
                         </div>
                     </div>
@@ -176,7 +171,10 @@
                             <div class="tab-pane fade show active" id="pd-discription-pill3" role="tabpanel"
                                  aria-labelledby="pd-discription3">
                                 <div class="discription-texts">
-                                    <p><strong>Nội dung:</strong> {{ $product->content }}</p>
+                                    <div class="m-1">
+                                        <p><strong>Nội dung:</strong> {{ $product->content }}</p>
+                                    </div>
+                                    
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="pd-discription-pill2" role="tabpanel"
