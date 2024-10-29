@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\Client\ClientController;
 use Illuminate\Support\Facades\Route;
 
@@ -59,7 +60,7 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::delete('admin/accounts/{user}', [AdminController::class, 'destroy'])->name('admin.accounts.destroy');
 });
 
-
+Route::resource('cart', CartController::class);
 
 
 
