@@ -1,16 +1,13 @@
 <?php
 
 use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\AdminController;
-
-use App\Http\Controllers\Client\ClientController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BinhLuanController;
+use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\ProductController as ControllersProductController;
+use Illuminate\Support\Facades\Route;
+
 //hhhhh
-use App\Http\Middleware\CheckRoleAdminMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,7 +63,7 @@ Route::get('/product/checkout', [ClientController::class, 'checkout'])->name('pr
 
 
 //chi tiet test
-Route::get('/product/{slug}',[ControllersProductController::class,'detail'])->name('product.detail');
+Route::get('/product/{slug}', [ControllersProductController::class, 'detail'])->name('product.detail');
 Route::post('product/comment/{id}', [BinhLuanController::class, 'store'])->name('comment.store');
 Route::get('admin/comment/index', [ProductController::class, 'indexWithComments'])->name('comment.index');
 Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComments'])->name('product.comments');
