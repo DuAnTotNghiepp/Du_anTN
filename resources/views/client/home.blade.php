@@ -2044,55 +2044,10 @@
                     <div class="swiper-button-next"><i class="flaticon-arrow-pointing-to-right"></i></div>
                     <div class="swiper-button-prev"><i class="flaticon-arrow-pointing-to-left"></i></div>
 
-//tl detail
-<div class="tranding-product-wrapper ml-110 mt-70 position-relative">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12 mb-50">
-                <div class="section-head">
-                    <h2 class="section-title">Tất Cả Sản Phẩm</h2>
+
                 </div>
             </div>
         </div>
-        {{--  <div class="row">
-            <div class="swiper-tranding-container overflow-hidden pb-30">
-
-                <div class="swiper-wrapper">
-                    @foreach ($listSp as $item)
-                    <div class="swiper-slide">
-                        <div class="product-card-xl">
-                            <div class="product-img-xl">
-                                <a href="{{route('product.detail',$item->slug)}}"><img src="{{ Storage::url($item->img_thumbnail) }}" alt
-                                        class="img-fluid"></a>
-                                <div class="product-actions-xl">
-                                    <a href="#"><i class="flaticon-heart"></i></a>
-                                    <a href="product-details.html"><i class="flaticon-search"></i></a>
-                                    <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
-                                </div>
-                            </div>
-                            <div class="product-content-xl text-center">
-                                <ul class="d-flex product-rating-xl">
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star"></i></li>
-                                </ul>
-                                <a href="product-details.html" class="product-title">{{ $item->name }}</a>
-                                <div class="product-price">
-                                    <del class="old-price">{{ $item->price_sale }}</del><ins class="new-price">{{ $item->price_regular }}</ins>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-                //tetsdel
-
-
-                </div>
-            </div>
-        </div>  --}}
     </div>
 
     <div class="tranding-product-wrapper ml-110 mt-70 position-relative">

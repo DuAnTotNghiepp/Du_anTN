@@ -7,11 +7,6 @@ use App\Http\Controllers\Client\ClientController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\AuthController;
-//hhhh
-use App\Http\Controllers\Auth\AuthController as AuthAuthController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BinhLuanController;
 use App\Http\Controllers\ProductController as ControllersProductController;
 //hhhhh
@@ -58,11 +53,11 @@ Route::get('/admin', function () {
 })->name('content');
 
 
-Route::get('login', [AuthAuthController::class, 'showFormLogin']);
-Route::post('login', [AuthAuthController::class, 'login'])->name('login');
-Route::get('register', [AuthAuthController::class, 'showFormRegister']);
-Route::post('register', [AuthAuthController::class, 'register'])->name('register');
-Route::post('logout', [AuthAuthController::class, 'logout'])->name('logout');
+Route::get('login', [AuthController::class, 'showFormLogin']);
+Route::post('login', [AuthController::class, 'login'])->name('login');
+Route::get('register', [AuthController::class, 'showFormRegister']);
+Route::post('register', [AuthController::class, 'register'])->name('register');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 //client
 Route::get('/', [ClientController::class, 'index'])->name('index');
