@@ -266,9 +266,9 @@
                                                                 </div>
                                                                 <div class="client-review-info">
                                                                     <h5 class="client-name mb-1">${data.comment.user_name}</h5>
-                                                                    <ul class="product-rating d-flex align-items-center list-unstyled mb-0">
-                                                                        ${'★'.repeat(data.comment.rating)}${'☆'.repeat(5 - data.comment.rating)}
-                                                                    </ul>
+                                                                   <ul class="product-rating d-flex align-items-center list-unstyled mb-0" style="color: gold;">
+    ${'★'.repeat(data.comment.rating)}${'☆'.repeat(5 - data.comment.rating)}
+</ul>
                                                                 </div>
                                                             </div>
                                                             <div class="client-review-text">
