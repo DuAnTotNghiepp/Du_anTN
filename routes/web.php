@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\CartController;
 use App\Http\Controllers\Client\ClientController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Middleware\CheckRoleAdminMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,18 +19,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Public Routes
 Route::get('/', function () {
-        return view('welcome');
+    return view('welcome');
 });
 
+// Authentication Routes
+Route::get('login', [AuthController::class, 'showFormLogin']);
+Route::post('login', [AuthController::class, 'login'])->name('login');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('register', [AuthController::class, 'showFormRegister']);
+Route::post('register', [AuthController::class, 'register'])->name('register');
+
+// Password Reset Routes
 Route::get('password/forgot', [AuthController::class, 'showForgotPasswordForm'])->name('password.forgot');
 Route::post('password/forgot', [AuthController::class, 'sendResetLinkEmail']);
-
 Route::get('password/reset/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
 Route::post('password/reset', [AuthController::class, 'reset']);
 
+// Social Login Routes
 Route::get('login/facebook', [AuthController::class, 'redirectToFacebook']);
-Route::get('login/facebook/callback', [AuthController::class ,'handleFacebookCallback']);
+Route::get('login/facebook/callback', [AuthController::class, 'handleFacebookCallback']);
+
+// Admin Routes (Requires auth and admin middleware)
 
 Route::get('/admin', function () {
     return view('admin.content');

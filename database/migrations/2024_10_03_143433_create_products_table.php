@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Catalogues::class)->constrained();
+            $table->foreignIdFor(\App\Models\Catalogues::class)->constrained()->onDelete('cascade');
             $table->string('name');
             $table->String('slug')->unique();
             $table->String('sku')->unique();
