@@ -9,6 +9,7 @@ use App\Models\Catalogues;
 use App\Models\Product;
 use App\Models\Product_Variant;
 use App\Models\Variants;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -36,9 +37,9 @@ class ProductController extends Controller
     {
 
         $listCate = Catalogues::all();
-        $Color = Variants::where('name','Color')->get();
-        $Size = Variants::where('name','Size')->get();
-        return view('admin.product.create', compact('listCate','Color','Size'));
+        $Color = Variants::where('name', 'Color')->get();
+        $Size = Variants::where('name', 'Size')->get();
+        return view('admin.product.create', compact('listCate', 'Color', 'Size'));
     }
 
     /**
@@ -66,7 +67,7 @@ class ProductController extends Controller
         foreach ($request->id_variant as $value) {
             Product_Variant::create([
                 'product_id' => $res->id,
-                'variants_id'=>$value
+                'variants_id' => $value
             ]);
         }
 
@@ -75,7 +76,6 @@ class ProductController extends Controller
         } else {
             return redirect()->back()->with('error', 'Sản phẩm đã được thêm mới không thành công');
         }
-
     }
 
     /**
@@ -95,9 +95,16 @@ class ProductController extends Controller
         $listCate = Catalogues::all();
         // Lấy thông tin sản phẩm
         $listPro = Product::find($id);
-
+        $Color = Variants::where('name', 'Color')->get();
+        $Size = Variants::where('name', 'Size')->get();
+        $vari_id = DB::table('product__variants')->where('product_id', $id)->pluck('variants_id')->toArray();
+        // foreach ($Color as $key => $value) {
+        //     echo "<pre>";
+        //     var_dump(in_array($value->id,$vari_id));
+        // }
+        // dd($vari_id);
         // Trả về view với dữ liệu danh mục và sản phẩm
-        return view('admin.product.edit', compact('listPro', 'listCate'));
+        return view('admin.product.edit', compact('listPro', 'listCate', 'Color', 'Size', 'vari_id'));
     }
 
     /**
@@ -134,6 +141,33 @@ class ProductController extends Controller
                 $params['img_thumbnail'] = $imageOld;
             }
 
+            $selectedVariants = $request->input('id_variant', []);
+
+            // Lấy các variants_id hiện tại từ cơ sở dữ liệu
+            $currentVariants = DB::table('product__variants')
+                ->where('product_id', $id)
+                ->pluck('variants_id')
+                ->toArray();
+
+            // Xác định các thuộc tính cần thêm và cần xóa
+            $variantsToAdd = array_diff($selectedVariants, $currentVariants);
+            $variantsToRemove = array_diff($currentVariants, $selectedVariants);
+
+            // Xóa các thuộc tính không còn chọn
+            if (!empty($variantsToRemove)) {
+                DB::table('product__variants')
+                    ->where('product_id', $id)
+                    ->whereIn('variants_id', $variantsToRemove)
+                    ->delete();
+            }
+
+            // Thêm các thuộc tính mới vào bảng product__variants
+            foreach ($variantsToAdd as $variantId) {
+                DB::table('product__variants')->insert([
+                    'product_id' => $id,
+                    'variants_id' => $variantId,
+                ]);
+            }
             // Cập nhật dữ liệu sản phẩm
             $res = $product->update($params);
 
@@ -165,8 +199,6 @@ class ProductController extends Controller
             return response()->json(['success' => false, 'message' => 'Sản phẩm không được dưới 5']);
         } else {
             return response()->json(['success' => false, 'message' => 'Sản phẩm không tồn tại']);
-
         }
     }
-
 }
