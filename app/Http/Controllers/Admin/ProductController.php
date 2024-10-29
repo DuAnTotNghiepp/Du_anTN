@@ -86,6 +86,7 @@ class ProductController extends Controller
         // Lấy thông tin sản phẩm
         $listPro = Product::find($id);
 
+
         // Trả về view với dữ liệu danh mục và sản phẩm
         return view('admin.product.edit', compact('listPro', 'listCate'));
     }
@@ -149,11 +150,14 @@ class ProductController extends Controller
 
         if ($product) {
             if ($totalQuantity <= 5) {
+                return response()->json(['success' => false, 'message' => 'Sản phẩm không được dưới 5']);
+            }else{
                 $product->delete();
                 return response()->json(['success' => true, 'message' => 'Sản phẩm đã được xóa thành công']);
             }
-            return response()->json(['success' => false, 'message' => 'Sản phẩm không được dưới 5']);
+
         } else {
+
             return response()->json(['success' => false, 'message' => 'Sản phẩm không tồn tại']);
 
         }

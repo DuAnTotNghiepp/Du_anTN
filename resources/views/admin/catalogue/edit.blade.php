@@ -1,5 +1,5 @@
 @extends('admin.layouts.master')
-@section('update')
+@section('content')
     <div class="modal fade" id="showModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
