@@ -2044,7 +2044,7 @@
                     <div class="swiper-button-next"><i class="flaticon-arrow-pointing-to-right"></i></div>
                     <div class="swiper-button-prev"><i class="flaticon-arrow-pointing-to-left"></i></div>
 
-//tl detail
+{{--  //tl detail
 <div class="tranding-product-wrapper ml-110 mt-70 position-relative">
     <div class="container-fluid">
         <div class="row">
@@ -2054,7 +2054,7 @@
                 </div>
             </div>
         </div>
-        {{--  <div class="row">
+         <div class="row">
             <div class="swiper-tranding-container overflow-hidden pb-30">
 
                 <div class="swiper-wrapper">
@@ -2086,13 +2086,13 @@
                         </div>
                     </div>
                     @endforeach
-                </div>
+                </div>  --}}
                 //tetsdel
 
 
                 </div>
             </div>
-        </div>  --}}
+        </div>  
     </div>
 
     <div class="tranding-product-wrapper ml-110 mt-70 position-relative">

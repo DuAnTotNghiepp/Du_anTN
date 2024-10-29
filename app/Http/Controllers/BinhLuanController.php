@@ -28,19 +28,19 @@ class BinhLuanController extends Controller
     {
         // Kiểm tra xem người dùng đã đăng nhập chưa
         if (!Auth::check()) {
-            return redirect()->back()->with('error', 'Bạn cần phải đăng nhập để thêm bình luận.');
+            return response()->json(['error' => 'Bạn cần phải đăng nhập để thêm bình luận.'], 401);
         }
-
+    
         try {
             // Xác thực dữ liệu yêu cầu
             $validatedData = $request->validate([
                 'noidung' => 'required|string|max:1000',
                 'rating' => 'required|integer|between:1,5',
             ]);
-
+    
             // Ghi nhận dữ liệu đã xác thực
             Log::info('Validated Data: ', $validatedData);
-
+    
             // Tạo bình luận
             $comment = BinhLuan::create([
                 'product_id' => $productId,
@@ -48,24 +48,32 @@ class BinhLuanController extends Controller
                 'noidung' => $validatedData['noidung'],
                 'rating' => $validatedData['rating'],
             ]);
-
-            // Redirect về với thông báo thành công
-            return redirect()->back()->with('success', 'Bình luận đã được thêm thành công.');
-
+    
+            // Lấy thông tin người dùng để phản hồi
+            $user = Auth::user();
+    
+            // Trả về phản hồi JSON thành công
+            return response()->json([
+                'success' => 'Bình luận đã được thêm thành công.',
+                'comment' => $comment,
+                'user' => [
+                    'name' => $user->name,
+                    'avatar' => $user->avatar // Nếu bạn có trường này trong model User
+                ]
+            ]);
+    
         } catch (\Illuminate\Database\QueryException $e) {
             // Ghi nhận lỗi SQL
             Log::error('Query Exception: ', ['message' => $e->getMessage()]);
-            return redirect()->back()->with('error', 'Không thể thêm bình luận: ' . $e->getMessage());
-
+            return response()->json(['error' => 'Không thể thêm bình luận: ' . $e->getMessage()], 500);
+    
         } catch (\Exception $e) {
             // Ghi nhận lỗi chung
             Log::error('General Exception: ', ['message' => $e->getMessage()]);
-            return redirect()->back()->with('error', 'Đã xảy ra lỗi: ' . $e->getMessage());
+            return response()->json(['error' => 'Đã xảy ra lỗi: ' . $e->getMessage()], 500);
         }
     }
-
     
-
 
     /**
      * Show comments for a product.
