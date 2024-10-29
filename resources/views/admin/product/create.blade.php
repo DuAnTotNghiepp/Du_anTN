@@ -20,6 +20,22 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
     </head>
+    <style>
+        .preview-img {
+            max-width: 100px;
+            max-height: 100px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .preview-gallery img {
+            max-width: 100px;
+            max-height: 100px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
 
     <body>
         <!-- start page title -->
@@ -73,6 +89,14 @@
                             </div>
 
                             <div class="mb-3">
+                                <label class="form-label">Ảnh liên Quan</label>
+                                <div class="dropzone">
+                                    <input type="file" id="product-image-input" name="image[]" multiple accept="image/png, image/gif, image/jpeg" class="form-control">
+                                    <div class="preview-gallery" id="galleryPreview"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
                                 <label class="form-label">Mô Tả Sản Phẩm</label>
                                 <div id="ckeditor-classic">
                                     <textarea class="form-control" placeholder="Enter Description" name="description" id="description" rows="3"
@@ -84,8 +108,9 @@
                                 <div class="col-lg-4">
                                     <div class="mb-3 mb-lg-0">
                                         <label for="choices-priority-input" class="form-label">Giá Thường</label>
-                                        <input type="number" class="form-control" name="price_regular" id="price_regular"
-                                            step="0.01" required data-provider="flatpickr" data-date-format="d M, Y">
+                                        <input type="number" class="form-control" name="price_regular"
+                                            id="price_regular" step="0.01" required data-provider="flatpickr"
+                                            data-date-format="d M, Y">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -98,8 +123,8 @@
                                 <div class="col-lg-4">
                                     <div>
                                         <label for="datepicker-deadline-input" class="form-label">Số Lượng</label>
-                                        <input type="number" class="form-control" name="quantity" id="quantity" required
-                                            data-provider="flatpickr" data-date-format="d M, Y">
+                                        <input type="number" class="form-control" name="quantity" id="quantity"
+                                            required data-provider="flatpickr" data-date-format="d M, Y">
                                     </div>
                                 </div>
                             </div><br>
@@ -255,15 +280,17 @@
                         <div class="mb-3">
                             <label for="choices-categories-input" class="form-label">Màu Sắc</label>
                             @foreach ($Color as $col)
-                                <input type="checkbox" value="{{$col->id}}" name="id_variant[]">
-                                <div style="width: 20px; height: 20px; background-color: {{$col->value}}; display: inline-block; border: 1px solid #ccc;"></div>
+                                <input type="checkbox" value="{{ $col->id }}" name="id_variant[]">
+                                <div
+                                    style="width: 20px; height: 20px; background-color: {{ $col->value }}; display: inline-block; border: 1px solid #ccc;">
+                                </div>
                             @endforeach
                         </div>
                         <div class="mb-3">
                             <label for="choices-categories-input" class="form-label">Kích Thước</label>
                             @foreach ($Size as $col)
-                                <input type="checkbox" value="{{$col->id}}" name="id_variant[]">
-                                {{$col->value}}
+                                <input type="checkbox" value="{{ $col->id }}" name="id_variant[]">
+                                {{ $col->value }}
                             @endforeach
                         </div>
                     </div>
@@ -335,6 +362,24 @@
 
         <!-- end main content-->
         <script>
+            document.getElementById('project-thumbnail-img').addEventListener('change', function(event) {
+                const [file] = event.target.files;
+                if (file) {
+                    document.getElementById('imgPreview').src = URL.createObjectURL(file);
+                }
+            });
+
+            // Hiển thị xem trước ảnh trong bộ sưu tập
+            document.getElementById('product-image-input').addEventListener('change', function(event) {
+                const galleryPreview = document.getElementById('galleryPreview');
+                galleryPreview.innerHTML = ''; // Xóa ảnh cũ trong gallery
+                Array.from(event.target.files).forEach(file => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = URL.createObjectURL(file);
+                    imgElement.classList.add('preview-img');
+                    galleryPreview.appendChild(imgElement);
+                });
+            });
             document.getElementById('generateSKU').addEventListener('click', function() {
                 // Hàm sinh mã SKU ngẫu nhiên gồm 8 ký tự chữ và số, viết hoa
                 function generateRandomSKU(length = 8) {
