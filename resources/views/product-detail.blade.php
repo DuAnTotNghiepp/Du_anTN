@@ -166,26 +166,31 @@
                         </div>
                         <div class="tab-pane fade" id="pd-discription-pill1" role="tabpanel" aria-labelledby="pd-discription1">
                             <div class="discription-review">
+                                <h4 class="mb-4">Đánh giá của khách hàng</h4>
                                 <div class="clients-review-cards">
                                     <div class="row">
                                         @foreach($comments as $comment)
-                                            <div class="col-lg-6">
-                                                <div class="client-review-card">
-                                                    <div class="client-review-header d-flex align-items-center">
-                                                        <div class="client-review-img">
-                                                            <img src="assets/images/blog/author.png" alt>
+                                            <div class="col-lg-6 mb-3">
+                                                <div class="card client-review-card">
+                                                    <div class="card-body">
+                                                        <div class="d-flex align-items-center mb-3">
+                                                            <div class="client-review-img me-3">
+                                                                <img src="assets/images/blog/author.png" alt="Client Image" class="rounded-circle" width="50" height="50">
+                                                            </div>
+                                                            <div class="client-review-info">
+                                                                <h5 class="client-name mb-1">{{ $comment->user->name }}</h5>
+                                                                <ul class="product-rating d-flex align-items-center list-unstyled mb-0">
+                                                                    @for ($i = 1; $i <= 5; $i++)
+                                                                        <li class="me-1">
+                                                                            <i class="bi bi-star{{ $i <= $comment->rating ? '-fill' : '' }}"></i>
+                                                                        </li>
+                                                                    @endfor
+                                                                </ul>
+                                                            </div>
                                                         </div>
-                                                        <div class="client-review-info">
-                                                            <h5 class="client-name">{{ $comment->user->name }}</h5>
-                                                            <ul class="product-rating d-flex align-items-center">
-                                                                @for ($i = 1; $i <= 5; $i++)
-                                                                    <li><i class="bi bi-star{{ $i <= $comment->rating ? '-fill' : '' }}"></i></li>
-                                                                @endfor
-                                                            </ul>
+                                                        <div class="client-review-text">
+                                                            <p class="mb-0">{{ $comment->noidung }}</p>
                                                         </div>
-                                                    </div>
-                                                    <div class="client-review-text">
-                                                        <p>{{ $comment->noidung }}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -193,35 +198,65 @@
                                     </div>
                                 </div>
                             </div>
+                        
                             @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
+                                <div class="alert alert-danger mt-4">
+                                    <ul class="mb-0">
                                         @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
                                         @endforeach
                                     </ul>
                                 </div>
                             @endif
+                        
                             <form action="{{ route('comment.store', $product->id) }}" method="POST" class="review-form mt-4">
                                 @csrf
                                 <div class="form-group">
                                     <label for="content">Nội dung bình luận:</label>
                                     <textarea id="content" name="noidung" class="form-control" required></textarea>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group mt-3">
                                     <label for="rating">Đánh giá:</label>
                                     <div class="d-flex">
                                         @for ($i = 1; $i <= 5; $i++)
                                             <div class="form-check">
-                                                <input type="radio" class="form-check-input" name="rating" value="{{ $i }}" id="rating{{ $i }}">
-                                                <label class="form-check-label" for="rating{{ $i }}">{{ $i }} <i class="bi bi-star-fill"></i></label>
+                                                <input type="radio" class="form-check-input" name="rating" value="{{ $i }}" id="rating{{ $i }}" style="display: none;">
+                                                <label class="form-check-label" for="rating{{ $i }}" style="cursor: pointer;">
+                                                    <i class="bi bi-star-fill star" data-value="{{ $i }}" style="font-size: 24px; color: gray;"></i>
+                                                </label>
                                             </div>
                                         @endfor
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Gửi bình luận</button>
+                                <button type="submit" class="btn btn-primary mt-3">Gửi bình luận</button>
                             </form>
                         </div>
+                        
+                        <script>
+                            // JavaScript to handle star rating
+                            const stars = document.querySelectorAll('.star');
+                            stars.forEach(star => {
+                                star.addEventListener('click', function() {
+                                    const ratingValue = this.getAttribute('data-value');
+                        
+                                    // Update the radio button selection
+                                    document.querySelector(`input[name="rating"][value="${ratingValue}"]`).checked = true;
+                        
+                                    // Set the color of the stars
+                                    stars.forEach((s, index) => {
+                                        s.style.color = index < ratingValue ? 'gold' : 'gray'; // Update color based on selection
+                                    });
+                                });
+                            });
+                        </script>
+                        
+                        <style>
+                            /* Optional: Add some margin around stars */
+                            .star {
+                                margin-right: 5px;
+                            }
+                        </style>
+                        
                     </div>
                 </div>
             </div>

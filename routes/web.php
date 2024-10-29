@@ -2,9 +2,13 @@
 
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\AuthController as AuthAuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BinhLuanController;
+use App\Http\Controllers\Client\ClientController;
+use App\Http\Controllers\ProductController as ControllersProductController;
 use App\Http\Middleware\CheckRoleAdminMiddleware;
 
 /*
@@ -22,35 +26,35 @@ Route::get('/', function () {
         return view('welcome');
 });
 
-Route::get('password/forgot', [AuthController::class, 'showForgotPasswordForm'])->name('password.forgot');
-Route::post('password/forgot', [AuthController::class, 'sendResetLinkEmail']);
+Route::get('password/forgot', [AuthAuthController::class, 'showForgotPasswordForm'])->name('password.forgot');
+Route::post('password/forgot', [AuthAuthController::class, 'sendResetLinkEmail']);
 
-Route::get('password/reset/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
-Route::post('password/reset', [AuthController::class, 'reset']);
+Route::get('password/reset/{token}', [AuthAuthController::class, 'showResetPasswordForm'])->name('password.reset');
+Route::post('password/reset', [AuthAuthController::class, 'reset']);
 
-Route::get('login/facebook', [AuthController::class, 'redirectToFacebook']);
-Route::get('login/facebook/callback', [AuthController::class ,'handleFacebookCallback']);
+Route::get('login/facebook', [AuthAuthController::class, 'redirectToFacebook']);
+Route::get('login/facebook/callback', [AuthAuthController::class ,'handleFacebookCallback']);
 
 Route::get('/admin', function () {
     return view('admin.content');
 })->name('content');
 
 
-Route::get('login', [AuthController::class, 'showFormLogin']);
-Route::post('login', [AuthController::class, 'login'])->name('login');
-Route::get('register', [AuthController::class, 'showFormRegister']);
-Route::post('register', [AuthController::class, 'register'])->name('register');
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('login', [AuthAuthController::class, 'showFormLogin']);
+Route::post('login', [AuthAuthController::class, 'login'])->name('login');
+Route::get('register', [AuthAuthController::class, 'showFormRegister']);
+Route::post('register', [AuthAuthController::class, 'register'])->name('register');
+Route::post('logout', [AuthAuthController::class, 'logout'])->name('logout');
 
 //client
 Route::get('/', [ClientController::class, 'index'])->name('index');
-Route::get('/product/detail', [ClientController::class, 'product'])->name('product.detail');
+// Route::get('/product/detail', [ClientController::class, 'product'])->name('product.detail');
 
 
 //chi tiet test
-Route::get('/product/{slug}',[ProductController::class,'detail'])->name('product.detail');
+Route::get('/product/{slug}',[ControllersProductController::class,'detail'])->name('product.detail');
 Route::post('product/comment/{id}', [BinhLuanController::class, 'store'])->name('comment.store');
-Route::get('admin/comment/index', [AdminProductController::class, 'indexWithComments'])->name('comment.index');
+Route::get('admin/comment/index', [ProductController::class, 'indexWithComments'])->name('comment.index');
 Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComments'])->name('product.comments');
 
 

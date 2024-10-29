@@ -10,18 +10,19 @@ use Illuminate\Support\Facades\DB;
 class ProductController extends Controller
 {
     public function detail($slug)
-    {
-        // Lấy sản phẩm theo slug
-        $product = Product::where('slug', $slug)->firstOrFail();
-        
-        // Lấy bình luận cho sản phẩm
-        $comments = BinhLuan::where('product_id', $product->id)->get();
+{
+    // Lấy sản phẩm theo slug
+    $product = Product::where('slug', $slug)->firstOrFail();
     
-        // Tính toán điểm đánh giá trung bình
-        $averageRating = $comments->count() > 0 ? $comments->avg('rating') : 0; // Nếu không có bình luận thì cho trung bình là 0
-    
-        return view('product-detail', compact('product', 'comments', 'averageRating'));
-    }
+    // Lấy bình luận cho sản phẩm với phân trang
+    $comments = BinhLuan::where('product_id', $product->id)->orderBy('created_at', 'desc')->paginate(6); // Hiển thị 6 bình luận mỗi trang
+
+    // Tính toán điểm đánh giá trung bình
+    $averageRating = $comments->count() > 0 ? $comments->avg('rating') : 0; // Nếu không có bình luận thì cho trung bình là 0
+
+    return view('product-detail', compact('product', 'comments', 'averageRating'));
+}
+
     
     public function indexWithComments()
     {

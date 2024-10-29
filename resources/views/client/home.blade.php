@@ -2013,7 +2013,7 @@
                             <div class="swiper-slide">
                                 <div class="product-card-xl">
                                     <div class="product-img-xl">
-                                        <a href="{{route('product.detail')}}">
+                                        <a href="{{route('product.detail',$item->slug)}}">
                                             <img
                                                 src="{{ Storage::url($item->img_thumbnail) }}" alt
                                                 class="img-fluid" style="width: 200px; height: 320px"></a>
@@ -2050,7 +2050,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        {{--  <div class="row">
             <div class="swiper-tranding-container overflow-hidden pb-30">
 
                 <div class="swiper-wrapper">
@@ -2091,7 +2091,7 @@
 
                 </div>
             </div>
-        </div>
+        </div>  --}}
     </div>
 
     <div class="tranding-product-wrapper ml-110 mt-70 position-relative">
