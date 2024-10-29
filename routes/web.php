@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\Client\ClientController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
