@@ -42,8 +42,6 @@ Route::get('register', [AuthController::class, 'showFormRegister']);
 Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
-<<<<<<< HEAD
-=======
 //client
 Route::get('/', [ClientController::class, 'index'])->name('index');
 Route::get('/product/detail', [ClientController::class, 'product'])->name('product.detail');
@@ -64,5 +62,5 @@ Route::middleware('auth', 'admin')->group(function () {
 
 
 
->>>>>>> abadf1ae79116a74b58ebb851b7883ce1bf28a94
+
 
