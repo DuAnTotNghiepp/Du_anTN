@@ -33,25 +33,25 @@
                         <div class="product-switcher-wrap">
                             <div class="nav product-tab" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                 <div class="product-variation active" id="v-pills-home-tab" data-bs-toggle="pill"
-                                     data-bs-target="#v-pills-home" role="tab" aria-controls="v-pills-home">
+                                    data-bs-target="#v-pills-home" role="tab" aria-controls="v-pills-home">
                                     <div class="pd-showcase-img">
                                         <img src="assets/images/product/pd-sm1.png" alt>
                                     </div>
                                 </div>
                                 <div class="product-variation" id="v-pills-profile-tab" data-bs-toggle="pill"
-                                     data-bs-target="#v-pills-profile" role="tab" aria-controls="v-pills-profile">
+                                    data-bs-target="#v-pills-profile" role="tab" aria-controls="v-pills-profile">
                                     <div class="pd-showcase-img">
                                         <img src="assets/images/product/pd-sm2.png" alt>
                                     </div>
                                 </div>
                                 <div class="product-variation" id="v-pills-messages-tab" data-bs-toggle="pill"
-                                     data-bs-target="#v-pills-messages" role="tab" aria-controls="v-pills-messages">
+                                    data-bs-target="#v-pills-messages" role="tab" aria-controls="v-pills-messages">
                                     <div class="pd-showcase-img">
                                         <img src="assets/images/product/pd-sm3.png" alt>
                                     </div>
                                 </div>
                                 <div class="product-variation" id="v-pills-settings-tab" data-bs-toggle="pill"
-                                     data-bs-target="#v-pills-settings" role="tab" aria-controls="v-pills-settings">
+                                    data-bs-target="#v-pills-settings" role="tab" aria-controls="v-pills-settings">
                                     <div class="pd-showcase-img">
                                         <img src="assets/images/product/pd-sm4.png" alt>
                                     </div>
@@ -59,35 +59,27 @@
                             </div>
                             <div class="tab-content" id="v-pills-tabContent">
                                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
-                                     aria-labelledby="v-pills-home-tab">
+                                    aria-labelledby="v-pills-home-tab">
                                     <div class="pd-preview-img">
-                                        <img
-                                                src="{{ Storage::url($product->img_thumbnail) }}"  alt
-                                                class="img-fluid">
+                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
-                                     aria-labelledby="v-pills-profile-tab">
+                                    aria-labelledby="v-pills-profile-tab">
                                     <div class="pd-preview-img">
-                                        <img
-                                                src="{{ Storage::url($product->img_thumbnail) }}"  alt
-                                                class="img-fluid">
+                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
-                                     aria-labelledby="v-pills-messages-tab">
+                                    aria-labelledby="v-pills-messages-tab">
                                     <div class="pd-preview-img">
-                                        <img
-                                                src="{{ Storage::url($product->img_thumbnail) }}"  alt
-                                                class="img-fluid">
+                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-settings" role="tabpanel"
-                                     aria-labelledby="v-pills-settings-tab">
+                                    aria-labelledby="v-pills-settings-tab">
                                     <div class="pd-preview-img">
-                                         <img
-                                                src="{{ Storage::url($product->img_thumbnail) }}"  alt
-                                                class="img-fluid">
+                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
                                     </div>
                                 </div>
                             </div>
@@ -105,20 +97,25 @@
                                     {{-- <li class="count-review">(<span>23</span> Review)</li> --}}
                                 </ul>
                                 <h1>{{ $product->name }}</h1>
-                                <p><strong>Giá cũ:</strong> <span class="price-regular">{{ $product->price_regular }}</span></p>
-                                <p><strong>Giá khuyến mãi:</strong> <span class="price-sale">{{ $product->price_sale }}</span></p>                                
-                              
+                                <p><strong>Giá cũ:</strong> <span class="price-regular">{{ $product->price_regular }}</span>
+                                </p>
+                                <p><strong>Giá khuyến mãi:</strong> <span
+                                        class="price-sale">{{ $product->price_sale }}</span></p>
+
                             </div>
-                              
+
                             <div class="pd-quick-discription">
                                 <ul>
                                     <li class="d-flex align-items-center">
                                         <span>Color :</span>
                                         <div class="color-option d-flex align-items-center">
                                             @foreach ($product->variants as $variant)
-                                                @if ($variant->name === 'Color') <!-- Giả sử bạn có biến thể màu sắc -->
-                                                    <input type="radio" name="color" id="color{{ $variant->id }}" value="{{ $variant->value }}" {{ $loop->first ? 'checked' : '' }}>
-                                                    <label for="color{{ $variant->id }}"><span class="p-color" style="background-color: {{ $variant->value }}"></span></label>
+                                                @if ($variant->name === 'Color')
+                                                    <!-- Giả sử bạn có biến thể màu sắc -->
+                                                    <input type="radio" name="color" id="color{{ $variant->id }}"
+                                                        value="{{ $variant->value }}" {{ $loop->first ? 'checked' : '' }}>
+                                                    <label for="color{{ $variant->id }}"><span class="p-color"
+                                                            style="background-color: {{ $variant->value }}"></span></label>
                                                 @endif
                                             @endforeach
                                         </div>
@@ -127,8 +124,11 @@
                                         <span>Size :</span>
                                         <div class="size-option d-flex align-items-center">
                                             @foreach ($product->variants as $variant)
-                                                @if ($variant->name === 'Size') <!-- Giả sử bạn có biến thể kích thước -->
-                                                    <input type="radio" name="size" id="size{{ $variant->id }}" value="{{ $variant->value }}" {{ $loop->first ? 'checked' : '' }}>
+                                                @if ($variant->name === 'Size')
+                                                    <!-- Giả sử bạn có biến thể kích thước -->
+                                                    <input type="radio" name="size" id="size{{ $variant->id }}"
+                                                        value="{{ $variant->value }}"
+                                                        {{ $loop->first ? 'checked' : '' }}>
                                                     <label for="size{{ $variant->id }}">
                                                         <span class="p-size">{{ $variant->value }}</span>
                                                     </label>
@@ -138,20 +138,23 @@
                                     </li>
                                     <li class="d-flex align-items-center pd-cart-btns">
                                         <div class="quantity">
-                                            <input type="number" min="1" max="90" step="1" value="1">
+                                            <input type="number" min="1" max="90" step="1"
+                                                value="1">
                                         </div>
-                                        <button type="submit" class="pd-add-cart"><a href="cart" style="color:white">Add to cart</a></button>
+                                        <button type="submit" class="pd-add-cart"><a href="cart"
+                                                style="color:white">Add to cart</a></button>
                                     </li>
-                                    <li class="pd-type">Danh mục sản phẩm: <span>{{ $product->catelogues->name }}</span></li>
+                                    <li class="pd-type">Danh mục sản phẩm: <span>{{ $product->catelogues->name }}</span>
+                                    </li>
                                     <li class="pd-type">Mã sản phẩm: <span>{{ $product->sku }}</span></li>
                                     <li class="pd-type">Số lượng: <span>{{ $product->quantity }}</span></li>
                                     {{-- <li class="pd-type">Categories: <span>{{ $product->quantity }}</span></li> --}}
                                     {{-- <li class="pd-type">Available: <span>{{ $product->available }}</span></li> --}}
                                     <li class="pd-type">Chất liệu: <span>{{ $product->material }}</span></li>
                                 </ul>
-                                
+
                             </div>
-                         
+
                         </div>
                     </div>
                 </div>
@@ -160,38 +163,38 @@
                 <div class="row">
                     <div class="col-xxl-3 col-xl-3">
                         <div class="nav flex-column nav-pills discription-bar" id="v-pills-tab2" role="tablist"
-                             aria-orientation="vertical">
+                            aria-orientation="vertical">
                             <button class="nav-link active" id="pd-discription3" data-bs-toggle="pill"
-                                    data-bs-target="#pd-discription-pill3" role="tab"
-                                    aria-controls="pd-discription-pill3"> Discription
+                                data-bs-target="#pd-discription-pill3" role="tab"
+                                aria-controls="pd-discription-pill3"> Discription
                             </button>
                             <button class="nav-link" id="pd-discription2" data-bs-toggle="pill"
-                                    data-bs-target="#pd-discription-pill2" role="tab"
-                                    aria-controls="pd-discription-pill2">Additional
+                                data-bs-target="#pd-discription-pill2" role="tab"
+                                aria-controls="pd-discription-pill2">Additional
                                 Information
                             </button>
                             <button class="nav-link" id="pd-discription1" data-bs-toggle="pill"
-                                    data-bs-target="#pd-discription-pill1" role="tab"
-                                    aria-controls="pd-discription-pill1">Our Review (2)
+                                data-bs-target="#pd-discription-pill1" role="tab"
+                                aria-controls="pd-discription-pill1">Our Review (2)
                             </button>
                         </div>
                     </div>
                     <div class="col-xxl-9 col-xl-9">
                         <div class="tab-content discribtion-tab-content" id="v-pills-tabContent2">
                             <div class="tab-pane fade show active" id="pd-discription-pill3" role="tabpanel"
-                                 aria-labelledby="pd-discription3">
-                                 <div class="discription-texts">                          
-                                    <p><strong>Mô tả:</strong> {{ $product->description }}</p>      
+                                aria-labelledby="pd-discription3">
+                                <div class="discription-texts">
+                                    <p><strong>Mô tả:</strong> {{ $product->description }}</p>
                                 </div>
-                                <div class="discription-texts">                          
-                                    <p><strong>Hướng dẫn sử dụng:</strong> {{ $product->user_manual }}</p>      
+                                <div class="discription-texts">
+                                    <p><strong>Hướng dẫn sử dụng:</strong> {{ $product->user_manual }}</p>
                                 </div>
-                                <div class="discription-texts">                             
+                                <div class="discription-texts">
                                     <p><strong>Nội dung:</strong> {{ $product->content }}</p>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="pd-discription-pill2" role="tabpanel"
-                                 aria-labelledby="pd-discription2">
+                                aria-labelledby="pd-discription2">
                                 <div class="additional-discription">
                                     <ul>
                                         <li>
@@ -212,124 +215,175 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="tab-pane fade " id="pd-discription-pill1" role="tabpanel"
-                                 aria-labelledby="pd-discription1">
+                            <div class="tab-pane fade" id="pd-discription-pill1" role="tabpanel"
+                                aria-labelledby="pd-discription1">
                                 <div class="discription-review">
+                                    <h4 class="mb-4">Đánh giá của khách hàng</h4>
                                     <div class="clients-review-cards">
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="client-review-card">
-                                                    <div class="review-card-head">
-                                                        <div class="client-img">
-                                                            <img src="assets/images/shapes/reviewer1.png" alt>
-                                                        </div>
-                                                        <div class="client-info">
-                                                            <h5 class="client-name">Jenny Wilson <span
-                                                                    class="review-date">- 8th Jan 2021</span></h5>
-                                                            <ul class="review-rating d-flex">
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star"></i></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <p class="review-text">
-                                                        Aenean dolor massa, rhoncus ut tortor in, pretium tempus neque.
-                                                        Vestibulum venenatis leo et dictum finibus. Nulla vulputate
-                                                        dolor sit amet tristique dapibus.
-                                                    </p>
-                                                    <ul class="review-actions d-flex align-items-center">
-                                                        <li><a href="#"><i class="flaticon-like"></i></a></li>
-                                                        <li><a href="#"><i class="flaticon-heart"></i></a></li>
-                                                        <li><a href="#">Reply</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="client-review-card">
-                                                    <div class="review-card-head">
-                                                        <div class="client-img">
-                                                            <img src="assets/images/shapes/reviewer2.png" alt>
-                                                        </div>
-                                                        <div class="client-info">
-                                                            <h5 class="client-name">Jenny Wilson <span
-                                                                    class="review-date">- 8th Jan 2021</span></h5>
-                                                            <ul class="review-rating d-flex">
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star"></i></li>
-                                                            </ul>
+                                        <div class="row" id="comments-list">
+                                            @foreach ($comments as $comment)
+                                                <div class="col-lg-6 mb-3">
+                                                    <div class="card client-review-card">
+                                                        <div class="card-body">
+                                                            <div class="d-flex align-items-center mb-3">
+                                                                <div class="client-review-img me-3">
+                                                                    <img src="assets/images/blog/author.png"
+                                                                        alt="Client Image" class="rounded-circle"
+                                                                        width="50" height="50">
+                                                                </div>
+                                                                <div class="client-review-info">
+                                                                    <h5 class="client-name mb-1">
+                                                                        {{ $comment->user->name }}</h5>
+                                                                    <ul
+                                                                        class="product-rating d-flex align-items-center list-unstyled mb-0">
+                                                                        @for ($i = 1; $i <= 5; $i++)
+                                                                            <li class="me-1">
+                                                                                <i class="bi bi-star{{ $i <= $comment->rating ? '-fill' : '' }}"
+                                                                                    style="color: gold;"></i>
+                                                                            </li>
+                                                                        @endfor
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="client-review-text">
+                                                                <p class="mb-0">{{ $comment->noidung }}</p>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <p class="review-text">
-                                                        Aenean dolor massa, rhoncus ut tortor in, pretium tempus neque.
-                                                        Vestibulum venenatis leo et dictum finibus. Nulla vulputate
-                                                        dolor sit amet tristique dapibus.
-                                                    </p>
-                                                    <ul class="review-actions d-flex align-items-center">
-                                                        <li><a href="#"><i class="flaticon-like"></i></a></li>
-                                                        <li><a href="#"><i class="flaticon-heart"></i></a></li>
-                                                        <li><a href="#">Reply</a></li>
-                                                    </ul>
                                                 </div>
-                                            </div>
+                                            @endforeach
                                         </div>
                                     </div>
-                                    <div class="review-form-wrap">
-                                        <h5>Write a Review</h5>
-                                        <h3>Leave A Comment</h3>
-                                        <p>Your email address will not be published. Required fields are marked *</p>
-                                        <form action="#" method="POST" class="review-form">
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="review-input-group">
-                                                        <label for="fname">First Name</label>
-                                                        <input type="text" name="fname" id="fname"
-                                                               placeholder="Your first name">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="review-input-group">
-                                                        <label for="lname">Last Name</label>
-                                                        <input type="text" name="lname" id="lname"
-                                                               placeholder="Your last name ">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    <div class="review-input-group">
-                                                        <textarea name="review-area" id="review-area" cols="30" rows="7"
-                                                                  placeholder="Your message"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    <div class="review-rating">
-                                                        <p>Your Rating</p>
-                                                        <ul class="d-flex">
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="submit-btn">
-                                                        <input type="submit" value="Post Comment">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
                                 </div>
+
+                                @if ($errors->any())
+                                    <div class="alert alert-danger mt-4">
+                                        <ul class="mb-0">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+
+                                @auth
+                                    <form id="comment-form" class="review-form mt-4">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        <!-- Thêm product_id -->
+                                        <div class="form-group">
+                                            <label for="content">Nội dung bình luận:</label>
+                                            <textarea id="content" name="noidung" class="form-control" required></textarea>
+                                        </div>
+                                        <div class="form-group mt-3">
+                                            <label for="rating">Đánh giá:</label>
+                                            <div class="d-flex">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    <div class="form-check">
+                                                        <input type="radio" class="form-check-input" name="rating"
+                                                            value="{{ $i }}" id="rating{{ $i }}"
+                                                            style="display: none;">
+                                                        <label class="form-check-label" for="rating{{ $i }}"
+                                                            style="cursor: pointer;">
+                                                            <i class="bi bi-star-fill star" data-value="{{ $i }}"
+                                                                style="font-size: 24px; color: gray;"></i>
+                                                        </label>
+                                                    </div>
+                                                @endfor
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary mt-3">Gửi bình luận</button>
+                                    </form>
+                                    <div id="response-message"></div> <!-- Nơi hiển thị phản hồi -->
+                                @else
+                                    <p class="mt-4">Vui lòng <a href="#">đăng nhập</a> để gửi bình luận.</p>
+                                @endauth
+
+                                <script>
+                                    document.getElementById('comment-form').addEventListener('submit', function(event) {
+                                        event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+                                        const formData = new FormData(this); // Lấy dữ liệu từ form
+
+                                        fetch("{{ route('comment.store', $product->id) }}", {
+                                                method: 'POST',
+                                                body: formData,
+                                                headers: {
+                                                    'X-Requested-With': 'XMLHttpRequest',
+                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}', // Thêm token CSRF
+                                                },
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    // Thêm bình luận mới vào danh sách
+                                                    const commentsList = document.getElementById('comments-list');
+                                                    commentsList.insertAdjacentHTML('afterbegin', `
+                                                    <div class="col-lg-6 mb-3">
+                                                        <div class="card client-review-card">
+                                                            <div class="card-body">
+                                                                <div class="d-flex align-items-center mb-3">
+                                                                    <div class="client-review-img me-3">
+                                                                        <img src="assets/images/blog/author.png" alt="Client Image" class="rounded-circle" width="50" height="50">
+                                                                    </div>
+                                                                    <div class="client-review-info">
+                                                                        <h5 class="client-name mb-1">${data.comment.user_name}</h5>
+                                                                       <ul class="product-rating d-flex align-items-center list-unstyled mb-0" style="font-size: 24px; color: gold;">
+        ${'★'.repeat(data.comment.rating)}${'☆'.repeat(5 - data.comment.rating)}
+    </ul>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="client-review-text">
+                                                                    <p class="mb-0">${data.comment.noidung}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                `);
+                                                    // Xóa nội dung form
+                                                    document.getElementById('content').value = '';
+                                                    document.querySelector('input[name="rating"]:checked').checked = false;
+                                                } else {
+                                                    document.getElementById('response-message').innerHTML =
+                                                        `<div class="alert alert-danger">${data.message}</div>`;
+                                                }
+                                            })
+                                            .catch(error => {
+                                                console.error('Error:', error);
+                                                document.getElementById('response-message').innerHTML =
+                                                    `<div class="alert alert-danger">Đã xảy ra lỗi, vui lòng thử lại.</div>`;
+                                            });
+                                    });
+
+                                    // JavaScript to handle star rating
+                                    const stars = document.querySelectorAll('.star');
+                                    stars.forEach(star => {
+                                        star.addEventListener('click', function() {
+                                            const ratingValue = this.getAttribute('data-value');
+
+                                            // Update the radio button selection
+                                            document.querySelector(`input[name="rating"][value="${ratingValue}"]`).checked = true;
+
+                                            // Set the color of the stars
+                                            stars.forEach((s, index) => {
+                                                s.style.color = index < ratingValue ? 'gold' : 'gray'; // Cập nhật màu sắc
+                                            });
+                                        });
+                                    });
+                                </script>
+
+                                <style>
+                                    /* Optional: Add some margin around stars */
+                                    .star {
+                                        margin-right: 5px;
+                                    }
+                                </style>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-@endsection
+    @endsection
