@@ -67,13 +67,10 @@
                         <span style="color: hsl(218, 81%, 75%)">for your business</span>
                     </h1>
                     <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                        Temporibus, expedita iusto veniam atque, magni tempora mollitia
-                        dolorum consequatur nulla, neque debitis eos reprehenderit quasi
-                        ab ipsum nisi dolorem modi. Quos?
+                        "Tinh Tế & Đẳng Cấp: Lựa Chọn Hoàn Hảo Cho Phong Cách Cuộc Sống"
                     </p>
                 </div>
-                <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+                <div class="col-lg-6 mb-5 mb-lg-0 position-relative ">
                     <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
                     <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
 
@@ -111,19 +108,20 @@
                                 
                                 <div class="row mb-3">
                                     <div class="radius">
-                                        <div class="form-check">
+                                        <div class="form-check m-2">
                                             <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
         
                                             <label class="form-check-label" for="remember">
                                                 {{ __('Remember Me') }}
                                             </label>
+                                            <a class="float-end me-3" href="/register">Register</a>
                                         </div>
                                     </div>
                                 </div>
         
                                 <div class="row mb-0">
                                     <div class="col-md-8 offset-md-4">
-                                        <button type="submit" class="btn btn-primary">
+                                        <button type="submit" class="btn btn-primary ms-4">
                                             {{ __('Login') }}
                                         </button>
         
@@ -137,13 +135,13 @@
 
                         
                                
-                                <a href="/register">Register</a>
+
 
                                 <!-- Register buttons -->
                                 <div class="text-center">
                                     <p>or sign up with:</p>
                                     <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
-                                        <i class="fab fa-facebook-f"></i>
+                                        <a href="login/facebook"><i class="fab fa-facebook-f"></i></a>
                                     </button>
                                     <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
                                         <i class="fab fa-google"></i>

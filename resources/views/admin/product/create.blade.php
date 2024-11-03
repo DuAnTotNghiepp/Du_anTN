@@ -185,57 +185,7 @@
                     </div>
                     <!-- end card -->
 
-                    {{-- <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Attached files</h5>
-                    </div>
-                    <div class="card-body">
-                        <div>
-                            <p class="text-muted">Add Attached files here.</p>
 
-                            <div class="dropzone">
-                                <div class="fallback">
-                                    <input name="file" type="file" multiple="multiple">
-                                </div>
-                                <div class="dz-message needsclick">
-                                    <div class="mb-3">
-                                        <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
-                                    </div>
-
-                                    <h5>Drop files here or click to upload.</h5>
-                                </div>
-                            </div>
-
-                            <ul class="list-unstyled mb-0" id="dropzone-preview">
-                                <li class="mt-2" id="dropzone-preview-list">
-                                    <!-- This is used as the file preview template -->
-                                    <div class="border rounded">
-                                        <div class="d-flex p-2">
-                                            <div class="flex-shrink-0 me-3">
-                                                <div class="avatar-sm bg-light rounded">
-                                                    <img src="#" alt="Project-Image" data-dz-thumbnail
-                                                        class="img-fluid rounded d-block" />
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1">
-                                                <div class="pt-1">
-                                                    <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
-                                                    <p class="fs-13 text-muted mb-0" data-dz-size></p>
-                                                    <strong class="error text-danger" data-dz-errormessage></strong>
-                                                </div>
-                                            </div>
-                                            <div class="flex-shrink-0 ms-3">
-                                                <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <!-- end dropzon-preview -->
-                        </div>
-                    </div>
-                </div> --}}
-                    <!-- end card -->
                     <div class="text-end mb-4">
                         <button type="reset" class="btn btn-danger w-sm" id="resetButton">Reset</button>
                         <button class="btn btn-success w-sm" type="submit">Thêm sản phẩm</button>
@@ -280,22 +230,22 @@
                         <div class="mb-3">
                             <label for="choices-categories-input" class="form-label">Màu Sắc</label>
                             @foreach ($Color as $col)
-                                <input type="checkbox" value="{{ $col->id }}" name="id_variant[]">
-                                <div
-                                    style="width: 20px; height: 20px; background-color: {{ $col->value }}; display: inline-block; border: 1px solid #ccc;">
-                                </div>
+                                <input type="checkbox" value="{{$col->id}}" name="id_variant[]">
+                                <div style="width: 20px; height: 20px; background-color: {{$col->value}}; display: inline-block; border: 1px solid #ccc;"></div>
                             @endforeach
                         </div>
                         <div class="mb-3">
                             <label for="choices-categories-input" class="form-label">Kích Thước</label>
                             @foreach ($Size as $col)
-                                <input type="checkbox" value="{{ $col->id }}" name="id_variant[]">
-                                {{ $col->value }}
+                                <input type="checkbox" value="{{$col->id}}" name="id_variant[]">
+                                {{$col->value}}
                             @endforeach
                         </div>
                     </div>
                     <!-- end card body -->
                 </div>
+                <!-- end card -->
+
                 <!-- end card -->
                 <div class="card">
                     <div class="card-header">

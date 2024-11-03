@@ -61,25 +61,33 @@
                                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
                                      aria-labelledby="v-pills-home-tab">
                                     <div class="pd-preview-img">
-                                        <img src="assets/images/product/pd-xl2.png" alt>
+                                        <img
+                                                src="{{ Storage::url($product->img_thumbnail) }}"  alt
+                                                class="img-fluid">
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
                                      aria-labelledby="v-pills-profile-tab">
                                     <div class="pd-preview-img">
-                                        <img src="assets/images/product/pd-xl3.png" alt>
+                                        <img
+                                                src="{{ Storage::url($product->img_thumbnail) }}"  alt
+                                                class="img-fluid">
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
                                      aria-labelledby="v-pills-messages-tab">
                                     <div class="pd-preview-img">
-                                        <img src="assets/images/product/pd-xl14.png" alt>
+                                        <img
+                                                src="{{ Storage::url($product->img_thumbnail) }}"  alt
+                                                class="img-fluid">
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-settings" role="tabpanel"
                                      aria-labelledby="v-pills-settings-tab">
                                     <div class="pd-preview-img">
-                                        <img src="assets/images/product/pd-xl1.png" alt>
+                                         <img
+                                                src="{{ Storage::url($product->img_thumbnail) }}"  alt
+                                                class="img-fluid">
                                     </div>
                                 </div>
                             </div>
@@ -94,61 +102,56 @@
                                     <li><i class="bi bi-star-fill"></i></li>
                                     <li><i class="bi bi-star-fill"></i></li>
                                     <li><i class="bi bi-star"></i></li>
-                                    <li class="count-review">(<span>23</span> Review)</li>
+                                    {{-- <li class="count-review">(<span>23</span> Review)</li> --}}
                                 </ul>
-                                <h3 class="pd-title">Ghost Mannequin Winter Dress</h3>
-                                <h5 class="pd-price">$41.36</h5>
-                                <p class="pd-small-info"><strong>RIBCAGE STR ANK RAINBOW -</strong> B lue High-rise
-                                    straight-leg jeans Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                    eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                <h1>{{ $product->name }}</h1>
+                                <p><strong>Giá cũ:</strong> <span class="price-regular">{{ $product->price_regular }}</span></p>
+                                <p><strong>Giá khuyến mãi:</strong> <span class="price-sale">{{ $product->price_sale }}</span></p>                                
+                              
                             </div>
+                              
                             <div class="pd-quick-discription">
                                 <ul>
                                     <li class="d-flex align-items-center">
                                         <span>Color :</span>
                                         <div class="color-option d-flex align-items-center">
-                                            <input type="radio" name="color" id="color1" value="red" checked>
-                                            <label for="color1"><span class="c1 p-color"></span></label>
-                                            <input type="radio" name="color" id="color2" value="red">
-                                            <label for="color2"><span class="c2 p-color"></span></label>
-                                            <input type="radio" name="color" id="color4" value="red">
-                                            <label for="color4"><span class="c4 p-color"></span></label>
+                                            @foreach ($product->variants as $variant)
+                                                @if ($variant->name === 'Color') <!-- Giả sử bạn có biến thể màu sắc -->
+                                                    <input type="radio" name="color" id="color{{ $variant->id }}" value="{{ $variant->value }}" {{ $loop->first ? 'checked' : '' }}>
+                                                    <label for="color{{ $variant->id }}"><span class="p-color" style="background-color: {{ $variant->value }}"></span></label>
+                                                @endif
+                                            @endforeach
                                         </div>
                                     </li>
                                     <li class="d-flex align-items-center">
                                         <span>Size :</span>
                                         <div class="size-option d-flex align-items-center">
-                                            <input type="radio" name="size" id="size1" value="red" checked>
-                                            <label for="size1">
-                                                <span class="p-size">M</span>
-                                            </label>
-                                            <input type="radio" name="size" id="size2" value="red">
-                                            <label for="size2">
-                                                <span class="p-size">L</span>
-                                            </label>
-                                            <input type="radio" name="size" id="size3" value="red">
-                                            <label for="size3">
-                                                <span class="p-size">XL</span>
-                                            </label>
-                                            <input type="radio" name="size" id="size4" value="red">
-                                            <label for="size4">
-                                                <span class="p-size">XXL</span>
-                                            </label>
+                                            @foreach ($product->variants as $variant)
+                                                @if ($variant->name === 'Size') <!-- Giả sử bạn có biến thể kích thước -->
+                                                    <input type="radio" name="size" id="size{{ $variant->id }}" value="{{ $variant->value }}" {{ $loop->first ? 'checked' : '' }}>
+                                                    <label for="size{{ $variant->id }}">
+                                                        <span class="p-size">{{ $variant->value }}</span>
+                                                    </label>
+                                                @endif
+                                            @endforeach
                                         </div>
                                     </li>
                                     <li class="d-flex align-items-center pd-cart-btns">
                                         <div class="quantity">
-                                            <input type="number" min="1" max="90" step="10" value="1">
+                                            <input type="number" min="1" max="90" step="1" value="1">
                                         </div>
-                                        <button type="submit" class="pd-add-cart"><a href="cart" style="color:white">Add
-                                                to cart</a></button>
+                                        <button type="submit" class="pd-add-cart"><a href="cart" style="color:white">Add to cart</a></button>
                                     </li>
-                                    <li class="pd-type">Product Type: <span>Woman Winter Dress</span></li>
-                                    <li class="pd-type">Catagories: <span> Clothing, Hoodies</span></li>
-                                    <li class="pd-type">Availabile: <span>89</span></li>
-                                    <li class="pd-type">Material : <span>100% Cotton, Jens</span></li>
+                                    <li class="pd-type">Danh mục sản phẩm: <span>{{ $product->catelogues->name }}</span></li>
+                                    <li class="pd-type">Mã sản phẩm: <span>{{ $product->sku }}</span></li>
+                                    <li class="pd-type">Số lượng: <span>{{ $product->quantity }}</span></li>
+                                    {{-- <li class="pd-type">Categories: <span>{{ $product->quantity }}</span></li> --}}
+                                    {{-- <li class="pd-type">Available: <span>{{ $product->available }}</span></li> --}}
+                                    <li class="pd-type">Chất liệu: <span>{{ $product->material }}</span></li>
                                 </ul>
+                                
                             </div>
+                         
                         </div>
                     </div>
                 </div>
@@ -177,25 +180,14 @@
                         <div class="tab-content discribtion-tab-content" id="v-pills-tabContent2">
                             <div class="tab-pane fade show active" id="pd-discription-pill3" role="tabpanel"
                                  aria-labelledby="pd-discription3">
-                                <div class="discription-texts">
-                                    <p>Aenean dolor massa, rhoncus ut tortor in, pretium tempus neque. Vestibulum
-                                        venenatis leo et dictum finibus. Nulla vulputate dolor sit amet tristique
-                                        dapibus. Maecenas posuere luctus leo, non consequat felis ullamcorper non.
-                                        Aliquam erat volutpat. Donec vitae porta enim. Cras eu volutpat dolor, vitae
-                                        accumsan tellus. Donec pulvinar auctor nunc, et gravida elit porta non. Aliquam
-                                        erat volutpat. Proin facilisis interdum felis, sit amet pretium purus feugiat
-                                        ac. Donec in leo metus. Sed quis dui nec justo ullamcorper molestie. Mauris
-                                        consequat lacinia est, eget tincidunt leo ornare sed. Sed sagittis, neque ac
-                                        euismod sollicitudin, mauris orci semper sem, a molestie nisi mi sit amet magna.
-                                    </p>
-                                    <p>Aenean dolor massa, rhoncus ut tortor in, pretium tempus neque. Vestibulum
-                                        venenatis leo et dictum finibus. Nulla vulputate dolor sit amet tristique
-                                        dapibus. Maecenas posuere luctus leo, non consequat felis ullamcorper non.
-                                        Aliquam erat volutpat. Donec vitae porta enim. Cras eu volutpat dolor, vitae
-                                        accumsan tellus. Donec pulvinar auctor nunc, et gravida elit porta non. Aliquam
-                                        erat volutpat.</p>
-                                    <p>Aenean dolor massa, rhoncus ut tortor in, pretium tempus neque. Vestibulum
-                                        venenatis leo et dictum finibus. Nulla vulputate dolor sit amet tristique</p>
+                                 <div class="discription-texts">                          
+                                    <p><strong>Mô tả:</strong> {{ $product->description }}</p>      
+                                </div>
+                                <div class="discription-texts">                          
+                                    <p><strong>Hướng dẫn sử dụng:</strong> {{ $product->user_manual }}</p>      
+                                </div>
+                                <div class="discription-texts">                             
+                                    <p><strong>Nội dung:</strong> {{ $product->content }}</p>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="pd-discription-pill2" role="tabpanel"
@@ -213,8 +205,9 @@
                                             <div class="additition-variant"><span>:</span>S, M, L, Xl, XXL</div>
                                         </li>
                                         <li>
-                                            <h5 class="additition-name">Material</h5>
-                                            <div class="additition-variant"><span>:</span>100% Cotton, Jens</div>
+                                            {{-- <h5 class="additition-name">Material</h5>
+                                            <div class="additition-variant"><span>:</span>100% Cotton, Jens</div> --}}
+                                            <p><strong>Chất liệu:</strong> {{ $product->material }}</p>
                                         </li>
                                     </ul>
                                 </div>

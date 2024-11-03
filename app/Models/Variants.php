@@ -20,4 +20,12 @@ class Variants extends Model
     // {
     //     return $this->belongsTo(Product::class, 'product_id');
     // }
+
+    use HasFactory;
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'product__variants');
+    }
+
 }

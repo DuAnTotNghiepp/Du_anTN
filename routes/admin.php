@@ -3,8 +3,8 @@
 use App\Http\Controllers\Admin\CataloguesController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\VariantsController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
-
 
 Route::prefix('admin')
     ->as('admin.')
@@ -13,8 +13,8 @@ Route::prefix('admin')
         Route::get('create', [CataloguesController::class, 'create'])->name('create');
         Route::post('store', [CataloguesController::class, 'store'])->name('store');
         Route::get('/edit/{id}', [CataloguesController::class, 'edit'])->name('edit');
-        Route::put('update/{id}', [CataloguesController::class, 'update'])->name('update');
-        Route::get('{id}destroy', [CataloguesController::class, 'destroy'])->name('destroy');
+        Route::put('/update/{id}', [CataloguesController::class, 'update'])->name('update');
+        Route::get('/{id}/destroy', [CataloguesController::class, 'destroy'])->name('destroy');
     });
 
 Route::controller(ProductController::class)
@@ -51,3 +51,16 @@ Route::controller(VariantsController::class)
         Route::delete('{id}/destroy', 'destroy')
             ->name('destroy');
     });
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin', function () {
+        return view('admin.content');
+    })->name('content');
+
+    // Admin account management
+    Route::get('admin/accounts', [AdminController::class, 'index'])->name('accounts.index');
+    Route::get('admin/accounts/create', [AdminController::class, 'create'])->name('accounts.create');
+    Route::post('admin/accounts', [AdminController::class, 'store'])->name('accounts.store');
+    Route::get('admin/accounts/{user}/edit', [AdminController::class, 'edit'])->name('accounts.edit');
+    Route::put('admin/accounts/{user}', [AdminController::class, 'update'])->name('accounts.update');
+    Route::delete('admin/accounts/{user}', [AdminController::class, 'destroy'])->name('accounts.destroy');
+});

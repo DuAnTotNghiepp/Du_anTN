@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\BinhLuan;
 use App\Models\Catalogues;
 use App\Models\Product;
 use App\Models\Product_Variant;
@@ -38,9 +39,9 @@ class ProductController extends Controller
     {
 
         $listCate = Catalogues::all();
-        $Color = Variants::where('name', 'Color')->get();
-        $Size = Variants::where('name', 'Size')->get();
-        return view('admin.product.create', compact('listCate', 'Color', 'Size'));
+        $Color = Variants::where('name','Color')->get();
+        $Size = Variants::where('name','Size')->get();
+        return view('admin.product.create', compact('listCate','Color','Size'));
     }
 
     /**
@@ -48,7 +49,6 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        // dd($request->all());
         if ($request->isMethod('post')) {
             $params = $request->except('_token');
             $params['is_active'] = $request->has('is_active') ? 1 : 0;
@@ -64,6 +64,7 @@ class ProductController extends Controller
             }
         }
         $res = Product::query()->create($params);
+
 
         foreach ($request->id_variant as $value) {
             Product_Variant::create([
@@ -87,11 +88,10 @@ class ProductController extends Controller
         } else {
             return redirect()->back()->with('error', 'Sản phẩm đã được thêm mới không thành công');
         }
+
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Product $product)
     {
         //
@@ -106,6 +106,8 @@ class ProductController extends Controller
         $listCate = Catalogues::all();
         // Lấy thông tin sản phẩm
         $listPro = Product::find($id);
+
+
         $listImg = ProductGallerie::where('product_id', $id)->get();
         $Color = Variants::where('name', 'Color')->get();
         $Size = Variants::where('name', 'Size')->get();
@@ -224,12 +226,39 @@ class ProductController extends Controller
 
         if ($product) {
             if ($totalQuantity <= 5) {
+                return response()->json(['success' => false, 'message' => 'Sản phẩm không được dưới 5']);
+            }else{
                 $product->delete();
                 return response()->json(['success' => true, 'message' => 'Sản phẩm đã được xóa thành công']);
             }
-            return response()->json(['success' => false, 'message' => 'Sản phẩm không được dưới 5']);
+
         } else {
+
             return response()->json(['success' => false, 'message' => 'Sản phẩm không tồn tại']);
+
         }
     }
+
+
+    //binh luan
+    public function indexWithComments()
+    {
+        $listPro = Product::withCount('binh_luans')->latest('id')->get();
+        return view('admin.comment.index', compact('listPro'));
+    }
+
+
+    public function getVariants($id)
+    {
+        $product = Product::with('variants')->find($id);
+
+        if (!$product) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+
+        // Trả về các biến thể của sản phẩm
+        return response()->json($product->variants);
+    }
+
+
 }
