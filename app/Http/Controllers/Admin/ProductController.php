@@ -8,6 +8,8 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Models\BinhLuan;
 use App\Models\Catalogues;
 use App\Models\Product;
+use App\Models\Product_Variant;
+use App\Models\Variants;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -35,7 +37,9 @@ class ProductController extends Controller
     {
 
         $listCate = Catalogues::all();
-        return view('admin.product.create', compact('listCate'));
+        $Color = Variants::where('name','Color')->get();
+        $Size = Variants::where('name','Size')->get();
+        return view('admin.product.create', compact('listCate','Color','Size'));
     }
 
     /**
@@ -59,6 +63,12 @@ class ProductController extends Controller
         }
         $res = Product::query()->create($params);
 
+        foreach ($request->id_variant as $value) {
+            Product_Variant::create([
+                'product_id' => $res->id,
+                'variants_id'=>$value
+            ]);
+        }
 
         if ($res) {
             return redirect()->back()->with('success', 'Sản phẩm đã được thêm mới thành công');
@@ -68,9 +78,7 @@ class ProductController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Product $product)
     {
         //
@@ -170,5 +178,19 @@ class ProductController extends Controller
         $listPro = Product::withCount('binh_luans')->latest('id')->get();
         return view('admin.comment.index', compact('listPro'));
     }
+
+
+    public function getVariants($id)
+    {
+        $product = Product::with('variants')->find($id);
+
+        if (!$product) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+
+        // Trả về các biến thể của sản phẩm
+        return response()->json($product->variants);
+    }
+
 
 }

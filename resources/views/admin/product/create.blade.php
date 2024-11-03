@@ -249,7 +249,30 @@
                 <!-- end card -->
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Tags</h5>
+                        <h5 class="card-title mb-0">Thuộc Tính Sản Phẩm</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="choices-categories-input" class="form-label">Màu Sắc</label>
+                            @foreach ($Color as $col)
+                                <input type="checkbox" value="{{$col->id}}" name="id_variant[]">
+                                <div style="width: 20px; height: 20px; background-color: {{$col->value}}; display: inline-block; border: 1px solid #ccc;"></div>
+                            @endforeach
+                        </div>
+                        <div class="mb-3">
+                            <label for="choices-categories-input" class="form-label">Kích Thước</label>
+                            @foreach ($Size as $col)
+                                <input type="checkbox" value="{{$col->id}}" name="id_variant[]">
+                                {{$col->value}}
+                            @endforeach
+                        </div>
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <!-- end card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Categories</h5>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
@@ -267,7 +290,6 @@
                     <!-- end card body -->
                 </div>
                 <!-- end card -->
-
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">Title URL</h5>

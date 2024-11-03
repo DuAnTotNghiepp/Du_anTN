@@ -6,6 +6,7 @@ use App\Http\Controllers\BinhLuanController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\ProductController as ControllersProductController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\CheckRoleAdminMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,11 @@ Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('register', [AuthController::class, 'showFormRegister']);
 Route::post('register', [AuthController::class, 'register'])->name('register');
+
+// Client Routes
+Route::get('/', [ClientController::class, 'index'])->name('index');
+Route::get('product/{id}', [ClientController::class, 'show'])->name('product.product_detail');
+Route::get('/product/checkout', [ClientController::class, 'checkout'])->name('product.checkout');
 
 // Password Reset Routes
 Route::get('password/forgot', [AuthController::class, 'showForgotPasswordForm'])->name('password.forgot');
@@ -56,12 +62,10 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 //client
 Route::get('/', [ClientController::class, 'index'])->name('index');
-Route::get('/product/detail', [ClientController::class, 'product'])->name('product.detail');
 Route::get('/product/checkout', [ClientController::class, 'checkout'])->name('product.checkout');
 
 
 //chi tiet test
-Route::get('/product/{slug}', [ControllersProductController::class, 'detail'])->name('product.detail');
 Route::post('product/comment/{id}', [BinhLuanController::class, 'store'])->name('comment.store');
 Route::get('admin/comment/index', [ProductController::class, 'indexWithComments'])->name('comment.index');
 Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComments'])->name('product.comments');
