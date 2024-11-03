@@ -106,10 +106,10 @@
                                 </ul>
                                 <h1>{{ $product->name }}</h1>
                                 <p><strong>Giá cũ:</strong> <span class="price-regular">{{ $product->price_regular }}</span></p>
-                                <p><strong>Giá khuyến mãi:</strong> <span class="price-sale">{{ $product->price_sale }}</span></p>                                
-                              
+                                <p><strong>Giá khuyến mãi:</strong> <span class="price-sale">{{ $product->price_sale }}</span></p>
+
                             </div>
-                              
+
                             <div class="pd-quick-discription">
                                 <ul>
                                     <li class="d-flex align-items-center">
@@ -149,9 +149,9 @@
                                     {{-- <li class="pd-type">Available: <span>{{ $product->available }}</span></li> --}}
                                     <li class="pd-type">Chất liệu: <span>{{ $product->material }}</span></li>
                                 </ul>
-                                
+
                             </div>
-                         
+
                         </div>
                     </div>
                 </div>
@@ -180,13 +180,13 @@
                         <div class="tab-content discribtion-tab-content" id="v-pills-tabContent2">
                             <div class="tab-pane fade show active" id="pd-discription-pill3" role="tabpanel"
                                  aria-labelledby="pd-discription3">
-                                 <div class="discription-texts">                          
-                                    <p><strong>Mô tả:</strong> {{ $product->description }}</p>      
+                                 <div class="discription-texts">
+                                    <p><strong>Mô tả:</strong> {{ $product->description }}</p>
                                 </div>
-                                <div class="discription-texts">                          
-                                    <p><strong>Hướng dẫn sử dụng:</strong> {{ $product->user_manual }}</p>      
+                                <div class="discription-texts">
+                                    <p><strong>Hướng dẫn sử dụng:</strong> {{ $product->user_manual }}</p>
                                 </div>
-                                <div class="discription-texts">                             
+                                <div class="discription-texts">
                                     <p><strong>Nội dung:</strong> {{ $product->content }}</p>
                                 </div>
                             </div>
