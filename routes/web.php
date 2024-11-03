@@ -7,8 +7,6 @@ use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\ProductController as ControllersProductController;
 use Illuminate\Support\Facades\Route;
 
-//hhhhh
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
