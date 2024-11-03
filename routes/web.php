@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Auth\AuthController;
+
 use App\Http\Controllers\BinhLuanController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\ProductController as ControllersProductController;
