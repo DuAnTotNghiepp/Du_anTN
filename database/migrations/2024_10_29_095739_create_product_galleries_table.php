@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,10 +12,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product__variants', function (Blueprint $table) {
-            $table->id();;
-            $table->unsignedBigInteger('product_id'); // Sửa kiểu dữ liệu ở đây
-            $table->unsignedBigInteger('variants_id'); // Sửa kiểu dữ liệu ở đây
+        Schema::create('product_galleries', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(model: Product::class)->constrained(); // dùng để kết nối giữa bảng SP vs SP_galleries
+            $table->string('image', 255); // ảnh của sản phẩm
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product__variants');
+        Schema::dropIfExists('product_galleries');
     }
 };
