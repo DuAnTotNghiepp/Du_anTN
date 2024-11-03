@@ -61,25 +61,33 @@
                                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
                                      aria-labelledby="v-pills-home-tab">
                                     <div class="pd-preview-img">
-                                        <img src="assets/images/product/pd-xl2.png" alt>
+                                        <img
+                                                src="{{ Storage::url($product->img_thumbnail) }}"  alt
+                                                class="img-fluid">
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
                                      aria-labelledby="v-pills-profile-tab">
                                     <div class="pd-preview-img">
-                                        <img src="assets/images/product/pd-xl3.png" alt>
+                                        <img
+                                                src="{{ Storage::url($product->img_thumbnail) }}"  alt
+                                                class="img-fluid">
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
                                      aria-labelledby="v-pills-messages-tab">
                                     <div class="pd-preview-img">
-                                        <img src="assets/images/product/pd-xl14.png" alt>
+                                        <img
+                                                src="{{ Storage::url($product->img_thumbnail) }}"  alt
+                                                class="img-fluid">
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-settings" role="tabpanel"
                                      aria-labelledby="v-pills-settings-tab">
                                     <div class="pd-preview-img">
-                                        <img src="assets/images/product/pd-xl1.png" alt>
+                                         <img
+                                                src="{{ Storage::url($product->img_thumbnail) }}"  alt
+                                                class="img-fluid">
                                     </div>
                                 </div>
                             </div>
@@ -97,51 +105,53 @@
                                     {{-- <li class="count-review">(<span>23</span> Review)</li> --}}
                                 </ul>
                                 <h1>{{ $product->name }}</h1>
-                                <p><strong>Giá:</strong> {{ $product->price_regular }}</p>
-                                <p><strong>Mô tả:</strong> {{ $product->description }}</p>
+                                <p><strong>Giá cũ:</strong> <span class="price-regular">{{ $product->price_regular }}</span></p>
+                                <p><strong>Giá khuyến mãi:</strong> <span class="price-sale">{{ $product->price_sale }}</span></p>                                
+                              
                             </div>
+                              
                             <div class="pd-quick-discription">
                                 <ul>
-                                    <!-- Lựa chọn màu sắc -->
                                     <li class="d-flex align-items-center">
                                         <span>Color :</span>
                                         <div class="color-option d-flex align-items-center">
-                                            @foreach ($colors as $index => $color)
-                                                <input type="radio" name="color" id="color{{ $index }}" value="{{ $color }}" {{ $index === 0 ? 'checked' : '' }}>
-                                                <label for="color{{ $index }}"><span class="p-color" style="background-color: {{ $color }}"></span></label>
+                                            @foreach ($product->variants as $variant)
+                                                @if ($variant->name === 'Color') <!-- Giả sử bạn có biến thể màu sắc -->
+                                                    <input type="radio" name="color" id="color{{ $variant->id }}" value="{{ $variant->value }}" {{ $loop->first ? 'checked' : '' }}>
+                                                    <label for="color{{ $variant->id }}"><span class="p-color" style="background-color: {{ $variant->value }}"></span></label>
+                                                @endif
                                             @endforeach
                                         </div>
                                     </li>
-                                
-                                    <!-- Lựa chọn kích thước -->
                                     <li class="d-flex align-items-center">
                                         <span>Size :</span>
                                         <div class="size-option d-flex align-items-center">
-                                            @foreach ($sizes as $index => $size)
-                                                <input type="radio" name="size" id="size{{ $index }}" value="{{ $size }}" {{ $index === 0 ? 'checked' : '' }}>
-                                                <label for="size{{ $index }}"><span class="p-size">{{ $size }}</span></label>
+                                            @foreach ($product->variants as $variant)
+                                                @if ($variant->name === 'Size') <!-- Giả sử bạn có biến thể kích thước -->
+                                                    <input type="radio" name="size" id="size{{ $variant->id }}" value="{{ $variant->value }}" {{ $loop->first ? 'checked' : '' }}>
+                                                    <label for="size{{ $variant->id }}">
+                                                        <span class="p-size">{{ $variant->value }}</span>
+                                                    </label>
+                                                @endif
                                             @endforeach
                                         </div>
                                     </li>
-                                
-                                    <!-- Số lượng và thêm vào giỏ hàng -->
                                     <li class="d-flex align-items-center pd-cart-btns">
                                         <div class="quantity">
-                                            <input type="number" min="1" max="90" step="10" value="1">
+                                            <input type="number" min="1" max="90" step="1" value="1">
                                         </div>
-                                        <button type="submit" class="pd-add-cart">
-                                            <a href="cart" style="color:white">Add to cart</a>
-                                        </button>
+                                        <button type="submit" class="pd-add-cart"><a href="cart" style="color:white">Add to cart</a></button>
                                     </li>
-                                
-                                    <!-- Thông tin sản phẩm khác -->
-                                    <li class="pd-type">Product Type: <span>{{ $product->type ?? 'N/A' }}</span></li>
-                                    <li class="pd-type">Categories: <span>{{ implode(', ', $product->categories ?? ['N/A']) }}</span></li>
-                                    <li class="pd-type">Available: <span>{{ $product->stock ?? 'N/A' }}</span></li>
-                                    <li class="pd-type">Material : <span>{{ $product->material ?? 'N/A' }}</span></li>
+                                    <li class="pd-type">Danh mục sản phẩm: <span>{{ $product->catelogues->name }}</span></li>
+                                    <li class="pd-type">Mã sản phẩm: <span>{{ $product->sku }}</span></li>
+                                    <li class="pd-type">Số lượng: <span>{{ $product->quantity }}</span></li>
+                                    {{-- <li class="pd-type">Categories: <span>{{ $product->quantity }}</span></li> --}}
+                                    {{-- <li class="pd-type">Available: <span>{{ $product->available }}</span></li> --}}
+                                    <li class="pd-type">Chất liệu: <span>{{ $product->material }}</span></li>
                                 </ul>
                                 
                             </div>
+                         
                         </div>
                     </div>
                 </div>
@@ -170,11 +180,14 @@
                         <div class="tab-content discribtion-tab-content" id="v-pills-tabContent2">
                             <div class="tab-pane fade show active" id="pd-discription-pill3" role="tabpanel"
                                  aria-labelledby="pd-discription3">
-                                <div class="discription-texts">
-                                    <div class="m-1">
-                                        <p><strong>Nội dung:</strong> {{ $product->content }}</p>
-                                    </div>
-                                    
+                                 <div class="discription-texts">                          
+                                    <p><strong>Mô tả:</strong> {{ $product->description }}</p>      
+                                </div>
+                                <div class="discription-texts">                          
+                                    <p><strong>Hướng dẫn sử dụng:</strong> {{ $product->user_manual }}</p>      
+                                </div>
+                                <div class="discription-texts">                             
+                                    <p><strong>Nội dung:</strong> {{ $product->content }}</p>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="pd-discription-pill2" role="tabpanel"

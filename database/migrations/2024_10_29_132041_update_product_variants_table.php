@@ -11,19 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Đầu tiên, hãy chắc chắn rằng bảng hiện tại đã tồn tại
         Schema::table('product__variants', function (Blueprint $table) {
-            // Thêm khóa ngoại cho product_id và variants_id
+            // Đổi tên cột variants_id thành variant_id
+            $table->renameColumn('variants_id', 'variant_id');
+
+            // Thêm khóa ngoại cho các cột
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->foreign('variants_id')->references('id')->on('variants')->onDelete('cascade');
+            $table->foreign('variant_id')->references('id')->on('variants')->onDelete('cascade');
         });
     }
-
     public function down(): void
     {
         Schema::table('product__variants', function (Blueprint $table) {
-            // Xóa khóa ngoại nếu cần
+            // Xóa khóa ngoại trước khi xóa cột
             $table->dropForeign(['product_id']);
-            $table->dropForeign(['variants_id']);
+            $table->dropForeign(['variant_id']);
+
+            // Đổi tên lại cột variant_id về variants_id
+            $table->renameColumn('variant_id', 'variants_id');
         });
     }
 };

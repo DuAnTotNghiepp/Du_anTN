@@ -78,9 +78,7 @@ class ProductController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Product $product)
     {
         //
@@ -169,4 +167,18 @@ class ProductController extends Controller
         }
     }
 
+
+    public function getVariants($id)
+    {
+        $product = Product::with('variants')->find($id);
+
+        if (!$product) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+
+        // Trả về các biến thể của sản phẩm
+        return response()->json($product->variants);
+    }
+
+    
 }

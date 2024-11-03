@@ -41,9 +41,9 @@ class Product extends Model
     {
         return $this->belongsTo(Catalogues::class, 'catalogues_id');
     }
+
     public function variants()
     {
-        return $this->belongsToMany(Variants::class, 'product__variants', 'product_id', 'variants_id');
+        return $this->belongsToMany(Variants::class, 'product__variants');
     }
-
 }

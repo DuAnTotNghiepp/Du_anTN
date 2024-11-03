@@ -20,6 +20,19 @@
     <link rel="stylesheet" href="{{asset('assets/css/global.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/responsive.css')}}">
+    <style>
+        .price-regular {
+    text-decoration: line-through; /* Gạch ngang giá cũ */
+    color: gray; /* Màu xám cho giá cũ */
+}
+
+.price-sale {
+    color: red; /* Màu đỏ cho giá khuyến mãi */
+    font-weight: bold; /* In đậm giá khuyến mãi */
+    font-size: 1.2em; /* Kích thước chữ lớn hơn */
+}
+
+    </style>
 </head>
 
 <body>

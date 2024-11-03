@@ -34,7 +34,7 @@ Route::post('register', [AuthController::class, 'register'])->name('register');
 // Client Routes
 Route::get('/', [ClientController::class, 'index'])->name('index');
 // Route::get('/product/detail', [ClientController::class, 'product'])->name('product.detail');
-Route::get('product/{id}', [ClientController::class, 'show_variants'])->name('client.product_detail');
+Route::get('product/{id}', [ClientController::class, 'show'])->name('product.product_detail');
 Route::get('/product/checkout', [ClientController::class, 'checkout'])->name('product.checkout');
 
 // Password Reset Routes
