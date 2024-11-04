@@ -171,7 +171,6 @@
         </div>
     </div>
 
-
     <div class="newslatter-area ml-110 mt-100">
         <div class="container-fluid">
             <div class="row">

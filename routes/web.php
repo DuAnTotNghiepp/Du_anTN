@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\BinhLuanController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\ProductController as ControllersProductController;
@@ -64,12 +65,21 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/', [ClientController::class, 'index'])->name('index');
 Route::get('/product/checkout', [ClientController::class, 'checkout'])->name('product.checkout');
 
+// Group routes under admin middleware
+Route::middleware('auth', 'admin')->group(function () {
+    Route::get('admin/accounts', [AdminController::class, 'index'])->name('admin.accounts');
+    Route::get('admin/accounts/create', [AdminController::class, 'create'])->name('admin.accounts.create');
+    Route::post('admin/accounts', [AdminController::class, 'store'])->name('admin.accounts.store');
+    Route::get('admin/accounts/{user}/edit', [AdminController::class, 'edit'])->name('admin.accounts.edit');
+    Route::put('admin/accounts/{user}', [AdminController::class, 'update'])->name('admin.accounts.update');
+    Route::delete('admin/accounts/{user}', [AdminController::class, 'destroy'])->name('admin.accounts.destroy');
+});
 
+Route::resource('cart', CartController::class);
 //chi tiet test
 Route::post('product/comment/{id}', [BinhLuanController::class, 'store'])->name('comment.store');
 Route::get('admin/comment/index', [ProductController::class, 'indexWithComments'])->name('comment.index');
 Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComments'])->name('product.comments');
-
 
 
 // Group routes under admin middleware
