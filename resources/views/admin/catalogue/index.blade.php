@@ -117,10 +117,11 @@
                                                                    href="javascript:void(0);"><i
                                                                         class="ri-eye-fill align-bottom me-2 text-muted"></i>View</a>
                                                             </li>
-                                                            <li><a class="dropdown-item edit-item-btn" href="#showModal1"
-                                                                   data-bs-toggle="modal"><i
-                                                                        class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                                    Edit</a></li>
+                                                            <li>
+                                                                <a class="dropdown-item edit-item-btn"  href="{{route('admin.edit',$item->id)}}" data-bs-toggle="moda>
+                                                                    <i class="ri-pencil-fill align-bottom me-2 text-muted" ></i> Edit
+                                                                </a>
+                                                            </li>
                                                             <li><a class="dropdown-item remove-item-btn"
                                                                    data-bs-toggle="modal" href="#deleteRecordModal"><i
                                                                         class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
@@ -227,37 +228,64 @@
                             </div>
                         </div>
                     </div>
-                    @yield('update')
-                    <!--end add modal-->
-
-                    <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
+{{--                    @yield('update')--}}
+                    <div class="modal fade" id="showModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="btn-close" id="deleteRecord-close"
-                                            data-bs-dismiss="modal" aria-label="Close" id="btn-close"></button>
+                            <div class="modal-content border-0">
+                                <div class="modal-header bg-info-subtle p-3">
+                                    <h5 class="modal-title" id="exampleModalLabel">Chỉnh Sửa Thông Tin</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <div class="modal-body p-5 text-center">
-                                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
-                                               colors="primary:#405189,secondary:#f06548"
-                                               style="width:90px;height:90px"></lord-icon>
-                                    <div class="mt-4 text-center">
-                                        <h4 class="fs-semibold">You are about to delete a contact ?</h4>
-                                        <p class="text-muted fs-14 mb-4 pt-1">Deleting your contact will remove all of
-                                            your information from our database.</p>
-                                        <div class="hstack gap-2 justify-content-center remove">
-                                            <button class="btn btn-link link-success fw-medium text-decoration-none"
-                                                    id="deleteRecord-close" data-bs-dismiss="modal"><i
-                                                    class="ri-close-line me-1 align-middle"></i> Close
-                                            </button>
-                                            <button class="btn btn-danger" id="delete-record">Yes, Delete It!!</button>
+                                <form action="{{ route('admin.update', $item->id) }}" method="POST" class="tablelist-form" autocomplete="off" id="editForm">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="modal-body">
+                                        <input type="hidden" id="id-field" name="id" />
+                                        <div class="row g-3">
+                                            <div class="col-lg-12">
+                                                <div class="text-center">
+                                                    <div class="position-relative d-inline-block">
+                                                        <div class="avatar-lg p-1">
+                                                            <div class="avatar-title bg-light rounded-circle">
+                                                                <img src="{{ asset('theme/admin/assets/images/users/user-dummy-img.jpg') }}" id="customer-img" class="avatar-md rounded-circle object-fit-cover" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label for="name" class="form-label">Tên</label>
+                                                    <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên"     value="{{old('name',$item['name'])}}">>
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" name="is_active" id="is_active" value="1" class="form-check-input">
+                                                    <label class="form-check-label" for="is_active">Kích hoạt</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
+                                        <button type="submit" class="btn btn-success">Cập nhật</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
-                    <!--end delete modal -->
+
+                    <div class="modal-footer">
+                                        <div class="hstack gap-2 justify-content-end">
+                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close
+                                            </button>
+                                            <button type="submit" class="btn btn-success" id="add-btn">Add Contact
+                                            </button>
+                                            <!-- <button type="button" class="btn btn-success" id="edit-btn">Update</button> -->
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end add modal-->
 
                 </div>
             </div>
