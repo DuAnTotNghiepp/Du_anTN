@@ -198,7 +198,7 @@
                                     </div>
                                 </div>
                             </div>
-                        
+
                             @if ($errors->any())
                                 <div class="alert alert-danger mt-4">
                                     <ul class="mb-0">
@@ -208,7 +208,7 @@
                                     </ul>
                                 </div>
                             @endif
-                        
+
                             <form action="{{ route('comment.store', $product->id) }}" method="POST" class="review-form mt-4">
                                 @csrf
                                 <div class="form-group">
@@ -231,17 +231,17 @@
                                 <button type="submit" class="btn btn-primary mt-3">Gửi bình luận</button>
                             </form>
                         </div>
-                        
+
                         <script>
                             // JavaScript to handle star rating
                             const stars = document.querySelectorAll('.star');
                             stars.forEach(star => {
                                 star.addEventListener('click', function() {
                                     const ratingValue = this.getAttribute('data-value');
-                        
+
                                     // Update the radio button selection
                                     document.querySelector(`input[name="rating"][value="${ratingValue}"]`).checked = true;
-                        
+
                                     // Set the color of the stars
                                     stars.forEach((s, index) => {
                                         s.style.color = index < ratingValue ? 'gold' : 'gray'; // Update color based on selection
@@ -249,14 +249,14 @@
                                 });
                             });
                         </script>
-                        
+
                         <style>
                             /* Optional: Add some margin around stars */
                             .star {
                                 margin-right: 5px;
                             }
                         </style>
-                        
+
                     </div>
                 </div>
             </div>

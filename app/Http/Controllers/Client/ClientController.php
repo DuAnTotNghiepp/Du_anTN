@@ -44,7 +44,7 @@ class ClientController extends Controller
     // // Lọc biến thể theo `color` và `size`
     // $colors = $product->variants->where('name', 'color')->pluck('value')->unique();
     // $sizes = $product->variants->where('name', 'size')->pluck('value')->unique();
-    
+
     //    // Kiểm tra dữ liệu
     //   dd($product, $colors, $sizes);
     // // Trả về view với dữ liệu

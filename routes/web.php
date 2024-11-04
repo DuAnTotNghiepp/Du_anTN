@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\BinhLuanController;
+use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\ProductController as ControllersProductController;
 use Illuminate\Support\Facades\Route;
@@ -33,9 +36,18 @@ Route::get('register', [AuthController::class, 'showFormRegister']);
 Route::post('register', [AuthController::class, 'register'])->name('register');
 
 // Client Routes
+
 Route::get('/', [ClientController::class, 'index'])->name('index');
 Route::get('product/{id}', [ClientController::class, 'show'])->name('product.product_detail');
-Route::get('/product/checkout', [ClientController::class, 'checkout'])->name('product.checkout');
+// Route::group(['prefix'=>'checkout'], function(){
+//     Route::get('/',[CheckoutController::class, 'form'])->name('checkout');
+//     Route::post('/',[CheckoutController::class, 'submit_form'])->name('checkout');
+// });
+Route::get('/checkout', [CheckoutController::class, 'form'])->name('checkout');
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+
+// Route::get('/product/checkout/{id}', [OrderController::class, 'show'])->name('productcheckout.checkout');
+
 
 // Password Reset Routes
 Route::get('password/forgot', [AuthController::class, 'showForgotPasswordForm'])->name('password.forgot');
@@ -61,9 +73,6 @@ Route::get('register', [AuthController::class, 'showFormRegister']);
 Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
-//client
-Route::get('/', [ClientController::class, 'index'])->name('index');
-Route::get('/product/checkout', [ClientController::class, 'checkout'])->name('product.checkout');
 
 // Group routes under admin middleware
 Route::middleware('auth', 'admin')->group(function () {
