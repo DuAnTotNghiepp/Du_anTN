@@ -44,7 +44,7 @@ Route::get('product/{id}', [ClientController::class, 'show'])->name('product.pro
 //     Route::post('/',[CheckoutController::class, 'submit_form'])->name('checkout');
 // });
 Route::get('/checkout', [CheckoutController::class, 'form'])->name('checkout');
-Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
 
 // Route::get('/product/checkout/{id}', [OrderController::class, 'show'])->name('productcheckout.checkout');
 

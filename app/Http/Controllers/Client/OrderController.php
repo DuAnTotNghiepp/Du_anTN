@@ -44,6 +44,9 @@ class OrderController extends Controller
         // Thêm user_id từ phiên đăng nhập
         $validatedData['user_id'] = auth()->id();
 
+        if (!$validatedData['user_id']) {
+            return redirect()->back()->with('error', 'Bạn cần đăng nhập để đặt hàng.');
+        }
         // Thêm đơn hàng vào cơ sở dữ liệu
         Order::create($validatedData);
 
