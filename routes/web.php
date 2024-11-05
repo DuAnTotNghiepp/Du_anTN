@@ -2,11 +2,12 @@
 
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\Client\ClientController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\BinhLuanController;
+use App\Http\Controllers\Client\ClientController;
+use App\Http\Controllers\ProductController as ControllersProductController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckRoleAdminMiddleware;
 
 /*
@@ -32,6 +33,11 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('register', [AuthController::class, 'showFormRegister']);
 Route::post('register', [AuthController::class, 'register'])->name('register');
 
+// Client Routes
+Route::get('/', [ClientController::class, 'index'])->name('index');
+Route::get('product/{id}', [ClientController::class, 'show'])->name('product.product_detail');
+Route::get('/product/checkout', [ClientController::class, 'checkout'])->name('product.checkout');
+
 // Password Reset Routes
 Route::get('password/forgot', [AuthController::class, 'showForgotPasswordForm'])->name('password.forgot');
 Route::post('password/forgot', [AuthController::class, 'sendResetLinkEmail']);
@@ -43,6 +49,7 @@ Route::get('login/facebook', [AuthController::class, 'redirectToFacebook']);
 Route::get('login/facebook/callback', [AuthController::class, 'handleFacebookCallback']);
 
 // Admin Routes (Requires auth and admin middleware)
+
 
 Route::get('/admin', function () {
     return view('admin.content');
@@ -57,11 +64,7 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 //client
 Route::get('/', [ClientController::class, 'index'])->name('index');
-Route::get('/product/detail', [ClientController::class, 'product'])->name('product.detail');
 Route::get('/product/checkout', [ClientController::class, 'checkout'])->name('product.checkout');
-
-
-
 
 // Group routes under admin middleware
 Route::middleware('auth', 'admin')->group(function () {
@@ -74,6 +77,11 @@ Route::middleware('auth', 'admin')->group(function () {
 });
 
 Route::resource('cart', CartController::class);
+//chi tiet test
+Route::post('product/comment/{id}', [BinhLuanController::class, 'store'])->name('comment.store');
+Route::get('admin/comment/index', [ProductController::class, 'indexWithComments'])->name('comment.index');
+Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComments'])->name('product.comments');
 
 
+// Group routes under admin middleware
 

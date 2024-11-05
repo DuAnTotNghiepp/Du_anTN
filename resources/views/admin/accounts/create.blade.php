@@ -361,3 +361,4 @@ document.getElementById('searchInput').addEventListener('input', function () {
     </html>
 @endsection
 
+

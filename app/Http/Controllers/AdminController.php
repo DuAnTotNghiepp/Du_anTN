@@ -56,6 +56,7 @@ class AdminController extends Controller
         ]);
 
         return redirect()->route('accounts.index')->with('success', 'Tài khoản đã được cập nhật.');
+
     }
 
     public function destroy(User $user)
@@ -63,5 +64,6 @@ class AdminController extends Controller
         $user->delete();
 
         return redirect()->route('accounts.index')->with('success', 'Tài khoản đã được xóa.');
+
     }
 }
