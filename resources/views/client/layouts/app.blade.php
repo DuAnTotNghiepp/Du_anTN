@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="{{asset('assets/css/global.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/responsive.css')}}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
 </head>
 
 <body>
@@ -343,6 +345,15 @@
 
                                 <li><a href="contact">Contact Us</a></li>
                                 <li><a href="about">About Us</a></li>
+                                <li class="has-child-menu">
+                                    <a href="javascript:void(0)">Page</a>
+                                    <i class="fl flaticon-plus">+</i>
+                                    <ul class="sub-menu">
+                                        <li><a href="{{route('buying_guide')}}">Buying Guide</a></li>
+                                        <li><a href="{{route('warranty')}}">Warranty</a></li>
+                                    </ul>
+                                </li>
+
                             </ul>
                             <div class="inner-top">
                                 <div class="inner-mail">
