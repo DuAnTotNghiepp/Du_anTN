@@ -20,6 +20,22 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
     </head>
+    <style>
+        .preview-img {
+            max-width: 100px;
+            max-height: 100px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .preview-gallery img {
+            max-width: 100px;
+            max-height: 100px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
 
     <body>
         <!-- start page title -->
@@ -73,6 +89,14 @@
                             </div>
 
                             <div class="mb-3">
+                                <label class="form-label">Ảnh liên Quan</label>
+                                <div class="dropzone">
+                                    <input type="file" id="product-image-input" name="image[]" multiple accept="image/png, image/gif, image/jpeg" class="form-control">
+                                    <div class="preview-gallery" id="galleryPreview"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
                                 <label class="form-label">Mô Tả Sản Phẩm</label>
                                 <div id="ckeditor-classic">
                                     <textarea class="form-control" placeholder="Enter Description" name="description" id="description" rows="3"
@@ -84,8 +108,9 @@
                                 <div class="col-lg-4">
                                     <div class="mb-3 mb-lg-0">
                                         <label for="choices-priority-input" class="form-label">Giá Thường</label>
-                                        <input type="number" class="form-control" name="price_regular" id="price_regular"
-                                            step="0.01" required data-provider="flatpickr" data-date-format="d M, Y">
+                                        <input type="number" class="form-control" name="price_regular"
+                                            id="price_regular" step="0.01" required data-provider="flatpickr"
+                                            data-date-format="d M, Y">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -98,8 +123,8 @@
                                 <div class="col-lg-4">
                                     <div>
                                         <label for="datepicker-deadline-input" class="form-label">Số Lượng</label>
-                                        <input type="number" class="form-control" name="quantity" id="quantity" required
-                                            data-provider="flatpickr" data-date-format="d M, Y">
+                                        <input type="number" class="form-control" name="quantity" id="quantity"
+                                            required data-provider="flatpickr" data-date-format="d M, Y">
                                     </div>
                                 </div>
                             </div><br>
@@ -160,57 +185,7 @@
                     </div>
                     <!-- end card -->
 
-                    {{-- <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Attached files</h5>
-                    </div>
-                    <div class="card-body">
-                        <div>
-                            <p class="text-muted">Add Attached files here.</p>
 
-                            <div class="dropzone">
-                                <div class="fallback">
-                                    <input name="file" type="file" multiple="multiple">
-                                </div>
-                                <div class="dz-message needsclick">
-                                    <div class="mb-3">
-                                        <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
-                                    </div>
-
-                                    <h5>Drop files here or click to upload.</h5>
-                                </div>
-                            </div>
-
-                            <ul class="list-unstyled mb-0" id="dropzone-preview">
-                                <li class="mt-2" id="dropzone-preview-list">
-                                    <!-- This is used as the file preview template -->
-                                    <div class="border rounded">
-                                        <div class="d-flex p-2">
-                                            <div class="flex-shrink-0 me-3">
-                                                <div class="avatar-sm bg-light rounded">
-                                                    <img src="#" alt="Project-Image" data-dz-thumbnail
-                                                        class="img-fluid rounded d-block" />
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1">
-                                                <div class="pt-1">
-                                                    <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
-                                                    <p class="fs-13 text-muted mb-0" data-dz-size></p>
-                                                    <strong class="error text-danger" data-dz-errormessage></strong>
-                                                </div>
-                                            </div>
-                                            <div class="flex-shrink-0 ms-3">
-                                                <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <!-- end dropzon-preview -->
-                        </div>
-                    </div>
-                </div> --}}
-                    <!-- end card -->
                     <div class="text-end mb-4">
                         <button type="reset" class="btn btn-danger w-sm" id="resetButton">Reset</button>
                         <button class="btn btn-success w-sm" type="submit">Thêm sản phẩm</button>
@@ -269,6 +244,8 @@
                     </div>
                     <!-- end card body -->
                 </div>
+                <!-- end card -->
+
                 <!-- end card -->
                 <div class="card">
                     <div class="card-header">
@@ -335,6 +312,24 @@
 
         <!-- end main content-->
         <script>
+            document.getElementById('project-thumbnail-img').addEventListener('change', function(event) {
+                const [file] = event.target.files;
+                if (file) {
+                    document.getElementById('imgPreview').src = URL.createObjectURL(file);
+                }
+            });
+
+            // Hiển thị xem trước ảnh trong bộ sưu tập
+            document.getElementById('product-image-input').addEventListener('change', function(event) {
+                const galleryPreview = document.getElementById('galleryPreview');
+                galleryPreview.innerHTML = ''; // Xóa ảnh cũ trong gallery
+                Array.from(event.target.files).forEach(file => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = URL.createObjectURL(file);
+                    imgElement.classList.add('preview-img');
+                    galleryPreview.appendChild(imgElement);
+                });
+            });
             document.getElementById('generateSKU').addEventListener('click', function() {
                 // Hàm sinh mã SKU ngẫu nhiên gồm 8 ký tự chữ và số, viết hoa
                 function generateRandomSKU(length = 8) {

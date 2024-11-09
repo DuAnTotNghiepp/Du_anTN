@@ -1,3 +1,4 @@
+ 
 
 @extends('admin.layouts.master')
 
@@ -362,4 +363,5 @@ document.getElementById('searchInput').addEventListener('input', function () {
 
     </html>
 @endsection
+
 

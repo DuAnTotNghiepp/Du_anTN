@@ -102,7 +102,7 @@
 <script>
     const PATH_ROOT = '{{ asset('theme/admin') }}';
 </script>
-{{-- <script>
+ <script>
     $(document).ready(function() {
     $('.add-btn').on('click', function() {
         console.log('Add Contacts button clicked');
@@ -110,8 +110,8 @@
     });
 });
 
-</script> --}}
-<!-- JAVASCRIPT -->
+</script>
+
 <script src="{{ asset('theme/admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('theme/admin/assets/libs/simplebar/simplebar.min.js') }}"></script>
 <script src="{{ asset('theme/admin/assets/libs/node-waves/waves.min.js') }}"></script>

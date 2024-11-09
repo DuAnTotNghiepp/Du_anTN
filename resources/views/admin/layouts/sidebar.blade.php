@@ -48,10 +48,10 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                    <a class="nav-link menu-link" href="#sidebarProducts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarProducts">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Sản Phẩm</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarDashboards">
+                    <div class="collapse menu-dropdown" id="sidebarProducts">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{ route('product.index') }}" class="nav-link" data-key="t-analytics"> Danh Sách Sản Phẩm </a>
@@ -77,6 +77,22 @@
                         </ul>
                     </div>
                 </li><!-- end Dashboard Menu -->
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarComments" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarComments">
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Bình Luận</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarComments">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('comment.index') }}" class="nav-link" data-key="t-analytics"> Danh Sách Sản Phẩm </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- end Dashboard Menu -->
 
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarAccounts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
@@ -89,6 +105,18 @@
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('accounts.create') }}" class="nav-link" data-key="t-analytics"> Thêm Tài Khoản </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarAccounts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Tài Đơn Hàng</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarAccounts">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('order.index') }}" class="nav-link" data-key="t-analytics"> Danh Sách Đơn Hàng </a>
                             </li>
                         </ul>
                     </div>

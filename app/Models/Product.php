@@ -46,4 +46,9 @@ class Product extends Model
     {
         return $this->belongsToMany(Variants::class, 'product__variants');
     }
+    public function binh_luans()
+    {
+        return $this->hasMany(BinhLuan::class, 'product_id');
+    }
+    
 }

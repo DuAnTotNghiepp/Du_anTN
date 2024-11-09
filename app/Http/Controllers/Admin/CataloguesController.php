@@ -49,9 +49,7 @@ class CataloguesController extends Controller
      */
     public function show(string $id)
     {
-        $model = Catalogues::query()->findOrFail($id);
 
-        return view('admin.catalogue.index', compact('model'));
     }
 
     /**
@@ -59,8 +57,8 @@ class CataloguesController extends Controller
      */
     public function edit(string $id)
     {
-        $data = Catalogues::findOrFail($id);
-        return view('admin.catalogue.index', compact('data'));
+        $item = Catalogues::findOrFail($id);
+        return view('admin.catalogue.edit', compact('item'));
     }
 
     /**
@@ -68,21 +66,21 @@ class CataloguesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $model = Catalogues::findOrFail($id);
+        $item = Catalogues::findOrFail($id);
         $data = $request->except('cover');
         $data['is_active'] ??= 0;
 
         if ($request->hasFile('cover')) {
             $data['cover'] = Storage::put(self::PATH_UPLOAD, $request->file('cover'));
         }
-        $currentCover = $model->cover;
-        $model->update($data);
+        $currentCover = $item->cover;
+        $item->update($data);
 
         if ($currentCover && Storage::exists($currentCover)) {
             Storage::delete($currentCover);
         }
 
-        return redirect()->route('admin.catalogue.index')->with('model', $model); // Nếu cần truyền về view khác
+        return redirect()->route('admin.index')->with('model', $item); // Nếu cần truyền về view khác
     }
 
     /**
@@ -90,6 +88,11 @@ class CataloguesController extends Controller
      */
     public function destroy(string $id)
     {
-
+        $model = Catalogues::query()->findOrFail($id);
+        $model->delete();
+        if ($model->cover && Storage::exists($model->cover)) {
+            Storage::delete($model->cover);
+        }
+        return back();
     }
 }
