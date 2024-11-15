@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Catalogues;
+use App\Models\BinhLuan;
+
 use App\Models\Product;
 use App\Models\Variants;
 use Illuminate\Http\Request;
@@ -67,7 +69,11 @@ class ClientController extends Controller
 public function show($id)
 {
     $product = Product::with('variants')->findOrFail($id);
-    return view('client.product_detail', compact('product'));
+    $comments = BinhLuan::where('product_id', $product->id)->orderBy('created_at', 'desc')->paginate(6); // Hiển thị 6 bình luận mỗi trang
+
+    // Tính toán điểm đánh giá trung bình
+    $averageRating = $comments->count() > 0 ? $comments->avg('rating') : 0; 
+    return view('client.product_detail', compact('product', 'comments', 'averageRating'));
 }
 
 }
