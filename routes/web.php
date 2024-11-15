@@ -8,6 +8,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\BinhLuanController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ClientController;
+use App\Http\Controllers\Client\ProductCatalogueController;
 use App\Http\Controllers\ProductController as ControllersProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckRoleAdminMiddleware;
@@ -46,7 +47,10 @@ Route::get('product/{id}', [ClientController::class, 'show'])->name('product.pro
 Route::get('/checkout', [CheckoutController::class, 'form'])->name('checkout');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
 
-// Route::get('/product/checkout/{id}', [OrderController::class, 'show'])->name('productcheckout.checkout');
+Route::get('/productcatalogue', [ProductCatalogueController::class, 'index'])->name('productcatalogue');
+
+// Route::get('/productcatalogue', [ProductCatalogueController::class, 'index'])->name('productcatalogue');
+// Route::get('/productcatalogue/{id}', [ProductCatalogueController::class, 'showCategory'])->name('productcatalogue.category');
 
 
 // Password Reset Routes

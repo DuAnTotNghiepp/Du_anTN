@@ -346,13 +346,14 @@
                                     <a href="javascript:void(0)">Category</a>
                                     <i class="fl flaticon-plus">+</i>
                                     <ul class="sub-menu">
-                                        <li><a href="cart.html">Jacket</a></li>
-                                        <li><a href="checkout.html">Shirt</a></li>
-                                        <li><a href="login.html">Pants</a></li>
-                                        <li><a href="register.html">Dress</a></li>
-                                        <li><a href="profile.html">Accessories</a></li>
+                                        <li><a href="{{ route('productcatalogue') }}">Tất cả sản phẩm</a></li>
+                                        @foreach($data as $cate)
+                                            <li><a href="{{ route('productcatalogue', ['catalogue_id' => $cate->id]) }}">{{ $cate->name }}</a></li>
+                                        @endforeach
                                     </ul>
                                 </li>
+
+
                                 <li><a href="shop">Shop</a></li>
 
 

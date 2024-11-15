@@ -24,6 +24,7 @@ class ClientController extends Controller
     return view('client.home', compact(['listSp', 'listHot', 'data']));
     }
 
+
     // public function show($id)
     // {
     //     // Tìm sản phẩm theo ID

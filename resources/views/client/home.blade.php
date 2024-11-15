@@ -2017,7 +2017,7 @@
 
                                             <img
                                                 src="{{ Storage::url($item->img_thumbnail) }}" alt
-                                                class="img-fluid" style="width: 200px; height: 320px"></a>
+                                                class="img-fluid" style="width: 375.15px; height: 332.87px"></a>
                                         <div class="product-actions-xl">
                                             <a href="#"><i class="flaticon-heart"></i></a>
                                             <a href="product-details.html"><i class="flaticon-search"></i></a>
@@ -2067,7 +2067,7 @@
                             <div class="swiper-slide">
                                 <div class="product-card-xl">
                                     <div class="product-img-xl">
-                                        <a href="{{route('product.product_detail',$item->id)}}"><img
+                                        <a href="{{route('product.product_detail',$item->id)}}"><img style="width: 375.15px; height: 332.87px"
                                                 src="{{ Storage::url($item->img_thumbnail) }}"  alt
                                                 class="img-fluid"></a>
                                         <div class="product-actions-xl">

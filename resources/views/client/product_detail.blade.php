@@ -147,6 +147,9 @@
                                             <a href="{{ route('checkout') }}" style="color:white">Mua Ngay</a>
                                         </button>
                                     </li>
+                                    <li id="quantity-warning" style="color: red; display: none;">
+                                        Số lượng sản phẩm đã đạt tối đa!
+                                    </li>
                                     <li class="pd-type">Danh mục sản phẩm: <span>{{ $product->catelogues->name }}</span>
                                     </li>
                                     <li class="pd-type">Mã sản phẩm: <span>{{ $product->sku }}</span></li>
@@ -355,6 +358,17 @@
     // Chuyển hướng đến trang checkout
     window.location.href = checkoutUrl;
 });
+document.getElementById('quantity-input').addEventListener('input', function() {
+        const quantityInput = this;
+        const maxQuantity = parseInt(quantityInput.getAttribute('max'));
+        const warningMessage = document.getElementById('quantity-warning');
 
+        if (parseInt(quantityInput.value) > maxQuantity) {
+            quantityInput.value = maxQuantity;
+            warningMessage.style.display = 'block';
+        } else {
+            warningMessage.style.display = 'none';
+        }
+    });
     </script>
 @endsection
