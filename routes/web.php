@@ -67,6 +67,8 @@ Route::get('/shop', [ClientController::class, 'shop'])->name('shop');
 
 Route::get('/product/checkout', [ClientController::class, 'checkout'])->name('product.checkout');
 
+//tim kiem
+Route::post('/search', [ClientController::class, 'search'])->name('product.search');
 
 //chi tiet test
 Route::post('product/comment/{id}', [BinhLuanController::class, 'store'])->name('comment.store');

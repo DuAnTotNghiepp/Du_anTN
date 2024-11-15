@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="{{asset('assegit ts/css/bootstrap-icons.css')}}">
 
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
+    
+
 
     <link rel="stylesheet" href="{{asset('assets/css/global.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
@@ -34,6 +36,8 @@
 
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+<link href="https://cdn.jsdelivr.net/npm/nouislider@15.8.0/dist/nouislider.min.css" rel="stylesheet">
+
 
 </head>
 
@@ -532,6 +536,8 @@
     <script src="{{asset('assets/js/jquery.fancybox.min.js')}}"></script>
 
     <script src="{{asset('assets/js/main.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/nouislider@15.8.0/dist/nouislider.min.js"></script>
+
 </body>
 
 <!-- Mirrored from demo-egenslab.b-cdn.net/html/eg-shop-fashion/v1/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 14 Jul 2024 08:24:04 GMT -->

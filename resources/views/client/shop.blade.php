@@ -34,9 +34,9 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="sidebar-searchbar-wrap">
-                                    <form action="#" method="POST" class="sidebar-searchbar-form">
-                                        <input type="text" name="sidebar-search-input" id="sidebar-search-input"
-                                            placeholder="What are you loking for ?">
+                                    <form action="{{ route('product.search') }}" method="POST" class="sidebar-searchbar-form">
+                                        @csrf <!-- Đảm bảo bảo mật -->
+                                        <input type="text" name="sidebar-search-input" id="sidebar-search-input" placeholder="What are you looking for?">
                                         <button type="submit"><i class="bi bi-search"></i></button>
                                     </form>
                                 </div>
@@ -180,25 +180,73 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-12 ">
+
+                            // tim kiem theo gia
+                          
+                            <div class="col-lg-12">
                                 <div class="sb-pricing-range">
                                     <h5 class="sb-title">PRICE</h5>
-                                    <form action="#" method="POST">
+                                    <form action="{{ route('product.search') }}" method="POST">
+                                        @csrf
                                         <div class="price-range-slider">
-                                            <div id="slider-range" class="range-bar"></div>
-                                            <div
-                                                class="pricing-range-buttom d-flex align-items-center justify-content-between">
+                                            <div id="price_range_slider"></div>
+                                            <div class="pricing-range-buttom d-flex align-items-center justify-content-between">
                                                 <div class="price-filter-btn">
                                                     <button type="submit">Filter</button>
                                                 </div>
                                                 <div class="pricing-value">
-                                                    <span>Price : </span> <input type="text" id="amount" readonly>
+                                                    <span>Price: </span>
+                                                    <span id="price_range_value">$0 - $1000000</span>
                                                 </div>
                                             </div>
                                         </div>
+                                        <!-- Lưu trữ giá trị min và max -->
+                                        <input type="hidden" name="price_min" id="price_min" value="0">
+                                        <input type="hidden" name="price_max" id="price_max" value="1000000">
+                                        <!-- Nếu có tìm kiếm theo tên -->
+                                        <input type="text" name="sidebar-search-input" placeholder="Search by name">
                                     </form>
                                 </div>
                             </div>
+                            
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    var slider = document.getElementById('price_range_slider');
+                                    var priceRangeValue = document.getElementById('price_range_value');
+                                    var priceMin = document.getElementById('price_min');
+                                    var priceMax = document.getElementById('price_max');
+                                
+                                    noUiSlider.create(slider, {
+                                        start: [0, 0], 
+                                        connect: true,  // Kết nối giữa 2 tay cầm
+                                        range: {
+                                            'min': 0,   
+                                            'max': 1000000 
+                                        },
+                                        step: 1000, // Bước nhảy
+                                        format: {
+                                            to: function (value) {
+                                                return '$' + value.toFixed(0); // Hiển thị giá trị dưới dạng tiền tệ
+                                            },
+                                            from: function (value) {
+                                                return value.replace('$', ''); // Chuyển giá trị thành số
+                                            }
+                                        }
+                                    });
+                                
+                                    slider.noUiSlider.on('update', function(values, handle) {
+                                        priceRangeValue.textContent = values.join(' - '); 
+                                
+                                        priceMin.value = values[0].replace('$', '');
+                                        priceMax.value = values[1].replace('$', '');
+                                    });
+                                });
+                            </script>
+                            
+                            
+                            
+                            
+                            
                             <div class="col-lg-12">
                                 <div class="top-sell-cards">
                                     <h5 class="sb-title">TOP SALE THIS WEEK</h5>
@@ -340,37 +388,45 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xxl-3 col-xl-4 col-lg-4 col-sm-4">
-                            <div class="product-card-l">
-                                <div class="product-img">
-                                    <a href="product-details.html">
-                                        <img src="assets/images/product/p-dbl1.png" alt>
-                                        <img src="assets/images/product/p-dbl2.png" alt class="hover-img">
-                                    </a>
-                                    <div class="product-lavels">
-                                    </div>
-                                    <div class="product-actions">
-                                        <a href="#"><i class="flaticon-heart"></i></a>
-                                        <a href="product-details.html"><i class="flaticon-search"></i></a>
-                                        <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
-                                    </div>
+                        
+                    @foreach ($products as $lsp)
+                    <div class="col-xxl-3 col-xl-4 col-lg-4 col-sm-4">
+                        <div class="product-card-l">
+                            <div class="product-img">
+                                {{--  <a href="product-details.html">
+                                    <img src="assets/images/product/p-dbl1.png" alt>
+                                    <img src="assets/images/product/p-dbl2.png" alt class="hover-img">
+                                </a>  --}}
+                                <a href="{{route('product.product_detail',$lsp->id)}}"><img
+                                    src="{{ Storage::url($lsp->img_thumbnail) }} "  alt
+                                    class="img-fluid" style="max-height: 200px;"></a>
+                                <div class="product-lavels">
                                 </div>
-                                <div class="product-body">
-                                    <ul class="d-flex product-rating">
-                                        <li><i class="bi bi-star-fill"></i></li>
-                                        <li><i class="bi bi-star-fill"></i></li>
-                                        <li><i class="bi bi-star-fill"></i></li>
-                                        <li><i class="bi bi-star-fill"></i></li>
-                                        <li><i class="bi bi-star"></i></li>
-                                        <li>(<span>8</span> Review)</li>
-                                    </ul>
-                                    <h3 class="product-title"><a href="product-details.html">Ghost Mannequin Pant</a></h3>
-                                    <div class="product-price">
-                                        <del class="old-price">$302.74</del><ins class="new-price">$290.05</ins>
-                                    </div>
+                                <div class="product-actions">
+                                    <a href="#"><i class="flaticon-heart"></i></a>
+                                    <a href="{{route('product.product_detail',$lsp->id)}}"><i class="flaticon-search"></i></a>
+                                    <a href="#"><i class="flaticon-shopping-cart"></i></a>
+                                </div>
+                            </div>
+                            <div class="product-body">
+                                <ul class="d-flex product-rating">
+                                    <li><i class="bi bi-star-fill"></i></li>
+                                    <li><i class="bi bi-star-fill"></i></li>
+                                    <li><i class="bi bi-star-fill"></i></li>
+                                    <li><i class="bi bi-star-fill"></i></li>
+                                    <li><i class="bi bi-star"></i></li>
+                                    <li>(<span>8</span> Review)</li>
+                                </ul>
+                                <h3 class="product-title"><a href="product-details.html">{{ $lsp->name }}</a></h3>
+                                <div class="product-price">
+                                    <del class="old-price">{{ $lsp->price_sale}}</del><ins class="new-price">{{ $lsp->price_regular}}</ins>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    @endforeach
+
+                   
                     
                        
                         <div class="col-lg-12 mt-50">

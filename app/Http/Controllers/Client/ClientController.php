@@ -25,6 +25,7 @@ class ClientController extends Controller
 
     return view('client.home', compact(['listSp', 'listHot', 'data']));
     }
+
     public function shop(Request $request)
     {
         $data = Catalogues::query()->get();
@@ -34,9 +35,35 @@ class ClientController extends Controller
 
     // Lấy sản phẩm hot
     $listHot = Product::where('is_hot_deal', 1)->get();
+    //list sp moi 
+    $products = Product::orderBy('created_at', 'desc')->paginate(12);
 
-    return view('client.shop', compact(['listSp', 'listHot', 'data']));
+    return view('client.shop', compact(['listSp', 'listHot', 'data','products']));
     }
+    //tim kiem
+    public function search(Request $request)
+{
+    $searchTerm = $request->input('sidebar-search-input');
+    $minPrice = $request->input('price_min');
+    $maxPrice = $request->input('price_max');
+    
+    // tại ra quẻyy tìm kiếm
+    $query = Product::query();
+    
+    if ($searchTerm) {
+        $query->where('name', 'like', '%' . $searchTerm . '%');
+    }
+    
+    if (is_numeric($minPrice) && is_numeric($maxPrice)) {
+        $query->whereBetween('price_regular', [$minPrice, $maxPrice]);
+    }
+    
+    $products = $query->get();
+    
+    return view('client.shop', compact('products'));
+}
+
+    
 
 
     // public function show($id)
