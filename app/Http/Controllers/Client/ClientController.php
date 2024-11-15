@@ -25,6 +25,19 @@ class ClientController extends Controller
 
     return view('client.home', compact(['listSp', 'listHot', 'data']));
     }
+    public function shop(Request $request)
+    {
+        $data = Catalogues::query()->get();
+
+    // Lấy tất cả sản phẩm
+    $listSp = Product::where('is_active', 1)->get(); // Hiển thị tất cả sản phẩm
+
+    // Lấy sản phẩm hot
+    $listHot = Product::where('is_hot_deal', 1)->get();
+
+    return view('client.shop', compact(['listSp', 'listHot', 'data']));
+    }
+
 
     // public function show($id)
     // {
