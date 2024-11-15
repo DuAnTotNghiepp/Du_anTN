@@ -20,6 +20,19 @@
     <link rel="stylesheet" href="{{asset('assets/css/global.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/responsive.css')}}">
+    <style>
+        .price-regular {
+    text-decoration: line-through; /* Gạch ngang giá cũ */
+    color: gray; /* Màu xám cho giá cũ */
+}
+
+.price-sale {
+    color: red; /* Màu đỏ cho giá khuyến mãi */
+    font-weight: bold; /* In đậm giá khuyến mãi */
+    font-size: 1.2em; /* Kích thước chữ lớn hơn */
+}
+
+    </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
 </head>
@@ -149,7 +162,7 @@
                 </div>
                 <div class="cart-btns">
                     <a href="checkout.html" class="cart-btn checkout">CHECKOUT</a>
-                    <a href="cart.html" class="cart-btn cart">VIEW CART</a>
+                    <a href="{{route('cart.index')}}" class="cart-btn cart">VIEW CART</a>
                 </div>
                 <p class="cart-shipping-text"><strong>SHIPPING:</strong> Continue shopping up to $64.08 and receive free
                     shipping. stay with EG </p>

@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
 class Product extends Model
 {
     use HasFactory;
     use SoftDeletes;
     protected $table = 'products';
     protected $primaryKey = 'id';
-    Protected $fillable=[
+    protected $fillable = [
         'id',
         'catalogues_id',
         'name',
@@ -38,10 +39,16 @@ class Product extends Model
 
     public function catelogues()
     {
-        return $this->belongsTo(Catalogues::class,'catalogues_id');
+        return $this->belongsTo(Catalogues::class, 'catalogues_id');
+    }
+
+    public function variants()
+    {
+        return $this->belongsToMany(Variants::class, 'product__variants');
     }
     public function binh_luans()
     {
-        return $this->hasMany(BinhLuan::class, 'product_id'); 
+        return $this->hasMany(BinhLuan::class, 'product_id');
     }
+    
 }

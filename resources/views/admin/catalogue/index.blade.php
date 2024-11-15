@@ -295,6 +295,7 @@
                     </div>
                     <!--end add modal-->
 
+
                     <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
@@ -323,6 +324,7 @@
                         </div>
                     </div>
                     <!--end delete modal -->
+
 
                 </div>
             </div>

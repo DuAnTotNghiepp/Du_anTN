@@ -89,8 +89,8 @@ class CataloguesController extends Controller
      */
     public function destroy(string $id)
     {
-        $mode = Catalogues::query()->findOrFail($id);
-        $mode->delete();
+        $model = Catalogues::query()->findOrFail($id);
+        $model->delete();
         if ($model->cover && Storage::exists($model->cover)) {
             Storage::delete($model->cover);
         }

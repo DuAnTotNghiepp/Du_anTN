@@ -28,19 +28,16 @@ class BinhLuanController extends Controller
     {
         // Kiểm tra xem người dùng đã đăng nhập chưa
         if (!Auth::check()) {
-            return redirect()->back()->with('error', 'Bạn cần phải đăng nhập để thêm bình luận.');
+            return response()->json(['success' => false, 'message' => 'Bạn cần phải đăng nhập để thêm bình luận.']);
         }
-
+    
         try {
             // Xác thực dữ liệu yêu cầu
             $validatedData = $request->validate([
                 'noidung' => 'required|string|max:1000',
                 'rating' => 'required|integer|between:1,5',
             ]);
-
-            // Ghi nhận dữ liệu đã xác thực
-            Log::info('Validated Data: ', $validatedData);
-
+    
             // Tạo bình luận
             $comment = BinhLuan::create([
                 'product_id' => $productId,
@@ -48,24 +45,23 @@ class BinhLuanController extends Controller
                 'noidung' => $validatedData['noidung'],
                 'rating' => $validatedData['rating'],
             ]);
-
-            // Redirect về với thông báo thành công
-            return redirect()->back()->with('success', 'Bình luận đã được thêm thành công.');
-
-        } catch (\Illuminate\Database\QueryException $e) {
-            // Ghi nhận lỗi SQL
-            Log::error('Query Exception: ', ['message' => $e->getMessage()]);
-            return redirect()->back()->with('error', 'Không thể thêm bình luận: ' . $e->getMessage());
-
+    
+            // Trả về thông tin bình luận mới
+            return response()->json([
+                'success' => true,
+                'comment' => [
+                    'user_name' => Auth::user()->name, // Lấy tên người dùng
+                    'noidung' => $comment->noidung,
+                    'rating' => $comment->rating,
+                ]
+            ]);
+    
         } catch (\Exception $e) {
-            // Ghi nhận lỗi chung
             Log::error('General Exception: ', ['message' => $e->getMessage()]);
-            return redirect()->back()->with('error', 'Đã xảy ra lỗi: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Đã xảy ra lỗi: ' . $e->getMessage()]);
         }
     }
-
     
-
 
     /**
      * Show comments for a product.

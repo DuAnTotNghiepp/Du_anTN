@@ -62,7 +62,23 @@
                         </ul>
                     </div>
                 </li>
-                
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Thuộc Tính Sản Phẩm</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarDashboards">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('variant.index') }}" class="nav-link" data-key="t-analytics"> Danh Sách Thuộc Tính </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('variant.create') }}" class="nav-link" data-key="t-analytics"> Thêm Thuộc Tính </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li><!-- end Dashboard Menu -->
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarComments" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarComments">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Bình Luận</span>
@@ -75,7 +91,7 @@
                         </ul>
                     </div>
                 </li>
-                
+
                 <!-- end Dashboard Menu -->
 
                 <li class="nav-item">
@@ -89,6 +105,18 @@
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('accounts.create') }}" class="nav-link" data-key="t-analytics"> Thêm Tài Khoản </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarAccounts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Tài Đơn Hàng</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarAccounts">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('order.index') }}" class="nav-link" data-key="t-analytics"> Danh Sách Đơn Hàng </a>
                             </li>
                         </ul>
                     </div>

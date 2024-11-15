@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\CataloguesController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\VariantsController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +21,38 @@ Route::prefix('admin')
 Route::controller(ProductController::class)
     ->name('product.')
     ->prefix('admin/products/')
+    ->group(function () {
+        Route::get('/', 'index')
+            ->name('index');
+        Route::get('create', 'create')
+            ->name('create');
+        Route::post('store', 'store')
+            ->name('store');
+        Route::get('{id}/edit', 'edit')
+            ->name('edit');
+        Route::put('{id}/update', 'update')
+            ->name('update');
+        Route::delete('{id}/destroy', 'destroy')
+            ->name('destroy');
+    });
+Route::controller(OrderController::class)
+    ->name('order.')
+    ->prefix('admin/orders/')
+    ->group(function () {
+        Route::get('/', 'index')
+            ->name('index');
+        Route::post('store', 'store')
+            ->name('store');
+        Route::get('{id}/show', 'show')
+            ->name('show');
+        Route::get('{id}/edit', 'edit')
+            ->name('edit');
+        Route::put('{id}/update', 'update')
+            ->name('update');
+    });
+Route::controller(VariantsController::class)
+    ->name('variant.')
+    ->prefix('admin/variants/')
     ->group(function () {
         Route::get('/', 'index')
             ->name('index');
