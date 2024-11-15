@@ -181,19 +181,22 @@
                                 </div>
                             </div>
 
-                            // tim kiem theo gia
+                            {{--  loc theo gia  --}}
                           
                             <div class="col-lg-12">
                                 <div class="sb-pricing-range">
-                                    <h5 class="sb-title">PRICE</h5>
+                                    <h5 class="sb-title">LỌC THEO GIÁ VÀ TÊN</h5>
                                     <form action="{{ route('product.search') }}" method="POST">
                                         @csrf
                                         <div class="price-range-slider">
                                             <div id="price_range_slider"></div>
+                                            
                                             <div class="pricing-range-buttom d-flex align-items-center justify-content-between">
+                                               
                                                 <div class="price-filter-btn">
                                                     <button type="submit">Filter</button>
                                                 </div>
+                                                
                                                 <div class="pricing-value">
                                                     <span>Price: </span>
                                                     <span id="price_range_value">$0 - $1000000</span>
@@ -204,7 +207,7 @@
                                         <input type="hidden" name="price_min" id="price_min" value="0">
                                         <input type="hidden" name="price_max" id="price_max" value="1000000">
                                         <!-- Nếu có tìm kiếm theo tên -->
-                                        <input type="text" name="sidebar-search-input" placeholder="Search by name">
+                                        <input type="text" name="sidebar-search-input" placeholder="Tìm kiếm tên">
                                     </form>
                                 </div>
                             </div>
@@ -379,15 +382,22 @@
                     <div class="product-sorting d-flex justify-content-between align-items-center">
                         <div class="show-text"><span>Showing 1-9 of 18 Result</span></div>
                         <div class="category-sort">
-                            <select name="category-sort" id="category-sort">
-                                <option selected>Default Soprting</option>
-                                <option value="1">Sort by Size</option>
-                                <option value="2">Sort by Price</option>
-                                <option value="3">Sort by Color</option>
-                            </select>
+                            <form action="{{ route('product.search') }}" method="POST">
+                                @csrf
+                                <select name="category-sort" id="category-sort" onchange="this.form.submit()">
+                                    <option value="default" selected>Sắp xếp theo</option>
+                                    <option value="price_asc">Sắp xếp theo giá thấp đến cao</option>
+                                    <option value="price_desc">Sắp xếp theo giá cao đến thấp</option>
+                                </select>
+                                <!-- Hidden inputs for price filters -->
+                                <input type="hidden" name="price_min" id="price_min" value="{{ request('price_min', 0) }}">
+                                <input type="hidden" name="price_max" id="price_max" value="{{ request('price_max', 10000000000) }}">
+                            </form>
                         </div>
                     </div>
+                    
                     <div class="row">
+                        
                         
                     @foreach ($products as $lsp)
                     <div class="col-xxl-3 col-xl-4 col-lg-4 col-sm-4">

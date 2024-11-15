@@ -46,7 +46,7 @@ class ClientController extends Controller
     $searchTerm = $request->input('sidebar-search-input');
     $minPrice = $request->input('price_min');
     $maxPrice = $request->input('price_max');
-    
+    $luachon = $request->input('category-sort', 'default');
     // tại ra quẻyy tìm kiếm
     $query = Product::query();
     
@@ -56,6 +56,11 @@ class ClientController extends Controller
     
     if (is_numeric($minPrice) && is_numeric($maxPrice)) {
         $query->whereBetween('price_regular', [$minPrice, $maxPrice]);
+    }
+    if ($luachon == 'price_asc') {
+        $query->orderBy('price_regular', 'asc'); // Sắp xếp theo giá từ thấp đến cao
+    } elseif ($luachon == 'price_desc') {
+        $query->orderBy('price_regular', 'desc'); // Sắp xếp theo giá từ cao đến thấp
     }
     
     $products = $query->get();
