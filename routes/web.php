@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CartController;
@@ -92,4 +93,5 @@ Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComme
 
 
 // Group routes under admin middleware
-
+// vouchers 
+Route::get('admin/vouchers', [VoucherController::class, 'index'])->name('vouchers.index');

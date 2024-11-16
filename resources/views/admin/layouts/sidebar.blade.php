@@ -121,7 +121,17 @@
                         </ul>
                     </div>
                 </li>
-
+                    <a class="nav-link menu-link" href="#sidebarAccounts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Mã Giảm Giá</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarAccounts">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('vouchers.index') }}" class="nav-link" data-key="t-analytics"> Danh Sách Mã Giảm Giá </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
             </ul>
         </div>
         <!-- Sidebar -->
