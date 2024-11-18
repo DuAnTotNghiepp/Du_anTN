@@ -1,16 +1,14 @@
 <?php
 
-use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\CartController;
 use App\Http\Controllers\BinhLuanController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ClientController;
-use App\Http\Controllers\ProductController as ControllersProductController;
+use App\Http\Controllers\Client\OrderController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\CheckRoleAdminMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,6 +82,16 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::put('admin/accounts/{user}', [AdminController::class, 'update'])->name('admin.accounts.update');
     Route::delete('admin/accounts/{user}', [AdminController::class, 'destroy'])->name('admin.accounts.destroy');
 });
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
+// Thêm sản phẩm vào giỏ hàng
+Route::post('/cart/store/{productId}/{variantId}', [CartController::class, 'store'])->name('cart.store');
+
+// Cập nhật số lượng sản phẩm trong giỏ hàng
+Route::post('/cart/update/{cartItemId}', [CartController::class, 'update'])->name('cart.update');
+
+// Xóa sản phẩm khỏi giỏ hàng
+Route::delete('/cart/destroy/{cartItemId}', [CartController::class, 'destroy'])->name('cart.destroy');
 
 //client-timkiems1
 Route::get('/', [ClientController::class, 'index'])->name('index');
@@ -97,6 +105,7 @@ Route::post('/search', [ClientController::class, 'search'])->name('product.searc
 
 Route::resource('cart', CartController::class);
 //chi tiet test
+
 Route::post('product/comment/{id}', [BinhLuanController::class, 'store'])->name('comment.store');
 Route::get('admin/comment/index', [ProductController::class, 'indexWithComments'])->name('comment.index');
 Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComments'])->name('product.comments');

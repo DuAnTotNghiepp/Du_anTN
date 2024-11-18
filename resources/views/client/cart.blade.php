@@ -30,87 +30,81 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-xxl-12 col-xl-12 col-md-12 col-sm-8">
-                    <table class="table cart-table">
-                        <thead>
-                        <tr>
-                            <th scope="col">Image</th>
-                            <th scope="col">Product Title</th>
-                            <th scope="col">Unite Price</th>
-                            <th scope="col">Discount Price</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Subtotal</th>
-                            <th scope="col">Delete</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="image-col">
-                                <img src="assets/images/product/cart-p4.png" alt>
-                            </td>
-                            <td class="product-col"><a href="product-details.html" class="product-title">Something
-                                    Yellow Party Dress</a></td>
-                            <td class="unite-col">
-                                <del><span class="unite-price-del">$32.36</span></del>
-                                <span class="unite-price"></span></td>
-                            <td class="discount-col"><span class="discount-price">$22.36</span></td>
-                            <td class="quantity-col">
-                                <div class="quantity">
-                                    <input type="number" min="1" max="90" step="10" value="1">
-                                </div>
-                            </td>
-                            <td class="total-col">$22.36</td>
-                            <td class="delete-col">
-                                <div class="delete-icon">
-                                    <a href="#"><i class="flaticon-letter-x"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="image-col">
-                                <img src="assets/images/product/cart-p6.png" alt>
-                            </td>
-                            <td class="product-col"><a href="product-details.html" class="product-title">Woamn Something
-                                    Navy Jens</a></td>
-                            <td class="unite-col">
-                                <del><span class="unite-price-del">$32.36</span></del>
-                                <span class="unite-price"></span></td>
-                            <td class="discount-col"><span class="discount-price">$22.36</span></td>
-                            <td class="quantity-col">
-                                <div class="quantity">
-                                    <input type="number" min="1" max="90" step="10" value="1">
-                                </div>
-                            </td>
-                            <td class="total-col">$22.36</td>
-                            <td class="delete-col">
-                                <div class="delete-icon">
-                                    <a href="#"><i class="flaticon-letter-x"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="image-col">
-                                <img src="assets/images/product/cart-p5.png" alt>
-                            </td>
-                            <td class="product-col"><a href="product-details.html" class="product-title">Men Casual
-                                    Summer Sale</a></td>
-                            <td class="unite-col">
-                                <del><span class="unite-price-del"></span></del>
-                                <span class="unite-price">$32.36</span></td>
-                            <td class="discount-col"><span class="discount-price">$22.36</span></td>
-                            <td class="quantity-col">
-                                <div class="quantity">
-                                    <input type="number" min="1" max="90" step="10" value="1">
-                                </div>
-                            </td>
-                            <td class="total-col">$22.36</td>
-                            <td class="delete-col">
-                                <div class="delete-icon">
-                                    <a href="#"><i class="flaticon-letter-x"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    @if(count($cartItems) > 0)
+                        <table class="table cart-table">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th scope="col">Hình ảnh</th>
+                                <th scope="col">Tên sản phẩm</th>
+                                <th scope="col">Giá thường</th>
+                                <th scope="col">Giá Sale</th>
+                                <th scope="col">Màu</th>
+                                <th scope="col">Size</th>
+                                <th scope="col">Số lượng</th>
+                                <th scope="col">Xóa</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($cartItems as $item)
+                                <tr>
+                                    <td></td>
+                                    <td><img src="{{ asset('storage/' . $item->product->img_thumbnail) }}" alt="{{ $item->product->name }}" width="100"></td>
+                                    <td>{{ $item->product->name }}</td>
+                                    <td><del>{{ number_format($item->product->price_regular) }} VND</del></td>
+                                    <td>{{ number_format($item->product->price_sale) }} VND</td>
+
+
+                                    <td>
+                                        @php
+
+                                            $colorVariant = $item->product->variants->firstWhere('name', 'Color');
+                                        @endphp
+                                        @if($colorVariant)
+                                            <!-- Hiển thị ô màu sắc thực tế -->
+                                            <span style="display:inline-block; width: 30px; height: 30px;border-radius: 20px; background-color: {{ $colorVariant->value }}; border: 1px solid #ddd;"></span>
+
+                                        @else
+                                            Không có màu
+                                        @endif
+                                    </td>
+
+                                    <td>
+                                        @php
+
+                                            $sizeVariant = $item->product->variants->firstWhere('name', 'Size');
+                                        @endphp
+                                        @if($sizeVariant)
+                                            {{ $sizeVariant->value }}
+                                        @else
+                                            Không có kích thước
+                                        @endif
+                                    </td>
+
+
+                                    <td>
+                                        <form action="{{ route('cart.update', $item->id) }}" method="POST">
+                                            @csrf
+                                            <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" max="90">
+                                            <button type="submit">Cập nhật</button>
+                                        </form>
+                                    </td>
+
+
+                                    <td>
+                                        <form action="{{ route('cart.destroy', $item->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit">Xóa</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    @else
+                        <p>Giỏ hàng của bạn trống.</p>
+                    @endif
                 </div>
             </div>
             <div class="row mt-60">
@@ -170,6 +164,7 @@
             </div>
         </div>
     </div>
+
 
     <div class="newslatter-area ml-110 mt-100">
         <div class="container-fluid">

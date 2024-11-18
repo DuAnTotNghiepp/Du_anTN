@@ -12,10 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('carts', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(\App\Models\User::class)->constrained();
-            $table->Integer('quantity')->nullable();
-            $table->timestamps();
+            $table->id();  // Khóa chính của bảng
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');  // Khóa ngoại liên kết với bảng users
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');  // Khóa ngoại liên kết với bảng products
+            $table->foreignId('variant_id')->constrained('variants')->onDelete('cascade');  // Khóa ngoại liên kết với bảng variants
+            $table->integer('quantity')->default(1);  // Số lượng sản phẩm trong giỏ hàng
+            $table->timestamps();  // Created at và updated at
         });
     }
 
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('carts');
+        Schema::dropIfExists('carts');  // Xóa bảng carts nếu cần
     }
 };

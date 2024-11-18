@@ -8,13 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Variants extends Model
 {
     use HasFactory;
-    Protected $fillable=[
-        'id',
-        'name',
-        'value',
-        'created_at',
-        'updated_at'
-    ];
+    protected $table = 'variants'; // Chỉ rõ bảng 'variants'
     public $timestamps = false;
     // public function variants()
     // {
