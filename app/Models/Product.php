@@ -50,5 +50,10 @@ class Product extends Model
     {
         return $this->hasMany(BinhLuan::class, 'product_id');
     }
+        public function galleries()
+    {
+        return $this->hasMany(ProductGallerie::class);
+    }
+
     
 }

@@ -38,6 +38,13 @@ Route::post('register', [AuthController::class, 'register'])->name('register');
 // Client Routes
 Route::get('/', [ClientController::class, 'index'])->name('index');
 Route::get('product/{id}', [ClientController::class, 'show'])->name('product.product_detail');
+
+//profile
+Route::get('/profile/{id}', [ClientController::class, 'show_profile'])->name('profile');
+Route::post('profile', [ClientController::class, 'updateProfile'])->name('updateProfile');
+// routes/web.php
+Route::post('/profile/address', [ClientController::class, 'storeAddress'])->name('profile.address.store');
+
 // Route::group(['prefix'=>'checkout'], function(){
 //     Route::get('/',[CheckoutController::class, 'form'])->name('checkout');
 //     Route::post('/',[CheckoutController::class, 'submit_form'])->name('checkout');

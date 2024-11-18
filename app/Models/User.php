@@ -49,4 +49,11 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    // app/Models/User.php
+public function addresses()
+{
+    return $this->hasMany(Address::class);
+}
+
+
 }
