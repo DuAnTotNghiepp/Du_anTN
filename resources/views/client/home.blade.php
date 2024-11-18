@@ -2046,9 +2046,11 @@
                     <div class="swiper-button-prev"><i class="flaticon-arrow-pointing-to-left"></i></div>
 
 
+
                 </div>
             </div>
         </div>
+
     </div>
 
     <div class="tranding-product-wrapper ml-110 mt-70 position-relative">
