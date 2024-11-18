@@ -166,7 +166,7 @@
                 </div>
                 <div class="cart-btns">
                     <a href="checkout.html" class="cart-btn checkout">CHECKOUT</a>
-                    <a href="cart.html" class="cart-btn cart">VIEW CART</a>
+                    <a href="{{route('cart.index')}}" class="cart-btn cart">VIEW CART</a>
                 </div>
                 <p class="cart-shipping-text"><strong>SHIPPING:</strong> Continue shopping up to $64.08 and receive free
                     shipping. stay with EG </p>

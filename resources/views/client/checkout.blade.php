@@ -28,145 +28,145 @@
     <div class="checkout-area ml-110 mt-100">
         <div class="container">
             <div class="row">
-                <div class="col-xxl-8 col-xl-8">
-                    <form class="billing-from">
-                        <h5 class="checkout-title">
-                            Billing Details
-                        </h5>
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6">
-                                <div class="eg-input-group">
-                                    <label for="first-name1">First Name</label>
-                                    <input type="text" id="first-name1" placeholder="Your first name">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6">
-                                <div class="eg-input-group">
-                                    <label for="last-name">Last Name</label>
-                                    <input type="text" id="last-name" placeholder="Your last name">
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="eg-input-group">
-                                    <label for="country">Country / Region</label>
-                                    <input type="text" id="country" placeholder="Your country name">
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="eg-input-group">
-                                    <label>Street Address</label>
-                                    <input type="text" placeholder="House and street name">
-                                </div>
-                                <div class="eg-input-group">
-                                    <input type="text" placeholder="Town / City">
-                                </div>
-                                <div class="eg-input-group">
-                                    <input type="text" placeholder="Post Code">
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="eg-input-group">
-                                    <label>Additional Information</label>
-                                    <input type="text" placeholder="Your Phone Number">
-                                </div>
-                                <div class="eg-input-group">
-                                    <input type="text" placeholder="Your Email Address">
-                                </div>
-                                <div class="eg-input-group mb-0">
-                                    <textarea cols="30" rows="7" placeholder="Order Notes (Optional)"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-xxl-4 col-xl-4">
-                    <div class="order-summary">
-                        <div class="added-product-summary">
-                            <h5 class="checkout-title">
-                                Order Summary
-                            </h5>
-                            <ul class="added-products">
-                                <li class="single-product">
-                                    <div class="product-img">
-                                        <img src="assets/images/product/added-p1.png" alt>
+                <form action="{{ route('orders.store') }}" method="POST" class="row">
+                    @csrf <!-- Thêm dòng này để bảo vệ CSRF -->
+                    <div class="col-xxl-8">
+                        <div class="billing-from">
+                            <h5 class="checkout-title">Billing Details</h5>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="eg-input-group">
+                                        <label for="first-name1">Tên</label>
+                                        <input type="text" id="first-name1" name="user_name" value="{{ Auth::check() ? Auth::user()->name : '' }}" placeholder="Your first name" required>
                                     </div>
-                                    <div class="product-info">
-                                        <h5 class="product-title"><a href="product.html">Something Yellow Party Dress</a>
-                                        </h5>
-                                        <div class="product-total">
-                                            <div class="quantity">
-                                                <input type="number" min="1" max="90" step="10"
-                                                    value="1">
-                                            </div>
-                                            <strong> <i class="bi bi-x-lg"></i> <span
-                                                    class="product-price">$22.36</span></strong>
-                                        </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="eg-input-group">
+                                        <label>Email</label>
+                                        <input type="email" name="user_email" value="{{ Auth::check() ? Auth::user()->email : '' }}" placeholder="Your Email" required>
                                     </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="total-cost-summary">
-                            <ul>
-                                <li class="subtotal">Subtotal <span>$128.70</span></li>
-                                <li>Tax <span>$5</span></li>
-                                <li>Total ( tax excl.) <span>$15</span></li>
-                                <li>Total ( tax incl.) <span>$15</span></li>
-                            </ul>
-                        </div>
-                        <div class="total-cost">
-                            <ul>
-                                <li class="d-flex justify-content-between">Subtotal <span>$128.70</span></li>
-                            </ul>
-                        </div>
-                        <form class="payment-form">
-                            <div class="payment-methods">
-                                <div class="form-check payment-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                        id="flexRadioDefault2" checked>
-                                    <label class="form-check-label" for="flexRadioDefault2">
-                                        Cash on delivery
-                                    </label>
-                                    <p>Pay with cash upon delivery.</p>
-                                </div>
-                                <div class="form-check payment-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                        id="flexRadioDefault2" checked>
-                                    <label class="form-check-label" for="flexRadioDefault2">
-                                        Credit / Debit Card
-                                    </label>
-                                    <p>
-                                        <div class="row gy-3">
-                                            <div class="col-md-12">
-                                                <label for="cc-name" class="form-label">Name on card</label>
-                                                <input type="text" class="form-control" id="cc-name" placeholder="Enter name">
-                                                <small class="text-muted">Full name as displayed on card</small>
-                                            </div>
-
-                                            <div class="col-md-12">
-                                                <label for="cc-number" class="form-label">Credit card number</label>
-                                                <input type="text" class="form-control" id="cc-number" placeholder="xxxx xxxx xxxx xxxx">
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <label for="cc-expiration" class="form-label">Expiration</label>
-                                                <input type="text" class="form-control" id="cc-expiration" placeholder="MM/YY">
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <label for="cc-cvv" class="form-label">CVV</label>
-                                                <input type="text" class="form-control" id="cc-cvv" placeholder="xxx">
-                                            </div>
-                                        </div>
-                                    </p>
+                                    <div class="eg-input-group">
+                                        <label>Địa chỉ cụ thể</label>
+                                        <input type="text" name="user_address" value="{{ Auth::check() ? Auth::user()->address : '' }}" placeholder="Your Address">
+                                    </div>
+                                    <div class="eg-input-group">
+                                        <label>Số Điện Thoại</label>
+                                        <input type="number" name="user_phone" value="{{ Auth::check() ? Auth::user()->phone : '' }}" placeholder="Your Phone" required>
+                                    </div>
+                                    <div class="eg-input-group mb-0">
+                                        <textarea cols="30" rows="7" name="user_note" placeholder="Order Notes (Optional)"></textarea>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="place-order-btn">
-                                <button type="submit">Place Order</button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                    <div class="col-xxl-4">
+                        <div class="order-summary">
+                            <div class="added-product-summary">
+                                <h5 class="checkout-title">Order Summary</h5>
+                                <ul class="added-products">
+                                    <li class="single-product">
+                                        <div class="product-img">
+                                            <img src="{{ $image }}" alt="{{ $productName }}">
+                                        </div>
+                                        <div class="product-info">
+                                            <h5 class="product-title"><a href="product.html">{{ $productName }}</a></h5>
+                                            <div class="product-total">
+                                                <div class="quantity">
+                                                    <span class="product-quantity">{{ $quantity }}</span>
+                                                </div>
+                                                <strong><i class="bi bi-x-lg"></i> <span class="product-price">{{ $productPrice }}</span> VND</strong>
+                                            </div>
+                                            <p><strong>Màu sắc:</strong>
+                                                <span class="color-box" style="display: inline-block; width: 20px; height: 20px; background-color: {{ $color }}; border: 1px solid #ddd;"></span>
+                                            </p>
+                                            <p><strong>Kích thước:</strong> {{ $size }}</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="total-cost-summary">
+                                <ul>
+                                    <li class="subtotal">Tổng Giá <span id="subtotal">{{ number_format($quantity * $productPrice) }} VND</span></li>
+                                    <li>Thuế <span id="tax">5000 VND</span></li>
+                                    <li>Tổng Đơn Hàng (Bao gồm cả thuế) <span id="total">{{ number_format($quantity * $productPrice + 5000) }} VND</span></li>
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <input type="hidden" name="total_price" value="{{ $quantity * $productPrice + 5000 }}">
+                                </ul>
+                            </div>
+                            <div class="payment-form">
+                                <div class="payment-methods">
+                                    <div class="form-check payment-check">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="payment_cash" checked>
+                                        <label class="form-check-label" for="payment_cash">Cash on delivery</label>
+                                        <p>Pay with cash upon delivery.</p>
+                                    </div>
+                                    <div class="form-check payment-check">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="payment_card">
+                                        <label class="form-check-label" for="payment_card">Credit / Debit Card</label>
+                                        <p>
+                                            <div class="row gy-3">
+                                                <div class="col-md-12">
+                                                    <label for="cc-name" class="form-label">Name on card</label>
+                                                    <input type="text" class="form-control" id="cc-name" placeholder="Enter name">
+                                                    <small class="text-muted">Full name as displayed on card</small>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <label for="cc-number" class="form-label">Credit card number</label>
+                                                    <input type="text" class="form-control" id="cc-number" placeholder="xxxx xxxx xxxx xxxx">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="cc-expiration" class="form-label">Expiration</label>
+                                                    <input type="text" class="form-control" id="cc-expiration" placeholder="MM/YY">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="cc-cvv" class="form-label">CVV</label>
+                                                    <input type="text" class="form-control" id="cc-cvv" placeholder="xxx">
+                                                </div>
+                                            </div>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="place-order-btn">
+                                    <button type="submit">Place Order</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
+
         </div>
     </div>
+    <script>
+        < script >
+            document.addEventListener('DOMContentLoaded', function() {
+                const quantityInput = document.querySelector('.quantity-input');
+                const productPrice = parseFloat(document.querySelector('.product-price').textContent.replace(/,/g, ''));
+                const subtotalElement = document.getElementById('subtotal');
+                const totalElement = document.getElementById('total');
+                const tax = 50000;
+
+                function updateTotal() {
+                    const quantity = parseInt(quantityInput.value);
+
+                    if (isNaN(quantity) || quantity <= 0) {
+                        subtotalElement.textContent = '0 VND';
+                        totalElement.textContent = (tax).toLocaleString('vi-VN') + ' VND'; // Chỉ tính thuế
+                        return;
+                    }
+
+                    const subtotal = quantity * productPrice; // Tính subtotal
+                    const total = subtotal + tax; // Tính tổng
+
+                    subtotalElement.textContent = subtotal.toLocaleString('vi-VN') + ' VND';
+                    totalElement.textContent = total.toLocaleString('vi-VN') + ' VND';
+                }
+
+                // Lắng nghe sự kiện thay đổi số lượng
+                quantityInput.addEventListener('input', updateTotal);
+            });
+    </script>
+
+    </script>
 @endsection
