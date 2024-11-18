@@ -38,20 +38,6 @@ class ClientController extends Controller
         return view('client.checkout');
     }
 
-    // public function show_variants($id)
-    // {
-    //     // Lấy sản phẩm và các biến thể của sản phẩm
-    // $product = Product::with('variants')->findOrFail($id);
-
-    // // Lọc biến thể theo `color` và `size`
-    // $colors = $product->variants->where('name', 'color')->pluck('value')->unique();
-    // $sizes = $product->variants->where('name', 'size')->pluck('value')->unique();
-
-    //    // Kiểm tra dữ liệu
-    //   dd($product, $colors, $sizes);
-    // // Trả về view với dữ liệu
-    // return view('client.product_detail', compact('product', 'colors', 'sizes'));
-    // }
 
     public function show_variants($id)
 {
@@ -72,7 +58,7 @@ public function show($id)
     $comments = BinhLuan::where('product_id', $product->id)->orderBy('created_at', 'desc')->paginate(6); // Hiển thị 6 bình luận mỗi trang
 
     // Tính toán điểm đánh giá trung bình
-    $averageRating = $comments->count() > 0 ? $comments->avg('rating') : 0; 
+    $averageRating = $comments->count() > 0 ? $comments->avg('rating') : 0;
     return view('client.product_detail', compact('product', 'comments', 'averageRating'));
 }
 
