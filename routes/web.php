@@ -74,6 +74,7 @@ Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 
+
 // Group routes under admin middleware
 Route::middleware('auth', 'admin')->group(function () {
     Route::get('admin/accounts', [AdminController::class, 'index'])->name('admin.accounts');
@@ -83,6 +84,16 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::put('admin/accounts/{user}', [AdminController::class, 'update'])->name('admin.accounts.update');
     Route::delete('admin/accounts/{user}', [AdminController::class, 'destroy'])->name('admin.accounts.destroy');
 });
+
+//client-timkiems1
+Route::get('/', [ClientController::class, 'index'])->name('index');
+Route::get('/shop', [ClientController::class, 'shop'])->name('shop');
+
+Route::get('/product/checkout', [ClientController::class, 'checkout'])->name('product.checkout');
+
+//tim kiem
+Route::post('/search', [ClientController::class, 'search'])->name('product.search');
+
 
 Route::resource('cart', CartController::class);
 //chi tiet test
