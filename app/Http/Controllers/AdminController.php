@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -10,9 +12,64 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $users = User::all();  // Lấy tất cả tài khoản
+        $users = User::all();  
         return view('admin.accounts.index', compact('users'));
     }
+    public function getDashboardStats(Request $request)
+{
+    $startDate = $request->get('start_date');
+    $endDate = $request->get('end_date');
+    
+    if (!$startDate || !$endDate) {
+        $startDate = now()->subMonth()->toDateString(); 
+        $endDate = now()->toDateString(); 
+    }
+
+    $orders = Order::whereBetween('created_at', [$startDate, $endDate])->count();
+    $income = Order::whereBetween('created_at', [$startDate, $endDate])->sum('total_price');
+    $accounts = User::whereBetween('created_at', [$startDate, $endDate])->count();
+
+    return response()->json([
+        'orders' => $orders,
+        'income' => $income,
+        'accounts' => $accounts,
+    ]);
+}
+
+    
+    public function getRevenueStats(Request $request)
+{
+    $timeRange = $request->get('time', '1Y');
+
+    $months = [];
+    $revenueData = [];
+    $orderCount = 0;
+    $totalRevenue = 0;
+
+    for ($i = 0; $i < 12; $i++) {
+        $months[] = date('F', strtotime("-$i month"));
+
+        $monthlyRevenue = Order::whereYear('created_at', date('Y', strtotime("-$i month")))
+                               ->whereMonth('created_at', date('m', strtotime("-$i month")))
+                               ->sum('total_price');  
+        $revenueData[] = $monthlyRevenue;
+
+        $totalRevenue += $monthlyRevenue;
+        
+        $monthlyOrderCount = Order::whereYear('created_at', date('Y', strtotime("-$i month")))
+                                  ->whereMonth('created_at', date('m', strtotime("-$i month")))
+                                  ->count();  
+        $orderCount += $monthlyOrderCount;
+        //đơn hàng lỗi
+    }
+
+    return response()->json([
+        'months' => array_reverse($months),
+        'revenueData' => array_reverse($revenueData),
+        'totalRevenue' => $totalRevenue,
+        'orderCount' => $orderCount,
+    ]);
+}
 
     public function create()
     {

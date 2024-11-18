@@ -83,6 +83,7 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::get('admin/accounts/{user}/edit', [AdminController::class, 'edit'])->name('admin.accounts.edit');
     Route::put('admin/accounts/{user}', [AdminController::class, 'update'])->name('admin.accounts.update');
     Route::delete('admin/accounts/{user}', [AdminController::class, 'destroy'])->name('admin.accounts.destroy');
+    //thong ke
 });
 
 //client-timkiems1
@@ -102,5 +103,9 @@ Route::get('admin/comment/index', [ProductController::class, 'indexWithComments'
 Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComments'])->name('product.comments');
 
 
-// Group routes under admin middleware
+// Group routes under admin middlewares
+//thong ke
+Route::get('/admin/dashboard-stats', [AdminController::class, 'getDashboardStats']);
+Route::get('/admin/revenue-stats', [AdminController::class, 'getRevenueStats']);
+
 
