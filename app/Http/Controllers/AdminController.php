@@ -17,11 +17,9 @@ class AdminController extends Controller
     }
     public function getDashboardStats(Request $request)
     {
-        // Lấy khoảng thời gian từ yêu cầu
-        $startDate = $request->input('start_date', now()->subMonth()->format('Y-m-d')); // Mặc định là 1 tháng trước
-        $endDate = $request->input('end_date', now()->format('Y-m-d')); // Mặc định là ngày hiện tại
+        $startDate = $request->input('start_date', now()->subMonth()->format('Y-m-d')); 
+        $endDate = $request->input('end_date', now()->format('Y-m-d')); 
     
-        // Lấy thống kê dữ liệu
         $accounts = User::whereBetween('created_at', [$startDate, $endDate])->count();
         $orders = Order::whereBetween('created_at', [$startDate, $endDate])->count();
         $income = Order::whereBetween('created_at', [$startDate, $endDate])->sum('total_price');
@@ -39,7 +37,6 @@ class AdminController extends Controller
     {
         $timeRange = $request->get('time', '1Y');
     
-        // Mảng tên tháng tiếng Việt
         $monthsInVietnamese = [
             'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
             'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
@@ -51,8 +48,8 @@ class AdminController extends Controller
         $totalRevenue = 0;
     
         for ($i = 0; $i < 12; $i++) {
-            $currentMonth = date('n', strtotime("-$i month")); // Lấy chỉ số tháng (1-12)
-            $months[] = $monthsInVietnamese[$currentMonth - 1]; // Lấy tên tháng tiếng Việt
+            $currentMonth = date('n', strtotime("-$i month")); 
+            $months[] = $monthsInVietnamese[$currentMonth - 1];
     
             $monthlyRevenue = Order::whereYear('created_at', date('Y', strtotime("-$i month")))
                                    ->whereMonth('created_at', date('m', strtotime("-$i month")))
@@ -64,7 +61,7 @@ class AdminController extends Controller
             $monthlyOrderCount = Order::whereYear('created_at', date('Y', strtotime("-$i month")))
                                       ->whereMonth('created_at', date('m', strtotime("-$i month")))
                                       ->count();
-            $orderCount += $monthlyOrderCount; // Cộng dồn số lượng đơn hàng
+            $orderCount += $monthlyOrderCount; 
         }
     
         return response()->json([
