@@ -49,6 +49,8 @@ Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')-
 
 Route::get('/productcatalogue', [ProductCatalogueController::class, 'index'])->name('productcatalogue');
 
+Route::post('/api/get-products-by-category', [ClientController::class, 'getProductsByCategory']);
+
 // Route::get('/productcatalogue', [ProductCatalogueController::class, 'index'])->name('productcatalogue');
 // Route::get('/productcatalogue/{id}', [ProductCatalogueController::class, 'showCategory'])->name('productcatalogue.category');
 
