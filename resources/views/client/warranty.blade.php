@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <form action="{{ route('search') }}" method="get">
+    <form action="{{ route('searchWarranty') }}" method="get">
         @csrf
         <div class="container">
             <h1>Thời gian bảo hành theo mã sản phẩm</h1>

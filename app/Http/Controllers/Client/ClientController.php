@@ -121,7 +121,16 @@ public function show($id)
     return view('client.product_detail', compact('product', 'comments', 'averageRating'));
 }
 
-public function search(Request $request)
+public function warranty()
+{
+    return view('client.warranty');
+}
+
+public function buying_guide()
+{
+    return view('client.buying_guide');
+}
+public function searchWarranty(Request $request)
 {
     $sku = $request->input('sku');
 

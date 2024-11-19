@@ -362,6 +362,13 @@
 
                                 <li><a href="contact">Contact Us</a></li>
                                 <li><a href="about">About Us</a></li>
+                                <li class="has-child-menu">
+                                    <a href="javascript:void(1)">Page</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{{route('buying_guide')}}">Buying guide</a></li>
+                                        <li><a href="{{route('warranty')}}">Warranty</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                             <div class="inner-top">
                                 <div class="inner-mail">
