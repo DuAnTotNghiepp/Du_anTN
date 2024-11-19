@@ -112,12 +112,6 @@ class ProductController extends Controller
         $Color = Variants::where('name', 'Color')->get();
         $Size = Variants::where('name', 'Size')->get();
         $vari_id = DB::table('product__variants')->where('product_id', $id)->pluck('variants_id')->toArray();
-        // foreach ($Color as $key => $value) {
-        //     echo "<pre>";
-        //     var_dump(in_array($value->id,$vari_id));
-        // }
-        // dd($vari_id);
-        // Trả về view với dữ liệu danh mục và sản phẩm
         return view('admin.product.edit', compact('listPro', 'listCate', 'Color', 'Size', 'vari_id','listImg'));
     }
 

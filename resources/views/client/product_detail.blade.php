@@ -1,6 +1,7 @@
 @extends('client.layouts.app')
 
 @section('content')
+
     div class="breadcrumb-area ml-110">
     <div class="container-fluid p-0">
         <div class="row">
@@ -23,7 +24,8 @@
             </div>
         </div>
     </div>
-    </div>
+
+
 
     <div class="product-details-area mt-100 ml-110">
         <div class="container">
@@ -33,25 +35,25 @@
                         <div class="product-switcher-wrap">
                             <div class="nav product-tab" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                 <div class="product-variation active" id="v-pills-home-tab" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-home" role="tab" aria-controls="v-pills-home">
+                                     data-bs-target="#v-pills-home" role="tab" aria-controls="v-pills-home">
                                     <div class="pd-showcase-img">
                                         <img src="assets/images/product/pd-sm1.png" alt>
                                     </div>
                                 </div>
                                 <div class="product-variation" id="v-pills-profile-tab" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-profile" role="tab" aria-controls="v-pills-profile">
+                                     data-bs-target="#v-pills-profile" role="tab" aria-controls="v-pills-profile">
                                     <div class="pd-showcase-img">
                                         <img src="assets/images/product/pd-sm2.png" alt>
                                     </div>
                                 </div>
                                 <div class="product-variation" id="v-pills-messages-tab" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-messages" role="tab" aria-controls="v-pills-messages">
+                                     data-bs-target="#v-pills-messages" role="tab" aria-controls="v-pills-messages">
                                     <div class="pd-showcase-img">
                                         <img src="assets/images/product/pd-sm3.png" alt>
                                     </div>
                                 </div>
                                 <div class="product-variation" id="v-pills-settings-tab" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-settings" role="tab" aria-controls="v-pills-settings">
+                                     data-bs-target="#v-pills-settings" role="tab" aria-controls="v-pills-settings">
                                     <div class="pd-showcase-img">
                                         <img src="assets/images/product/pd-sm4.png" alt>
                                     </div>
@@ -59,25 +61,25 @@
                             </div>
                             <div class="tab-content" id="v-pills-tabContent">
                                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
-                                    aria-labelledby="v-pills-home-tab">
+                                     aria-labelledby="v-pills-home-tab">
                                     <div class="pd-preview-img">
                                         <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
-                                    aria-labelledby="v-pills-profile-tab">
+                                     aria-labelledby="v-pills-profile-tab">
                                     <div class="pd-preview-img">
                                         <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
-                                    aria-labelledby="v-pills-messages-tab">
+                                     aria-labelledby="v-pills-messages-tab">
                                     <div class="pd-preview-img">
                                         <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-settings" role="tabpanel"
-                                    aria-labelledby="v-pills-settings-tab">
+                                     aria-labelledby="v-pills-settings-tab">
                                     <div class="pd-preview-img">
                                         <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
                                     </div>
@@ -97,7 +99,8 @@
                                     {{-- <li class="count-review">(<span>23</span> Review)</li> --}}
                                 </ul>
                                 <h1>{{ $product->name }}</h1>
-                                <p><strong>Giá cũ:</strong> <span class="price-regular">{{ $product->price_regular }}</span>
+                                <p><strong>Giá cũ:</strong> <span
+                                        class="price-regular">{{ $product->price_regular }}</span>
                                 </p>
                                 <p><strong>Giá khuyến mãi:</strong> <span
                                         class="price-sale">{{ $product->price_sale }}</span></p>
@@ -113,9 +116,9 @@
                                             @foreach ($product->variants as $variant)
                                                 @if ($variant->name === 'Color')
                                                     <input type="radio" name="color" id="color{{ $variant->id }}"
-                                                        value="{{ $variant->value }}" {{ $loop->first ? 'checked' : '' }}>
+                                                           value="{{ $variant->value }}" {{ $loop->first ? 'checked' : '' }}>
                                                     <label for="color{{ $variant->id }}"><span class="p-color"
-                                                            style="background-color: {{ $variant->value }}"></span></label>
+                                                                                               style="background-color: {{ $variant->value }}"></span></label>
                                                 @endif
                                             @endforeach
                                         </div>
@@ -127,7 +130,7 @@
                                             @foreach ($product->variants as $variant)
                                                 @if ($variant->name === 'Size')
                                                     <input type="radio" name="size" id="size{{ $variant->id }}"
-                                                        value="{{ $variant->value }}"
+                                                           value="{{ $variant->value }}"
                                                         {{ $loop->first ? 'checked' : '' }}>
                                                     <label for="size{{ $variant->id }}">
                                                         <span class="p-size">{{ $variant->value }}</span>
@@ -140,12 +143,23 @@
                                     <li class="d-flex align-items-center pd-cart-btns">
                                         <div class="quantity">
                                             <input type="number" min="1" max="{{ $product->quantity }}"
-                                                step="1" value="1" id="quantity-input"
-                                                data-available="{{ $product->quantity }}">
+                                                   step="1" value="1" id="quantity-input"
+                                                   data-available="{{ $product->quantity }}">
                                         </div>
                                         <button type="button" class="pd-add-cart" id="buy-now-btn">
                                             <a href="{{ route('checkout') }}" style="color:white">Mua Ngay</a>
                                         </button>
+
+                                        <form action="{{ route('cart.store') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <input type="hidden" name="color" value="{{ $product->variants->firstWhere('name', 'Color')->value }}">
+                                            <input type="hidden" name="size" value="{{ $product->variants->firstWhere('name', 'Size')->value }}">
+                                            <input type="hidden" name="quantity" value="1" id="cart-quantity">
+
+                                            <button type="submit" class="pd-add-cart">Thêm vào giỏ hàng</button>
+                                        </form>
+
                                     </li>
                                     <li class="pd-type">Danh mục sản phẩm: <span>{{ $product->catelogues->name }}</span>
                                     </li>
@@ -157,35 +171,36 @@
                                 </ul>
 
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
+
+
             <div class="product-discription-wrapper mt-100">
                 <div class="row">
                     <div class="col-xxl-3 col-xl-3">
                         <div class="nav flex-column nav-pills discription-bar" id="v-pills-tab2" role="tablist"
-                            aria-orientation="vertical">
+                             aria-orientation="vertical">
                             <button class="nav-link active" id="pd-discription3" data-bs-toggle="pill"
-                                data-bs-target="#pd-discription-pill3" role="tab"
-                                aria-controls="pd-discription-pill3"> Discription
+                                    data-bs-target="#pd-discription-pill3" role="tab"
+                                    aria-controls="pd-discription-pill3"> Discription
                             </button>
                             <button class="nav-link" id="pd-discription2" data-bs-toggle="pill"
-                                data-bs-target="#pd-discription-pill2" role="tab"
-                                aria-controls="pd-discription-pill2">Additional
+                                    data-bs-target="#pd-discription-pill2" role="tab"
+                                    aria-controls="pd-discription-pill2">Additional
                                 Information
                             </button>
                             <button class="nav-link" id="pd-discription1" data-bs-toggle="pill"
-                                data-bs-target="#pd-discription-pill1" role="tab"
-                                aria-controls="pd-discription-pill1">Our Review (2)
+                                    data-bs-target="#pd-discription-pill1" role="tab"
+                                    aria-controls="pd-discription-pill1">Our Review (2)
                             </button>
                         </div>
                     </div>
                     <div class="col-xxl-9 col-xl-9">
                         <div class="tab-content discribtion-tab-content" id="v-pills-tabContent2">
                             <div class="tab-pane fade show active" id="pd-discription-pill3" role="tabpanel"
-                                aria-labelledby="pd-discription3">
+                                 aria-labelledby="pd-discription3">
                                 <div class="discription-texts">
                                     <p><strong>Mô tả:</strong> {{ $product->description }}</p>
                                 </div>
@@ -197,7 +212,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="pd-discription-pill2" role="tabpanel"
-                                aria-labelledby="pd-discription2">
+                                 aria-labelledby="pd-discription2">
                                 <div class="additional-discription">
                                     <ul>
                                         <li>
@@ -211,15 +226,14 @@
                                             <div class="additition-variant"><span>:</span>S, M, L, Xl, XXL</div>
                                         </li>
                                         <li>
-                                            {{-- <h5 class="additition-name">Material</h5>
-                                            <div class="additition-variant"><span>:</span>100% Cotton, Jens</div> --}}
+
                                             <p><strong>Chất liệu:</strong> {{ $product->material }}</p>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="tab-pane fade " id="pd-discription-pill1" role="tabpanel"
-                                aria-labelledby="pd-discription1">
+                                 aria-labelledby="pd-discription1">
                                 <div class="discription-review">
                                     <div class="clients-review-cards">
                                         <div class="row">
@@ -295,19 +309,20 @@
                                                     <div class="review-input-group">
                                                         <label for="fname">First Name</label>
                                                         <input type="text" name="fname" id="fname"
-                                                            placeholder="Your first name">
+                                                               placeholder="Your first name">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="review-input-group">
                                                         <label for="lname">Last Name</label>
                                                         <input type="text" name="lname" id="lname"
-                                                            placeholder="Your last name ">
+                                                               placeholder="Your last name ">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-12">
                                                     <div class="review-input-group">
-                                                        <textarea name="review-area" id="review-area" cols="30" rows="7" placeholder="Your message"></textarea>
+                                                        <textarea name="review-area" id="review-area" cols="30" rows="7"
+                                                                  placeholder="Your message"></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-12">
@@ -337,24 +352,24 @@
         </div>
     </div>
     <script>
-        document.getElementById('buy-now-btn').addEventListener('click', function(event) {
-    event.preventDefault(); // Ngăn chặn hành động mặc định nếu nút nằm trong một form
+        document.getElementById('buy-now-btn').addEventListener('click', function (event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định nếu nút nằm trong một form
 
-    // Lấy thông tin người dùng đã chọn
-    const color = document.querySelector('input[name="color"]:checked').value;
-    const size = document.querySelector('input[name="size"]:checked').value;
-    const quantity = document.getElementById('quantity-input').value;
-    const productImage = "{{ Storage::url($product->img_thumbnail) }}";
-    const productName = "{{ $product->name }}";
-    const productPrice = "{{ $product->price_sale }}";
+            // Lấy thông tin người dùng đã chọn
+            const color = document.querySelector('input[name="color"]:checked').value;
+            const size = document.querySelector('input[name="size"]:checked').value;
+            const quantity = document.getElementById('quantity-input').value;
+            const productImage = "{{ Storage::url($product->img_thumbnail) }}";
+            const productName = "{{ $product->name }}";
+            const productPrice = "{{ $product->price_sale }}";
 
-    // Tạo URL đến trang checkout
-    const checkoutUrl =
-        `{{ route('checkout') }}?color=${encodeURIComponent(color)}&size=${encodeURIComponent(size)}&quantity=${encodeURIComponent(quantity)}&image=${encodeURIComponent(productImage)}&name=${encodeURIComponent(productName)}&price=${encodeURIComponent(productPrice)}`;
+            // Tạo URL đến trang checkout
+            const checkoutUrl =
+                `{{ route('checkout') }}?color=${encodeURIComponent(color)}&size=${encodeURIComponent(size)}&quantity=${encodeURIComponent(quantity)}&image=${encodeURIComponent(productImage)}&name=${encodeURIComponent(productName)}&price=${encodeURIComponent(productPrice)}`;
 
-    // Chuyển hướng đến trang checkout
-    window.location.href = checkoutUrl;
-});
+            // Chuyển hướng đến trang checkout
+            window.location.href = checkoutUrl;
+        });
 
     </script>
 @endsection

@@ -139,7 +139,7 @@
         </div>
     </div>
     <script>
-        < script >
+
             document.addEventListener('DOMContentLoaded', function() {
                 const quantityInput = document.querySelector('.quantity-input');
                 const productPrice = parseFloat(document.querySelector('.product-price').textContent.replace(/,/g, ''));
@@ -166,7 +166,7 @@
                 // Lắng nghe sự kiện thay đổi số lượng
                 quantityInput.addEventListener('input', updateTotal);
             });
-    </script>
+
 
     </script>
 @endsection

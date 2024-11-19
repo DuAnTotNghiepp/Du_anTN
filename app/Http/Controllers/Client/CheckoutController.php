@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
 use App\Models\Product;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
@@ -25,7 +23,7 @@ class CheckoutController extends Controller
         }
 
         $product = Product::where('name', $productName)->first();
-        
+
         return view('client.checkout', compact('color', 'size', 'quantity', 'image', 'productName', 'productPrice', 'product'));
     }
 

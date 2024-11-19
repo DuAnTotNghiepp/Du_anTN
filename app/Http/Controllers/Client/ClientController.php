@@ -26,6 +26,51 @@ class ClientController extends Controller
     return view('client.home', compact(['listSp', 'listHot', 'data']));
     }
 
+    public function shop(Request $request)
+    {
+        $data = Catalogues::query()->get();
+
+    // Lấy tất cả sản phẩm
+    $listSp = Product::where('is_active', 1)->get(); // Hiển thị tất cả sản phẩm
+
+    // Lấy sản phẩm hot
+    $listHot = Product::where('is_hot_deal', 1)->get();
+    //list sp moi
+    $products = Product::orderBy('created_at', 'desc')->paginate(12);
+
+    return view('client.shop', compact(['listSp', 'listHot', 'data','products']));
+    }
+    //tim kiem
+    public function search(Request $request)
+{
+    $searchTerm = $request->input('sidebar-search-input');
+    $minPrice = $request->input('price_min');
+    $maxPrice = $request->input('price_max');
+    $luachon = $request->input('category-sort', 'default');
+    // tại ra quẻyy tìm kiếm
+    $query = Product::query();
+
+    if ($searchTerm) {
+        $query->where('name', 'like', '%' . $searchTerm . '%');
+    }
+
+    if (is_numeric($minPrice) && is_numeric($maxPrice)) {
+        $query->whereBetween('price_regular', [$minPrice, $maxPrice]);
+    }
+    if ($luachon == 'price_asc') {
+        $query->orderBy('price_regular', 'asc'); // Sắp xếp theo giá từ thấp đến cao
+    } elseif ($luachon == 'price_desc') {
+        $query->orderBy('price_regular', 'desc'); // Sắp xếp theo giá từ cao đến thấp
+    }
+
+    $products = $query->get();
+
+    return view('client.shop', compact('products'));
+}
+
+
+
+
     // public function show($id)
     // {
     //     // Tìm sản phẩm theo ID
@@ -38,12 +83,6 @@ class ClientController extends Controller
         return view('client.checkout');
     }
 
-    public function buying_guide(){
-        return view('client.buying_guide');
-    }
-    public function warranty(){
-        return view('client.warranty');
-    }
     // public function show_variants($id)
     // {
     //     // Lấy sản phẩm và các biến thể của sản phẩm
