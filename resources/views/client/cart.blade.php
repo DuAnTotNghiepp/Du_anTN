@@ -121,21 +121,15 @@
                     <table class="table total-table">
                         <tbody>
                         <tr>
-                            <td class="tt-left">Cart Totals</td>
+                            <td class="tt-left">Tổng giá</td>
                             <td></td>
-                            <td class="tt-right">$128.70</td>
+                            <td class="tt-right"></td>
                         </tr>
                         <tr>
                             <td class="tt-left">Shipping</td>
                             <td>
                                 <ul class="cart-cost-list">
-                                    <li>Shipping Fee</li>
-                                    <li>Total ( tax excl.)</li>
-                                    <li>Total ( tax incl.)</li>
-                                    <li>Taxes</li>
-                                    <li>Shipping Enter your address to view shipping options. <a href="#">Calculate
-                                            shipping</a>
-                                    </li>
+
                                 </ul>
                             </td>
                             <td class="tt-right cost-info-td">
@@ -149,16 +143,16 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="tt-left">Subtotal</td>
+                            <td class="tt-left">Giá: </td>
                             <td>
                             </td>
-                            <td class="tt-right">$162.70</td>
+                            <td class="tt-right"></td>
                         </tr>
                         </tbody>
                     </table>
                     <div class="cart-proceed-btns">
-                        <a href="checkout" class="cart-proceed">Proceed to Checkout</a>
-                        <a href="product" class="continue-shop">Continue to shopping</a>
+                        <a href="checkout" class="cart-proceed">Mua ngay</a>
+                        <a href="/" class="continue-shop">Continue to shopping</a>
                     </div>
                 </div>
             </div>

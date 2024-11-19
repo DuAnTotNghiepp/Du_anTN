@@ -72,7 +72,6 @@ Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 
-
 // Group routes under admin middleware
 Route::middleware('auth', 'admin')->group(function () {
     Route::get('admin/accounts', [AdminController::class, 'index'])->name('admin.accounts');
@@ -82,16 +81,15 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::put('admin/accounts/{user}', [AdminController::class, 'update'])->name('admin.accounts.update');
     Route::delete('admin/accounts/{user}', [AdminController::class, 'destroy'])->name('admin.accounts.destroy');
 });
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
-// Thêm sản phẩm vào giỏ hàng
-Route::post('/cart/store/{productId}/{variantId}', [CartController::class, 'store'])->name('cart.store');
+// routes/web.php
+Route::prefix('cart')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/add', [CartController::class, 'store'])->name('cart.store');
+    Route::post('/update/{cartId}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/delete/{cartId}', [CartController::class, 'destroy'])->name('cart.destroy');
+});
 
-// Cập nhật số lượng sản phẩm trong giỏ hàng
-Route::post('/cart/update/{cartItemId}', [CartController::class, 'update'])->name('cart.update');
-
-// Xóa sản phẩm khỏi giỏ hàng
-Route::delete('/cart/destroy/{cartItemId}', [CartController::class, 'destroy'])->name('cart.destroy');
 
 //client-timkiems1
 Route::get('/', [ClientController::class, 'index'])->name('index');
