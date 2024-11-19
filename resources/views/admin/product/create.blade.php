@@ -110,9 +110,6 @@
                                             <span id="price-regular-error" style="color: red">{{ $message }}</span>
                                         @enderror
 
-                                        <input type="number" class="form-control" name="price_regular"
-                                            id="price_regular" step="0.01" required data-provider="flatpickr"
-                                            data-date-format="d M, Y">
 
                                     </div>
                                 </div>
@@ -135,8 +132,7 @@
                                             <span id="quantity-error" style="color: red">{{ $message }}</span>
                                         @enderror
 
-                                        <input type="number" class="form-control" name="quantity" id="quantity"
-                                            required data-provider="flatpickr" data-date-format="d M, Y">
+                                    
 
                                     </div>
                                 </div>

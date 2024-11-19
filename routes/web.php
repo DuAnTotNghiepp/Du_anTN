@@ -81,6 +81,7 @@ Route::get('/product/detail', [ClientController::class, 'product'])->name('produ
 Route::get('/product/checkout', [ClientController::class, 'checkout'])->name('product.checkout');
 Route::get('buying_guide', [ClientController::class , 'buying_guide' ])->name('buying_guide');
 Route::get('warranty',[ClientController::class , 'warranty'])->name('warranty');
+Route::get('search',[ClientController::class,'search'])->name('search');
 
 
 // Group routes under admin middleware

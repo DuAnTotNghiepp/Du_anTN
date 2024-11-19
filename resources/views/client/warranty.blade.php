@@ -1,124 +1,122 @@
 @extends('client.layouts.app')
 
 @section('content')
-<section class="policy">
-    <div class="policy-content">
-        <div class="policy-section">
-            <h2><i class="fas fa-calendar-check"></i> Thời Gian Bảo Hành</h2>
-            <p>Toàn bộ sản phẩm đều có bảo hành 1 năm từ ngày mua hàng. Bảo hành chỉ áp dụng cho lỗi do nhà sản xuất.</p>
-        </div>
 
-        <div class="policy-section">
-            <h2><i class="fas fa-shield-alt"></i> Điều Kiện Bảo Hành</h2>
-            <p>Chính sách bảo hành bao gồm lỗi do vật liệu và gia công trong điều kiện sử dụng bình thường.</p>
+    <form action="{{ route('search') }}" method="get">
+        @csrf
+        <div class="container">
+            <h1>Thời gian bảo hành theo mã sản phẩm</h1>
+            <input type="text" name="sku" id="productCode" placeholder="Nhập mã sản phẩm" >
+            <button type="submit">Tính thời gian bảo hành</button>
         </div>
+    </form>
 
-        <div class="policy-section">
-            <h2><i class="fas fa-clipboard-check"></i> Cách Thức Yêu Cầu Bảo Hành</h2>
-            <p>Giữ lại hóa đơn mua hàng và liên hệ bộ phận CSKH để được hỗ trợ bảo hành nhanh chóng.</p>
-        </div>
-
-        <div class="policy-section">
-            <h2><i class="fas fa-exclamation-circle"></i> Hạn Chế Bảo Hành</h2>
-            <p>Chính sách không áp dụng cho các trường hợp hư hỏng do sử dụng sai, tai nạn, hoặc tự ý sửa chữa.</p>
-        </div>
+    <!-- Hộp thông báo sẽ hiển thị kết quả -->
+    <div id="warranty-notification" class="notification hidden">
+        <p id="warranty-message"></p>
+        <button onclick="closeNotification()">Đóng</button>
     </div>
-</section>
 
-<button id="backToTop" title="Lên đầu trang"><i class="fas fa-arrow-up"></i></button>
-<script>
-    // Hiển thị nút lên đầu trang khi cuộn
-window.onscroll = function() {
-    const backToTopButton = document.getElementById('backToTop');
-    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-        backToTopButton.style.display = 'block';
-    } else {
-        backToTopButton.style.display = 'none';
-    }
-};
+    @if (isset($product))
+        @foreach ($product->orders as $order)
+            <script>
+                // Sử dụng JavaScript để hiển thị thông báo
+                document.addEventListener('DOMContentLoaded', function() {
+                    const notification = document.getElementById('warranty-notification');
+                    const messageElement = document.getElementById('warranty-message');
 
-// Cuộn lên đầu trang khi nhấn nút
-document.getElementById('backToTop').onclick = function() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-};
+                    // Thiết lập nội dung thông báo
+                    const warrantyDate = "{{ $order->created_at->addDays(7)->format('d-m-Y') }}";
+                    messageElement.textContent = 'Mã bảo hành của bạn đến hết ngày ' + warrantyDate;
 
-</script>
+                    // Hiển thị thông báo
+                    notification.classList.remove('hidden');
+                });
 
-<style>
-    /* Reset chung */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+                // Hàm để đóng thông báo
+                function closeNotification() {
+                    const notification = document.getElementById('warranty-notification');
+                    notification.classList.add('hidden');
+                }
+            </script>
+        @endforeach
+    @elseif(isset($message))
+        <p>{{ $message }}</p>
+    @endif
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
-    color: #333;
-    line-height: 1.6;
-}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
 
+        .container {
+            margin-top: 30px;
+        }
 
-/* Phần nội dung chính sách */
-.policy {
-    max-width: 800px;
-    margin: 2em auto;
-    background: #fff;
-    padding: 2em;
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
+        input {
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 1800px;
+            box-sizing: border-box;
+        }
 
-.policy:hover {
-    transform: translateY(-5px);
-}
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
 
-.policy-section {
-    margin-bottom: 1.5em;
-}
+        button:hover {
+            background-color: #0056b3;
+        }
 
-.policy-section h2 {
-    color: #42a5f5;
-    margin-bottom: 0.5em;
-    font-size: 1.6em;
-    display: flex;
-    align-items: center;
-}
+        /* Hộp thông báo kết quả bảo hành */
+        .notification {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #28a745;
+            color: white;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+        }
 
-.policy-section h2 i {
-    margin-right: 0.6em;
-    font-size: 1.2em;
-    color: #26c6da;
-}
+        .notification.hidden {
+            display: none;
+        }
 
-.policy-section p {
-    font-size: 1.1em;
-    color: #555;
-}
+        .notification p {
+            margin: 0;
+            flex-grow: 1;
+        }
 
-/* Nút lên đầu trang */
-#backToTop {
-    display: none;
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: #42a5f5;
-    color: #fff;
-    border: none;
-    padding: 12px 15px;
-    border-radius: 50%;
-    font-size: 18px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    transition: background 0.3s ease, transform 0.3s ease;
-}
+        .notification button {
+            background-color: #dc3545;
+            border: none;
+            padding: 8px 12px;
+            color: white;
+            cursor: pointer;
+            margin-left: 15px;
+            border-radius: 5px;
+        }
 
-#backToTop:hover {
-    background: #26c6da;
-    transform: scale(1.1);
-}
-
-</style>
+        .notification button:hover {
+            background-color: #c82333;
+        }
+    </style>
 @endsection
