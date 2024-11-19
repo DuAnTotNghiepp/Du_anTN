@@ -16,25 +16,23 @@ class AdminController extends Controller
         return view('admin.accounts.index', compact('users'));
     }
     public function getDashboardStats(Request $request)
-{
-    $startDate = $request->get('start_date');
-    $endDate = $request->get('end_date');
+    {
+        // Lấy khoảng thời gian từ yêu cầu
+        $startDate = $request->input('start_date', now()->subMonth()->format('Y-m-d')); // Mặc định là 1 tháng trước
+        $endDate = $request->input('end_date', now()->format('Y-m-d')); // Mặc định là ngày hiện tại
     
-    if (!$startDate || !$endDate) {
-        $startDate = now()->subMonth()->toDateString(); 
-        $endDate = now()->toDateString(); 
+        // Lấy thống kê dữ liệu
+        $accounts = User::whereBetween('created_at', [$startDate, $endDate])->count();
+        $orders = Order::whereBetween('created_at', [$startDate, $endDate])->count();
+        $income = Order::whereBetween('created_at', [$startDate, $endDate])->sum('total_price');
+    
+        return response()->json([
+            'accounts' => $accounts,
+            'orders' => $orders,
+            'income' => $income,
+        ]);
     }
-
-    $orders = Order::whereBetween('created_at', [$startDate, $endDate])->count();
-    $income = Order::whereBetween('created_at', [$startDate, $endDate])->sum('total_price');
-    $accounts = User::whereBetween('created_at', [$startDate, $endDate])->count();
-
-    return response()->json([
-        'orders' => $orders,
-        'income' => $income,
-        'accounts' => $accounts,
-    ]);
-}
+    
 
     
     public function getRevenueStats(Request $request)
@@ -43,7 +41,6 @@ class AdminController extends Controller
 
     $months = [];
     $revenueData = [];
-    $orderCount = 0;
     $totalRevenue = 0;
 
     for ($i = 0; $i < 12; $i++) {
@@ -59,7 +56,6 @@ class AdminController extends Controller
         $monthlyOrderCount = Order::whereYear('created_at', date('Y', strtotime("-$i month")))
                                   ->whereMonth('created_at', date('m', strtotime("-$i month")))
                                   ->count();  
-        $orderCount += $monthlyOrderCount;
         //đơn hàng lỗi
     }
 
