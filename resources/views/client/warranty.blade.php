@@ -62,7 +62,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             width: 100%;
-            max-width: 1800px;
+            max-width: 500px;
             box-sizing: border-box;
         }
 
