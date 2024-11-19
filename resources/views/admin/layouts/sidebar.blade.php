@@ -4,10 +4,10 @@
         <!-- Dark Logo-->
         <a href="index.html" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="{{asset('theme/admin/assets/images/LogoManStyle.png')}}" alt="" height="22">
+                        <img src="{{asset('theme/admin/assets/images/LOGO.png')}}" alt="" height="22">
                     </span>
             <span class="logo-lg">
-                        <img src="{{asset('theme/admin/assets/images/LogoManStyle.png')}}" alt="" height="17">
+                        <img src="{{asset('theme/admin/assets/images/LOGO.png')}}" alt="" height="17">
                     </span>
         </a>
         <!-- Light Logo-->
@@ -15,8 +15,8 @@
                     <span class="logo-sm">
                         <img src="{{asset('theme/admin/assets/images/LogoManStyle.png')}}" alt="" height="22">
                     </span>
-            <span class="logo-lg">
-                        <img src="{{asset('theme/admin/assets/images/LogoManStyle.png')}}" alt="" width="100px" height="70">
+            <span class="logo-lg" >
+                        <img href="http://datn.test/admin/" src="{{asset('theme/admin/assets/images/LOGO.png')}}" alt="" width="150px" height="100">
                     </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
