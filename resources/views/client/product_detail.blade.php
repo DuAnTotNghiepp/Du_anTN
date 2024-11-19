@@ -24,7 +24,8 @@
             </div>
         </div>
     </div>
-    </div>
+
+
 
     <div class="product-details-area mt-100 ml-110">
         <div class="container">
@@ -148,12 +149,16 @@
                                         <button type="button" class="pd-add-cart" id="buy-now-btn">
                                             <a href="{{ route('checkout') }}" style="color:white">Mua Ngay</a>
                                         </button>
-                                            <form
-                                                action="{{ route('cart.store', ['productId' => $product->id, 'variantId' => $variant->id]) }}"
-                                                method="POST">
-                                                @csrf
-                                                <button type="submit" class="pd-add-cart">Thêm vào giỏ hàng</button>
-                                            </form>
+
+                                        <form action="{{ route('cart.store') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <input type="hidden" name="color" value="{{ $product->variants->firstWhere('name', 'Color')->value }}">
+                                            <input type="hidden" name="size" value="{{ $product->variants->firstWhere('name', 'Size')->value }}">
+                                            <input type="hidden" name="quantity" value="1" id="cart-quantity">
+
+                                            <button type="submit" class="pd-add-cart">Thêm vào giỏ hàng</button>
+                                        </form>
 
                                     </li>
                                     <li class="pd-type">Danh mục sản phẩm: <span>{{ $product->catelogues->name }}</span>
@@ -166,11 +171,12 @@
                                 </ul>
 
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
+
+
             <div class="product-discription-wrapper mt-100">
                 <div class="row">
                     <div class="col-xxl-3 col-xl-3">
