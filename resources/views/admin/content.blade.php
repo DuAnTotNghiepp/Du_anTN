@@ -67,7 +67,7 @@
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-grow-1 overflow-hidden">
-                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Tổng thu nhập</p>
+                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Tổng doanh thu</p>
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-end justify-content-between mt-4">
@@ -191,7 +191,7 @@
                                     <div class="col-6 col-sm-3">
                                         <div class="p-3 border border-dashed border-start-0">
                                             <h5 class="mb-1"><span id="revenue-total" class="counter-value" data-target="0">0</span></h5>
-                                            <p class="text-muted mb-0">Tổng tiền kiếm được</p>
+                                            <p class="text-muted mb-0">Doanh thu cả năm</p>
                                         </div>
                                     </div><!-- end col -->
                                 </div>
@@ -226,9 +226,7 @@
                                 .then(response => response.json())
                                 .then(data => {
                                     const totalRevenue = data.totalRevenue;
-                                    const orderCount = data.orderCount;
                         
-                                    document.getElementById('order-count').textContent = orderCount;
                                     document.getElementById('revenue-total').textContent = `${totalRevenue.toFixed(2)}`;
                         
                                     renderChart(data.months, data.revenueData);

@@ -41,6 +41,7 @@ class AdminController extends Controller
 
     $months = [];
     $revenueData = [];
+    $orderCount = 0;
     $totalRevenue = 0;
 
     for ($i = 0; $i < 12; $i++) {
