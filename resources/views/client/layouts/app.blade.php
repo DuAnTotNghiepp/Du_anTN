@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{{asset('assegit ts/css/bootstrap-icons.css')}}">
 
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
-    
+
 
 
     <link rel="stylesheet" href="{{asset('assets/css/global.css')}}">
@@ -327,7 +327,7 @@
                     class="col-xl-2 col-lg-12 col-md-12 col-sm-12 col-xs-12 d-xl-flex align-items-center justify-content-center">
                     <div class="main-logo d-flex justify-content-between align-items-center">
                         <a href="/">
-                            <img src="{{asset('assets/images/Logo.png')}}" alt>
+                            <img src="{{asset('theme/admin/assets/images/LOGO.png')}}" width="100px" alt>
                         </a>
                         <div class="mobile-menu d-flex ">
                             <a href="javascript:void(0)" class="hamburger d-block d-xl-none">

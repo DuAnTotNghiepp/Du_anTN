@@ -16,7 +16,7 @@
                         <img src="{{asset('theme/admin/assets/images/LogoManStyle.png')}}" alt="" height="22">
                     </span>
             <span class="logo-lg" >
-                        <img href="http://datn.test/admin/" src="{{asset('theme/admin/assets/images/LOGO.png')}}" alt="" width="150px" height="100">
+                        <img href="/admin" src="{{asset('theme/admin/assets/images/LOGO.png')}}" alt="" width="150px" height="100">
                     </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
