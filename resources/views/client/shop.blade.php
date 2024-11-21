@@ -182,7 +182,7 @@
                             </div>
 
                             {{--  loc theo gia  --}}
-                          
+
                             <div class="col-lg-12">
                                 <div class="sb-pricing-range">
                                     <h5 class="sb-title">LỌC THEO GIÁ VÀ TÊN</h5>
@@ -190,13 +190,13 @@
                                         @csrf
                                         <div class="price-range-slider">
                                             <div id="price_range_slider"></div>
-                                            
+
                                             <div class="pricing-range-buttom d-flex align-items-center justify-content-between">
-                                               
+
                                                 <div class="price-filter-btn">
                                                     <button type="submit">Filter</button>
                                                 </div>
-                                                
+
                                                 <div class="pricing-value">
                                                     <span>Price: </span>
                                                     <span id="price_range_value">$0 - $1000000</span>
@@ -211,20 +211,20 @@
                                     </form>
                                 </div>
                             </div>
-                            
+
                             <script>
                                 document.addEventListener('DOMContentLoaded', function() {
                                     var slider = document.getElementById('price_range_slider');
                                     var priceRangeValue = document.getElementById('price_range_value');
                                     var priceMin = document.getElementById('price_min');
                                     var priceMax = document.getElementById('price_max');
-                                
+
                                     noUiSlider.create(slider, {
-                                        start: [0, 0], 
+                                        start: [0, 0],
                                         connect: true,  // Kết nối giữa 2 tay cầm
                                         range: {
-                                            'min': 0,   
-                                            'max': 1000000 
+                                            'min': 0,
+                                            'max': 1000000
                                         },
                                         step: 1000, // Bước nhảy
                                         format: {
@@ -236,20 +236,20 @@
                                             }
                                         }
                                     });
-                                
+
                                     slider.noUiSlider.on('update', function(values, handle) {
-                                        priceRangeValue.textContent = values.join(' - '); 
-                                
+                                        priceRangeValue.textContent = values.join(' - ');
+
                                         priceMin.value = values[0].replace('$', '');
                                         priceMax.value = values[1].replace('$', '');
                                     });
                                 });
                             </script>
-                            
-                            
-                            
-                            
-                            
+
+
+
+
+
                             <div class="col-lg-12">
                                 <div class="top-sell-cards">
                                     <h5 class="sb-title">TOP SALE THIS WEEK</h5>
@@ -395,10 +395,10 @@
                             </form>
                         </div>
                     </div>
-                    
+
                     <div class="row">
-                        
-                        
+
+
                     @foreach ($products as $lsp)
                     <div class="col-xxl-3 col-xl-4 col-lg-4 col-sm-4">
                         <div class="product-card-l">
@@ -436,9 +436,9 @@
                     </div>
                     @endforeach
 
-                   
-                    
-                       
+
+
+
                         <div class="col-lg-12 mt-50">
                             <div class="custom-pagination d-flex justify-content-center">
                                 <ul class="d-flex pagination-links">

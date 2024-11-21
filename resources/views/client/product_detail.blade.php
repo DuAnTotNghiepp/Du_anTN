@@ -1,7 +1,6 @@
 @extends('client.layouts.app')
 
 @section('content')
-
     div class="breadcrumb-area ml-110">
     <div class="container-fluid p-0">
         <div class="row">
@@ -161,6 +160,9 @@
                                         </form>
 
                                     </li>
+                                    <li id="quantity-warning" style="color: red; display: none;">
+                                        Số lượng sản phẩm đã đạt tối đa!
+                                    </li>
                                     <li class="pd-type">Danh mục sản phẩm: <span>{{ $product->catelogues->name }}</span>
                                     </li>
                                     <li class="pd-type">Mã sản phẩm: <span>{{ $product->sku }}</span></li>
@@ -171,12 +173,11 @@
                                 </ul>
 
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
-
-
             <div class="product-discription-wrapper mt-100">
                 <div class="row">
                     <div class="col-xxl-3 col-xl-3">
@@ -421,9 +422,20 @@
             const checkoutUrl =
                 `{{ route('checkout') }}?color=${encodeURIComponent(color)}&size=${encodeURIComponent(size)}&quantity=${encodeURIComponent(quantity)}&image=${encodeURIComponent(productImage)}&name=${encodeURIComponent(productName)}&price=${encodeURIComponent(productPrice)}`;
 
-            // Chuyển hướng đến trang checkout
-            window.location.href = checkoutUrl;
-        });
+    // Chuyển hướng đến trang checkout
+    window.location.href = checkoutUrl;
+});
+document.getElementById('quantity-input').addEventListener('input', function() {
+        const quantityInput = this;
+        const maxQuantity = parseInt(quantityInput.getAttribute('max'));
+        const warningMessage = document.getElementById('quantity-warning');
 
+        if (parseInt(quantityInput.value) > maxQuantity) {
+            quantityInput.value = maxQuantity;
+            warningMessage.style.display = 'block';
+        } else {
+            warningMessage.style.display = 'none';
+        }
+    });
     </script>
 @endsection

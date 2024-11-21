@@ -17,12 +17,9 @@
 
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
 
-
-
     <link rel="stylesheet" href="{{asset('assets/css/global.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/responsive.css')}}">
-
     <style>
         .price-regular {
     text-decoration: line-through; /* Gạch ngang giá cũ */
@@ -346,6 +343,19 @@
                         <ul class="nav-item-list">
                             <li><a href="/">Home</a></li>
 
+                                <li class="has-child-menu">
+                                    <a href="javascript:void(0)">Category</a>
+                                    <i class="fl flaticon-plus">+</i>
+                                    <ul class="sub-menu">
+                                        <li><a href="{{ route('productcatalogue') }}">Tất cả sản phẩm</a></li>
+                                        @foreach($data as $cate)
+                                            <li><a href="{{ route('productcatalogue', ['catalogue_id' => $cate->id]) }}">{{ $cate->name }}</a></li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+
+
+                                <li><a href="shop">Shop</a></li>
                             <li class="has-child-menu">
                                 <a href="javascript:void(0)">Category</a>
                                 <i class="fl flaticon-plus">+</i>
@@ -362,13 +372,7 @@
 
                                 <li><a href="contact">Contact Us</a></li>
                                 <li><a href="about">About Us</a></li>
-                                <li class="has-child-menu">
-                                    <a href="javascript:void(1)">Page</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="{{route('buying_guide')}}">Buying guide</a></li>
-                                        <li><a href="{{route('warranty')}}">Warranty</a></li>
-                                    </ul>
-                                </li>
+
                             </ul>
                             <div class="inner-top">
                                 <div class="inner-mail">
