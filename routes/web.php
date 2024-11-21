@@ -1,14 +1,16 @@
 <?php
 
+use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\BinhLuanController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\BinhLuanController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ClientController;
-use App\Http\Controllers\Client\OrderController;
+use App\Http\Controllers\ProductController as ControllersProductController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\CheckRoleAdminMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,11 +67,21 @@ Route::get('/admin', function () {
 })->name('content');
 
 
+
 Route::get('login', [AuthController::class, 'showFormLogin']);
 Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::get('register', [AuthController::class, 'showFormRegister']);
 Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+
+//client
+Route::get('/', [ClientController::class, 'index'])->name('index');
+Route::get('/product/detail', [ClientController::class, 'product'])->name('product.detail');
+Route::get('/product/checkout', [ClientController::class, 'checkout'])->name('product.checkout');
+Route::get('buying_guide', [ClientController::class , 'buying_guide' ])->name('buying_guide');
+Route::get('warranty',[ClientController::class , 'warranty'])->name('warranty');
+Route::get('searchWarranty',[ClientController::class,'searchWarranty'])->name('searchWarranty');
 
 
 // Group routes under admin middleware
@@ -83,28 +95,9 @@ Route::middleware('auth', 'admin')->group(function () {
     //thong ke
 });
 
-// routes/web.php
-Route::prefix('cart')->group(function () {
-    Route::get('/', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/add', [CartController::class, 'store'])->name('cart.store');
-    Route::post('/update/{cartId}', [CartController::class, 'update'])->name('cart.update');
-    Route::delete('/delete/{cartId}', [CartController::class, 'destroy'])->name('cart.destroy');
-});
-
-
-//client-timkiems1
-Route::get('/', [ClientController::class, 'index'])->name('index');
-Route::get('/shop', [ClientController::class, 'shop'])->name('shop');
-
-Route::get('/product/checkout', [ClientController::class, 'checkout'])->name('product.checkout');
-
-//tim kiem
-Route::post('/search', [ClientController::class, 'search'])->name('product.search');
-
 
 Route::resource('cart', CartController::class);
 //chi tiet test
-
 Route::post('product/comment/{id}', [BinhLuanController::class, 'store'])->name('comment.store');
 Route::get('admin/comment/index', [ProductController::class, 'indexWithComments'])->name('comment.index');
 Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComments'])->name('product.comments');
@@ -114,5 +107,6 @@ Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComme
 //thong ke
 Route::get('/admin/dashboard-stats', [AdminController::class, 'getDashboardStats']);
 Route::get('/admin/revenue-stats', [AdminController::class, 'getRevenueStats']);
+
 
 

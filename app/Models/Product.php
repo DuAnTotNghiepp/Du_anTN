@@ -51,4 +51,8 @@ class Product extends Model
         return $this->hasMany(BinhLuan::class, 'product_id');
     }
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

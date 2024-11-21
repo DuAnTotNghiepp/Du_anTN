@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
 use App\Models\BinhLuan;
 use App\Models\Catalogues;
 use App\Models\Product;
 use App\Models\Product_Variant;
 use App\Models\ProductGallerie;
 use App\Models\Variants;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -47,7 +47,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductRequest $request)
+    public function store(Request $request)
     {
         if ($request->isMethod('post')) {
             $params = $request->except('_token');
@@ -118,7 +118,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request, int $id)
+    public function update(Request $request, int $id)
     {
         //
         // Lấy thông tin sản phẩm cần cập nhật

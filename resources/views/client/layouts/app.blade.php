@@ -360,44 +360,50 @@
                             <li><a href="shop">Shop</a></li>
 
 
-                            <li><a href="contact">Contact Us</a></li>
-                            <li><a href="about">About Us</a></li>
-                        </ul>
-                        <div class="inner-top">
-                            <div class="inner-mail">
-                                <i class="flaticon-envelope"></i>
-                                <a href="mail.html"><span class="__cf_email__"
-                                                          data-cfemail="2d44434b425e585d5d425f596d48554c405d4148034e4240">[email&#160;protected]</span></a>
+                                <li><a href="contact">Contact Us</a></li>
+                                <li><a href="about">About Us</a></li>
+                                <li class="has-child-menu">
+                                    <a href="javascript:void(1)">Page</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{{route('buying_guide')}}">Buying guide</a></li>
+                                        <li><a href="{{route('warranty')}}">Warranty</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <div class="inner-top">
+                                <div class="inner-mail">
+                                    <i class="flaticon-envelope"></i>
+                                    <a href="mail.html"><span class="__cf_email__"
+                                            data-cfemail="2d44434b425e585d5d425f596d48554c405d4148034e4240">[email&#160;protected]</span></a>
+                                </div>
+                                <div class="inner-tel">
+                                    <i class="flaticon-support"></i>
+                                    <a href="tel:+008-12124354">+008-12124354</a>
+                                </div>
                             </div>
-                            <div class="inner-tel">
-                                <i class="flaticon-support"></i>
-                                <a href="tel:+008-12124354">+008-12124354</a>
+                        </nav>
+                    </div>
+                    <div class="col-xl-2 col-2 d-none d-xl-flex p-0 justify-content-end">
+                        <div class="nav-contact-no">
+                            <div class="contact-icon">
+                                <i class="flaticon-phone-call"></i>
                             </div>
-                        </div>
-                    </nav>
-                </div>
-                <div class="col-xl-2 col-2 d-none d-xl-flex p-0 justify-content-end">
-                    <div class="nav-contact-no">
-                        <div class="contact-icon">
-                            <i class="flaticon-phone-call"></i>
-                        </div>
-                        <div class="contact-info">
-                            <p>Hot Line Number</p>
-                            <a href="tel:+8801761111456">+880 176 1111 456</a>
+                            <div class="contact-info">
+                                <p>Hot Line Number</p>
+                                <a href="tel:+8801761111456">+880 176 1111 456</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-xl-2 col-2 d-none d-xl-flex p-0  align-items-center justify-content-center">
-                    <div class="nav-right text-center">
-                        <p class="text-uppercase">BLACK FRIDAY</p>
-                        <h5>All Item up to 20% Off!</h5>
+                    <div class="col-xl-2 col-2 d-none d-xl-flex p-0  align-items-center justify-content-center">
+                        <div class="nav-right text-center">
+                            <p class="text-uppercase">BLACK FRIDAY</p>
+                            <h5>All Item up to 20% Off!</h5>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</header>
-
+    </header>
 
     @yield('content')
 

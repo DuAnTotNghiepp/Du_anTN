@@ -35,7 +35,7 @@ class ClientController extends Controller
 
     // Lấy sản phẩm hot
     $listHot = Product::where('is_hot_deal', 1)->get();
-    //list sp moi 
+    //list sp moi
     $products = Product::orderBy('created_at', 'desc')->paginate(12);
 
     return view('client.shop', compact(['listSp', 'listHot', 'data','products']));
@@ -49,11 +49,11 @@ class ClientController extends Controller
     $luachon = $request->input('category-sort', 'default');
     // tại ra quẻyy tìm kiếm
     $query = Product::query();
-    
+
     if ($searchTerm) {
         $query->where('name', 'like', '%' . $searchTerm . '%');
     }
-    
+
     if (is_numeric($minPrice) && is_numeric($maxPrice)) {
         $query->whereBetween('price_regular', [$minPrice, $maxPrice]);
     }
@@ -62,13 +62,13 @@ class ClientController extends Controller
     } elseif ($luachon == 'price_desc') {
         $query->orderBy('price_regular', 'desc'); // Sắp xếp theo giá từ cao đến thấp
     }
-    
+
     $products = $query->get();
-    
+
     return view('client.shop', compact('products'));
 }
 
-    
+
 
 
     // public function show($id)
@@ -83,6 +83,20 @@ class ClientController extends Controller
         return view('client.checkout');
     }
 
+    // public function show_variants($id)
+    // {
+    //     // Lấy sản phẩm và các biến thể của sản phẩm
+    // $product = Product::with('variants')->findOrFail($id);
+
+    // // Lọc biến thể theo `color` và `size`
+    // $colors = $product->variants->where('name', 'color')->pluck('value')->unique();
+    // $sizes = $product->variants->where('name', 'size')->pluck('value')->unique();
+
+    //    // Kiểm tra dữ liệu
+    //   dd($product, $colors, $sizes);
+    // // Trả về view với dữ liệu
+    // return view('client.product_detail', compact('product', 'colors', 'sizes'));
+    // }
 
     public function show_variants($id)
 {
@@ -107,4 +121,29 @@ public function show($id)
     return view('client.product_detail', compact('product', 'comments', 'averageRating'));
 }
 
+public function warranty()
+{
+    return view('client.warranty');
+}
+
+public function buying_guide()
+{
+    return view('client.buying_guide');
+}
+public function searchWarranty(Request $request)
+{
+    $sku = $request->input('sku');
+
+    $product = Product::where('sku', $sku)->with(['orders'])->first();
+    // dd($product);
+
+    if ($product) {
+        // Nếu tìm thấy sản phẩm, trả về view với thông tin sản phẩm
+        return view('client.warranty', compact('product'));
+    } else {
+        // Nếu không tìm thấy sản phẩm, trả về view với thông báo lỗi
+        $message = 'Không tìm thấy sản phẩm với mã SKU này.';
+        return view('client.warranty', compact('message'));
+    }
+}
 }
