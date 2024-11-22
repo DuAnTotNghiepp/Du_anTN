@@ -3,6 +3,7 @@
 @section('title')
     Danh Sách Mã Giảm Giá
 @endsection
+
 @section('content')
     <!-- start page title -->
     <div class="row">
@@ -14,7 +15,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Quản Lý Mã Giảm Giá</a></li>
-                        <li class="breadcrumb-item active">Danh Sách Mã Giảm Giá</li>
+                        <li class="breadcrumb-item active">Thêm Mã Giảm Giá</li>
                     </ol>
                 </div>
 
@@ -57,7 +58,7 @@
                     <div class="d-flex align-items-center flex-wrap gap-2">
                         <div class="flex-grow-1">
                             <a href="{{ route('vouchers.create') }}" class="btn btn-info add-btn"><i
-                                    class="ri-add-fill me-1 align-bottom"></i> Add Vouchers</a>
+                                    class="ri-add-fill me-1 align-bottom"></i> Add Voucher</a>
                         </div>
                         <div class="flex-shrink-0">
                             <div class="hstack text-nowrap gap-2">
@@ -108,82 +109,79 @@
                     <div>
                         <div class="table-responsive table-card mb-3">
                             <table class="table align-middle table-nowrap mb-0" id="customerTable">
-                                <h1>Quản lý mã giảm giá</h1>
-                                {{-- <a href="{{ route('accounts.create') }}" class="btn btn-primary m-2">Thêm tài khoản mới</a> --}}
-                                <thead class="table-light">
-                                    <tr>
-                                        <th scope="col" style="width: 50px;">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="checkAll"
-                                                       value="option">
+                                <h1 class="text-center ">Sửa Mã Giảm Giá</h1>
+
+                                <form action="{{ route('vouchers.update', ['id' => $voucher->id]) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="container mt-5">
+                                        <div class="row">
+                                            <!-- Mã Voucher -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="code" class="form-label">Mã Voucher</label>
+                                                <input type="text" name="code" id="code" class="form-control" value="{{ $voucher->code }}" required>
                                             </div>
-                                        </th>
-                                        <th scope="col" data-sort="id">ID</th>
-                                        <th scope="col" data-sort="code">Mã Voucher</th>
-                                        <th scope="col" data-sort="type">Loại</th>
-                                        <th scope="col" data-sort="value">Giá trị</th>
-                                        <th scope="col" data-sort="minimum_order_value">Giá trị đơn hàng tối thiểu</th>
-                                        <th scope="col" data-sort="usage_limit">Giới hạn sử dụng</th>
-                                        <th scope="col" data-sort="start_date">Ngày bắt đầu</th>
-                                        <th scope="col" data-sort="end_date">Ngày kết thúc</th>
-                                        <th scope="col" data-sort="status">Trạng thái</th>
-                                        <th scope="col" data-sort="create_at">Ngày tạo</th>
-                                        <th scope="col">Hành động</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody class="list form-check-all">
-                                        @forelse($vouchers as $voucher)
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="{{ $voucher->id }}">
-                                                </div>
-                                            </td>
-                                            <td>{{ $voucher->id }}</td>
-                                            <td>{{ $voucher->code }}</td>
-                                            <td>{{ $voucher->type === 'fixed' ? 'Cố định' : 'Phần trăm' }}</td>
-                                            <td>
-                                                @if($voucher->type === 'fixed')
-                                                    {{ number_format($voucher->value, 0) }} VNĐ
-                                                @else
-                                                    {{ $voucher->value }} %
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if($voucher->minimum_order_value)
-                                                    {{ number_format($voucher->minimum_order_value, 0) }} VNĐ
-                                                @else
-                                                    Không yêu cầu
-                                                @endif
-                                            </td>
-                                            <td>{{ $voucher->usage_limit ? $voucher->usage_limit : 'Không giới hạn' }}</td>
-                                            <td>{{ $voucher->start_date }}</td>
-                                            <td>{{ $voucher->end_date }}</td>
-                                            <td>
-                                                @if($voucher->status == 'active')
-                                                    <span class="badge bg-success">Hoạt động</span>
-                                                @elseif($voucher->status == 'expired')
-                                                    <span class="badge bg-danger">Hết hạn</span>
-                                                @else
-                                                    <span class="badge bg-secondary">Tắt</span>
-                                                @endif
-                                            </td>
-                                            <td>{{ $voucher->created_at }}</td>
-                                            <td>
-                                                <a href="{{ route('vouchers.edit', $voucher->id) }}" class="btn btn-sm btn-warning">Sửa</a>
-                                                <form action="{{ route('vouchers.destroy', $voucher->id) }}" method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        @empty
-                                        <tr>
-                                            <td colspan="12" class="text-center">Không có voucher nào!</td>
-                                        </tr>
-                                        @endforelse
-                                    </tbody>
+                                
+                                            <!-- Loại Voucher -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="type" class="form-label">Loại Voucher</label>
+                                                <select name="type" id="type" class="form-select" required>
+                                                    <option value="fixed" {{ $voucher->type == 'fixed' ? 'selected' : '' }}>Cố định</option>
+                                                    {{-- <option value="percent" {{ $voucher->type == 'percent' ? 'selected' : '' }}>Phần trăm</option> --}}
+                                                </select>
+                                            </div>
+                                
+                                            <!-- Giá trị -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="value" class="form-label">Giá trị</label>
+                                                <input type="number" name="value" id="value" class="form-control" value="{{ $voucher->value }}" required>
+                                            </div>
+                                
+                                            <!-- Giá trị đơn hàng tối thiểu -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="minimum_order_value" class="form-label">Giá trị đơn hàng tối thiểu</label>
+                                                <input type="number" name="minimum_order_value" id="minimum_order_value" class="form-control" value="{{ $voucher->minimum_order_value }}" required>
+                                            </div>
+                                
+                                            <!-- Giới hạn sử dụng -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="usage_limit" class="form-label">Giới hạn sử dụng</label>
+                                                <input type="number" name="usage_limit" id="usage_limit" class="form-control" value="{{ $voucher->usage_limit }}" required>
+                                            </div>
+                                
+                                            <!-- Ngày bắt đầu -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="start_date" class="form-label">Ngày bắt đầu</label>
+                                                <input type="datetime-local" name="start_date" id="start_date" class="form-control" 
+                                                    value="{{ \Carbon\Carbon::parse($voucher->start_date)->format('Y-m-d\TH:i') }}" required>
+                                            </div>
+                                
+                                            <!-- Ngày kết thúc -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="end_date" class="form-label">Ngày kết thúc</label>
+                                                <input type="datetime-local" name="end_date" id="end_date" class="form-control" 
+                                                    value="{{ \Carbon\Carbon::parse($voucher->end_date)->format('Y-m-d\TH:i') }}" required>
+                                            </div>
+                                
+                                            <!-- Trạng thái -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="status" class="form-label">Trạng thái</label>
+                                                <select name="status" id="status" class="form-select" style="width: 50%;" required>
+                                                    <option value="active" {{ $voucher->status == 'active' ? 'selected' : '' }}>Hoạt động</option>
+                                                    <option value="expired" {{ $voucher->status == 'expired' ? 'selected' : '' }}>Hết hạn</option>
+                                                    <option value="disabled" {{ $voucher->status == 'disabled' ? 'selected' : '' }}>Tắt</option>
+                                                </select>
+                                            </div>
+                                
+                                            <!-- Nút hành động -->
+                                            <div class="col-12 d-flex justify-content-between">
+                                                <button type="submit" class="btn btn-primary">{{ isset($voucher) ? 'Cập nhật' : 'Tạo mới' }}</button>
+                                                <a href="{{ route('vouchers.index') }}" class="btn btn-secondary">Quay lại</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                
                             </table>
                             <div class="noresult" style="display: none">
                                 <div class="text-center">
@@ -414,4 +412,5 @@ document.getElementById('searchInput').addEventListener('input', function () {
 
     </html>
 @endsection
+
 

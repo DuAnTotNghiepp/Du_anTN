@@ -44,6 +44,8 @@ Route::get('product/{id}', [ClientController::class, 'show'])->name('product.pro
 //     Route::get('/',[CheckoutController::class, 'form'])->name('checkout');
 //     Route::post('/',[CheckoutController::class, 'submit_form'])->name('checkout');
 // });
+Route::get('/checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('checkout.applyVoucher');
+
 Route::get('/checkout', [CheckoutController::class, 'form'])->name('checkout');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
 
@@ -93,5 +95,3 @@ Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComme
 
 
 // Group routes under admin middleware
-// vouchers 
-Route::get('admin/vouchers', [VoucherController::class, 'index'])->name('vouchers.index');

@@ -30,6 +30,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+    
         // Xác thực dữ liệu
         $validatedData = $request->validate([
             'user_name' => 'required|string|max:255',
@@ -40,7 +41,6 @@ class OrderController extends Controller
             'product_id' => 'required|exists:products,id',
             'total_price' => 'required|numeric',
         ]);
-
         // Thêm user_id từ phiên đăng nhập
         $validatedData['user_id'] = auth()->id();
 
