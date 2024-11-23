@@ -7,6 +7,9 @@ use App\Http\Controllers\Admin\VariantsController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
+
+
+
 Route::prefix('admin')
     ->as('admin.')
     ->group(function () {

@@ -22,7 +22,9 @@ class StoreCataloguesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name'=>'required|string|max:50|min:3|regex:/^[a-zA-Z0-9\s]+$/u',
+            'is_active'=>'nullable',
         ];
     }
 }
+

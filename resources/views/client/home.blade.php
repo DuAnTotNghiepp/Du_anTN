@@ -2321,10 +2321,34 @@
                     <div class="swiper-button-next"><i class="flaticon-arrow-pointing-to-right"></i></div>
                     <div class="swiper-button-prev"><i class="flaticon-arrow-pointing-to-left"></i></div>
 
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="newslatter-area ml-110 mt-100">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="newslatter-wrap text-center">
+                    <h5>Connect To Mai Lan</h5>
+                    <h2 class="newslatter-title">Join Our Newsletter</h2>
+                    <p>Hey you, sign up it only, Get this limited-edition T-shirt Free!</p>
+                    <form action="#" method="POST">
+                        <div class="newslatter-form">
+                            <input type="text" placeholder="Type Your Email">
+                            <button type="submit">Send <i class="bi bi-envelope-fill"></i></button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+
+
+
     <script>
         const productDetailUrl = "{{ route('product.product_detail', ['id' => 'ID_PLACEHOLDER']) }}";
         // Mặc định hiển thị tất cả sản phẩm khi load trang

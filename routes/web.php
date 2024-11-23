@@ -73,11 +73,21 @@ Route::get('/admin', function () {
 })->name('content');
 
 
+
 Route::get('login', [AuthController::class, 'showFormLogin']);
 Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::get('register', [AuthController::class, 'showFormRegister']);
 Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+
+//client
+Route::get('/', [ClientController::class, 'index'])->name('index');
+Route::get('/product/detail', [ClientController::class, 'product'])->name('product.detail');
+Route::get('/product/checkout', [ClientController::class, 'checkout'])->name('product.checkout');
+Route::get('buying_guide', [ClientController::class , 'buying_guide' ])->name('buying_guide');
+Route::get('warranty',[ClientController::class , 'warranty'])->name('warranty');
+Route::get('searchWarranty',[ClientController::class,'searchWarranty'])->name('searchWarranty');
 
 
 // Group routes under admin middleware
@@ -88,7 +98,9 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::get('admin/accounts/{user}/edit', [AdminController::class, 'edit'])->name('admin.accounts.edit');
     Route::put('admin/accounts/{user}', [AdminController::class, 'update'])->name('admin.accounts.update');
     Route::delete('admin/accounts/{user}', [AdminController::class, 'destroy'])->name('admin.accounts.destroy');
+    //thong ke
 });
+
 
 Route::resource('cart', CartController::class);
 //chi tiet test
@@ -97,5 +109,10 @@ Route::get('admin/comment/index', [ProductController::class, 'indexWithComments'
 Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComments'])->name('product.comments');
 
 
-// Group routes under admin middleware
+// Group routes under admin middlewares
+//thong ke
+Route::get('/admin/dashboard-stats', [AdminController::class, 'getDashboardStats']);
+Route::get('/admin/revenue-stats', [AdminController::class, 'getRevenueStats']);
+
+
 
