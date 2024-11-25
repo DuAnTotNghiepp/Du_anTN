@@ -45,6 +45,7 @@ Route::get('product/{id}', [ClientController::class, 'show'])->name('product.pro
 // });
 Route::get('/checkout', [CheckoutController::class, 'form'])->name('checkout');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
+Route::post('/orders/vnpay_ment', [OrderController::class, 'vnpay_ment'])->name('orders.vnpay_ment');
 
 // Route::get('/product/checkout/{id}', [OrderController::class, 'show'])->name('productcheckout.checkout');
 
