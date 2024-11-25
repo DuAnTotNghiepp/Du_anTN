@@ -8,6 +8,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="{{asset('assets/images/favicon.png')}}" type="image/png" sizes="20x20">
     <link rel="stylesheet" href="{{asset('assets/css/swiper.css')}}">
 
@@ -53,7 +54,7 @@
                     <div class="sidebar-bottom">
                         <ul class="sidebar-icons">
                             <li><a href="dashboard"><i class="flaticon-user"></i></a></li>
-                            <li><a href="product.html"><i class="flaticon-heart"></i></a></li>
+                            <li><a href="{{route('favorites.index')}}"><i class="flaticon-heart"></i></a></li>
                             <li class="cart-icon">
                                 <i class="flaticon-shopping-cart"></i>
                                 <div class="cart-count"><span>10</span></div>
@@ -353,23 +354,7 @@
                                         @endforeach
                                     </ul>
                                 </li>
-
-
                                 <li><a href="shop">Shop</a></li>
-                            <li class="has-child-menu">
-                                <a href="javascript:void(0)">Category</a>
-                                <i class="fl flaticon-plus">+</i>
-                                <ul class="sub-menu">
-                                    <li><a href="cart.html">Jacket</a></li>
-                                    <li><a href="checkout.html">Shirt</a></li>
-                                    <li><a href="login.html">Pants</a></li>
-                                    <li><a href="register.html">Dress</a></li>
-                                    <li><a href="profile.html">Accessories</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="shop">Shop</a></li>
-
-
                                 <li><a href="contact">Contact Us</a></li>
                                 <li><a href="about">About Us</a></li>
 

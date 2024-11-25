@@ -157,6 +157,9 @@
                                             <input type="hidden" name="quantity" value="1" id="cart-quantity">
 
                                             <button type="submit" class="pd-add-cart">Thêm vào giỏ hàng</button>
+                                            <button class="pd-add-cart" style="background: none; border: none; background-color: red" id="favorite-btn" data-product-id="{{ $product->id }}">
+                                                <i class="flaticon-heart"></i>
+                                            </button>
                                         </form>
 
                                     </li>
@@ -436,6 +439,26 @@ document.getElementById('quantity-input').addEventListener('input', function() {
         } else {
             warningMessage.style.display = 'none';
         }
+    });
+    document.getElementById('favorite-btn').addEventListener('click', function () {
+        const productId = this.dataset.productId;
+
+        fetch('{{ route("favorites.toggle") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            },
+            body: JSON.stringify({ product_id: productId }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'added') {
+                alert('Sản phẩm đã được thêm vào yêu thích.');
+            } else if (data.status === 'removed') {
+                alert('Sản phẩm đã được xóa khỏi yêu thích.');
+            }
+        });
     });
     </script>
 @endsection

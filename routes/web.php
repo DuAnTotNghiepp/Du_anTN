@@ -9,6 +9,7 @@ use App\Http\Controllers\BinhLuanController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\Client\ProductCatalogueController;
+use App\Http\Controllers\Client\ProductFavoriteController;
 use App\Http\Controllers\ProductController as ControllersProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckRoleAdminMiddleware;
@@ -50,9 +51,9 @@ Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')-
 Route::get('/productcatalogue', [ProductCatalogueController::class, 'index'])->name('productcatalogue');
 
 Route::post('/api/get-products-by-category', [ClientController::class, 'getProductsByCategory']);
-
-// Route::get('/productcatalogue', [ProductCatalogueController::class, 'index'])->name('productcatalogue');
-// Route::get('/productcatalogue/{id}', [ProductCatalogueController::class, 'showCategory'])->name('productcatalogue.category');
+Route::post('/favorites/toggle', [ProductFavoriteController::class, 'toggleFavorite'])->name('favorites.toggle');
+Route::get('/favorites', [ProductFavoriteController::class, 'favoriteProducts'])->name('favorites.index');
+Route::get('/favorites/count', [ProductFavoriteController::class, 'favoriteCount'])->name('favorites.count');
 
 
 // Password Reset Routes
