@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Address;
 use App\Models\Catalogues;
 use App\Models\BinhLuan;
+use App\Models\Order;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Variants;
@@ -70,7 +71,6 @@ public function show($id)
 public function show_profile($id)
 {
     // Lấy thông tin người dùng theo id
-    // $user = User::with('addresses')->findOrFail($id);
     $user = User::find($id);
     $addresses = $user->addresses;
 
@@ -80,8 +80,19 @@ public function show_profile($id)
     }
 
     // Truyền dữ liệu người dùng vào view 'client.profile'
-    return view('client.profile', compact('user','addresses'));
+    return view('client.my_profile', compact('user','addresses'));
 }
+public function show_my_order()
+{
+    // Lấy danh sách đơn hàng của người dùng hiện tại
+    $orders = Order::where('user_id', Auth::id())
+        ->with('product') // Nạp thông tin sản phẩm liên quan
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    return view('client.my_order', compact('orders'));
+}
+
 
 public function storeAddress(Request $request)
 {
@@ -110,6 +121,18 @@ public function storeAddress(Request $request)
 
     return redirect()->route('profile', ['id' => auth()->user()->id])->with('success', 'Địa chỉ đã được lưu thành công!');
 }
+public function updateAddress(Request $request, $id)
+{
+    // Lấy địa chỉ từ ID
+    $address = Address::findOrFail($id);
+
+    // Cập nhật thông tin địa chỉ
+    $address->update($request->all());
+
+    // Redirect hoặc trả về thông báo
+    return redirect()->back()->with('success', 'Địa chỉ đã được cập nhật.');
+}
+
 
 
 }

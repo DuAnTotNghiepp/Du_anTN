@@ -41,9 +41,12 @@ Route::get('product/{id}', [ClientController::class, 'show'])->name('product.pro
 
 //profile
 Route::get('/profile/{id}', [ClientController::class, 'show_profile'])->name('profile');
+Route::get('/my_orders', [ClientController::class, 'show_my_order'])->name('my_orders');
 Route::post('profile', [ClientController::class, 'updateProfile'])->name('updateProfile');
 // routes/web.php
 Route::post('/profile/address', [ClientController::class, 'storeAddress'])->name('profile.address.store');
+Route::put('/profile/address/update/{id}', [ClientController::class, 'updateAddress'])->name('profile.address.update');
+
 
 // Route::group(['prefix'=>'checkout'], function(){
 //     Route::get('/',[CheckoutController::class, 'form'])->name('checkout');
