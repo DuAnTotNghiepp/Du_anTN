@@ -46,6 +46,7 @@ Route::post('profile', [ClientController::class, 'updateProfile'])->name('update
 // routes/web.php
 Route::post('/profile/address', [ClientController::class, 'storeAddress'])->name('profile.address.store');
 Route::put('/profile/address/update/{id}', [ClientController::class, 'updateAddress'])->name('profile.address.update');
+Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])->name('my_order.invoice');
 
 
 // Route::group(['prefix'=>'checkout'], function(){

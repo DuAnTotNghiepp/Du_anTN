@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Variants;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -86,12 +87,13 @@ public function show_my_order()
 {
     // Lấy danh sách đơn hàng của người dùng hiện tại
     $orders = Order::where('user_id', Auth::id())
-        ->with('product') // Nạp thông tin sản phẩm liên quan
+        ->with(['product', 'user.addresses']) // Lấy thông tin sản phẩm và địa chỉ thông qua user
         ->orderBy('created_at', 'desc')
         ->get();
 
     return view('client.my_order', compact('orders'));
 }
+
 
 
 public function storeAddress(Request $request)
@@ -133,6 +135,17 @@ public function updateAddress(Request $request, $id)
     return redirect()->back()->with('success', 'Địa chỉ đã được cập nhật.');
 }
 
+public function exportInvoice($id)
+{
+    // Lấy thông tin chi tiết đơn hàng
+    $order = Order::with('product')->findOrFail($id);
+
+    // Sử dụng Facade PDF để render view và tạo file PDF
+    $pdf = Pdf::loadView('client.invoice', compact('order'));
+
+    // Trả file PDF về cho người dùng tải xuống
+    return $pdf->download('invoice-' . $order->id . '.pdf');
+}
 
 
 }
