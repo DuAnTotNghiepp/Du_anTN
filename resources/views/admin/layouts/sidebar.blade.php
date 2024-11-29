@@ -121,6 +121,7 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarAccounts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Mã Giảm Giá</span>
                     </a>
@@ -132,7 +133,21 @@
                         </ul>
                     </div>
                 </li>
-            </ul>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarAccounts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Blog</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarAccounts">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('blog.index') }}" class="nav-link" data-key="t-analytics"> Danh Sách Blog </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </li>
+           
+           
         </div>
         <!-- Sidebar -->
     </div>

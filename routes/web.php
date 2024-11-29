@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\VoucherController;
@@ -95,3 +96,4 @@ Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComme
 
 
 // Group routes under admin middleware
+Route::get('blog/{id}', [BlogController::class, 'show'])->name('blog.detail');

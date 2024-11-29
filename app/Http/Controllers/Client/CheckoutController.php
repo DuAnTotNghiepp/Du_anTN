@@ -7,7 +7,9 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Vouchers;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
 {
@@ -43,24 +45,28 @@ class CheckoutController extends Controller
         $productPrice = session('product_price', 100000);
         $tax = 5000;
         $orderTotal = $request->total_price;
-    
+
         // Lấy mã giảm giá từ form
         $voucherCode = $request->voucher_code;
+        // Lấy thời gian hiện tại với múi giờ chuẩn
+        Log::info('Current Time', ['current_time' => now()->toDateTimeString()]);
 
-        // Tìm kiếm mã giảm giá trong database
+        $now = Carbon::now('Asia/Ho_Chi_Minh'); 
+
+        // Tìm kiếm mã giảm giá trong cơ sở dữ liệu
         $voucher = Vouchers::where('code', $voucherCode)
-            ->where('start_date', '<=', now())
-            ->where('end_date', '>=', now())
-            ->where('status', 'active')
-            ->first();
-  
+        ->where('start_date', '<=', $now)
+        ->where('end_date', '>=', $now)
+        ->where('status', 'active')
+        ->first();
+
+       
         // Kiểm tra nếu mã giảm giá không hợp lệ
         if (!$voucher) {
             return response([
                 'result' => false,
-                'message' => 'Mã giảm giá không hợp lệ hoặc đã hết hạn.'
+                'message' => 'Mã giảm giá không hợp lệ hoặc đã hết hạn'
             ]);
-            // return redirect()->back()->with('voucher_error', 'Mã giảm giá không hợp lệ hoặc đã hết hạn.');
         }
     
         // Kiểm tra điều kiện áp dụng mã giảm giá
@@ -69,15 +75,16 @@ class CheckoutController extends Controller
                 'result' => false,
                 'message' => 'Giá trị đơn hàng không đủ để áp dụng mã giảm giá này.'
             ]);
-            // return redirect()->back()->with('voucher_error', 'Giá trị đơn hàng không đủ để áp dụng mã giảm giá này.');
+          
         }
+      
     
         // Tính giá trị giảm giá
         $discount = ($voucher->type === 'percent')
             ? ($voucher->value / 100) * $orderTotal
             : $voucher->value;
     
-        // Đảm bảo giảm giá không vượt quá tổng đơn hàng
+      
         $discount = min($discount, $orderTotal);
     
        
@@ -90,7 +97,7 @@ class CheckoutController extends Controller
             'result' => true,
             'data' => $data
         ]);
-        // return redirect()->back()->with('voucher_success', 'Mã giảm giá đã được áp dụng.');
+       
     }
     
 
