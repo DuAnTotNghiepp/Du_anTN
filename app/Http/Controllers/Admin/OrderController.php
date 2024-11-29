@@ -53,29 +53,43 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Order $order)
-{
-    // Kiểm tra xem user_id có tồn tại trong đơn hàng hay không
-    if (is_null($order->user_id)) {
-        return redirect()->back()->with('error', 'Không tìm thấy user_id cho đơn hàng.');
+    public function update(Request $request, $id)
+    {
+        $order = Order::find($id);
+
+        if (!$order) {
+            return redirect()->back()->with('error', 'Không tìm thấy đơn hàng.');
+        }
+
+        if (!$order->user_id) {
+            return redirect()->back()->with('error', 'Không tìm thấy user_id cho đơn hàng.');
+        }
+
+        $validatedData = $request->validate([
+            'status' => 'required|in:pending,completed,canceled',
+            'user_note' => 'nullable|string',
+        ]);
+
+        $allowedStatusTransitions = [
+            'pending' => ['completed', 'canceled'],
+            'completed' => [],
+            'canceled' => [],
+        ];
+
+        $currentStatus = $order->status;
+        $newStatus = $validatedData['status'];
+
+        if (!in_array($newStatus, $allowedStatusTransitions[$currentStatus])) {
+            return redirect()->back()->with('error', 'Không thể thay đổi trạng thái này.');
+        }
+        $order->update([
+            'status' => $validatedData['status'],
+            'user_note' => $validatedData['user_note'] ?? null,
+        ]);
+
+        return redirect()->route('order.index')->with('success', 'Cập nhật trạng thái thành công.');
     }
 
-    $validatedData = $request->validate([
-        'status' => 'required|in:pending,completed,canceled',
-        'user_note' => 'nullable|string',
-    ]);
-
-    // Cập nhật thông tin đơn hàng
-    $order->status = $validatedData['status'];
-    $order->user_note = $validatedData['user_note'];
-
-    // Lưu thay đổi vào cơ sở dữ liệu
-    if ($order->save()) {
-        return redirect()->back()->with('success', 'Trạng thái đơn hàng đã được cập nhật thành công');
-    } else {
-        return redirect()->back()->with('error', 'Cập nhật trạng thái đơn hàng không thành công');
-    }
-}
 
 
 

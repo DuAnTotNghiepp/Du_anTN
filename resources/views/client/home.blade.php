@@ -4,7 +4,37 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
 
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+    </style>
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
 
     <div class="hero-area ml-110">
         <div class="row">
@@ -238,9 +268,10 @@
                                             <img src="{{ Storage::url($item->img_thumbnail) }}" alt class="img-fluid"
                                                 style="width: 375.15px; height: 332.87px"></a>
                                         <div class="product-actions-xl">
-                                            <button class="pd-add-cart" style="background: none; border: none" id="favorite-btn" data-product-id="{{ $item->id }}">
+                                            <button class="favorite-btn" style="background: none; border: none" data-product-id="{{ $item->id }}">
                                                 <i class="flaticon-heart"></i>
                                             </button>
+
 
 
                                             <a href="product-details.html"><i class="flaticon-search"></i></a>
@@ -631,42 +662,31 @@
                     .catch(error => console.error('Error:', error));
             });
         });
-        document.getElementById('favorite-btn').addEventListener('click', function () {
-            const productId = this.dataset.productId;
 
-            fetch('{{ route("favorites.toggle") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                },
-                body: JSON.stringify({ product_id: productId }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'added') {
-                    alert('Sản phẩm đã được thêm vào yêu thích.');
-                } else if (data.status === 'removed') {
-                    alert('Sản phẩm đã được xóa khỏi yêu thích.');
-                }
-            });
-        });
-        $(document).ready(function () {
-    // Gọi API để lấy số lượng sản phẩm yêu thích
-            $.ajax({
-                url: '{{ route('favorites.count') }}',
-                method: 'GET',
-                success: function (response) {
-                    if (response.count !== undefined) {
-                        $('.favorite-count').text(response.count); // Cập nhật số lượng
+        document.querySelectorAll('.favorite-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const productId = this.dataset.productId;
+
+                fetch('{{ route("favorites.toggle") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    },
+                    body: JSON.stringify({ product_id: productId }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'added') {
+                        alert('Sản phẩm đã được thêm vào yêu thích.');
+                    } else if (data.status === 'removed') {
+                        alert('Sản phẩm đã được xóa khỏi yêu thích.');
                     }
-                },
-                error: function () {
-                    console.error('Không thể lấy số lượng sản phẩm yêu thích.');
-                }
+                });
             });
         });
-        
+
+
 
 
 
