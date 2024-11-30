@@ -40,7 +40,7 @@ class CartController extends Controller
             return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng');
         }
 
-        // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+        // Kiểm tra xem sản phẩm có trong giỏ hàng chưa (kiểm tra cả product_id và variant_id)
         $cartItem = Cart::where('user_id', auth()->id())
             ->where('product_id', $request->product_id)
             ->where('variant_id', $request->variant_id)
@@ -50,10 +50,10 @@ class CartController extends Controller
         $quantity = $request->quantity ?? 1;
 
         if ($cartItem) {
-            // Cập nhật số lượng giỏ hàng nếu sản phẩm đã có
+            // Nếu sản phẩm đã có trong giỏ, cập nhật số lượng
             $cartItem->update(['quantity' => $cartItem->quantity + $quantity]);
         } else {
-            // Tạo mới giỏ hàng nếu chưa có
+            // Nếu sản phẩm chưa có trong giỏ, tạo mục giỏ hàng mới
             Cart::create([
                 'user_id' => auth()->id(),
                 'product_id' => $request->product_id,
@@ -64,6 +64,8 @@ class CartController extends Controller
 
         return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng');
     }
+
+
 
 
     public function update(Request $request, $cartId)
