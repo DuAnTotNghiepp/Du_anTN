@@ -8,6 +8,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="{{asset('assets/images/favicon.png')}}" type="image/png" sizes="20x20">
     <link rel="stylesheet" href="{{asset('assets/css/swiper.css')}}">
 
@@ -88,6 +89,17 @@
                                 </li>
                             </ul>
                         </div>
+
+                    </div>
+                    <div class="sidebar-bottom">
+                        <ul class="sidebar-icons">
+                            <li><a href="dashboard"><i class="flaticon-user"></i></a></li>
+                            <li><a href="{{route('favorites.index')}}"><i class="flaticon-heart"></i></a></li>
+                            <li class="cart-icon">
+                                <i class="flaticon-shopping-cart"></i>
+                                <div class="cart-count"><span>10</span></div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -379,6 +391,14 @@
                             </div>
                             <ul class="nav-item-list">
                                 <li><a href="/">Home</a></li>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 d-flex justify-content-center">
+                    <nav class="main-nav">
+                        <div class="inner-logo">
+                            <a href="/"><img src="{{asset('assets/images/logo-w.png')}}" alt></a>
+                        </div>
+                        <ul class="nav-item-list">
+                            <li><a href="/">Home</a></li>
 
                                 <li class="has-child-menu">
                                     <a href="javascript:void(0)">Category</a>
@@ -396,6 +416,16 @@
 
                                 <li><a href="contact">Contact Us</a></li>
                                 <li><a href="about">About Us</a></li>
+                                        <li><a href="{{ route('productcatalogue') }}">Tất cả sản phẩm</a></li>
+                                        @foreach($data as $cate)
+                                            <li><a href="{{ route('productcatalogue', ['catalogue_id' => $cate->id]) }}">{{ $cate->name }}</a></li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                                <li><a href="shop">Shop</a></li>
+                                <li><a href="contact">Contact Us</a></li>
+                                <li><a href="about">About Us</a></li>
+
                             </ul>
                             <div class="inner-top">
                                 <div class="inner-mail">
