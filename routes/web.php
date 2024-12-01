@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CartController;
@@ -53,6 +55,8 @@ Route::post('/profile/address', [ClientController::class, 'storeAddress'])->name
 Route::put('/profile/address/update/{id}', [ClientController::class, 'updateAddress'])->name('profile.address.update');
 Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])->name('my_order.invoice');
 
+
+Route::get('/checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('checkout.applyVoucher');
 
 Route::get('/checkout', [CheckoutController::class, 'form'])->name('checkout');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
@@ -122,3 +126,6 @@ Route::get('/admin/revenue-stats', [AdminController::class, 'getRevenueStats']);
 
 
 
+
+// Group routes under admin middleware
+Route::get('blog/{id}', [BlogController::class, 'show'])->name('blog.detail');
