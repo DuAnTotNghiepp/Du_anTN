@@ -167,157 +167,157 @@
                         });
 
                     </script>
-                    <div class="row">
-                        <div class="col-xl">
-                            <div class="card">
-                                <div class="card-header border-0 align-items-center d-flex">
-                                    <h4 class="card-title mb-0 flex-grow-1">Biểu đồ thu nhập</h4>
-                                    <div>
+                <div class="row">
+                    <div class="col-xl">
+                        <div class="card">
+                            <div class="card-header border-0 align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Biểu đồ thu nhập</h4>
+                                <div>
 
-                                        <button type="button" class="btn btn-soft-primary btn-sm" data-time="1Y">
-                                            1Năm
-                                        </button>
-                                    </div>
-                                </div><!-- end card header -->
+                                    <button type="button" class="btn btn-soft-primary btn-sm" data-time="1Y">
+                                        1Năm
+                                    </button>
+                                </div>
+                            </div><!-- end card header -->
 
-                                <div class="card-header p-0 border-0 bg-light-subtle">
-                                    <div class="row g-0 text-center">
-                                        {{--  <div class="col-6 col-sm-3">
-                                            <div class="p-3 border border-dashed border-start-0">
-                                                <h5 class="mb-1"><span id="order-count" class="counter-value" data-target="0">0</span></h5>
-                                                <p class="text-muted mb-0">Đơn hàng</p>
-                                            </div>
-                                        </div><!-- end col -->  --}}
-                                        <div class="col-6 col-sm-3">
-                                            <div class="p-3 border border-dashed border-start-0">
-                                                <h5 class="mb-1"><span id="revenue-total" class="counter-value" data-target="0">0</span></h5>
-                                                <p class="text-muted mb-0">Doanh thu cả năm</p>
-                                            </div>
-                                        </div><!-- end col -->
-                                    </div>
-                                </div><!-- end card header -->
+                            <div class="card-header p-0 border-0 bg-light-subtle">
+                                <div class="row g-0 text-center">
+                                    {{--  <div class="col-6 col-sm-3">
+                                        <div class="p-3 border border-dashed border-start-0">
+                                            <h5 class="mb-1"><span id="order-count" class="counter-value" data-target="0">0</span></h5>
+                                            <p class="text-muted mb-0">Đơn hàng</p>
+                                        </div>
+                                    </div><!-- end col -->  --}}
+                                    <div class="col-6 col-sm-3">
+                                        <div class="p-3 border border-dashed border-start-0">
+                                            <h5 class="mb-1"><span id="revenue-total" class="counter-value" data-target="0">0</span></h5>
+                                            <p class="text-muted mb-0">Doanh thu cả năm</p>
+                                        </div>
+                                    </div><!-- end col -->
+                                </div>
+                            </div><!-- end card header -->
 
-                                <div class="card-body p-0 pb-2">
-                                    <div class="w-100">
-                                        <div id="revenueChart"></div>
-                                    </div><!-- end card body -->
-                                </div><!-- end card -->
-                            </div><!-- end col -->
-                        </div>
+                            <div class="card-body p-0 pb-2">
+                                <div class="w-100">
+                                    <div id="revenueChart"></div>
+                                </div><!-- end card body -->
+                            </div><!-- end card -->
+                        </div><!-- end col -->
+                    </div>
 
 
 
-                        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function () {
-                                const buttons = document.querySelectorAll('.btn');
-                                buttons.forEach(button => {
-                                    button.addEventListener('click', function () {
-                                        const timeRange = this.getAttribute('data-time');
-                                        fetchRevenueData(timeRange);
-                                    });
+                    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const buttons = document.querySelectorAll('.btn');
+                            buttons.forEach(button => {
+                                button.addEventListener('click', function () {
+                                    const timeRange = this.getAttribute('data-time');
+                                    fetchRevenueData(timeRange);
                                 });
-
-                                fetchRevenueData('1Y');
                             });
 
-                            function fetchRevenueData(timeRange) {
-                                fetch(`/admin/revenue-stats?time=${timeRange}`)
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        const totalRevenue = data.totalRevenue;
+                            fetchRevenueData('1Y');
+                        });
 
-                                        document.getElementById('revenue-total').textContent = `${totalRevenue.toFixed(2)}`;
+                        function fetchRevenueData(timeRange) {
+                            fetch(`/admin/revenue-stats?time=${timeRange}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    const totalRevenue = data.totalRevenue;
 
-                                        renderChart(data.months, data.revenueData);
-                                    })
-                                    .catch(error => {
-                                        console.error('Error fetching revenue data:', error);
-                                    });
-                            }
+                                    document.getElementById('revenue-total').textContent = `${totalRevenue.toFixed(2)}`;
 
-                            function renderChart(months, revenueData) {
-                                var options = {
-                                    chart: {
-                                        height: 350,
-                                        type: 'bar',
+                                    renderChart(data.months, data.revenueData);
+                                })
+                                .catch(error => {
+                                    console.error('Error fetching revenue data:', error);
+                                });
+                        }
+
+                        function renderChart(months, revenueData) {
+                            var options = {
+                                chart: {
+                                    height: 350,
+                                    type: 'bar',
+                                },
+                                plotOptions: {
+                                    bar: {
+                                        columnWidth: '30%',
+                                        endingShape: 'rounded',
                                     },
-                                    plotOptions: {
-                                        bar: {
-                                            columnWidth: '30%',
-                                            endingShape: 'rounded',
-                                        },
-                                    },
-                                    dataLabels: {
-                                        enabled: false,
-                                    },
-                                    series: [{
-                                        name: 'Doanh thu',
-                                        data: revenueData,
-                                    }],
-                                    xaxis: {
-                                        categories: months,
-                                    },
-                                    fill: {
-                                        opacity: 1,
-                                    },
-                                };
+                                },
+                                dataLabels: {
+                                    enabled: false,
+                                },
+                                series: [{
+                                    name: 'Doanh thu',
+                                    data: revenueData,
+                                }],
+                                xaxis: {
+                                    categories: months,
+                                },
+                                fill: {
+                                    opacity: 1,
+                                },
+                            };
 
-                                var chart = new ApexCharts(document.querySelector("#revenueChart"), options);
-                                chart.render();
-                            }
+                            var chart = new ApexCharts(document.querySelector("#revenueChart"), options);
+                            chart.render();
+                        }
 
-                        </script>
+                    </script>
 
-                        {{--  <div class="col-xl-4">
-                            <!-- card -->
-                            <div class="card card-height-100">
-                                <div class="card-header align-items-center d-flex">
-                                    <h4 class="card-title mb-0 flex-grow-1">Sales by Locations</h4>
-                                    <div class="flex-shrink-0">
-                                        <button type="button" class="btn btn-soft-primary btn-sm">
-                                            Export Report
-                                        </button>
+                    {{--  <div class="col-xl-4">
+                        <!-- card -->
+                        <div class="card card-height-100">
+                            <div class="card-header align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Sales by Locations</h4>
+                                <div class="flex-shrink-0">
+                                    <button type="button" class="btn btn-soft-primary btn-sm">
+                                        Export Report
+                                    </button>
+                                </div>
+                            </div><!-- end card header -->
+
+                            <!-- card body -->
+                            <div class="card-body">
+
+                                <div id="sales-by-locations"
+                                     data-colors='["--vz-light", "--vz-success", "--vz-primary"]'
+                                     style="height: 269px" dir="ltr"></div>
+
+                                <div class="px-2 py-2 mt-1">
+                                    <p class="mb-1">Canada <span class="float-end">75%</span></p>
+                                    <div class="progress mt-2" style="height: 6px;">
+                                        <div class="progress-bar progress-bar-striped bg-primary"
+                                             role="progressbar" style="width: 75%" aria-valuenow="75"
+                                             aria-valuemin="0" aria-valuemax="75"></div>
                                     </div>
-                                </div><!-- end card header -->
 
-                                <!-- card body -->
-                                <div class="card-body">
+                                    <p class="mt-3 mb-1">Greenland <span class="float-end">47%</span>
+                                    </p>
+                                    <div class="progress mt-2" style="height: 6px;">
+                                        <div class="progress-bar progress-bar-striped bg-primary"
+                                             role="progressbar" style="width: 47%" aria-valuenow="47"
+                                             aria-valuemin="0" aria-valuemax="47"></div>
+                                    </div>
 
-                                    <div id="sales-by-locations"
-                                         data-colors='["--vz-light", "--vz-success", "--vz-primary"]'
-                                         style="height: 269px" dir="ltr"></div>
-
-                                    <div class="px-2 py-2 mt-1">
-                                        <p class="mb-1">Canada <span class="float-end">75%</span></p>
-                                        <div class="progress mt-2" style="height: 6px;">
-                                            <div class="progress-bar progress-bar-striped bg-primary"
-                                                 role="progressbar" style="width: 75%" aria-valuenow="75"
-                                                 aria-valuemin="0" aria-valuemax="75"></div>
-                                        </div>
-
-                                        <p class="mt-3 mb-1">Greenland <span class="float-end">47%</span>
-                                        </p>
-                                        <div class="progress mt-2" style="height: 6px;">
-                                            <div class="progress-bar progress-bar-striped bg-primary"
-                                                 role="progressbar" style="width: 47%" aria-valuenow="47"
-                                                 aria-valuemin="0" aria-valuemax="47"></div>
-                                        </div>
-
-                                        <p class="mt-3 mb-1">Russia <span class="float-end">82%</span></p>
-                                        <div class="progress mt-2" style="height: 6px;">
-                                            <div class="progress-bar progress-bar-striped bg-primary"
-                                                 role="progressbar" style="width: 82%" aria-valuenow="82"
-                                                 aria-valuemin="0" aria-valuemax="82"></div>
-                                        </div>
+                                    <p class="mt-3 mb-1">Russia <span class="float-end">82%</span></p>
+                                    <div class="progress mt-2" style="height: 6px;">
+                                        <div class="progress-bar progress-bar-striped bg-primary"
+                                             role="progressbar" style="width: 82%" aria-valuenow="82"
+                                             aria-valuemin="0" aria-valuemax="82"></div>
                                     </div>
                                 </div>
-                                <!-- end card body -->
                             </div>
-                            <!-- end card -->
-                        </div>  --}}
-                        <!-- end col -->
-                    </div>
+                            <!-- end card body -->
+                        </div>
+                        <!-- end card -->
+                    </div>  --}}
+                    <!-- end col -->
+                </div>
 
                     <div class="row">
                         <div class="col-xl-6">
