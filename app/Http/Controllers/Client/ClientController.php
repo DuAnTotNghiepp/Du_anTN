@@ -162,7 +162,7 @@ class ClientController extends Controller
     {
         return view('client.buying_guide');
     }
-}
+
 public function show_profile($id)
 {
     // Lấy thông tin người dùng theo id
