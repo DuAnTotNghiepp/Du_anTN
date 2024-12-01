@@ -52,15 +52,15 @@ class AdminController extends Controller
             $months[] = $monthsInVietnamese[$currentMonth - 1];
 
             $monthlyRevenue = Order::whereYear('created_at', date('Y', strtotime("-$i month")))
-                ->whereMonth('created_at', date('m', strtotime("-$i month")))
-                ->sum('total_price');
+                                   ->whereMonth('created_at', date('m', strtotime("-$i month")))
+                                   ->sum('total_price');
             $revenueData[] = $monthlyRevenue;
 
             $totalRevenue += $monthlyRevenue;
 
             $monthlyOrderCount = Order::whereYear('created_at', date('Y', strtotime("-$i month")))
-                ->whereMonth('created_at', date('m', strtotime("-$i month")))
-                ->count();
+                                      ->whereMonth('created_at', date('m', strtotime("-$i month")))
+                                      ->count();
             $orderCount += $monthlyOrderCount;
         }
 
@@ -71,6 +71,7 @@ class AdminController extends Controller
             'orderCount' => $orderCount,
         ]);
     }
+
 
     public function create()
     {

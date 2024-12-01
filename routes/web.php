@@ -57,7 +57,8 @@ Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])
 
 
 Route::get('/checkout', [CheckoutController::class, 'form'])->name('checkout');
-
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
+Route::post('/orders/vnpay_ment', [OrderController::class, 'vnpay_ment'])->name('orders.vnpay_ment');
 Route::middleware('auth')->group(function () {
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 });

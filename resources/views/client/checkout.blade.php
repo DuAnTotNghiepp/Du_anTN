@@ -128,6 +128,8 @@
                                                 </div>
                                             </div>
                                         </p>
+                                       v>
+                                        
                                     </div>
                                 </div>
                                 <div class="place-order-btn">
@@ -136,7 +138,16 @@
                             </div>
                         </div>
                     </div>
+                  
                 </form>
+                <div class="payment-methods">
+                    <form action="{{ route('orders.vnpay_ment') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-primary">Thanh toán qua VNPay</button>
+                    </form>
+                </div>
+                
+                
             </div>
 
         </div>
