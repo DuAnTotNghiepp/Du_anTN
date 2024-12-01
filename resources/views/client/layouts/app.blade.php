@@ -78,11 +78,11 @@
                                     </a></i>
                                 @else
                                     <!-- Hiển thị liên kết đăng nhập và đăng ký nếu người dùng chưa đăng nhập -->
-                                    <a style="color: black" href="{{ route('login') }}">Đăng nhập</a> 
+                                    <a style="color: black" href="{{ route('login') }}">Đăng nhập</a>
                                     <a style="color: black" href="{{ route('register') }}">Đăng ký</a>
                                 @endif
-</li>
-                                <li><a href="product.html"><i class="flaticon-heart"></i></a></li>
+                                </li>
+                                <li><a href="{{route('favorites.index')}}"><i class="flaticon-heart"></i></a></li>
                                 <li class="cart-icon">
                                     <i class="flaticon-shopping-cart"></i>
                                     <div class="cart-count"><span>10</span></div>
@@ -91,30 +91,9 @@
                         </div>
 
                     </div>
-                    <div class="sidebar-bottom">
-                        <ul class="sidebar-icons">
-                            <li><a href="dashboard"><i class="flaticon-user"></i></a></li>
-                            <li><a href="{{route('favorites.index')}}"><i class="flaticon-heart"></i></a></li>
-                            <li class="cart-icon">
-                                <i class="flaticon-shopping-cart"></i>
-                                <div class="cart-count"><span>10</span></div>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="mobil-sidebar">
-        <ul class="mobil-sidebar-icons">
-            <li class="category-icon"><a href="#"><i class="flaticon-menu"></i></a></li>
-            <li><a href="dashboard.html"><i class="flaticon-user"></i></a></li>
-            <li><a href="#"><i class="flaticon-heart"></i></a></li>
-            <li class="cart-icon">
-                <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
-                <div class="cart-count"><span>10</span></div>
-            </li>
-        </ul>
     </div>
 
 
@@ -337,7 +316,7 @@
                                     <a style="color: black" href="{{ route('login') }}">Đăng nhập</a> |
                                     <a style="color: black" href="{{ route('register') }}">Đăng ký</a>
                                 @endif
-                                    
+
                                     ]</span></a>
                         </div>
                         <div class="topbar-social-icons">
@@ -384,14 +363,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 d-flex justify-content-center">
-                        <nav class="main-nav">
-                            <div class="inner-logo">
-                                <a href="/"><img src="{{asset('assets/images/logo-w.png')}}" alt></a>
-                            </div>
-                            <ul class="nav-item-list">
-                                <li><a href="/">Home</a></li>
-                </div>
                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 d-flex justify-content-center">
                     <nav class="main-nav">
                         <div class="inner-logo">
@@ -404,18 +375,6 @@
                                     <a href="javascript:void(0)">Category</a>
                                     <i class="fl flaticon-plus">+</i>
                                     <ul class="sub-menu">
-                                        <li><a href="cart.html">Jacket</a></li>
-                                        <li><a href="checkout.html">Shirt</a></li>
-                                        <li><a href="login.html">Pants</a></li>
-                                        <li><a href="register.html">Dress</a></li>
-                                        <li><a href="profile.html">Accessories</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="shop">Shop</a></li>
-
-
-                                <li><a href="contact">Contact Us</a></li>
-                                <li><a href="about">About Us</a></li>
                                         <li><a href="{{ route('productcatalogue') }}">Tất cả sản phẩm</a></li>
                                         @foreach($data as $cate)
                                             <li><a href="{{ route('productcatalogue', ['catalogue_id' => $cate->id]) }}">{{ $cate->name }}</a></li>
@@ -425,6 +384,9 @@
                                 <li><a href="shop">Shop</a></li>
                                 <li><a href="contact">Contact Us</a></li>
                                 <li><a href="about">About Us</a></li>
+
+                                    </ul>
+                                </li>
 
                             </ul>
                             <div class="inner-top">
