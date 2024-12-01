@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OrderRequest;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+
+    public function store(OrderRequest $request)
+
     /**
      * Display a listing of the resource.
      */
@@ -103,7 +107,7 @@ class OrderController extends Controller
         Order::create($validatedData);
 
         // Chuyển hướng hoặc trả về thông báo thành công
-        return redirect()->route('index')->with('success', 'Đơn hàng đã được thêm thành công.');
+        return redirect()->route('index')->with('success', '......................Đơn hàng đã được thêm thành công.');
     }
 
 

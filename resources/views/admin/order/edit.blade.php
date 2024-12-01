@@ -71,7 +71,7 @@
             </h2>
 
             <div class="col-lg-8">
-                <form action="{{ route('order.update', ['id' => $orde->id]) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('order.update', ['id' => $orde->id]) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="card">
@@ -118,6 +118,9 @@
                                     <option value="canceled" {{ $orde->status == 'canceled' ? 'selected' : '' }}>Đã Hủy
                                     </option>
                                 </select>
+                                @error('status')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <!-- end card body -->
