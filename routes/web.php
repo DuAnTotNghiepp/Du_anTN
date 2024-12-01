@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CartController;
@@ -43,8 +45,22 @@ Route::get('product/{id}', [ClientController::class, 'show'])->name('product.pro
 //     Route::get('/',[CheckoutController::class, 'form'])->name('checkout');
 //     Route::post('/',[CheckoutController::class, 'submit_form'])->name('checkout');
 // });
+
+//profile
+Route::get('/profile/{id}', [ClientController::class, 'show_profile'])->name('profile');
+Route::get('/my_orders', [ClientController::class, 'show_my_order'])->name('my_orders');
+Route::post('profile', [ClientController::class, 'updateProfile'])->name('updateProfile');
+// routes/web.php
+Route::post('/profile/address', [ClientController::class, 'storeAddress'])->name('profile.address.store');
+Route::put('/profile/address/update/{id}', [ClientController::class, 'updateAddress'])->name('profile.address.update');
+Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])->name('my_order.invoice');
+
+
+Route::get('/checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('checkout.applyVoucher');
+
 Route::get('/checkout', [CheckoutController::class, 'form'])->name('checkout');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
+Route::post('/orders/vnpay_ment', [OrderController::class, 'vnpay_ment'])->name('orders.vnpay_ment');
 
 // Route::get('/product/checkout/{id}', [OrderController::class, 'show'])->name('productcheckout.checkout');
 
@@ -110,3 +126,6 @@ Route::get('/admin/revenue-stats', [AdminController::class, 'getRevenueStats']);
 
 
 
+
+// Group routes under admin middleware
+Route::get('blog/{id}', [BlogController::class, 'show'])->name('blog.detail');

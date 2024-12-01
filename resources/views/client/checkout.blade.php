@@ -87,13 +87,51 @@
                             </div>
                             <div class="total-cost-summary">
                                 <ul>
-                                    <li class="subtotal">Tổng Giá <span id="subtotal">{{ number_format($quantity * $productPrice) }} VND</span></li>
-                                    <li>Thuế <span id="tax">5000 VND</span></li>
-                                    <li>Tổng Đơn Hàng (Bao gồm cả thuế) <span id="total">{{ number_format($quantity * $productPrice + 5000) }} VND</span></li>
+                                    <!-- Hiển thị Tổng Giá -->
+                                    <li class="subtotal">Tổng Giá
+                                        <span id="subtotal">{{ number_format($quantity * $productPrice) }} VND</span>
+                                    </li>
+
+                                    <!-- Hiển thị Thuế -->
+                                    <li>Thuế
+                                        <span id="tax">5000 VND</span>
+                                    </li>
+                                    <li>Giảm giá: <strong>- <span id="voucher_value">0<span> VNĐ</strong></li>
+                                    {{-- <!-- Hiển thị Giá trị Giảm Giá -->
+                                    @if(session('voucher'))
+                                        <li class="discount">Giảm Giá ({{ session('voucher')->code }})
+                                            <span id="discount">-{{ number_format(session('voucher_discount')) }} VND</span>
+                                        </li>
+                                    @endif --}}
+
+                                    <!-- Hiển thị Tổng Đơn Hàng (Bao gồm thuế và giảm giá) -->
+                                    <li>Tổng Đơn Hàng (Bao gồm cả thuế)
+                                        <span id="total">
+                                            {{ number_format(($quantity * $productPrice + 5000) ) }} VND
+                                        </span>
+                                    </li>
+
+                                    <!-- Các trường ẩn -->
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    <input type="hidden" name="total_price" value="{{ $quantity * $productPrice + 5000 }}">
+                                    <input type="hidden" name="total_price" id="total_price"
+                                           value="{{ ($quantity * $productPrice + 5000)}}">
                                 </ul>
+
+                                <!-- Form áp dụng mã giảm giá -->
+                                    <div id="applyVoucher">
+                                        <div class="input-group">
+                                            <input type="text" name="voucher_code" id="voucher_code" class="form-control" placeholder="Nhập mã giảm giá">
+                                            <button type="button" class="btn btn-primary" onclick="getVoucherInfo()">Áp dụng</button>
+
+                                        </div>
+                                        <span id="errorMessage" class="error-message"></span><br>
+                                    </div>
+
+
                             </div>
+
+                            </div>
+
                             <div class="payment-form">
                                 <div class="payment-methods">
                                     <div class="form-check payment-check">
@@ -117,7 +155,8 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="cc-expiration" class="form-label">Expiration</label>
-                                                    <input type="text" class="form-control" id="cc-expiration" placeholder="MM/YY">
+
+                       <input type="text" class="form-control" id="cc-expiration" placeholder="MM/YY">
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="cc-cvv" class="form-label">CVV</label>
@@ -125,6 +164,8 @@
                                                 </div>
                                             </div>
                                         </p>
+                                       v>
+
                                     </div>
                                 </div>
                                 <div class="place-order-btn">
@@ -133,12 +174,22 @@
                             </div>
                         </div>
                     </div>
+
                 </form>
+                <div class="payment-methods">
+                    <form action="{{ route('orders.vnpay_ment') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-primary">Thanh toán qua VNPay</button>
+                    </form>
+                </div>
+
+
             </div>
 
         </div>
     </div>
     <script>
+
 
             document.addEventListener('DOMContentLoaded', function() {
                 const quantityInput = document.querySelector('.quantity-input');
@@ -166,6 +217,48 @@
                 // Lắng nghe sự kiện thay đổi số lượng
                 quantityInput.addEventListener('input', updateTotal);
             });
+            function getVoucherInfo() {
+                const errorMessage = document.getElementById('errorMessage');
+                const voucherCode = document.getElementById('voucher_code').value;
+
+                const voucher_value = document.getElementById('voucher_value');
+                const final_total = document.getElementById('total');
+
+                const totalPrice = document.getElementById('total_price').value;
+                // Gửi yêu cầu GET đến API để lấy thông tin mã giảm giá
+                if(!voucherCode) {
+                    errorMessage.textContent = "Vui lòng nhập mã giảm giá";
+                    errorMessage.style.color = "red";
+                    return;
+                }
+                console.log(totalPrice)
+                fetch(`http://127.0.0.1:8000/checkout/apply-voucher?voucher_code=${voucherCode}&total_price=${totalPrice}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Xử lý dữ liệu trả về từ API
+                        console.log(data.voucher_discount);
+                        if (data.result == true) {
+                            voucher_value.textContent = data.data.voucher_discount
+                            final_total.textContent = data.data.final_total
+                            let hiddenInput = document.getElementById('total_price');
+                            hiddenInput.value = data.data.final_total;
+                        } else {
+                            errorMessage.textContent = data.message;
+                            errorMessage.style.color = "red";
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        errorMessage.textContent = "Đã xảy ra lỗi khi lấy thông tin mã giảm giá";
+                        errorMessage.style.color = "red";
+                    });
+            }
+
 
 
     </script>

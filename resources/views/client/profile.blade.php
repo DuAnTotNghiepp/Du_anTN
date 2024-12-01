@@ -1,147 +1,135 @@
-    @extends('client.layouts.app')
+@extends('client.layouts.app')
 
-@section('content')
-<div class="breadcrumb-area ml-110">
-<div class="container-fluid p-0">
-<div class="row">
-<div class="col-lg-12">
-<div class="breadcrumb-bg d-flex justify-content-center align-items-center">
-<div class="breadcrumb-shape1 position-absolute top-0 end-0">
-<img src="assets/images/shapes/bs-right.png" alt>
-</div>
-<div class="breadcrumb-shape2 position-absolute bottom-0 start-0">
-<img src="assets/images/shapes/bs-left.png" alt>
-</div>
-<div class="breadcrumb-content text-center">
-<h2 class="page-title">My Account</h2>
-<ul class="page-switcher d-flex ">
-<li><a href="index.html">Home</a> <i class="flaticon-arrow-pointing-to-right"></i></li>
-<li>My Account</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+    @section('content')
+        <div class="breadcrumb-area ml-110">
+            <div class="container-fluid p-0">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-bg d-flex justify-content-center align-items-center">
+                            <div class="breadcrumb-shape1 position-absolute top-0 end-0">
+                                <img src="assets/images/shapes/bs-right.png" alt>
+                            </div>
+                            <div class="breadcrumb-shape2 position-absolute bottom-0 start-0">
+                                <img src="assets/images/shapes/bs-left.png" alt>
+                            </div>
+                            <div class="breadcrumb-content text-center">
+                                <h2 class="page-title">My Account</h2>
+                                <ul class="page-switcher d-flex ">
+                                    <li><a href="index.html">Home</a> <i class="flaticon-arrow-pointing-to-right"></i></li>
+                                    <li>My Account</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<div class="dashbord-wrapper ml-110 mt-100">
-<div class="container">
-<div class="row">
-<div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12">
-<div class="dashbord-switcher">
-<a href="dashboard"><i class="flaticon-dashboard"></i> Dashboard</a>
-<a href="profile" class="active"><i class="flaticon-user"></i> My Profile</a>
-<a href="order"><i class="flaticon-shopping-bag"></i> My Order</a>
-<a href="setting"><i class="flaticon-settings"></i> Account Setting</a>
-<a href="login"><i class="flaticon-logout"></i> Logout</a>
-</div>
-</div>
-<div class="col-xxl-8 col-xl-8 col-lg-8">
-<div class="profile-form-wrapper">
-<h5>Profile</h5>
-<div class="profile-top">
-<div class="user-image">
-<img src="assets/images/prodil-image.png" alt>
-</div>
-<div class="profile-top-btns">
-<a href="#" class="upload">Upload</a>
-<a href="#" class="remove">Remove</a>
-</div>
-</div>
-<form action="#" method="POST" id="profile-form">
-<div class="row">
-<div class="col-lg-6">
-<div class="reg-input-group">
-<label for="fname">First Name*</label>
-<input type="text" id="fname" placeholder="Your first name" required>
-</div>
-</div>
-<div class="col-lg-6">
-<div class="reg-input-group">
-<label for="lname">Last Name*</label>
-<input type="text" id="lname" placeholder="Your last name" required>
-</div>
-</div>
-<div class="col-lg-12">
-<div class="reg-input-group">
-<label for="email">Email *</label>
-<input type="email" id="email" placeholder="Your email" required>
-</div>
-</div>
-<div class="col-lg-12">
-<div class="reg-input-group">
-<label for="Number">Contact Number *</label>
-<input type="tel" id="Number" required>
-</div>
-</div>
-<div class="col-lg-12">
-<div class="reg-input-group">
-<label for="address">Address *</label>
-<input type="text" id="address" required>
-</div>
-</div>
-<div class="col-lg-6">
-<div class="reg-input-group">
-<label for="city">City *</label>
-<select id="city">
-<option selected>Cumilla</option>
-<option value="1">Dhaka</option>
-<option value="2">Khulna</option>
-<option value="3">Bandarban</option>
-</select>
-</div>
-</div>
-<div class="col-lg-6">
-<div class="reg-input-group">
-<label for="state">State *</label>
-<select id="state">
-<option selected>Cumilla</option>
-<option value="1">Dhaka</option>
-<option value="2">Khulna</option>
-<option value="3">Bandarban</option>
-</select>
-</div>
-</div>
-<div class="col-lg-6">
-<div class="reg-input-group">
-<label for="zip">Zip Code * </label>
-<input type="number" id="zip" required>
-</div>
-</div>
-<div class="col-lg-6">
-<div class="reg-input-group">
-<label for="country">Country *</label>
-<select id="country">
-<option selected>Bangladesh</option>
-<option value="1">Japan</option>
-<option value="2">Australia</option>
-<option value="3">Hawaii</option>
-</select>
-</div>
-</div>
-<div class="col-lg-12">
-<div class="reg-input-group">
-<label for="password">Password *</label>
-<input type="password" id="password" placeholder="Enter a password" required>
-</div>
-</div>
-<div class="col-lg-12">
-<div class="reg-input-group">
-<label for="sure-pass">Confirm Password *</label>
-<input type="password" id="sure-pass" placeholder="Confirm password" required>
-</div>
-</div>
-<div class="col-lg-12">
-<div class="reg-input-group profile-form-sumbit reg-submit-input d-flex align-items-center">
-<input type="submit" id="submite-btn" value="Save Change">
-</div>
-</div>
-</div>
-</form>
-</div>
-</div>
-</div>
-</div>
-</div>
-@endsection
+        <div class="dashbord-wrapper ml-110 mt-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12">
+                        <div class="dashbord-switcher">
+                            <a href="dashboard"><i class="flaticon-dashboard"></i> Dashboard</a>
+                            <a href="{{ route('profile', ['id' => auth()->user()->id]) }}" ><i
+                                    class="flaticon-user"></i> My Profile</a>
+                            <a href="{{ route('my_orders',['id' => auth()->user()->id])}}" ><i
+                                 class="flaticon-shopping"></i> My Order</a>
+                            <a href="setting"><i class="flaticon-settings"></i> Account Setting</a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                            <a href="#"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="flaticon-logout"></i>Logout
+                            </a>
+
+                        </div>
+                    </div>
+                   @yield('content_profile')
+                </div>
+            </div>
+        </div>
+        <script>
+            window.history.pushState(null, "", window.location.href);
+            window.onpopstate = function() {
+                window.history.pushState(null, "", window.location.href);
+            };
+            document.addEventListener('DOMContentLoaded', function() {
+                const statesBycity = {
+                    "Hà Nội": {
+                        "Ba Đình": ["Phường Liễu Giai", "Phường Ngọc Hà", "Phường Trúc Bạch"],
+                        "Hoàn Kiếm": ["Phường Cửa Đông", "Phường Hàng Trống", "Phường Hàng Gai"],
+                        // Thêm các quận/huyện và xã/phường khác của Hà Nội
+                    },
+                    "TP HCM": {
+                        "Quận 1": ["Phường Bến Nghé", "Phường Bến Thành", "Phường Cô Giang"],
+                        "Quận 3": ["Phường 6", "Phường 7", "Phường 8"],
+                        // Thêm các quận/huyện và xã/phường khác của TP HCM
+                    },
+                    "Đà Nẵng": {
+                        "Hải Châu": ["Phường Hòa Thuận Đông", "Phường Bình Thuận"],
+                        "Sơn Trà": ["Phường Thọ Quang", "Phường An Hải Bắc"],
+                        // Thêm các quận/huyện và xã/phường khác của Đà Nẵng
+                    },
+                    "Hải Phòng": {
+                        "Hồng Bàng": ["Phường Quán Toan", "Phường Sở Dầu"],
+                        "Lê Chân": ["Phường An Biên", "Phường Cát Dài"],
+                        // Thêm các quận/huyện và xã/phường khác của Hải Phòng
+                    },
+                    "Cần Thơ": {
+                        "Ninh Kiều": ["Phường Tân An", "Phường An Bình"],
+                        "Bình Thủy": ["Phường Trà Nóc", "Phường Long Hòa"],
+                        // Thêm các quận/huyện và xã/phường khác của Cần Thơ
+                    },
+                    "An Giang": {
+                        "Long Xuyên": ["Phường Bình Khánh", "Phường Mỹ Bình"],
+                        "Châu Đốc": ["Phường Núi Sam", "Phường Vĩnh Mỹ"],
+                        // Thêm các quận/huyện và xã/phường khác của An Giang
+                    },
+                    "Bà Rịa - Vũng Tàu": {
+                        "Vũng Tàu": ["Phường Thắng Tam", "Phường Thắng Nhì"],
+                        "Bà Rịa": ["Phường Phước Hiệp", "Phường Long Tâm"],
+                        // Thêm các quận/huyện và xã/phường khác của Bà Rịa - Vũng Tàu
+                    },
+                    // Thêm các tỉnh thành khác...
+                };
+
+                const citySelect = document.getElementById('city');
+                const stateSelect = document.getElementById('state');
+                const wardSelect = document.getElementById('commune');
+
+                // Cập nhật danh sách Quận/Huyện khi chọn Tỉnh/Thành phố
+                citySelect.addEventListener('change', function() {
+                    const selectedcity = citySelect.value;
+                    stateSelect.innerHTML = '<option value="">Chọn Quận/Huyện</option>';
+                    wardSelect.innerHTML = '<option value="">Chọn Thị xã/Xã/Phường</option>';
+
+                    if (selectedcity && statesBycity[selectedcity]) {
+                        Object.keys(statesBycity[selectedcity]).forEach(function(state) {
+                            const option = document.createElement('option');
+                            option.value = state;
+                            option.textContent = state;
+                            stateSelect.appendChild(option);
+                        });
+                    }
+                });
+
+                // Cập nhật danh sách Thị xã/Xã/Phường khi chọn Quận/Huyện
+                stateSelect.addEventListener('change', function() {
+                    const selectedcity = citySelect.value;
+                    const selectedstate = stateSelect.value;
+                    wardSelect.innerHTML = '<option value="">Chọn Thị xã/Xã/Phường</option>';
+
+                    if (selectedstate && statesBycity[selectedcity][selectedstate]) {
+                        statesBycity[selectedcity][selectedstate].forEach(function(commune) {
+                            const option = document.createElement('option');
+                            option.value = commune;
+                            option.textContent = commune;
+                            wardSelect.appendChild(option);
+                        })
+                    }
+                });
+            });
+        </script>
+    @endsection
