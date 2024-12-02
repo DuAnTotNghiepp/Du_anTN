@@ -31,6 +31,44 @@
     font-weight: bold; /* In đậm giá khuyến mãi */
     font-size: 1.2em; /* Kích thước chữ lớn hơn */
 }
+body {
+            background-color: #f4f6f9;
+            line-height: 1.7;
+        }
+        .blog-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .blog-header-image {
+            max-height: 500px;
+            width: 100%;
+            object-fit: cover;
+        }
+        .author-bio {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 20px;
+            margin: 30px 0;
+        }
+        .related-post-card {
+            transition: transform 0.3s ease;
+        }
+        .related-post-card:hover {
+            transform: translateY(-10px);
+        }
+        .content-divider {
+            border-top: 2px solid #007bff;
+            width: 100px;
+            margin: 20px auto;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+        }
 
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
