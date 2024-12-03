@@ -134,54 +134,53 @@
 
                             <div class="payment-form">
                                 <div class="payment-methods">
-                                    <div class="form-check payment-check">
-                                        <input class="form-check-input" type="radio" name="payment_method" id="payment_cash" checked>
-                                        <label class="form-check-label" for="payment_cash">Cash on delivery</label>
-                                        <p>Pay with cash upon delivery.</p>
+                                    <div class="form-group">
+                                        <label for="payment_method">Payment Method</label>
+                                        <select name="payment_method" id="payment_method" class="form-control" required>
+                                            <option value="cash">Cash on Delivery</option>
+                                            <option value="vnpay">VNPay</option>
+                                        </select>
                                     </div>
-                                    <div class="form-check payment-check">
-                                        <input class="form-check-input" type="radio" name="payment_method" id="payment_card">
-                                        <label class="form-check-label" for="payment_card">Credit / Debit Card</label>
-                                        <p>
-                                            <div class="row gy-3">
-                                                <div class="col-md-12">
-                                                    <label for="cc-name" class="form-label">Name on card</label>
-                                                    <input type="text" class="form-control" id="cc-name" placeholder="Enter name">
-                                                    <small class="text-muted">Full name as displayed on card</small>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <label for="cc-number" class="form-label">Credit card number</label>
-                                                    <input type="text" class="form-control" id="cc-number" placeholder="xxxx xxxx xxxx xxxx">
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label for="cc-expiration" class="form-label">Expiration</label>
 
-                       <input type="text" class="form-control" id="cc-expiration" placeholder="MM/YY">
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label for="cc-cvv" class="form-label">CVV</label>
-                                                    <input type="text" class="form-control" id="cc-cvv" placeholder="xxx">
-                                                </div>
-                                            </div>
-                                        </p>
-                                       v>
-
+                                    <div class="form-group" id="bank_code_group" style="display: none;">
+                                        <label for="bank_code">Bank</label>
+                                        <select name="bank_code" id="bank_code" class="form-control">
+                                            <option value="NCB">NCB</option>
+                                            <option value="Vietcombank">Vietcombank</option>
+                                            <!-- Add other bank options as needed -->
+                                        </select>
                                     </div>
+
                                 </div>
                                 <div class="place-order-btn">
                                     <button type="submit">Place Order</button>
                                 </div>
                             </div>
                         </div>
-                    </div>
+
 
                 </form>
-                <div class="payment-methods">
+                {{--  <div class="payment-methods">
                     <form action="{{ route('orders.vnpay_ment') }}" method="POST">
                         @csrf
+                        <!-- Truyền các thông tin cần thiết -->
+                        <input type="hidden" name="redirect" value="true">
+
+                        <input type="hidden" name="user_name" value="{{ Auth::user()->name ?? '' }}">
+                        <input type="hidden" name="user_email" value="{{ Auth::user()->email ?? '' }}">
+                        <input type="hidden" name="user_phone" value="{{ Auth::user()->phone ?? '' }}">
+                        <input type="hidden" name="user_address" value="{{ Auth::user()->address ?? '' }}">
+
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <input type="hidden" name="total_price" value="{{ $quantity * $productPrice + 5000 }}">
+                        <input type="hidden" name="quantity" value="{{ $quantity }}">
                         <button type="submit" class="btn btn-primary">Thanh toán qua VNPay</button>
                     </form>
                 </div>
+
+
+
+                </div>  --}}
 
 
             </div>

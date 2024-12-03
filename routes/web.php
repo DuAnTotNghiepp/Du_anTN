@@ -10,6 +10,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\BinhLuanController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ClientController;
+use App\Http\Controllers\Client\ProductCatalogueController;
 use App\Http\Controllers\ProductController as ControllersProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckRoleAdminMiddleware;
@@ -60,9 +61,16 @@ Route::get('/checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'
 
 Route::get('/checkout', [CheckoutController::class, 'form'])->name('checkout');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
-Route::post('/orders/vnpay_ment', [OrderController::class, 'vnpay_ment'])->name('orders.vnpay_ment');
+Route::post('/vnpay_payment', [OrderController::class, 'vnpayPayment'])->name('orders.vnpay_ment');
+Route::get('/vnpay/callback', [OrderController::class, 'vnpayCallback'])->name('vnpay.callback');
 
-// Route::get('/product/checkout/{id}', [OrderController::class, 'show'])->name('productcheckout.checkout');
+
+Route::get('/productcatalogue', [ProductCatalogueController::class, 'index'])->name('productcatalogue');
+
+Route::post('/api/get-products-by-category', [ClientController::class, 'getProductsByCategory']);
+
+// Route::get('/productcatalogue', [ProductCatalogueController::class, 'index'])->name('productcatalogue');
+// Route::get('/productcatalogue/{id}', [ProductCatalogueController::class, 'showCategory'])->name('productcatalogue.category');
 
 
 // Password Reset Routes
@@ -100,6 +108,7 @@ Route::get('warranty',[ClientController::class , 'warranty'])->name('warranty');
 Route::get('searchWarranty',[ClientController::class,'searchWarranty'])->name('searchWarranty');
 
 
+Route::post('/search', [ClientController::class, 'search'])->name('product.search');
 // Group routes under admin middleware
 Route::middleware('auth', 'admin')->group(function () {
     Route::get('admin/accounts', [AdminController::class, 'index'])->name('admin.accounts');
