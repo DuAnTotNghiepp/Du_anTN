@@ -160,11 +160,18 @@
                                             <input type="hidden" name="variant_id" id="variant_id"> <!-- variant_id ẩn -->
                                             <input type="hidden" name="quantity" id="quantity"> <!-- quantity ẩn -->
                                             <button type="submit" class="pd-add-cart">Thêm vào giỏ hàng</button>
+                                            <button class="pd-add-cart" style="background: none; border: none; background-color: red" id="favorite-btn" data-product-id="{{ $product->id }}">
+                                                <i class="flaticon-heart"></i>
+                                            </button>
                                         </form>
                                     </li>
 
                                     <li id="quantity-warning" style="color: red; display: none;">
                                         Số lượng sản phẩm đã đạt tối đa!
+                                    <li id="quantity-warning" style="color: red; display: none;">
+                                        Số lượng sản phẩm đã đạt tối đa!
+                                    </li>
+                                    <li class="pd-type">Danh mục sản phẩm: <span>{{ $product->catelogues->name }}</span>
                                     </li>
                                     <li class="pd-type">Danh mục sản phẩm: <span>{{ $product->catelogues->name }}</span></li>
                                     <li class="pd-type">Mã sản phẩm: <span>{{ $product->sku }}</span></li>
@@ -491,4 +498,40 @@
                 }
             });
         </script>
+    // Chuyển hướng đến trang checkout
+    window.location.href = checkoutUrl;
+});
+document.getElementById('quantity-input').addEventListener('input', function() {
+        const quantityInput = this;
+        const maxQuantity = parseInt(quantityInput.getAttribute('max'));
+        const warningMessage = document.getElementById('quantity-warning');
+
+        if (parseInt(quantityInput.value) > maxQuantity) {
+            quantityInput.value = maxQuantity;
+            warningMessage.style.display = 'block';
+        } else {
+            warningMessage.style.display = 'none';
+        }
+    });
+    document.getElementById('favorite-btn').addEventListener('click', function () {
+        const productId = this.dataset.productId;
+
+        fetch('{{ route("favorites.toggle") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            },
+            body: JSON.stringify({ product_id: productId }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'added') {
+                alert('Sản phẩm đã được thêm vào yêu thích.');
+            } else if (data.status === 'removed') {
+                alert('Sản phẩm đã được xóa khỏi yêu thích.');
+            }
+        });
+    });
+    </script>
 @endsection
