@@ -108,6 +108,7 @@ Route::get('warranty',[ClientController::class , 'warranty'])->name('warranty');
 Route::get('searchWarranty',[ClientController::class,'searchWarranty'])->name('searchWarranty');
 
 
+Route::post('/search', [ClientController::class, 'search'])->name('product.search');
 // Group routes under admin middleware
 Route::middleware('auth', 'admin')->group(function () {
     Route::get('admin/accounts', [AdminController::class, 'index'])->name('admin.accounts');

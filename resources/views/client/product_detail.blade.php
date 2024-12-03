@@ -429,9 +429,8 @@
                 // Chuyển hướng đến trang checkout
                 window.location.href = checkoutUrl;
             });
-    // Chuyển hướng đến trang checkout
-    window.location.href = checkoutUrl;
-});
+
+
 document.getElementById('quantity-input').addEventListener('input', function() {
         const quantityInput = this;
         const maxQuantity = parseInt(quantityInput.getAttribute('max'));
