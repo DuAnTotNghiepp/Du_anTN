@@ -4,19 +4,19 @@
         <!-- Dark Logo-->
         <a href="index.html" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="{{asset('theme/admin/assets/images/logo-sm.png')}}" alt="" height="22">
+                        <img src="{{asset('theme/admin/assets/images/LOGO.png')}}" alt="" height="22">
                     </span>
             <span class="logo-lg">
-                        <img src="{{asset('theme/admin/assets/images/logo-dark.png')}}" alt="" height="17">
+                        <img src="{{asset('theme/admin/assets/images/LOGO.png')}}" alt="" height="17">
                     </span>
         </a>
         <!-- Light Logo-->
         <a href="" class="logo logo-light">
                     <span class="logo-sm">
-                        <img src="{{asset('theme/admin/assets/images/logo-sm.png')}}" alt="" height="22">
+                        <img src="{{asset('theme/admin/assets/images/LogoManStyle.png')}}" alt="" height="22">
                     </span>
-            <span class="logo-lg">
-                        <img src="{{asset('theme/admin/assets/images/logo-light.png')}}" alt="" height="17">
+            <span class="logo-lg" >
+                        <img href="/admin" src="{{asset('theme/admin/assets/images/LOGO.png')}}" alt="" width="150px" height="100">
                     </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
@@ -121,8 +121,33 @@
                         </ul>
                     </div>
                 </li>
-
-            </ul>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarAccounts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Mã Giảm Giá</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarAccounts">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('vouchers.index') }}" class="nav-link" data-key="t-analytics"> Danh Sách Mã Giảm Giá </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarAccounts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Blog</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarAccounts">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('blog.index') }}" class="nav-link" data-key="t-analytics"> Danh Sách Blog </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </li>
+           
+           
         </div>
         <!-- Sidebar -->
     </div>

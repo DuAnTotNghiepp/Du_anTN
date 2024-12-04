@@ -48,5 +48,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function addresses()
+{
+    return $this->hasMany(Address::class, 'user_id');
+}
+    public function productFavorites()
+    {
+        return $this->belongsToMany(Product::class, 'product_favorites', 'user_id', 'product_id');
+    }
+
 
 }

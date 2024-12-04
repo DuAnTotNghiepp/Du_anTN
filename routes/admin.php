@@ -1,11 +1,16 @@
 <?php
 
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CataloguesController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\VariantsController;
+use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
+
+
+
 
 Route::prefix('admin')
     ->as('admin.')
@@ -35,21 +40,19 @@ Route::controller(ProductController::class)
         Route::delete('{id}/destroy', 'destroy')
             ->name('destroy');
     });
-Route::controller(OrderController::class)
-    ->name('order.')
-    ->prefix('admin/orders/')
-    ->group(function () {
-        Route::get('/', 'index')
-            ->name('index');
-        Route::post('store', 'store')
-            ->name('store');
-        Route::get('{id}/show', 'show')
-            ->name('show');
-        Route::get('{id}/edit', 'edit')
-            ->name('edit');
-        Route::put('{id}/update', 'update')
-            ->name('update');
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::controller(OrderController::class)
+            ->name('order.')
+            ->prefix('admin/orders/')
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::post('store', 'store')->name('store');
+                Route::get('{id}/show', 'show')->name('show');
+                Route::get('{id}/edit', 'edit')->name('edit');
+                Route::put('{id}/update', 'update')->name('update');
+            });
     });
+
 Route::controller(VariantsController::class)
     ->name('variant.')
     ->prefix('admin/variants/')
@@ -79,4 +82,42 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('admin/accounts/{user}/edit', [AdminController::class, 'edit'])->name('accounts.edit');
     Route::put('admin/accounts/{user}', [AdminController::class, 'update'])->name('accounts.update');
     Route::delete('admin/accounts/{user}', [AdminController::class, 'destroy'])->name('accounts.destroy');
+});
+
+Route::controller(VoucherController::class)
+    ->name('vouchers.')
+    ->prefix('admin/vouchers/')
+    ->group(function () {
+
+        Route::get('/', 'index')
+        ->name('index');
+        Route::get('create', 'create')
+            ->name('create');
+        Route::post('store', 'store')
+            ->name('store');
+        Route::get('{id}/edit', 'edit')
+            ->name('edit');
+        Route::put('{id}/update', 'update')
+            ->name('update');
+        Route::delete('{id}/destroy', 'destroy')
+            ->name('destroy');
+});
+
+Route::controller(BlogController::class)
+    ->name('blog.')
+    ->prefix('admin/blog/')
+    ->group(function () {
+
+        Route::get('/', 'index')
+        ->name('index');
+        Route::get('create', 'create')
+            ->name('create');
+        Route::post('store', 'store')
+            ->name('store');
+        Route::get('{id}/edit', 'edit')
+            ->name('edit');
+        Route::put('{id}/update', 'update')
+            ->name('update');
+        Route::delete('{id}/destroy', 'destroy')
+            ->name('destroy');
 });

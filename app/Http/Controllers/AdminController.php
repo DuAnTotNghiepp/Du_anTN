@@ -12,58 +12,58 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $users = User::all();  
+        $users = User::all();
         return view('admin.accounts.index', compact('users'));
     }
     public function getDashboardStats(Request $request)
     {
-        $startDate = $request->input('start_date', now()->subMonth()->format('Y-m-d')); 
-        $endDate = $request->input('end_date', now()->format('Y-m-d')); 
-    
+        $startDate = $request->input('start_date', now()->subMonth()->format('Y-m-d'));
+        $endDate = $request->input('end_date', now()->format('Y-m-d'));
+
         $accounts = User::whereBetween('created_at', [$startDate, $endDate])->count();
         $orders = Order::whereBetween('created_at', [$startDate, $endDate])->count();
         $income = Order::whereBetween('created_at', [$startDate, $endDate])->sum('total_price');
-    
+
         return response()->json([
             'accounts' => $accounts,
             'orders' => $orders,
             'income' => $income,
         ]);
     }
-    
 
-    
+
+
     public function getRevenueStats(Request $request)
     {
         $timeRange = $request->get('time', '1Y');
-    
+
         $monthsInVietnamese = [
             'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
             'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
         ];
-    
+
         $months = [];
         $revenueData = [];
         $orderCount = 0;
         $totalRevenue = 0;
-    
+
         for ($i = 0; $i < 12; $i++) {
-            $currentMonth = date('n', strtotime("-$i month")); 
+            $currentMonth = date('n', strtotime("-$i month"));
             $months[] = $monthsInVietnamese[$currentMonth - 1];
-    
+
             $monthlyRevenue = Order::whereYear('created_at', date('Y', strtotime("-$i month")))
                                    ->whereMonth('created_at', date('m', strtotime("-$i month")))
                                    ->sum('total_price');
             $revenueData[] = $monthlyRevenue;
-    
+
             $totalRevenue += $monthlyRevenue;
-    
+
             $monthlyOrderCount = Order::whereYear('created_at', date('Y', strtotime("-$i month")))
                                       ->whereMonth('created_at', date('m', strtotime("-$i month")))
                                       ->count();
-            $orderCount += $monthlyOrderCount; 
+            $orderCount += $monthlyOrderCount;
         }
-    
+
         return response()->json([
             'months' => array_reverse($months),
             'revenueData' => array_reverse($revenueData),
@@ -71,7 +71,7 @@ class AdminController extends Controller
             'orderCount' => $orderCount,
         ]);
     }
-    
+
 
     public function create()
     {

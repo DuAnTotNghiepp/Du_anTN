@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Providers;
+
+use App\Models\Catalogues;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,6 +22,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+        $data = Catalogues::all(); // Lấy danh sách danh mục
+        view()->share('data', $data);
         Paginator::useBootstrap();
     }
 }

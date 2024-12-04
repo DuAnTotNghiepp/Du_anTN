@@ -50,5 +50,17 @@ class Product extends Model
     {
         return $this->hasMany(BinhLuan::class, 'product_id');
     }
-    
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+    public function productFavoritedByUsers()
+    {
+        return $this->hasMany(ProductFavorite::class);
+    }
+    public function productFavorites()
+    {
+        return $this->belongsToMany(Product::class, 'product_favorites', 'user_id', 'product_id');
+    }
 }
