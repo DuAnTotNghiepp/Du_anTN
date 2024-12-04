@@ -47,6 +47,7 @@ class OrderController extends Controller
         ]);
     
         $validatedData['user_id'] = auth()->id();
+        $validatedData['status'] = $request->payment_method === 'vnpay' ? 'err' : 'unpaid';
     
         $order = Order::create($validatedData);
     
@@ -54,10 +55,9 @@ class OrderController extends Controller
             return $this->vnpayPayment($order, $request);
         }
     
-        $order->update(['status' => 'unpaid']);
-    
-        return redirect()->route('index')->with('success', 'Order has been successfully paid with cash.');
+        return redirect()->route('index')->with('success', 'Order placed successfully with cash on delivery.');
     }
+    
     
     public function vnpayPayment($order, Request $request)
     {
@@ -141,13 +141,13 @@ class OrderController extends Controller
                     DB::beginTransaction();
     
                     $order = Order::find($inputData['vnp_TxnRef']);
-                    if ($order) {
+                    if ($order && $order->status === 'err') {
                         $order->status = 'paid'; 
                         $order->save();
                     }
     
                     DB::commit();
-                    return redirect()->route('index')->with('success', 'Payment successful. Order has been updated.');
+                    return redirect()->route('index')->with('success', 'Payment successful. Order status updated.');
                 } catch (Exception $e) {
                     DB::rollBack();
                     return redirect()->route('index')->with('error', 'Error processing payment: ' . $e->getMessage());
