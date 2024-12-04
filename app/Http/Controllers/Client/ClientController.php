@@ -148,40 +148,21 @@ class ClientController extends Controller
     {
         $product = Product::with('variants')->findOrFail($id);
         $comments = BinhLuan::where('product_id', $product->id)->orderBy('created_at', 'desc')->paginate(6); // Hiển thị 6 bình luận mỗi trang
-
         // Tính toán điểm đánh giá trung bình
         $averageRating = $comments->count() > 0 ? $comments->avg('rating') : 0;
         return view('client.product_detail', compact('product', 'comments', 'averageRating'));
     }
-    // Tính toán điểm đánh giá trung bình
 
-
-
-public function warranty()
-{
-    return view('client.warranty');
-}
-
-public function buying_guide()
-{
-    return view('client.buying_guide');
-}
-public function searchWarranty(Request $request)
-{
-    $sku = $request->input('sku');
-
-    $product = Product::where('sku', $sku)->with(['orders'])->first();
-    // dd($product);
-
-    if ($product) {
-        // Nếu tìm thấy sản phẩm, trả về view với thông tin sản phẩm
-        return view('client.warranty', compact('product'));
-    } else {
-        // Nếu không tìm thấy sản phẩm, trả về view với thông báo lỗi
-        $message = 'Không tìm thấy sản phẩm với mã SKU này.';
-        return view('client.warranty', compact('message'));
+    public function warranty()
+    {
+        return view('client.warranty');
     }
-}
+
+    public function buying_guide()
+    {
+        return view('client.buying_guide');
+    }
+
 public function show_profile($id)
 {
     // Lấy thông tin người dùng theo id
@@ -259,5 +240,23 @@ public function exportInvoice($id)
     // Trả file PDF về cho người dùng tải xuống
     return $pdf->download('invoice-' . $order->id . '.pdf');
 }
+    public function searchWarranty(Request $request)
+    {
+        $sku = $request->input('sku');
+
+        $product = Product::where('sku', $sku)->with(['orders'])->first();
+        // dd($product);
+
+        if ($product) {
+            // Nếu tìm thấy sản phẩm, trả về view với thông tin sản phẩm
+            return view('client.warranty', compact('product'));
+        } else {
+            // Nếu không tìm thấy sản phẩm, trả về view với thông báo lỗi
+            $message = 'Không tìm thấy sản phẩm với mã SKU này.';
+            return view('client.warranty', compact('message'));
+        }
+    }
+
+
 
 }

@@ -40,21 +40,19 @@ Route::controller(ProductController::class)
         Route::delete('{id}/destroy', 'destroy')
             ->name('destroy');
     });
-Route::controller(OrderController::class)
-    ->name('order.')
-    ->prefix('admin/orders/')
-    ->group(function () {
-        Route::get('/', 'index')
-            ->name('index');
-        Route::post('store', 'store')
-            ->name('store');
-        Route::get('{id}/show', 'show')
-            ->name('show');
-        Route::get('{id}/edit', 'edit')
-            ->name('edit');
-        Route::put('{id}/update', 'update')
-            ->name('update');
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::controller(OrderController::class)
+            ->name('order.')
+            ->prefix('admin/orders/')
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::post('store', 'store')->name('store');
+                Route::get('{id}/show', 'show')->name('show');
+                Route::get('{id}/edit', 'edit')->name('edit');
+                Route::put('{id}/update', 'update')->name('update');
+            });
     });
+
 Route::controller(VariantsController::class)
     ->name('variant.')
     ->prefix('admin/variants/')

@@ -51,7 +51,10 @@
                                     </div>
                                     <div class="eg-input-group">
                                         <label>Số Điện Thoại</label>
-                                        <input type="number" name="user_phone" value="{{ Auth::check() ? Auth::user()->phone : '' }}" placeholder="Your Phone" required>
+                                        <input type="number" name="user_phone" value="{{ Auth::check() ? Auth::user()->phone : '' }}" placeholder="Your Phone">
+                                        @error('user_phone')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="eg-input-group mb-0">
                                         <textarea cols="30" rows="7" name="user_note" placeholder="Order Notes (Optional)"></textarea>

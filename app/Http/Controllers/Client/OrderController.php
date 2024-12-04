@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OrderRequest;
 use App\Models\Order;
 use App\Models\Product;
 use Exception;
@@ -13,29 +14,9 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function store(OrderRequest $request)
     {
-        //
-    }
-
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
+        // Xác thực dữ liệu
         $validatedData = $request->validate([
             'user_name' => 'required|string|max:255',
             'user_email' => 'required|email|max:255',
