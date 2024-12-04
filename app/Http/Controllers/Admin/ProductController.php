@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
 use App\Models\BinhLuan;
 use App\Models\Catalogues;
 use App\Models\Product;
 use App\Models\Product_Variant;
 use App\Models\ProductGallerie;
 use App\Models\Variants;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -47,7 +47,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductRequest $request)
+    public function store(Request $request)
     {
         if ($request->isMethod('post')) {
             $params = $request->except('_token');
@@ -112,19 +112,13 @@ class ProductController extends Controller
         $Color = Variants::where('name', 'Color')->get();
         $Size = Variants::where('name', 'Size')->get();
         $vari_id = DB::table('product__variants')->where('product_id', $id)->pluck('variants_id')->toArray();
-        // foreach ($Color as $key => $value) {
-        //     echo "<pre>";
-        //     var_dump(in_array($value->id,$vari_id));
-        // }
-        // dd($vari_id);
-        // Trả về view với dữ liệu danh mục và sản phẩm
         return view('admin.product.edit', compact('listPro', 'listCate', 'Color', 'Size', 'vari_id','listImg'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request, int $id)
+    public function update(Request $request, int $id)
     {
         //
         // Lấy thông tin sản phẩm cần cập nhật

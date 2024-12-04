@@ -51,7 +51,10 @@
                                     </div>
                                     <div class="eg-input-group">
                                         <label>Số Điện Thoại</label>
-                                        <input type="number" name="user_phone" value="{{ Auth::check() ? Auth::user()->phone : '' }}" placeholder="Your Phone" required>
+                                        <input type="number" name="user_phone" value="{{ Auth::check() ? Auth::user()->phone : '' }}" placeholder="Your Phone">
+                                        @error('user_phone')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="eg-input-group mb-0">
                                         <textarea cols="30" rows="7" name="user_note" placeholder="Order Notes (Optional)"></textarea>
@@ -88,97 +91,108 @@
                             <div class="total-cost-summary">
                                 <ul>
                                     <!-- Hiển thị Tổng Giá -->
-                                    <li class="subtotal">Tổng Giá 
+                                    <li class="subtotal">Tổng Giá
                                         <span id="subtotal">{{ number_format($quantity * $productPrice) }} VND</span>
                                     </li>
-                                    
+
                                     <!-- Hiển thị Thuế -->
-                                    <li>Thuế 
+                                    <li>Thuế
                                         <span id="tax">5000 VND</span>
                                     </li>
                                     <li>Giảm giá: <strong>- <span id="voucher_value">0<span> VNĐ</strong></li>
                                     {{-- <!-- Hiển thị Giá trị Giảm Giá -->
                                     @if(session('voucher'))
-                                        <li class="discount">Giảm Giá ({{ session('voucher')->code }}) 
+                                        <li class="discount">Giảm Giá ({{ session('voucher')->code }})
                                             <span id="discount">-{{ number_format(session('voucher_discount')) }} VND</span>
                                         </li>
                                     @endif --}}
-                            
+
                                     <!-- Hiển thị Tổng Đơn Hàng (Bao gồm thuế và giảm giá) -->
-                                    <li>Tổng Đơn Hàng (Bao gồm cả thuế) 
+                                    <li>Tổng Đơn Hàng (Bao gồm cả thuế)
                                         <span id="total">
                                             {{ number_format(($quantity * $productPrice + 5000) ) }} VND
                                         </span>
                                     </li>
-                                    
+
                                     <!-- Các trường ẩn -->
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                     <input type="hidden" name="total_price" id="total_price"
                                            value="{{ ($quantity * $productPrice + 5000)}}">
                                 </ul>
-                            
+
                                 <!-- Form áp dụng mã giảm giá -->
                                     <div id="applyVoucher">
                                         <div class="input-group">
                                             <input type="text" name="voucher_code" id="voucher_code" class="form-control" placeholder="Nhập mã giảm giá">
                                             <button type="button" class="btn btn-primary" onclick="getVoucherInfo()">Áp dụng</button>
-                                            
+
                                         </div>
                                         <span id="errorMessage" class="error-message"></span><br>
                                     </div>
-                        
-                            
+
+
                             </div>
-                              
+
                             </div>
-                            
+
                             <div class="payment-form">
                                 <div class="payment-methods">
-                                    <div class="form-check payment-check">
-                                        <input class="form-check-input" type="radio" name="payment_method" id="payment_cash" checked>
-                                        <label class="form-check-label" for="payment_cash">Cash on delivery</label>
-                                        <p>Pay with cash upon delivery.</p>
+                                    <div class="form-group">
+                                        <label for="payment_method">Payment Method</label>
+                                        <select name="payment_method" id="payment_method" class="form-control" required>
+                                            <option value="cash">Cash on Delivery</option>
+                                            <option value="vnpay">VNPay</option>
+                                        </select>
                                     </div>
-                                    <div class="form-check payment-check">
-                                        <input class="form-check-input" type="radio" name="payment_method" id="payment_card">
-                                        <label class="form-check-label" for="payment_card">Credit / Debit Card</label>
-                                        <p>
-                                            <div class="row gy-3">
-                                                <div class="col-md-12">
-                                                    <label for="cc-name" class="form-label">Name on card</label>
-                                                    <input type="text" class="form-control" id="cc-name" placeholder="Enter name">
-                                                    <small class="text-muted">Full name as displayed on card</small>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <label for="cc-number" class="form-label">Credit card number</label>
-                                                    <input type="text" class="form-control" id="cc-number" placeholder="xxxx xxxx xxxx xxxx">
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label for="cc-expiration" class="form-label">Expiration</label>
-                               
-                       <input type="text" class="form-control" id="cc-expiration" placeholder="MM/YY">
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label for="cc-cvv" class="form-label">CVV</label>
-                                                    <input type="text" class="form-control" id="cc-cvv" placeholder="xxx">
-                                                </div>
-                                            </div>
-                                        </p>
+
+                                    <div class="form-group" id="bank_code_group" style="display: none;">
+                                        <label for="bank_code">Bank</label>
+                                        <select name="bank_code" id="bank_code" class="form-control">
+                                            <option value="NCB">NCB</option>
+                                            <option value="Vietcombank">Vietcombank</option>
+                                            <!-- Add other bank options as needed -->
+                                        </select>
                                     </div>
+
                                 </div>
                                 <div class="place-order-btn">
                                     <button type="submit">Place Order</button>
                                 </div>
                             </div>
                         </div>
-                    </div>
+
+
                 </form>
+                {{--  <div class="payment-methods">
+                    <form action="{{ route('orders.vnpay_ment') }}" method="POST">
+                        @csrf
+                        <!-- Truyền các thông tin cần thiết -->
+                        <input type="hidden" name="redirect" value="true">
+
+                        <input type="hidden" name="user_name" value="{{ Auth::user()->name ?? '' }}">
+                        <input type="hidden" name="user_email" value="{{ Auth::user()->email ?? '' }}">
+                        <input type="hidden" name="user_phone" value="{{ Auth::user()->phone ?? '' }}">
+                        <input type="hidden" name="user_address" value="{{ Auth::user()->address ?? '' }}">
+
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <input type="hidden" name="total_price" value="{{ $quantity * $productPrice + 5000 }}">
+                        <input type="hidden" name="quantity" value="{{ $quantity }}">
+                        <button type="submit" class="btn btn-primary">Thanh toán qua VNPay</button>
+                    </form>
+                </div>
+
+
+
+                </div>  --}}
+
+
             </div>
 
         </div>
     </div>
     <script>
-        
+
+
             document.addEventListener('DOMContentLoaded', function() {
                 const quantityInput = document.querySelector('.quantity-input');
                 const productPrice = parseFloat(document.querySelector('.product-price').textContent.replace(/,/g, ''));
@@ -246,7 +260,8 @@
                         errorMessage.style.color = "red";
                     });
             }
-    
+
+
 
     </script>
 @endsection

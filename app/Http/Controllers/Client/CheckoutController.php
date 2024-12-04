@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Vouchers;
@@ -28,7 +27,7 @@ class CheckoutController extends Controller
         }
 
         $product = Product::where('name', $productName)->first();
-        
+
         return view('client.checkout', compact('color', 'size', 'quantity', 'image', 'productName', 'productPrice', 'product','orderTotal'));
     }
 
@@ -40,54 +39,48 @@ class CheckoutController extends Controller
     }
     public function applyVoucher(Request $request)
     {
-        // Lấy thông tin tổng đơn hàng hiện tại
         $quantity = session('quantity', 1);
         $productPrice = session('product_price', 100000);
         $tax = 5000;
         $orderTotal = $request->total_price;
 
-        // Lấy mã giảm giá từ form
         $voucherCode = $request->voucher_code;
-        // Lấy thời gian hiện tại với múi giờ chuẩn
         Log::info('Current Time', ['current_time' => now()->toDateTimeString()]);
 
-        $now = Carbon::now('Asia/Ho_Chi_Minh'); 
+        $now = Carbon::now('Asia/Ho_Chi_Minh');
 
-        // Tìm kiếm mã giảm giá trong cơ sở dữ liệu
         $voucher = Vouchers::where('code', $voucherCode)
         ->where('start_date', '<=', $now)
         ->where('end_date', '>=', $now)
         ->where('status', 'active')
         ->first();
 
-       
-        // Kiểm tra nếu mã giảm giá không hợp lệ
         if (!$voucher) {
             return response([
                 'result' => false,
                 'message' => 'Mã giảm giá không hợp lệ hoặc đã hết hạn'
             ]);
         }
-    
+
         // Kiểm tra điều kiện áp dụng mã giảm giá
         if ($voucher->minimum_order_value > $orderTotal) {
             return response([
                 'result' => false,
                 'message' => 'Giá trị đơn hàng không đủ để áp dụng mã giảm giá này.'
             ]);
-          
+
         }
-      
-    
+
+
         // Tính giá trị giảm giá
         $discount = ($voucher->type === 'percent')
             ? ($voucher->value / 100) * $orderTotal
             : $voucher->value;
-    
-      
+
+
         $discount = min($discount, $orderTotal);
-    
-       
+
+
         $data = [
             'voucher' => $voucher,                    // Thông tin mã giảm giá
             'voucher_discount' => intval($discount),          // Giá trị giảm
@@ -97,8 +90,8 @@ class CheckoutController extends Controller
             'result' => true,
             'data' => $data
         ]);
-       
+
     }
-    
+
 
 }
