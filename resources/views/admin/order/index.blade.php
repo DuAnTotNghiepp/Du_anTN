@@ -124,7 +124,22 @@
                                             <td class="email_id">{{ $order->user_address }}</td>
                                             <td class="category_name">{{ $order->total_price }}</td>
                                             <td>{{ $order->created_at->format('d-m-Y H:i') }}</td>
-                                            <td class="company_name">{{ $order->status }}</td>
+                                            <td class="company_name">
+                                                @if($order->status == 'pending')
+                                                    Đang xử lý
+                                                @elseif($order->status == 'completed')
+                                                    Đã hoàn thành
+                                                @elseif($order->status == 'unpaid')
+                                                    Chưa Trả Tiền
+                                                @elseif($order->status == 'canceled')
+                                                    Đã hủy
+                                                @elseif($order->status == 'shipped')
+                                                    Đang giao hàng
+                                                @else
+                                                    {{ $order->status }}
+                                                @endif
+                                            </td>
+
                                             <td>
                                                 <ul class="list-inline hstack gap-2 mb-0">
                                                     <li class="list-inline-item">
