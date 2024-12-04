@@ -8,6 +8,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="{{asset('assets/images/favicon.png')}}" type="image/png" sizes="20x20">
     <link rel="stylesheet" href="{{asset('assets/css/swiper.css')}}">
 
@@ -31,45 +32,26 @@
     font-weight: bold; /* In đậm giá khuyến mãi */
     font-size: 1.2em; /* Kích thước chữ lớn hơn */
 }
-body {
-            background-color: #f4f6f9;
-            line-height: 1.7;
-        }
-        .blog-content {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 40px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .blog-header-image {
-            max-height: 500px;
-            width: 100%;
-            object-fit: cover;
-        }
-        .author-bio {
-            background-color: #f8f9fa;
-            border-left: 4px solid #007bff;
-            padding: 20px;
-            margin: 30px 0;
-        }
-        .related-post-card {
-            transition: transform 0.3s ease;
-        }
-        .related-post-card:hover {
-            transform: translateY(-10px);
-        }
-        .content-divider {
-            border-top: 2px solid #007bff;
-            width: 100px;
-            margin: 20px auto;
-        }
-        pre {
-            background-color: #f4f4f4;
-            padding: 15px;
-            border-radius: 5px;
-        }
+.product-variation {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
 
+.product-variation:hover {
+    transform: scale(1.1); /* Phóng to nhẹ khi hover */
+}
+
+.pd-showcase-img img {
+    max-width: 90%;
+    transition: opacity 0.3s ease;
+}
+#hover-preview {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    border-radius: 5px;
+}
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
@@ -89,29 +71,29 @@ body {
                         </div>
                         <div class="sidebar-bottom">
                             <ul class="sidebar-icons">
-                                <li><a href="dashboard"><i class="flaticon-user"></i></a></li>
-                                <li><a href="product.html"><i class="flaticon-heart"></i></a></li>
+                                <li>@if (auth()->check())
+                                    <!-- Hiển thị tên người dùng với liên kết đến trang profile -->
+                                    <a href="{{ route('profile', ['id' => auth()->user()->id]) }}">
+                                        <i class="flaticon-user">
+                                    </a></i>
+                                @else
+                                    <!-- Hiển thị liên kết đăng nhập và đăng ký nếu người dùng chưa đăng nhập -->
+                                    <a style="color: black" href="{{ route('login') }}">Đăng nhập</a>
+                                    <a style="color: black" href="{{ route('register') }}">Đăng ký</a>
+                                @endif
+                                </li>
+                                <li><a href="{{route('favorites.index')}}"><i class="flaticon-heart"></i></a></li>
                                 <li class="cart-icon">
                                     <i class="flaticon-shopping-cart"></i>
                                     <div class="cart-count"><span>10</span></div>
                                 </li>
                             </ul>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="mobil-sidebar">
-        <ul class="mobil-sidebar-icons">
-            <li class="category-icon"><a href="#"><i class="flaticon-menu"></i></a></li>
-            <li><a href="dashboard.html"><i class="flaticon-user"></i></a></li>
-            <li><a href="#"><i class="flaticon-heart"></i></a></li>
-            <li class="cart-icon">
-                <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
-                <div class="cart-count"><span>10</span></div>
-            </li>
-        </ul>
     </div>
 
 
@@ -326,7 +308,16 @@ body {
                             <i class="flaticon-envelope"></i>
                             <a href="mail.html"><span class="__cf_email__"
                                     data-cfemail="a7cec9c1c8d4d2d7d7c8d5d3e7c2dfc6cad7cbc289c4c8ca">[email&#160;:
-                                    lanvmph37426@fpt.edu.vn]</span></a>
+                                    @if (auth()->check())
+                                    <!-- Hiển thị email người dùng với liên kết đến trang profile -->
+                                    {{ Auth::user()->email }}
+                                @else
+                                    <!-- Hiển thị liên kết đăng nhập và đăng ký nếu người dùng chưa đăng nhập -->
+                                    <a style="color: black" href="{{ route('login') }}">Đăng nhập</a> |
+                                    <a style="color: black" href="{{ route('register') }}">Đăng ký</a>
+                                @endif
+
+                                    ]</span></a>
                         </div>
                         <div class="topbar-social-icons">
                             <ul class="d-flex align-items-center">
@@ -372,30 +363,31 @@ body {
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 d-flex justify-content-center">
-                        <nav class="main-nav">
-                            <div class="inner-logo">
-                                <a href="/"><img src="{{asset('assets/images/logo-w.png')}}" alt></a>
-                            </div>
-                            <ul class="nav-item-list">
-                                <li><a href="/">Home</a></li>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 d-flex justify-content-center">
+                    <nav class="main-nav">
+                        <div class="inner-logo">
+                            <a href="/"><img src="{{asset('assets/images/logo-w.png')}}" alt></a>
+                        </div>
+                        <ul class="nav-item-list">
+                            <li><a href="/">Home</a></li>
 
                                 <li class="has-child-menu">
                                     <a href="javascript:void(0)">Category</a>
                                     <i class="fl flaticon-plus">+</i>
                                     <ul class="sub-menu">
-                                        <li><a href="cart.html">Jacket</a></li>
-                                        <li><a href="checkout.html">Shirt</a></li>
-                                        <li><a href="login.html">Pants</a></li>
-                                        <li><a href="register.html">Dress</a></li>
-                                        <li><a href="profile.html">Accessories</a></li>
+                                        <li><a href="{{ route('productcatalogue') }}">Tất cả sản phẩm</a></li>
+                                        @foreach($data as $cate)
+                                            <li><a href="{{ route('productcatalogue', ['catalogue_id' => $cate->id]) }}">{{ $cate->name }}</a></li>
+                                        @endforeach
                                     </ul>
                                 </li>
                                 <li><a href="shop">Shop</a></li>
-
-
                                 <li><a href="contact">Contact Us</a></li>
                                 <li><a href="about">About Us</a></li>
+
+                                    </ul>
+                                </li>
+
                             </ul>
                             <div class="inner-top">
                                 <div class="inner-mail">
