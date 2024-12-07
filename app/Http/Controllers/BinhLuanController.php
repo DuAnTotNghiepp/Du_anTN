@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\BinhLuan;
 use App\Http\Requests\StoreBinhLuanRequest;
 use App\Http\Requests\UpdateBinhLuanRequest;
+use App\Models\Order_Items;
+use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,31 +28,46 @@ class BinhLuanController extends Controller
      */
     public function store(Request $request, $productId)
     {
-        // Kiểm tra xem người dùng đã đăng nhập chưa
         if (!Auth::check()) {
             return response()->json(['success' => false, 'message' => 'Bạn cần phải đăng nhập để thêm bình luận.']);
         }
     
         try {
-            // Xác thực dữ liệu yêu cầu
+            $userId = Auth::id();
+    
+            // Kiểm tra xem người dùng đã mua sản phẩm này chưa
+            $hasPurchased = Order_Items::where('user_id', $userId)
+                ->where('product_id', $productId)
+                ->exists();
+    
+            if (!$hasPurchased) {
+                return response()->json(['success' => false, 'message' => 'Bạn phải mua sản phẩm này mới được phép bình luận.']);
+            }
+    
+            $hasCommented = BinhLuan::where('user_id', $userId)
+                ->where('product_id', $productId)
+                ->exists();
+    
+            if ($hasCommented) {
+                return response()->json(['success' => false, 'message' => 'Bạn đã bình luận cho sản phẩm này trước đó.']);
+            }
+    
             $validatedData = $request->validate([
                 'noidung' => 'required|string|max:1000',
                 'rating' => 'required|integer|between:1,5',
             ]);
     
-            // Tạo bình luận
             $comment = BinhLuan::create([
                 'product_id' => $productId,
-                'user_id' => Auth::id(),
+                'user_id' => $userId,
                 'noidung' => $validatedData['noidung'],
                 'rating' => $validatedData['rating'],
             ]);
     
-            // Trả về thông tin bình luận mới
             return response()->json([
                 'success' => true,
                 'comment' => [
-                    'user_name' => Auth::user()->name, // Lấy tên người dùng
+                    'user_name' => Auth::user()->name,
                     'noidung' => $comment->noidung,
                     'rating' => $comment->rating,
                 ]
@@ -61,6 +78,7 @@ class BinhLuanController extends Controller
             return response()->json(['success' => false, 'message' => 'Đã xảy ra lỗi: ' . $e->getMessage()]);
         }
     }
+    
     
 
     /**
