@@ -5,21 +5,13 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
 use App\Models\Order;
+use App\Models\Order_Items;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
 
-    public function store(OrderRequest $request)
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
     public function vnpay_ment(Request $request)
 {
     $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
@@ -71,19 +63,6 @@ class OrderController extends Controller
     // Chuyển hướng đến URL của VNPay
     return redirect($vnp_Url);
 }
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         // Xác thực dữ liệu
@@ -93,8 +72,12 @@ class OrderController extends Controller
             'user_phone' => 'required|string|max:20',
             'user_address' => 'nullable|string|max:255',
             'user_note' => 'nullable|string',
+            'payment_method' => 'required|in:cash,online',
             'product_id' => 'required|exists:products,id',
             'total_price' => 'required|numeric',
+            'quantity' => 'integer|min:1',
+            'size' => 'required|string',
+            'color' => 'required|string',
         ]);
 
         // Thêm user_id từ phiên đăng nhập
@@ -103,42 +86,38 @@ class OrderController extends Controller
         if (!$validatedData['user_id']) {
             return redirect()->back()->with('error', 'Bạn cần đăng nhập để đặt hàng.');
         }
-        // Thêm đơn hàng vào cơ sở dữ liệu
-        Order::create($validatedData);
+        $product = Product::findOrFail($validatedData['product_id']);
+        $variant = $product->variants()->first();
 
+        $quantity = $validatedData['quantity'];
+        if ($product->quantity < $quantity) {
+            return redirect()->back()->withErrors(['message' => 'Số lượng sản phẩm không đủ trong kho.']);
+        }
+
+        $order = Order::create($validatedData);
+
+        $size = $request->input('size');
+        $color = $request->input('color');
+        Order_Items::create([
+            'cart_id' => null,
+            'product_variant_id' => $variant ? $variant->id : null,
+            'quantity' => $quantity,
+            'product_name' => $product->name,
+            'product_sku' => $product->sku,
+            'product_img_thumbnail' => $product->img_thumbnail,
+            'product_price_regular' => $product->price_regular,
+            'product_price_sale' => $product->price_sale,
+            'size' => $size,
+            'color' => $color,
+            'order_id' => $order->id,
+        ]);
+        $product->quantity -= $quantity;
+        $product->save();
+        if ($request->input('payment_method') === 'online') {
+            // Xử lý thanh toán online qua VNPay
+            return redirect()->route('orders.vnpay_ment');
+        }
         // Chuyển hướng hoặc trả về thông báo thành công
         return redirect()->route('index')->with('success', '......................Đơn hàng đã được thêm thành công.');
-    }
-
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show($id) {}
-
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Order $order)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Order $order)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
-        //
     }
 }

@@ -1,7 +1,6 @@
 @extends('client.layouts.app')
 
 @section('content')
-    div class="breadcrumb-area ml-110">
     <div class="container-fluid p-0">
         <div class="row">
             <div class="col-lg-12">
