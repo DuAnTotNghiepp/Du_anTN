@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('order__items', function (Blueprint $table) {
+        Schema::create('order_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('cart_id'); // ID của giỏ hàng mà mục này thuộc về
             $table->unsignedBigInteger('product_variant_id'); // ID của biến thể sản phẩm
@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('product_img_thumbnail')->nullable(); // Hình ảnh thu nhỏ của sản phẩm, có thể là NULL
             $table->double('product_price_regular'); // Giá thông thường của sản phẩm
             $table->double('product_price_sale')->nullable(); // Giá giảm của sản phẩm, có thể là NULL
-            $table->string('variant_size_name'); // Tên kích thước của biến thể sản phẩm
-            $table->string('variant_color_name'); // Tên màu sắc của biến thể sản phẩm
+            $table->string('size'); // Tên kích thước của biến thể sản phẩm
+            $table->string('color'); // Tên màu sắc của biến thể sản phẩm
             $table->timestamps(); // Thời gian tạo và cập nhật bản ghi
 
             // Thiết lập khóa ngoại
@@ -36,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order__items');
+        Schema::dropIfExists('order_items');
     }
 };

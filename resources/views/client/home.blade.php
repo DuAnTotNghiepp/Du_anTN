@@ -252,7 +252,7 @@
             <div class="row">
                 <div class="col-lg-12 mb-50">
                     <div class="section-head">
-                        <h2 class="section-title">Tất Cả Sản Phẩm</h2>
+                        <h2 class="section-title">ALL PRODUCT</h2>
                     </div>
                 </div>
             </div>
@@ -312,7 +312,7 @@
             <div class="row">
                 <div class="col-lg-12 mb-50">
                     <div class="section-head">
-                        <h2 class="section-title">Tất Các Sản Phẩm Hot</h2>
+                        <h2 class="section-title">ALL PRODUCT HOT</h2>
                     </div>
                 </div>
             </div>
@@ -328,7 +328,9 @@
                                                 src="{{ Storage::url($item->img_thumbnail) }}" alt
                                                 class="img-fluid"></a>
                                         <div class="product-actions-xl">
-                                            <a href="#"><i class="flaticon-heart"></i></a>
+                                            <button class="favorite-btn" style="background: none; border: none" data-product-id="{{ $item->id }}">
+                                                <i class="flaticon-heart"></i>
+                                            </button>
                                             <a href="product-details.html"><i class="flaticon-search"></i></a>
                                             <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
                                         </div>
@@ -400,13 +402,11 @@
                 <div class="col-xxl-3 col-xl-3 col-lg-4">
                     <div class="nav flex-column category-tabs">
                         <button class="nav-link active category-tab" data-category="all">All Collection</button>
-                        <button class="nav-link category-tab" data-category="winter">Bộ Sưu Tập Áo Cho Mùa Đông</button>
-                        <button class="nav-link category-tab" data-category="summer">Bộ Sưu Tập Áo Cho Mùa Hè</button>
-                        <button class="nav-link category-tab" data-category="new-male">Bộ Sưu Tập Áo Thời Trang Nam Mới
-                            Nhất</button>
-                        <button class="nav-link category-tab" data-category="new-female">Bộ Sưu Tập Áo Thời Trang Nữ Mới
-                            Nhất</button>
-                        <button class="nav-link category-tab" data-category="autumn">Bộ Sưu Tập Áo Cho Mùa Thu</button>
+                        <button class="nav-link category-tab" data-category="winter">Winter Collection</button>
+                        <button class="nav-link category-tab" data-category="summer">Summer Collection</button>
+                        <button class="nav-link category-tab" data-category="new-male">Latest Men's Fashion Collection</button>
+                        <button class="nav-link category-tab" data-category="new-female">Latest Women's Fashion Collection</button>
+                        <button class="nav-link category-tab" data-category="autumn">Fall Collection</button>
                     </div>
 
                 </div>
@@ -642,7 +642,6 @@
                                                     <span class="new">New</span>
                                                 </div>
                                                 <div class="product-actions">
-                                                    <a href="#"><i class="flaticon-heart"></i></a>
                                                     <a href="product-details.html"><i class="flaticon-search"></i></a>
                                                     <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
                                                 </div>
