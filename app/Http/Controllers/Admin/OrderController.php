@@ -14,10 +14,10 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
-        $data = Order::query()->latest('id')->get();
+        $data = Order::with('address')->latest('id')->get();
         return view('admin.order.index', compact('data'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -74,10 +74,15 @@ class OrderController extends Controller
             'pending' => ['completed', 'canceled'],
             'completed' => [],
             'canceled' => [],
+            'unpaid' => ['pending'],
         ];
 
         $currentStatus = $order->status;
         $newStatus = $validatedData['status'];
+
+        if (!array_key_exists($currentStatus, $allowedStatusTransitions)) {
+            return redirect()->back()->with('error', 'Trạng thái hiện tại không hợp lệ.');
+        }
 
         if (!in_array($newStatus, $allowedStatusTransitions[$currentStatus])) {
             return redirect()->back()->with('error', 'Không thể thay đổi trạng thái này.');
@@ -87,19 +92,6 @@ class OrderController extends Controller
             'user_note' => $validatedData['user_note'] ?? null,
         ]);
 
-        return redirect()->route('order.index')->with('success', 'Cập nhật trạng thái thành công.');
-    }
-
-
-
-
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
-        //
+        return redirect()->route('order.edit', $id)->with('success', 'Cập nhật trạng thái thành công.');
     }
 }
