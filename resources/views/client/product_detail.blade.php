@@ -172,7 +172,6 @@
                                     </li>
                                     <li class="pd-type">Danh mục sản phẩm: <span>{{ $product->catelogues->name }}</span>
                                     </li>
-                                    <li class="pd-type">Danh mục sản phẩm: <span>{{ $product->catelogues->name }}</span></li>
                                     <li class="pd-type">Mã sản phẩm: <span>{{ $product->sku }}</span></li>
                                     <li class="pd-type">Số lượng: <span>{{ $product->quantity }}</span></li>
                                     <li class="pd-type">Chất liệu: <span>{{ $product->material }}</span></li>
@@ -433,6 +432,12 @@
             });
 
 
+document.getElementById('quantity-input').addEventListener('input', function() {
+        const quantityInput = this;
+        const maxQuantity = parseInt(quantityInput.getAttribute('max'));
+        const warningMessage = document.getElementById('quantity-warning');
+
+
 
 
             document.addEventListener('DOMContentLoaded', function () {
@@ -496,10 +501,18 @@
                     warningMessage.style.display = 'none';
                 }
             });
-        </script>
+
+        if (parseInt(quantityInput.value) > maxQuantity) {
+            quantityInput.value = maxQuantity;
+            warningMessage.style.display = 'block';
+        } else {
+            warningMessage.style.display = 'none';
+        }
+    });
+
     // Chuyển hướng đến trang checkout
     window.location.href = checkoutUrl;
-});
+
 document.getElementById('quantity-input').addEventListener('input', function() {
         const quantityInput = this;
         const maxQuantity = parseInt(quantityInput.getAttribute('max'));
