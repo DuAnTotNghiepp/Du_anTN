@@ -43,10 +43,7 @@ Route::post('register', [AuthController::class, 'register'])->name('register');
 
 Route::get('/', [ClientController::class, 'index'])->name('index');
 Route::get('product/{id}', [ClientController::class, 'show'])->name('product.product_detail');
-// Route::group(['prefix'=>'checkout'], function(){
-//     Route::get('/',[CheckoutController::class, 'form'])->name('checkout');
-//     Route::post('/',[CheckoutController::class, 'submit_form'])->name('checkout');
-// });
+
 
 //profile
 Route::get('/profile/{id}', [ClientController::class, 'show_profile'])->name('profile');
@@ -58,13 +55,15 @@ Route::put('/profile/address/update/{id}', [ClientController::class, 'updateAddr
 Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])->name('my_order.invoice');
 
 
+Route::get('/checkout', [CheckoutController::class, 'form'])->middleware('auth')->name('checkout');
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
+Route::post('/orders/vnpay_ment', [OrderController::class, 'vnpay_ment'])->name('orders.vnpay_ment');
 Route::get('/checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('checkout.applyVoucher');
 
 Route::get('/checkout', [CheckoutController::class, 'form'])->name('checkout');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
 Route::post('/vnpay_payment', [OrderController::class, 'vnpayPayment'])->name('orders.vnpay_ment');
 Route::get('/vnpay/callback', [OrderController::class, 'vnpayCallback'])->name('vnpay.callback');
-
 
 Route::middleware('auth')->group(function () {
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');

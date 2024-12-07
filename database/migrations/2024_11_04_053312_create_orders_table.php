@@ -20,12 +20,7 @@ return new class extends Migration
             $table->string('user_phone');
             $table->string('user_address')->nullable();
             $table->string('user_note');
-            $table->boolean('is_ship_user_same_user')->default(true);
-            $table->string('ship_user_name')->nullable();
-            $table->string('ship_user_email')->nullable();
-            $table->string('ship_user_phone')->nullable();
-            $table->string('ship_user_address')->nullable();
-            $table->string('ship_user_note')->nullable();
+            $table->string('payment_method')->nullable();
             $table->string('status')->default('unpaid');
             $table->double('total_price', 15, 2);
             $table->timestamps();
