@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
 use App\Models\Order;
+use App\Models\Order_Items;
 use App\Models\Product;
 use Exception;
 
@@ -14,7 +15,7 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function store(OrderRequest $request)
+    public function store(Request $request)
     {
         // Xác thực dữ liệu
         $validatedData = $request->validate([
@@ -23,23 +24,50 @@ class OrderController extends Controller
             'user_phone' => 'required|string|max:20',
             'user_address' => 'nullable|string|max:255',
             'user_note' => 'nullable|string',
+            'payment_method' => 'required|in:cash,online',
             'product_id' => 'required|exists:products,id',
             'total_price' => 'required|numeric',
+            'quantity' => 'integer|min:1',
+            'size' => 'required|string',
+            'color' => 'required|string',
         ]);
 
         $validatedData['user_id'] = auth()->id();
+        if (!$validatedData['user_id']) {
+            return redirect()->back()->with('error', 'Bạn cần đăng nhập để đặt hàng.');
+        }
+        $product = Product::findOrFail($validatedData['product_id']);
+        $variant = $product->variants()->first();
 
-        $validatedData['status'] = $request->payment_method === 'vnpay' ? 'err' : 'unpaid';
-    
-
+        $quantity = $validatedData['quantity'];
+        if ($product->quantity < $quantity) {
+            return redirect()->back()->withErrors(['message' => 'Số lượng sản phẩm không đủ trong kho.']);
+        }
         $order = Order::create($validatedData);
 
-        if ($request->payment_method === 'vnpay') {
-            return $this->vnpayPayment($order, $request);
+        $size = $request->input('size');
+        $color = $request->input('color');
+        Order_Items::create([
+            'cart_id' => null,
+            'product_variant_id' => $variant ? $variant->id : null,
+            'quantity' => $quantity,
+            'product_name' => $product->name,
+            'product_sku' => $product->sku,
+            'product_img_thumbnail' => $product->img_thumbnail,
+            'product_price_regular' => $product->price_regular,
+            'product_price_sale' => $product->price_sale,
+            'size' => $size,
+            'color' => $color,
+            'order_id' => $order->id,
+        ]);
+        $product->quantity -= $quantity;
+        $product->save();
+        if ($request->input('payment_method') === 'online') {
+            // Xử lý thanh toán online qua VNPay
+            return redirect()->route('orders.vnpay_ment');
         }
-
-    
-        return redirect()->route('index')->with('success', 'Order placed successfully with cash on delivery.');
+        // Chuyển hướng hoặc trả về thông báo thành công
+        return redirect()->route('index')->with('success', '......................Đơn hàng đã được thêm thành công.');
     }
     
     
@@ -174,40 +202,4 @@ class OrderController extends Controller
 //     }
 // }
 
-
-
-
-
-
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show($id) {}
-
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Order $order)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Order $order)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
-        //
-    }
 }

@@ -1,6 +1,14 @@
 @extends('client.layouts.app')
 
 @section('content')
+@if ($errors->any())
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>..........................{{ $error }}</li>
+        @endforeach
+    </ul>
+@endif
+
     <div class="breadcrumb-area ml-110">
         <div class="container-fluid p-0">
             <div class="row">
@@ -29,64 +37,83 @@
         <div class="container">
             <div class="row">
                 <form action="{{ route('orders.store') }}" method="POST" class="row">
-                    @csrf <!-- Thêm dòng này để bảo vệ CSRF -->
+                    @csrf
                     <div class="col-xxl-8">
                         <div class="billing-from">
                             <h5 class="checkout-title">Billing Details</h5>
                             <div class="row">
                                 <div class="col-lg-12">
+                                    <!-- Select Address -->
                                     <div class="eg-input-group">
-                                        <label for="first-name1">Tên</label>
-                                        <input type="text" id="first-name1" name="user_name" value="{{ Auth::check() ? Auth::user()->name : '' }}" placeholder="Your first name" required>
+                                        <label for="address-selection">Chọn Địa chỉ nhận</label><a href="{{ route('profile', ['id' => auth()->user()->id]) }}">
+                                            Thêm Địa Chỉ Khác
+                                        </a>
+                                        <select id="address-selection" name="user_address" class="form-control" required>
+                                            <option value="">-- Chọn Địa chỉ --</option>
+                                            @foreach ($addresses as $address)
+                                                <option value="{{ $address->id }}">
+                                                    {{ $address->address }}, {{ $address->commune }}, {{ $address->city }}, {{ $address->state }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <!-- Display Selected Address Info -->
+                                    <div id="selected-address-info">
+                                        <div class="eg-input-group">
+                                            <label for="selected-first-name">Tên</label>
+                                            <input type="text" id="selected-first-name" name="user_name" value="" readonly placeholder="Your first name">
+                                        </div>
+                                        <div class="eg-input-group">
+                                            <label for="selected-email">Email</label>
+                                            <input type="email" id="selected-email" name="user_email" value="" readonly placeholder="Your Email">
+                                        </div>
+                                        <div class="eg-input-group">
+                                            <label for="selected-contact-number">Số Điện Thoại</label>
+                                            <input type="text" id="selected-contact-number" name="user_phone" value="" readonly placeholder="Your Phone">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-12">
-                                    <div class="eg-input-group">
-                                        <label>Email</label>
-                                        <input type="email" name="user_email" value="{{ Auth::check() ? Auth::user()->email : '' }}" placeholder="Your Email" required>
-                                    </div>
-                                    <div class="eg-input-group">
-                                        <label>Địa chỉ cụ thể</label>
-                                        <input type="text" name="user_address" value="{{ Auth::check() ? Auth::user()->address : '' }}" placeholder="Your Address">
-                                    </div>
-                                    <div class="eg-input-group">
-                                        <label>Số Điện Thoại</label>
-                                        <input type="number" name="user_phone" value="{{ Auth::check() ? Auth::user()->phone : '' }}" placeholder="Your Phone">
-                                        @error('user_phone')
-                                                <div class="alert alert-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="eg-input-group mb-0">
-                                        <textarea cols="30" rows="7" name="user_note" placeholder="Order Notes (Optional)"></textarea>
-                                    </div>
+
+                                <div class="eg-input-group mb-0">
+                                    <textarea cols="30" rows="7" name="user_note" placeholder="Order Notes (Optional)"></textarea>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                     <div class="col-xxl-4">
                         <div class="order-summary">
                             <div class="added-product-summary">
                                 <h5 class="checkout-title">Order Summary</h5>
                                 <ul class="added-products">
-                                    <li class="single-product">
-                                        <div class="product-img">
-                                            <img src="{{ $image }}" alt="{{ $productName }}">
-                                        </div>
-                                        <div class="product-info">
-                                            <h5 class="product-title"><a href="product.html">{{ $productName }}</a></h5>
-                                            <div class="product-total">
-                                                <div class="quantity">
-                                                    <span class="product-quantity">{{ $quantity }}</span>
-                                                </div>
-                                                <strong><i class="bi bi-x-lg"></i> <span class="product-price">{{ $productPrice }}</span> VND</strong>
+                                        <li class="single-product">
+                                            <div class="product-img">
+                                                <img src="{{ $checkoutData['image'] }}" alt="{{ $checkoutData['productName'] }}" style="max-width: 100px; border-radius: 5px;">
                                             </div>
-                                            <p><strong>Màu sắc:</strong>
-                                                <span class="color-box" style="display: inline-block; width: 20px; height: 20px; background-color: {{ $color }}; border: 1px solid #ddd;"></span>
-                                            </p>
-                                            <p><strong>Kích thước:</strong> {{ $size }}</p>
-                                        </div>
-                                    </li>
+                                            <div class="product-info">
+                                                <h5 class="product-title">{{ $checkoutData['productName'] }}</h5>
+                                                <div class="product-total">
+                                                    <div class="">
+                                                        <span class="product-quantity">{{ $checkoutData['quantity'] }}</span>
+                                                        <input type="hidden" name="quantity" value="{{ $checkoutData['quantity'] }}">
+                                                    </div>
+                                                    <strong>
+                                                        <i class="bi bi-x-lg"></i>
+                                                        <span class="product-price">{{ number_format($checkoutData['productPrice'], 0, ',', '.') }}</span> VND
+                                                    </strong>
+                                                </div>
+                                                <p><strong>Color: </strong>
+                                                    <span class="color-box" style="display: inline-block; width: 20px; height: 20px; background-color: {{ $checkoutData['color'] }}; border: 1px solid #ddd; border-radius: 10px;"></span>
+                                                    <input type="hidden" name="color" value="{{ $checkoutData['color'] }}">
+
+                                                </p>
+                                                <p><strong>SIZE: </strong> {{ $checkoutData['size'] }}</p>
+                                                <input type="hidden" name="size" value="{{ $checkoutData['size'] }}">
+
+                                            </div>
+                                        </li>
                                 </ul>
+
                             </div>
                             <div class="total-cost-summary">
                                 <ul>
@@ -137,6 +164,15 @@
 
                             <div class="payment-form">
                                 <div class="payment-methods">
+                                    <div class="form-check payment-check">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="payment_cash" value="cash" checked>
+                                        <label class="form-check-label" for="payment_cash">Cash on delivery</label>
+                                    </div>
+                                    <div class="form-check payment-check">
+                                        <form action="{{ route('orders.vnpay_ment') }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn btn-primary">Thanh toán qua VNPay</button>
+                                        </form>
                                     <div class="form-group">
                                         <label for="payment_method">Payment Method</label>
                                         <select name="payment_method" id="payment_method" class="form-control" required>
@@ -160,6 +196,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                </form>
 
 
                 </form>
@@ -191,7 +230,19 @@
         </div>
     </div>
     <script>
+            document.addEventListener('DOMContentLoaded', function () {
+            const addressSelect = document.getElementById('address-selection');
+            const addresses = @json($addresses); // Dữ liệu địa chỉ từ backend
+            const firstNameInput = document.getElementById('selected-first-name');
+            const emailInput = document.getElementById('selected-email');
+            const phoneInput = document.getElementById('selected-contact-number');
 
+            // Lắng nghe sự kiện thay đổi địa chỉ
+            addressSelect.addEventListener('change', function () {
+                const selectedId = this.value;
+
+                // Tìm địa chỉ tương ứng
+                const selectedAddress = addresses.find(address => address.id == selectedId);
 
             document.addEventListener('DOMContentLoaded', function() {
                 const quantityInput = document.querySelector('.quantity-input');
@@ -200,25 +251,41 @@
                 const totalElement = document.getElementById('total');
                 const tax = 50000;
 
-                function updateTotal() {
-                    const quantity = parseInt(quantityInput.value);
-
-                    if (isNaN(quantity) || quantity <= 0) {
-                        subtotalElement.textContent = '0 VND';
-                        totalElement.textContent = (tax).toLocaleString('vi-VN') + ' VND'; // Chỉ tính thuế
-                        return;
-                    }
-
-                    const subtotal = quantity * productPrice; // Tính subtotal
-                    const total = subtotal + tax; // Tính tổng
-
-                    subtotalElement.textContent = subtotal.toLocaleString('vi-VN') + ' VND';
-                    totalElement.textContent = total.toLocaleString('vi-VN') + ' VND';
+                // Hiển thị thông tin nếu có
+                if (selectedAddress) {
+                    firstNameInput.value = selectedAddress.first_name;
+                    emailInput.value = selectedAddress.email;
+                    phoneInput.value = selectedAddress.contact_number;
+                } else {
+                    // Xóa thông tin nếu không chọn gì
+                    firstNameInput.value = '';
+                    emailInput.value = '';
+                    phoneInput.value = '';
                 }
-
-                // Lắng nghe sự kiện thay đổi số lượng
-                quantityInput.addEventListener('input', updateTotal);
             });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const quantityInput = document.querySelector('.quantity-input');
+            const subtotalElement = document.getElementById('subtotal');
+            const totalElement = document.getElementById('total');
+            const tax = 5000;
+
+            if (!quantityInput || !subtotalElement || !totalElement) {
+                console.error('Missing elements for calculation.');
+                return;
+            }
+
+            quantityInput.addEventListener('input', function() {
+                const quantity = parseInt(quantityInput.value);
+                const productPrice = parseFloat(quantityInput.dataset.price); // Lấy giá từ thuộc tính data-price
+                const subtotal = quantity * productPrice;
+                const total = subtotal + tax;
+
+                subtotalElement.textContent = subtotal.toLocaleString('vi-VN') + ' VND';
+                totalElement.textContent = total.toLocaleString('vi-VN') + ' VND';
+            });
+        });
             function getVoucherInfo() {
                 const errorMessage = document.getElementById('errorMessage');
                 const voucherCode = document.getElementById('voucher_code').value;
@@ -260,8 +327,5 @@
                         errorMessage.style.color = "red";
                     });
             }
-
-
-
     </script>
 @endsection
