@@ -47,7 +47,7 @@ Route::controller(ProductController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('index');
                 Route::post('store', 'store')->name('store');
-                Route::get('{id}/show', 'show')->name('show');
+                Route::get('{id}/show', 'listDH')->name('show');
                 Route::get('{id}/edit', 'edit')->name('edit');
                 Route::put('{id}/update', 'update')->name('update');
             });

@@ -310,7 +310,38 @@
 
         <!--end col-->
     </div>
+
     <!-- end main content-->
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script>
+        // Tích hợp CKEditor với trường 'content'
+        CKEDITOR.replace('content');
+    </script>
+    <script>
+        function generateSlug(str) {
+            // Convert to lowercase
+            str = str.toLowerCase();
+
+            // Remove accents (dấu tiếng Việt)
+            str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+            // Replace spaces with hyphens
+            str = str.replace(/\s+/g, '-');
+
+            // Remove all non-alphanumeric characters except hyphens
+            str = str.replace(/[^\w\-]+/g, '');
+
+            // Remove multiple hyphens
+            str = str.replace(/\-\-+/g, '-');
+
+            // Trim hyphens from the start and end of the string
+            str = str.replace(/^-+/, '').replace(/-+$/, '');
+
+            return str;
+        }
+
+        
+    </script>
     <script>
 
 document.getElementById('searchInput').addEventListener('input', function () {

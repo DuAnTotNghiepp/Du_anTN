@@ -140,5 +140,5 @@ Route::get('/admin/revenue-stats', [AdminController::class, 'getRevenueStats']);
 
 
 
-// Group routes under admin middleware
+// Group routes 
 Route::get('blog/{id}', [BlogController::class, 'show'])->name('blog.detail');

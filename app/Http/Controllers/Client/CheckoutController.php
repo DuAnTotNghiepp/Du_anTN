@@ -38,6 +38,7 @@ class CheckoutController extends Controller
         $productName = $request->query('name');
         $productPrice = $request->query('price');
         $orderTotal = session('order_total', 0);
+        $cartItems = session()->get('carts', []);
         // Kiểm tra nếu thiếu bất kỳ dữ liệu nào
         if (!$colorId || !$sizeId || !$quantity || !$image || !$productName || !$productPrice) {
             return redirect()->back()->withErrors(['message' => 'Dữ liệu không đầy đủ']);
@@ -46,6 +47,19 @@ class CheckoutController extends Controller
         $size = Variants::where('id', $sizeId)->first();
 
         $product = Product::where('name', $productName)->first();
+
+
+        return view('client.checkout', compact('color', 'size', 'quantity', 'image', 'productName', 'productPrice', 'product','orderTotal','cartItems'));
+    }
+
+
+    public function show($id)
+    {    
+      
+        $productchekout = Product::findOrFail($id);
+        return view('client.checkout', compact('productchekout'));
+    }
+
         if (!$product) {
             return redirect()->back()->withErrors(['message' => 'Sản phẩm không tồn tại']);
         }
@@ -66,6 +80,7 @@ class CheckoutController extends Controller
         session()->put('productcheckout', $checkoutData);
         return view('client.checkout', compact( 'quantity',  'productPrice', 'product', 'checkoutData', 'addresses', 'user'));
     }
+
 
     public function applyVoucher(Request $request)
     {

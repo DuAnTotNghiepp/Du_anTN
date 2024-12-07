@@ -37,7 +37,15 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id) {}
+   
+        public function listDH ()
+        {
+            // Lấy tất cả đơn hàng và các sản phẩm trong đơn hàng
+            $orders = Order::with('items')->get();
+    
+            return view('admin.order.show', compact('orders'));
+        }
+    
 
 
     /**

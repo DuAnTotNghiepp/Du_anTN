@@ -81,11 +81,23 @@
                         </div>
 
                     </div>
+                   
                     <div class="col-xxl-4">
                         <div class="order-summary">
                             <div class="added-product-summary">
                                 <h5 class="checkout-title">Order Summary</h5>
                                 <ul class="added-products">
+
+                                    <li class="single-product">
+                                        <div class="product-img" >
+                                            <img src="{{ $image }}" alt="{{ $productName }}">
+                                        </div>
+                                        <div class="product-info">
+                                            <h5 class="product-title"><a href="product.html">{{ $productName }}</a></h5>
+                                            <div class="product-total">
+                                                <div class="quantity">
+                                                    <span class="product-quantity">{{ $quantity }}</span>
+
                                         <li class="single-product">
                                             <div class="product-img">
                                                 <img src="{{ $checkoutData['image'] }}" alt="{{ $checkoutData['productName'] }}" style="max-width: 100px; border-radius: 5px;">
@@ -101,6 +113,7 @@
                                                         <i class="bi bi-x-lg"></i>
                                                         <span class="product-price">{{ number_format($checkoutData['productPrice'], 0, ',', '.') }}</span> VND
                                                     </strong>
+
                                                 </div>
                                                 <p><strong>Color: </strong>
                                                     <span class="color-box" style="display: inline-block; width: 20px; height: 20px; background-color: {{ $checkoutData['color'] }}; border: 1px solid #ddd; border-radius: 10px;"></span>
@@ -111,7 +124,16 @@
                                                 <input type="hidden" name="size" value="{{ $checkoutData['size'] }}">
 
                                             </div>
+
+                                            <p><strong>Màu sắc:</strong>
+                                                <span class="color-box"  style="display: inline-block; width: 20px; height: 20px; background-color: {{ $color }}; border: 1px solid #ddd;"></span>
+                                            </p>
+                                            <p><strong>Kích thước:</strong > {{ $size }}</p>
+                                        </div>
+                                    </li>
+
                                         </li>
+
                                 </ul>
 
                             </div>
@@ -140,12 +162,16 @@
                                             {{ number_format(($quantity * $productPrice + 5000) ) }} VND
                                         </span>
                                     </li>
+                                   
 
                                     <!-- Các trường ẩn -->
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                     <input type="hidden" name="total_price" id="total_price"
                                            value="{{ ($quantity * $productPrice + 5000)}}">
                                 </ul>
+                                
+                                
+                                <!-- Lặp qua các sản phẩm đã thêm vào giỏ hàng -->
 
                                 <!-- Form áp dụng mã giảm giá -->
                                     <div id="applyVoucher">
@@ -161,6 +187,22 @@
                             </div>
 
                             </div>
+
+
+                            <div class="col-xxl-4">
+                                <div class="order-summary">
+                                    <ul class="added-products">
+                                        @foreach ($cartItems as $index => $cartItem)
+                                        <li class="single-product">
+                                            <input type="hidden" name="items[{{ $index }}][product_id]" value="{{ $cartItem->id }}">
+                                            <input type="hidden" name="items[{{ $index }}][product_name]" value="{{ $cartItem->name }}">
+                                            <input type="hidden" name="items[{{ $index }}][quantity]" value="{{ $cartItem->quantity }}">
+                                            <input type="hidden" name="items[{{ $index }}][price]" value="{{ $cartItem->price }}">
+                                            <input type="hidden" name="items[{{ $index }}][color]" value="{{ $cartItem->color }}">
+                                            <input type="hidden" name="items[{{ $index }}][size]" value="{{ $cartItem->size }}">
+                                        </li>
+                                        @endforeach
+                                    </ul>
 
                             <div class="payment-form">
                                 <div class="payment-methods">
@@ -190,8 +232,14 @@
                                         </select>
                                     </div>
 
+
                                 </div>
-                                <div class="place-order-btn">
+                        
+                                <div class="payment-form">
+                                    <select name="payment_method" id="payment_method" class="form-control" required>
+                                        <option value="cash">Cash on Delivery</option>
+                                        <option value="vnpay">VNPay</option>
+                                    </select>
                                     <button type="submit">Place Order</button>
                                 </div>
                             </div>
