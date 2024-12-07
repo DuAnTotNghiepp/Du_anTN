@@ -63,13 +63,14 @@
                             </div>
                         </div>
                     </div>
+                   
                     <div class="col-xxl-4">
                         <div class="order-summary">
                             <div class="added-product-summary">
                                 <h5 class="checkout-title">Order Summary</h5>
                                 <ul class="added-products">
                                     <li class="single-product">
-                                        <div class="product-img">
+                                        <div class="product-img" >
                                             <img src="{{ $image }}" alt="{{ $productName }}">
                                         </div>
                                         <div class="product-info">
@@ -81,9 +82,9 @@
                                                 <strong><i class="bi bi-x-lg"></i> <span class="product-price">{{ $productPrice }}</span> VND</strong>
                                             </div>
                                             <p><strong>Màu sắc:</strong>
-                                                <span class="color-box" style="display: inline-block; width: 20px; height: 20px; background-color: {{ $color }}; border: 1px solid #ddd;"></span>
+                                                <span class="color-box"  style="display: inline-block; width: 20px; height: 20px; background-color: {{ $color }}; border: 1px solid #ddd;"></span>
                                             </p>
-                                            <p><strong>Kích thước:</strong> {{ $size }}</p>
+                                            <p><strong>Kích thước:</strong > {{ $size }}</p>
                                         </div>
                                     </li>
                                 </ul>
@@ -113,12 +114,16 @@
                                             {{ number_format(($quantity * $productPrice + 5000) ) }} VND
                                         </span>
                                     </li>
+                                   
 
                                     <!-- Các trường ẩn -->
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                     <input type="hidden" name="total_price" id="total_price"
                                            value="{{ ($quantity * $productPrice + 5000)}}">
                                 </ul>
+                                
+                                
+                                <!-- Lặp qua các sản phẩm đã thêm vào giỏ hàng -->
 
                                 <!-- Form áp dụng mã giảm giá -->
                                     <div id="applyVoucher">
@@ -135,27 +140,27 @@
 
                             </div>
 
-                            <div class="payment-form">
-                                <div class="payment-methods">
-                                    <div class="form-group">
-                                        <label for="payment_method">Payment Method</label>
-                                        <select name="payment_method" id="payment_method" class="form-control" required>
-                                            <option value="cash">Cash on Delivery</option>
-                                            <option value="vnpay">VNPay</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group" id="bank_code_group" style="display: none;">
-                                        <label for="bank_code">Bank</label>
-                                        <select name="bank_code" id="bank_code" class="form-control">
-                                            <option value="NCB">NCB</option>
-                                            <option value="Vietcombank">Vietcombank</option>
-                                            <!-- Add other bank options as needed -->
-                                        </select>
-                                    </div>
-
+                            <div class="col-xxl-4">
+                                <div class="order-summary">
+                                    <ul class="added-products">
+                                        @foreach ($cartItems as $index => $cartItem)
+                                        <li class="single-product">
+                                            <input type="hidden" name="items[{{ $index }}][product_id]" value="{{ $cartItem->id }}">
+                                            <input type="hidden" name="items[{{ $index }}][product_name]" value="{{ $cartItem->name }}">
+                                            <input type="hidden" name="items[{{ $index }}][quantity]" value="{{ $cartItem->quantity }}">
+                                            <input type="hidden" name="items[{{ $index }}][price]" value="{{ $cartItem->price }}">
+                                            <input type="hidden" name="items[{{ $index }}][color]" value="{{ $cartItem->color }}">
+                                            <input type="hidden" name="items[{{ $index }}][size]" value="{{ $cartItem->size }}">
+                                        </li>
+                                        @endforeach
+                                    </ul>
                                 </div>
-                                <div class="place-order-btn">
+                        
+                                <div class="payment-form">
+                                    <select name="payment_method" id="payment_method" class="form-control" required>
+                                        <option value="cash">Cash on Delivery</option>
+                                        <option value="vnpay">VNPay</option>
+                                    </select>
                                     <button type="submit">Place Order</button>
                                 </div>
                             </div>

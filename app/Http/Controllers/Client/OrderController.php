@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use Exception;
 
@@ -15,32 +16,73 @@ use Illuminate\Http\Request;
 class OrderController extends Controller
 {
     public function store(OrderRequest $request)
-    {
-        // Xác thực dữ liệu
+{
+    DB::beginTransaction(); // Bắt đầu giao dịch
+
+    try {
+        // Xác thực dữ liệu đầu vào
         $validatedData = $request->validate([
             'user_name' => 'required|string|max:255',
             'user_email' => 'required|email|max:255',
             'user_phone' => 'required|string|max:20',
             'user_address' => 'nullable|string|max:255',
             'user_note' => 'nullable|string',
-            'product_id' => 'required|exists:products,id',
-            'total_price' => 'required|numeric',
+            'items' => 'required|array', // Đảm bảo items là một mảng
+            'items.*.product_id' => 'required|exists:products,id', // Đảm bảo từng product_id tồn tại
+            'items.*.quantity' => 'required|integer|min:1', // Đảm bảo quantity hợp lệ
+            'items.*.price' => 'required|numeric|min:0', // Đảm bảo giá hợp lệ
+            'items.*.color' => 'nullable|string|max:50',
+            'items.*.size' => 'nullable|string|max:50',
+            'total_price' => 'required|numeric|min:0',
+            'payment_method' => 'required|in:cash,vnpay', // Đảm bảo phương thức thanh toán hợp lệ
         ]);
 
+        // Thêm các trường bổ sung vào validatedData
         $validatedData['user_id'] = auth()->id();
-
         $validatedData['status'] = $request->payment_method === 'vnpay' ? 'err' : 'unpaid';
-    
 
-        $order = Order::create($validatedData);
+        // Tạo bản ghi trong bảng orders
+        $order = Order::create([
+            'user_id' => $validatedData['user_id'],
+            'user_name' => $validatedData['user_name'],
+            'user_email' => $validatedData['user_email'],
+            'user_phone' => $validatedData['user_phone'],
+            'user_address' => $validatedData['user_address'],
+            'user_note' => $validatedData['user_note'],
+            'total_price' => $validatedData['total_price'],
+            'status' => $validatedData['status'],
+        ]);
 
+        // Lưu các sản phẩm vào bảng order_items
+        foreach ($validatedData['items'] as $item) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $item['product_id'],
+                'product_name' => Product::find($item['product_id'])->name, // Lấy tên sản phẩm từ bảng products
+                'quantity' => $item['quantity'],
+                'price' => $item['price'],
+                'color' => $item['color'] ?? null,
+                'size' => $item['size'] ?? null,
+            ]);
+        }
+
+        // Nếu chọn VNPay, chuyển sang xử lý thanh toán
         if ($request->payment_method === 'vnpay') {
+            DB::commit(); // Commit trước khi chuyển sang xử lý VNPay
             return $this->vnpayPayment($order, $request);
         }
 
-    
-        return redirect()->route('index')->with('success', 'Order placed successfully with cash on delivery.');
+        DB::commit(); // Commit nếu không chọn VNPay
+
+        return redirect()->route('index')->with('success', 'Đặt hàng thành công!');
+    } catch (\Exception $e) {
+        DB::rollBack(); // Rollback nếu xảy ra lỗi
+        return back()->with('error', 'Đã xảy ra lỗi: ' . $e->getMessage());
     }
+}
+
+
+
     
     
 
