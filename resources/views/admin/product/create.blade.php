@@ -57,6 +57,18 @@
         </div>
         <!-- end page title -->
         <div class="row">
+            <h2>
+                @if (session('success'))
+                    <div>
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div>
+                        {{ session('error') }}
+                    </div>
+                @endif
+            </h2>
             <div class="col-lg-8">
                 <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -132,7 +144,7 @@
                                             <span id="quantity-error" style="color: red">{{ $message }}</span>
                                         @enderror
 
-                                    
+
 
                                     </div>
                                 </div>

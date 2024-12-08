@@ -30,7 +30,7 @@
               hsl(218, 41%, 19%) 80%,
               transparent 100%);
         }
-    
+
         #radius-shape-1 {
           height: 220px;
           width: 220px;
@@ -39,7 +39,7 @@
           background: radial-gradient(#44006b, #ad1fff);
           overflow: hidden;
         }
-    
+
         #radius-shape-2 {
           border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
           bottom: -60px;
@@ -49,7 +49,7 @@
           background: radial-gradient(#44006b, #ad1fff);
           overflow: hidden;
         }
-    
+
         .bg-glass {
           background-color: hsla(0, 0%, 100%, 0.9) !important;
           backdrop-filter: saturate(200%) blur(25px);
@@ -57,6 +57,16 @@
     </style>
 </head>
 <body>
+    @if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
     <!-- Section: Design Block -->
     <section class="background-radial-gradient overflow-hidden">
         <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
@@ -93,24 +103,24 @@
                                         </div>
                                     </div>
                                 </div> --}}
-  
+
                                 <!-- Email input -->
                                 <div class="form-outline mb-4">
                                     <input type="email" name="email" id="form3Example3" class="form-control" />
                                     <label class="form-label" for="form3Example3">Email</label>
                                 </div>
-  
+
                                 <!-- Password input -->
                                 <div class="form-outline mb-4">
                                     <input type="password" name="password" id="form3Example4" class="form-control" />
                                     <label class="form-label" for="form3Example4">Password</label>
                                 </div>
-                                
+
                                 <div class="row mb-3">
                                     <div class="radius">
                                         <div class="form-check m-2">
                                             <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-        
+
                                             <label class="form-check-label" for="remember">
                                                 {{ __('Remember Me') }}
                                             </label>
@@ -118,13 +128,13 @@
                                         </div>
                                     </div>
                                 </div>
-        
+
                                 <div class="row mb-0">
                                     <div class="col-md-8 offset-md-4">
                                         <button type="submit" class="btn btn-primary ms-4">
                                             {{ __('Login') }}
                                         </button>
-        
+
                                         @if (Route::has('password.request'))
                                             <a class="btn btn-link" href="{{ route('password.request') }}">
                                                 {{ __('Forgot Your Password?') }}
@@ -133,8 +143,8 @@
                                     </div>
                                 </div>
 
-                        
-                               
+
+
 
 
                                 <!-- Register buttons -->
