@@ -164,15 +164,6 @@
 
                             <div class="payment-form">
                                 <div class="payment-methods">
-                                    <div class="form-check payment-check">
-                                        <input class="form-check-input" type="radio" name="payment_method" id="payment_cash" value="cash" checked>
-                                        <label class="form-check-label" for="payment_cash">Cash on delivery</label>
-                                    </div>
-                                    <div class="form-check payment-check">
-                                        <form action="{{ route('orders.vnpay_ment') }}" method="POST">
-                                            @csrf
-                                            <button type="submit" class="btn btn-primary">Thanh toán qua VNPay</button>
-                                        </form>
                                     <div class="form-group">
                                         <label for="payment_method">Payment Method</label>
                                         <select name="payment_method" id="payment_method" class="form-control" required>
@@ -199,32 +190,6 @@
                     </div>
 
                 </form>
-
-
-                </form>
-                {{--  <div class="payment-methods">
-                    <form action="{{ route('orders.vnpay_ment') }}" method="POST">
-                        @csrf
-                        <!-- Truyền các thông tin cần thiết -->
-                        <input type="hidden" name="redirect" value="true">
-
-                        <input type="hidden" name="user_name" value="{{ Auth::user()->name ?? '' }}">
-                        <input type="hidden" name="user_email" value="{{ Auth::user()->email ?? '' }}">
-                        <input type="hidden" name="user_phone" value="{{ Auth::user()->phone ?? '' }}">
-                        <input type="hidden" name="user_address" value="{{ Auth::user()->address ?? '' }}">
-
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <input type="hidden" name="total_price" value="{{ $quantity * $productPrice + 5000 }}">
-                        <input type="hidden" name="quantity" value="{{ $quantity }}">
-                        <button type="submit" class="btn btn-primary">Thanh toán qua VNPay</button>
-                    </form>
-                </div>
-
-
-
-                </div>  --}}
-
-
             </div>
 
         </div>
