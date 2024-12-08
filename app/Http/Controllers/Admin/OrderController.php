@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -52,8 +53,9 @@ class OrderController extends Controller
     public function edit(int $id)
     {
         //
-        $orde = Order::find($id);
-        return view('admin.order.edit', compact('orde'));
+        $orde = Order::with('address')->find($id);
+        $address = Address::find($orde->user_address);
+        return view('admin.order.edit', compact('orde','address'));
     }
 
     /**
@@ -95,7 +97,7 @@ class OrderController extends Controller
         }
         $order->update([
             'status' => $validatedData['status'],
-            'user_note' => $validatedData['user_note'] ?? null,
+            'user_note' => $validatedData['user_note'] ?? '',
         ]);
 
         return redirect()->route('order.edit', $id)->with('success', 'Cập nhật trạng thái thành công.');

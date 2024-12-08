@@ -79,33 +79,33 @@
                             <div class="mb-3">
                                 <label class="form-label" for="project-title-input">Tên Người Dùng</label>
                                 <input type="text" class="form-control" id="project-title-input" name="user_name" readonly
-                                    value="{{ $orde->user_name }}" placeholder="Enter Tên Sản Phẩm" disabled>
+                                    value="{{ $orde->user_name }}" placeholder="Enter Tên Sản Phẩm" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="project-title-input">Email Người Dùng</label>
                                 <input type="text" class="form-control" id="project-title-input" name="user_email" readonly
-                                    value="{{ $orde->user_email }}" placeholder="Enter Tên Sản Phẩm" disabled>
+                                    value="{{ $orde->user_email }}" placeholder="Enter Tên Sản Phẩm" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="project-title-input">Số Điện Thoại</label>
                                 <input type="text" class="form-control" id="project-title-input" name="user_phone" readonly
-                                    value="{{ $orde->user_phone }}" placeholder="Enter Tên Sản Phẩm" disabled>
+                                    value="{{ $orde->user_phone }}" placeholder="Enter Tên Sản Phẩm" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="project-title-input">Địa Chỉ</label>
                                 <input type="text" class="form-control" id="project-title-input" name="user_address" readonly
-                                    value="{{ $orde->user_address }}" placeholder="Enter Tên Sản Phẩm" disabled>
+                                value="{{ $orde->address->address }}, {{ $orde->address->city }}, {{ $orde->address->state }}" placeholder="Enter Tên Sản Phẩm" disabled>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="project-title-input">Giá Trị Tổng Đơn Hàng</label>
                                 <input type="text" class="form-control" id="project-title-input" name="total_price" readonly
-                                    value="{{ $orde->total_price }}(VND)" placeholder="Enter Tên Sản Phẩm" disabled>
+                                    value="{{ $orde->total_price }}(VND)" placeholder="Enter Tên Sản Phẩm" readonly>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Ghi Chú Của Khách Hàng</label>
                                 <div id="ckeditor-classic">
-                                    <textarea class="form-control" disabled  readonly placeholder="Enter user_note" name="user_note" id="user_note" rows="3">{{ $orde->user_note }}</textarea>
+                                    <textarea class="form-control" readonly  readonly placeholder="Enter user_note" name="user_note" id="user_note" rows="3">{{ $orde->user_note }}</textarea>
                                 </div>
                             </div>
                             <div class="mb-3">

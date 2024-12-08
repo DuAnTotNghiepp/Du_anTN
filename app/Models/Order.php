@@ -30,10 +30,13 @@ class Order extends Model
     }
     public function address()
     {
-        return $this->belongsTo(Address::class, 'user_id', 'user_id');
+        return $this->belongsTo(Address::class, 'user_address', 'id');
     }
+
     public function items()
     {
         return $this->hasMany(Order_Items::class, 'order_id');
     }
+
+
 }
