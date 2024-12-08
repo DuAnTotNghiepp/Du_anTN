@@ -244,12 +244,7 @@
                 // Tìm địa chỉ tương ứng
                 const selectedAddress = addresses.find(address => address.id == selectedId);
 
-            document.addEventListener('DOMContentLoaded', function() {
-                const quantityInput = document.querySelector('.quantity-input');
-                const productPrice = parseFloat(document.querySelector('.product-price').textContent.replace(/,/g, ''));
-                const subtotalElement = document.getElementById('subtotal');
-                const totalElement = document.getElementById('total');
-                const tax = 50000;
+            
 
                 // Hiển thị thông tin nếu có
                 if (selectedAddress) {
