@@ -38,16 +38,18 @@ class OrderController extends Controller
         }
         $product = Product::findOrFail($validatedData['product_id']);
         $variant = $product->variants()->first();
-
+        
         $quantity = $validatedData['quantity'];
         if ($product->quantity < $quantity) {
             return redirect()->back()->withErrors(['message' => 'Số lượng sản phẩm không đủ trong kho.']);
         }
+        $validatedData['total_price'] = $product->price_sale*$quantity;
         $order = Order::create($validatedData);
 
         $size = $request->input('size');
         $color = $request->input('color');
         Order_Items::create([
+            'order_id' => $order->id,
             'cart_id' => null,
             'product_variant_id' => $variant ? $variant->id : null,
             'quantity' => $quantity,
@@ -58,7 +60,7 @@ class OrderController extends Controller
             'product_price_sale' => $product->price_sale,
             'size' => $size,
             'color' => $color,
-            'order_id' => $order->id,
+            
         ]);
         $product->quantity -= $quantity;
         $product->save();

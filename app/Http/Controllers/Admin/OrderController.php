@@ -38,8 +38,14 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id) {}
-
+    public function show($id)
+    {
+        $order = Order::with('items')->findOrFail($id);
+        // if ($order->items->isEmpty()) {
+        //     dd('No items found for this order.'); // In ra thông báo nếu không có sản phẩm
+        // }
+        return view('admin.order.show', compact('order'));
+    }
 
     /**
      * Show the form for editing the specified resource.
