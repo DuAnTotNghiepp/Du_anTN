@@ -54,19 +54,40 @@
           background-color: hsla(0, 0%, 100%, 0.9) !important;
           backdrop-filter: saturate(200%) blur(25px);
         }
+        .custom-error-alert {
+            background-color: #f8d7da;
+            color: #842029;
+            border: 1px solid #f5c2c7;
+            width: 500px;
+            justify-content: center;
+            border-radius: 6px;
+            padding: 10px 15px;
+            margin: 10px 0;
+            font-size: 14px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-error-alert ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .custom-error-alert li {
+            margin: 3px 0;            /* Khoảng cách giữa các lỗi nhỏ hơn */
+            display: flex;
+            align-items: center;
+        }
+
+        .custom-error-alert i {
+            margin-right: 8px;        /* Giảm khoảng cách giữa icon và text */
+            font-size: 16px;          /* Kích thước icon nhỏ hơn */
+            color: #842029;
+        }
+
     </style>
 </head>
 <body>
-    @if($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
     <!-- Section: Design Block -->
     <section class="background-radial-gradient overflow-hidden">
         <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
@@ -86,6 +107,15 @@
 
                     <div class="card bg-glass">
                         <div class="card-body px-4 py-5 px-md-5">
+                            @if($errors->any())
+                                <div class="custom-error-alert">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li><i class="fas fa-times-circle"></i> {{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <form action="{{ route('login') }}" method="POST" >
                                 @csrf
 
