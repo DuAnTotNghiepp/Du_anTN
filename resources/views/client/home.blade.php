@@ -5,39 +5,53 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        .alert {
+        .custom-alert {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Căn giữa nội dung */
             padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid transparent;
-            border-radius: 4px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 40px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Đảm bảo text được căn giữa */
         }
 
         .alert-success {
-            color: #155724;
-            background-color: #d4edda;
-            border-color: #c3e6cb;
+            background-color: #e9f7e9;
+            color: rgb(24, 79, 23);
+            border: none;
         }
 
         .alert-danger {
-            color: #721c24;
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
+            background-color: #fbeaea;
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+
+        .custom-alert .icon {
+            margin-right: 10px;
+            font-size: 40px;
         }
     </style>
     <div class="hero-area ml-110">
         <div class="row">
             @if(session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                    @endif
+            <div class="alert alert-success custom-alert">
+                <span class="icon">&#128512;</span> <!-- Biểu tượng mặt cười -->
+                {{ session('success') }}
+            </div>
+            @endif
 
-                    @if(session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
-                    @endif
-            <div class="col-xxl-10 col-xl-9 col-lg-9 p-0">
+            @if(session('error'))
+                <div class="alert alert-danger custom-alert">
+                    <span class="icon">&#128543;</span> <!-- Biểu tượng buồn -->
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            <div class="col-xxl-12 col-xl-9 col-lg-9 p-0">
                 <div class="row">
                     <div class="swiper-container hero-swiper-container">
 
@@ -91,56 +105,6 @@
 
 
                     </div>
-                </div>
-            </div>
-            <div class="col-xxl-2 col-xl-3 col-lg-3 p-0 d-flex justify-content-between feature-banner-col">
-                <div class="banner-feature-item position-relative">
-                    <div class="b-feature-shape">
-                        <img src="assets/images/shapes/banner-feature-shape.png" alt class="position-absolute">
-                    </div>
-                    <div class="feature-head d-flex align-items-center position-relative">
-                        <div class="feature-icon">
-                            <i class="flaticon-shipping"></i>
-                        </div>
-                        <p>Our Quality</p>
-                    </div>
-                    <h5>Most Advanced Features</h5>
-                </div>
-                <div class="banner-feature-item position-relative">
-                    <div class="b-feature-shape">
-                        <img src="assets/images/shapes/banner-feature-shape.png" alt class="position-absolute">
-                    </div>
-                    <div class="feature-head d-flex align-items-center position-relative">
-                        <div class="feature-icon">
-                            <i class="flaticon-price-tag"></i>
-                        </div>
-                        <p>Price System</p>
-                    </div>
-                    <h5>Very Reasonable Price</h5>
-                </div>
-                <div class="banner-feature-item position-relative">
-                    <div class="b-feature-shape">
-                        <img src="assets/images/shapes/banner-feature-shape.png" alt class="position-absolute">
-                    </div>
-                    <div class="feature-head d-flex align-items-center position-relative">
-                        <div class="feature-icon">
-                            <i class="flaticon-puzzle"></i>
-                        </div>
-                        <p>Delivery System</p>
-                    </div>
-                    <h5>Product Frist Delivery</h5>
-                </div>
-                <div class="banner-feature-item position-relative">
-                    <div class="b-feature-shape">
-                        <img src="assets/images/shapes/banner-feature-shape.png" alt class="position-absolute">
-                    </div>
-                    <div class="feature-head d-flex align-items-center position-relative">
-                        <div class="feature-icon">
-                            <i class="flaticon-headphones"></i>
-                        </div>
-                        <p>Customer Support</p>
-                    </div>
-                    <h5>24/7 Live Support</h5>
                 </div>
             </div>
         </div>

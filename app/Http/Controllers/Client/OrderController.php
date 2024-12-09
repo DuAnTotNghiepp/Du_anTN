@@ -68,7 +68,7 @@ class OrderController extends Controller
             return $this->vnpayPayment($order, $request);
         }
         // Chuyển hướng hoặc trả về thông báo thành công
-        return redirect()->route('index')->with('success', 'Đơn hàng đã được thêm thành công.');
+        return redirect()->route('index')->with('success', 'Cảm Ơn Bạn Đã Đặt Hàng Của Chúng Tôi!');
     }
 
 
