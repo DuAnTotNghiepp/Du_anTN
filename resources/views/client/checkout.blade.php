@@ -208,7 +208,6 @@
 
                 // Tìm địa chỉ tương ứng
                 const selectedAddress = addresses.find(address => address.id == selectedId);
-
                 // Hiển thị thông tin nếu có
                 if (selectedAddress) {
                     firstNameInput.value = selectedAddress.first_name;

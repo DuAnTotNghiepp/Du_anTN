@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\OrderItemsController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,6 +31,11 @@ class Order extends Model
     public function address()
     {
         return $this->belongsTo(Address::class, 'user_address', 'id');
+    }
+
+    public function items()
+    {
+        return $this->hasMany(Order_Items::class, 'order_id');
     }
 
 
