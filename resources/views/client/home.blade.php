@@ -60,8 +60,8 @@
         cursor: pointer;
         font-size: 18px;
         margin-left: 10px;
-        
-       
+
+
 transition: color 0.3s ease, transform 0.2s ease;
     }
 
@@ -70,70 +70,70 @@ transition: color 0.3s ease, transform 0.2s ease;
         transform: scale(1.2);
     }
 
-    
-    
 
-    
+
+
+
 .fa-check {
         color: green;
-        
-        
+
+
 animation: pop 0.3s ease;
     }
 
     @keyframes pop {
         0% {
-            
-  
+
+
 transform: scale(0.8);
         }
         50% {
             transform: scale(1.2);
         }
-        
+
         }
-    
+
 100% {
-            
+
             transfor
 transform: scale(1);
         }
-    
 
-    
-   
+
+
+
 .copy-notification {
         margin-top: 5px;
-        
-      
+
+
 font-size: 12px;
         color: green;
         animation: fadeInOut 2s ease forwards;
     }
 
-    
- 
+
+
 @keyframes fadeInOut {
-        
-        
+
+
 0% {
-            
+
             o
 opacity: 0;
         }
-        
-     
+
+
 10% {
-            
-          
+
+
 opacity: 1;
         }
         90% {
             opacity: 1;
         }
-        
+
         }
-     
+
 100% {
             opacity: 0;
         }
@@ -161,8 +161,6 @@ opacity: 1;
         transform: translateY(-10px);
     }
 }
-
-        .alert {
 
         .custom-alert {
             display: flex;
@@ -273,7 +271,7 @@ opacity: 1;
 
     <div class="searchbar-area ml-110">
         <div class="container-fluid mt-5">
-            
+
             <div class="row align-items-center">
                 <div class="voucher-list">
                     @forelse ($vouchers as $voucher)
@@ -282,14 +280,14 @@ opacity: 1;
                                 <h2>SPECIAL DISCOUNT</h2>
                             </div>
                             <div class="voucher-code">
-                                Voucher Code: 
+                                Voucher Code:
                                 <span id="voucher-code-{{ $voucher->id }}">{{ $voucher->code }}</span>
-                    
-           
-<i 
+
+
+<i
                         id="icon-{{ $voucher->id }}"
                         class="fas fa-copy copy-icon"
-                        onclick="copyToClipboard('voucher-code-{{ $voucher->id }}', 'icon-{{ $voucher->id }}')" 
+                        onclick="copyToClipboard('voucher-code-{{ $voucher->id }}', 'icon-{{ $voucher->id }}')"
                         title="Copy to clipboard">
                     </i>
                             </div>
@@ -312,8 +310,8 @@ opacity: 1;
                     @endforelse
                 </div>
             </div>
-            
-        
+
+
         </div>
     </div>
 
@@ -861,5 +859,5 @@ opacity: 1;
 
 
 
-    
+
 @endsection

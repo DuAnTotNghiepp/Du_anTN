@@ -397,17 +397,9 @@
                                         @endforeach
                                     </ul>
                                 </li>
-                                <li><a href="shop">Shop</a></li>
-                                <li><a href="contact">Contact Us</a></li>
+                                <li><a href="{{ route('warranty') }}">Bảo Hành</a></li>
                                 <li><a href="about">About Us</a></li>
-                                <li class="has-child-menu">
-                                    <a href="javascript:void(0)">Page</a>
-                                    <i class="fl flaticon-plus">+</i>
-                                    <ul class="sub-menu">
-                                        <li><a href="{{ route('warranty') }}">Warranty</a></li>
-                                        <li><a href="{{ route('buying_guide') }}">Buying_guide</a></li>
-                                    </ul>
-                                </li>
+                                <li><a href="{{ route('buying_guide') }}">Hướng Dẫn Mua Hàng</a></li>
                             </ul>
                             </li>
                             </ul>
