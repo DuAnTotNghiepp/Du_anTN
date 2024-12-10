@@ -1,17 +1,16 @@
 @extends('client.layouts.app')
 
 @section('content')
-@if ($errors->any())
-    <ul>
-        @foreach ($errors->all() as $error)
-            <li>..........................{{ $error }}</li>
-        @endforeach
-    </ul>
-@endif
-
     <div class="breadcrumb-area ml-110">
         <div class="container-fluid p-0">
             <div class="row">
+                @if ($errors->any())
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                @endif
                 <div class="col-lg-12">
                     <div class="breadcrumb-bg d-flex justify-content-center align-items-center">
                         <div class="breadcrumb-shape1 position-absolute top-0 end-0">
@@ -151,7 +150,7 @@
                                     <div id="applyVoucher">
                                         <div class="input-group">
                                             <input type="text" name="voucher_code" id="voucher_code" class="form-control" placeholder="Nhập mã giảm giá">
-                                            <button type="button" class="btn btn-primary" onclick="getVoucherInfo()">Áp dụng</button>
+                                            <button type="button" class="pd-add-cart" style="height: 45px; border: 1px solid #ced4da" onclick="getVoucherInfo()">Áp dụng</button>
 
                                         </div>
                                         <span id="errorMessage" class="error-message"></span><br>

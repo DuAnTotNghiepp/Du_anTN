@@ -146,7 +146,7 @@
                     </div>
                 </li>
 
-
+            </li>
 
         </div>
         <!-- Sidebar -->

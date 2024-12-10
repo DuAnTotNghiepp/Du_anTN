@@ -40,7 +40,7 @@ class OrderController extends Controller
 
         $product = Product::findOrFail($validatedData['product_id']);
         $variant = $product->variants()->first();
-        
+
         $quantity = $validatedData['quantity'];
         if ($product->quantity < $quantity) {
             return redirect()->back()->withErrors(['message' => 'Số lượng sản phẩm không đủ trong kho.']);
@@ -52,6 +52,8 @@ class OrderController extends Controller
         $color = $request->input('color');
         Order_Items::create([
             'order_id' => $order->id,
+            'user_id' =>auth()->id(),
+            'product_id' => $product->id,
             'cart_id' => null,
             'product_variant_id' => $variant ? $variant->id : null,
             'quantity' => $quantity,
@@ -62,7 +64,7 @@ class OrderController extends Controller
             'product_price_sale' => $product->price_sale,
             'size' => $size,
             'color' => $color,
-            
+
         ]);
         $product->quantity -= $quantity;
         $product->save();
@@ -70,7 +72,7 @@ class OrderController extends Controller
             return $this->vnpayPayment($order, $request);
         }
         // Chuyển hướng hoặc trả về thông báo thành công
-        return redirect()->route('index')->with('success', 'Đơn hàng đã được thêm thành công.');
+        return redirect()->route('index')->with('success', 'Cảm Ơn Bạn Đã Đặt Hàng Của Chúng Tôi!');
     }
 
 

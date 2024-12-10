@@ -43,7 +43,7 @@ Route::post('register', [AuthController::class, 'register'])->name('register');
 // Client Routes
 
 Route::get('/', [ClientController::class, 'index'])->name('index');
-Route::get('product/{id}', [ClientController::class, 'show'])->name('product.product_detail');
+Route::get('product/{id}', [ClientController::class, 'show'])->middleware('save.redirect')->name('product.product_detail');
 
 
 //profile

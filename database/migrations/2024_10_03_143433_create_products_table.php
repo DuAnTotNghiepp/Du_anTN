@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(\App\Models\Catalogues::class)->constrained()->onDelete('cascade');
             $table->string('name');
-            $table->String('slug')->unique();
             $table->String('sku')->unique();
             $table->String('img_thumbnail')->nullable();
             $table->double('price_regular');
@@ -27,9 +26,6 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->unsignedBigInteger('view')->default(0);
             $table->boolean('is_hot_deal')->default(false);
-            $table->boolean('is_good_deal')->default(false);
-            $table->boolean('is_new')->default(false);
-            $table->boolean('is_show_home')->default(false);
             $table->timestamps();
         });
     }

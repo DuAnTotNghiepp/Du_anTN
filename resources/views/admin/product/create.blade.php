@@ -172,35 +172,18 @@
                                 <div id="ckeditor-classic">
                                     <div class="row gy-3">
                                         <div class="col-lg-12"
-                                            style="display: flex; justify-content: space-between; align-items: center;">
+                                            style="display: flex; justify-content: space-evenly;">
                                             <!-- Switches Color -->
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
                                                     name="is_hot_deal" id="is_hot_deal">
-
                                                 <label class="form-check-label" for="SwitchCheck1">Sản phẩm hot</label>
-                                            </div>
-                                            <div class="form-check form-switch form-switch-secondary">
-                                                <input class="form-check-input" type="checkbox" role="switch"
-                                                    name="is_good_deal" id="is_good_deal">
-                                                <label class="form-check-label" for="SwitchCheck2">Sản phẩm tốt</label>
-                                            </div>
-                                            <div class="form-check form-switch form-switch-success">
-                                                <input class="form-check-input" type="checkbox" role="switch"
-                                                    name="is_new" id="is_new">
-                                                <label class="form-check-label" for="SwitchCheck3">Sản phẩm mới</label>
                                             </div>
                                             <div class="form-check form-switch form-switch-warning">
                                                 <input class="form-check-input" type="checkbox" role="switch"
                                                     name="is_active" id="is_active" checked>
                                                 <label class="form-check-label" for="SwitchCheck4">Trạng thái hoạt
                                                     động</label>
-                                            </div>
-                                            <div class="form-check form-switch form-switch-danger">
-                                                <input class="form-check-input" type="checkbox" role="switch"
-                                                    name="is_show_home" id="is_show_home">
-                                                <label class="form-check-label" for="SwitchCheck5">Hiển thị trên trang
-                                                    chủ</label>
                                             </div>
                                         </div>
                                         <!-- end col -->
@@ -216,7 +199,7 @@
                     <div class="text-end mb-4">
                         <button type="reset" class="btn btn-danger w-sm" id="resetButton">Reset</button>
                         <button class="btn btn-success w-sm" type="submit">Thêm sản phẩm</button>
-                        <a class="btn btn-secondary w-sm" href="{{ route('product.index') }}">Quay lại trang chủ</a>
+                        <a class="btn btn-secondary w-sm" href="{{ route('product.index') }}">Quay lại danh sách</a>
                     </div>
             </div>
             <!-- end col -->
@@ -297,24 +280,6 @@
                         </div>
                     </div>
                     <!-- end card body -->
-                </div>
-                <!-- end card -->
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Title URL</h5>
-                        <input type="text" id="title" name="title">
-                    </div>
-                    <div class="card-body">
-                        <div>
-                            <div>
-                                <label class="form-label mb-0">URL</label>
-                                <input type="text" class="form-control" name="slug" id="slug" readonly>
-                                @error('slug')
-                                    <span id="slug-error" style="color: red">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <!-- end card -->
 
@@ -412,35 +377,6 @@
         <script>
             // Tích hợp CKEditor với trường 'content'
             CKEDITOR.replace('content');
-        </script>
-        <script>
-            function generateSlug(str) {
-                // Convert to lowercase
-                str = str.toLowerCase();
-
-                // Remove accents (dấu tiếng Việt)
-                str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-                // Replace spaces with hyphens
-                str = str.replace(/\s+/g, '-');
-
-                // Remove all non-alphanumeric characters except hyphens
-                str = str.replace(/[^\w\-]+/g, '');
-
-                // Remove multiple hyphens
-                str = str.replace(/\-\-+/g, '-');
-
-                // Trim hyphens from the start and end of the string
-                str = str.replace(/^-+/, '').replace(/-+$/, '');
-
-                return str;
-            }
-
-            document.getElementById('title').addEventListener('input', function() {
-                var title = this.value;
-                var slug = generateSlug(title);
-                document.getElementById('slug').value = slug;
-            });
         </script>
         <script>
             document.getElementById('price_sale').addEventListener('input', function() {
@@ -592,28 +528,6 @@
     document.addEventListener('click', function(event) {
         if (event.target.type !== 'text' && materialInput.value.trim() === '' && materialError) {
             materialError.style.display = 'block';
-        }
-    });
-</script>
-<script>
-    var slugInput = document.getElementById('slug');
-    var slugError = document.getElementById('slug-error');
-
-    slugInput.addEventListener('focus', function() {
-        if (slugError) {
-            slugError.style.display = 'none';
-        }
-    });
-
-    slugInput.addEventListener('blur', function() {
-        if (slugInput.value.trim() === '' && slugError) {
-            slugError.style.display = 'block';
-        }
-    });
-
-    document.addEventListener('click', function(event) {
-        if (event.target !== slugInput && slugInput.value.trim() === '' && slugError) {
-            slugError.style.display = 'block';
         }
     });
 </script>
