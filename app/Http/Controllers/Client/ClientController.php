@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Address;
+use App\Models\Vouchers;
 
 class ClientController extends Controller
 {
@@ -29,7 +30,18 @@ class ClientController extends Controller
         // Lấy sản phẩm hot
         $listHot = Product::where('is_hot_deal', 1)->get();
 
-        return view('client.home', compact(['listSp', 'listHot', 'data', 'products']));
+        $vouchers = Vouchers::where('is_visible', 1) // Hiển thị các voucher đang được bật
+        ->where('status', 1) // Chỉ lấy voucher hoạt động
+        ->get(['id', 'code',
+        'value',
+        'minimum_order_value',
+        'end_date',
+        'status'
+
+        ]);
+
+
+        return view('client.home', compact(['listSp', 'listHot', 'data', 'products','vouchers']));
     }
     public function getProductsByCategory(Request $request)
     {

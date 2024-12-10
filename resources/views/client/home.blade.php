@@ -1,10 +1,166 @@
 @extends('client.layouts.app')
 
+
 @section('content')
 
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
+</head>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+      .voucher-list {
+    display: flex;
+    flex-wrap: wrap; /* Đảm bảo các voucher xuống dòng nếu không đủ chỗ */
+    justify-content: center; /* Canh giữa hàng ngang */
+    gap: 20px; /* Khoảng cách giữa các ô */
+    padding: 20px;
+}
+
+.voucher {
+    width: 100%; /* Mỗi ô voucher chiếm 100% chiều rộng của hàng */
+    max-width: 400px; /* Đặt giới hạn chiều rộng */
+    border: 2px dashed #007bff;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.voucher-header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.voucher-code {
+    font-size: 18px;
+    font-weight: bold;
+    color: #28a745;
+    letter-spacing: 2px;
+    margin: 15px 0;
+}
+
+.voucher-details {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 15px;
+}
+
+.voucher-expiry {
+    color: #dc3545;
+    font-weight: bold;
+}
+.copy-icon {
+        color: #007bff;
+        cursor: pointer;
+        font-size: 18px;
+        margin-left: 10px;
+        
+       
+transition: color 0.3s ease, transform 0.2s ease;
+    }
+
+    .copy-icon:hover {
+        color: #0056b3;
+        transform: scale(1.2);
+    }
+
+    
+    
+
+    
+.fa-check {
+        color: green;
+        
+        
+animation: pop 0.3s ease;
+    }
+
+    @keyframes pop {
+        0% {
+            
+  
+transform: scale(0.8);
+        }
+        50% {
+            transform: scale(1.2);
+        }
+        
+        }
+    
+100% {
+            
+            transfor
+transform: scale(1);
+        }
+    
+
+    
+   
+.copy-notification {
+        margin-top: 5px;
+        
+      
+font-size: 12px;
+        color: green;
+        animation: fadeInOut 2s ease forwards;
+    }
+
+    
+ 
+@keyframes fadeInOut {
+        
+        
+0% {
+            
+            o
+opacity: 0;
+        }
+        
+     
+10% {
+            
+          
+opacity: 1;
+        }
+        90% {
+            opacity: 1;
+        }
+        
+        }
+     
+100% {
+            opacity: 0;
+        }
+        .copy-notification {
+    font-size: 12px;
+    color: green;
+    margin-left: 10px;
+    animation: fadeInOut 2s ease forwards;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    10% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
         .alert {
             padding: 15px;
             margin-bottom: 20px;
@@ -149,29 +305,48 @@
 
 
     <div class="searchbar-area ml-110">
-        <div class="container-fluid">
-            <form action="#" method="POST" class="main-searchbar-form">
-                <div class="row align-items-center">
-                    <div class="col-lg-3 col-md-4">
-                        <div class="custom-select product-filter-options">
-                            <select>
-                                <option value="0">Select your choose</option>
-                                <option value="1"> Men’s Collection</option>
-                                <option value="1">Women Collection</option>
-                                <option value="2">Kids Collection</option>
-                                <option value="3">Summer Collection</option>
-                                <option value="3">Winter Collection</option>
-                            </select>
+        <div class="container-fluid mt-5">
+            
+            <div class="row align-items-center">
+                <div class="voucher-list">
+                    @forelse ($vouchers as $voucher)
+                        <div class="voucher">
+                            <div class="voucher-header">
+                                <h2>SPECIAL DISCOUNT</h2>
+                            </div>
+                            <div class="voucher-code">
+                                Voucher Code: 
+                                <span id="voucher-code-{{ $voucher->id }}">{{ $voucher->code }}</span>
+                    
+           
+<i 
+                        id="icon-{{ $voucher->id }}"
+                        class="fas fa-copy copy-icon"
+                        onclick="copyToClipboard('voucher-code-{{ $voucher->id }}', 'icon-{{ $voucher->id }}')" 
+                        title="Copy to clipboard">
+                    </i>
+                            </div>
+                            <div class="voucher-details">
+                                <p>Applicable to all products</p>
+                                <p>
+                                    @if ($voucher->minimum_order_value)
+                                    Minimum order value: {{ number_format($voucher->minimum_order_value, 0) }} VNĐ
+                                    @else
+                                        Không yêu cầu giá trị đơn hàng tối thiểu
+                                    @endif
+                                </p>
+                            </div>
+                            <div class="voucher-expiry">
+                                <p>Expiry date: {{ date('d/m/Y', strtotime($voucher->end_date)) }}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-9 col-md-8">
-                        <div class="searchbar-input">
-                            <input type="text" placeholder="Search Your Products">
-                            <button type="submit">SEARCH</button>
-                        </div>
-                    </div>
+                    @empty
+                        <p>Hiện không có voucher nào được hiển thị!</p>
+                    @endforelse
                 </div>
-            </form>
+            </div>
+            
+        
         </div>
     </div>
 
@@ -694,4 +869,52 @@
 
 
     </script>
+    <script>
+    function copyToClipboard(voucherId, iconId) {
+        // Lấy nội dung mã voucher
+        const voucherCode = document.getElementById(voucherId).textContent;
+
+        // Tạo input tạm thời để sao chép
+        const tempInput = document.createElement("input");
+        document.body.appendChild(tempInput);
+        tempInput.value = voucherCode;
+        tempInput.select();
+
+        // Sao chép nội dung vào clipboard
+        const isCopied = document.execCommand("copy");
+
+        // Xóa input tạm thời
+        document.body.removeChild(tempInput);
+
+        if (isCopied) {
+            // Thay đổi icon
+            const iconElement = document.getElementById(iconId);
+            iconElement.classList.remove("fa-copy");
+            iconElement.classList.add("fa-check");
+            iconElement.style.color = "green";
+
+            // Tạo thông báo nhỏ
+            let notification = document.createElement("span");
+            notification.classList.add("copy-notification");
+            notification.textContent = "Đã sao chép!";
+            iconElement.parentElement.appendChild(notification);
+
+            // Ẩn thông báo sau 2 giây
+            setTimeout(() => {
+                iconElement.classList.remove("fa-check");
+                iconElement.classList.add("fa-copy");
+                iconElement.style.color = "#007bff";
+
+                notification.remove();
+            }, 300);
+        } else {
+            alert("Không thể sao chép mã, vui lòng thử lại!");
+        }
+    }
+</script>
+
+
+
+
+    
 @endsection

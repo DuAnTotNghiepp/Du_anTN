@@ -11,10 +11,22 @@
                 <li class="list-group-item"><strong>Tên khách hàng:</strong> {{ $order->user_name }}</li>
                 <li class="list-group-item"><strong>Email:</strong> {{ $order->user_email }}</li>
                 <li class="list-group-item"><strong>Số điện thoại:</strong> {{ $order->user_phone }}</li>
-                <li class="list-group-item"><strong>Địa chỉ:</strong> {{ $order->user_address }}</li>
-                {{-- <li class="list-group-item"><strong>Ghi chú:</strong> {{ $order->user_note ?? 'Không có' }}</li> --}}
+                <li class="list-group-item"><strong>Địa chỉ:</strong> {{ $order->address->address }}, {{ $order->address->city }}, {{ $order->address->state }}</li>
+                <li class="list-group-item"><strong>Ghi chú:</strong> {{ $order->user_note ?? 'Không có' }}</li>
                 <li class="list-group-item"><strong>Phương thức thanh toán:</strong> {{ ucfirst($order->payment_method) }}</li>
-                <li class="list-group-item"><strong>Trạng thái:</strong> {{ ucfirst($order->status) }}</li>
+                <li class="list-group-item"><strong>Trạng thái:</strong>  @if($order->status == 'pending')
+                    Đang Xác Nhận
+                @elseif($order->status == 'completed')
+                    Đã Xác Nhận
+                @elseif($order->status == 'unpaid')
+                    Chưa Trả Tiền
+                @elseif($order->status == 'canceled')
+                    Đã hủy
+                @elseif($order->status == 'shipped')
+                    Đang giao hàng
+                @else
+                    {{ $order->status }}
+                @endif</li>
             </ul>
         </div>
 

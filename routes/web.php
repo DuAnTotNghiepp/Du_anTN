@@ -12,6 +12,7 @@ use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\Client\ProductCatalogueController;
 use App\Http\Controllers\Client\ProductFavoriteController;
+use App\Http\Controllers\Client\VoucherController as ClientVoucherController;
 use App\Http\Controllers\ProductController as ControllersProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckRoleAdminMiddleware;
@@ -146,3 +147,4 @@ Route::get('/admin/revenue-stats', [AdminController::class, 'getRevenueStats']);
 
 // Group routes under admin middleware
 Route::get('blog/{id}', [BlogController::class, 'show'])->name('blog.detail');
+
