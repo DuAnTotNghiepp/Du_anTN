@@ -131,6 +131,7 @@ Route::middleware('auth', 'admin')->group(function () {
 
 
 Route::resource('cart', CartController::class);
+
 //chi tiet test
 Route::post('product/comment/{id}', [BinhLuanController::class, 'store'])->name('comment.store');
 Route::get('admin/comment/index', [ProductController::class, 'indexWithComments'])->name('comment.index');

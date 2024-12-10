@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Address;
+use App\Models\Blog;
 use App\Models\Vouchers;
 
 class ClientController extends Controller
@@ -23,7 +24,7 @@ class ClientController extends Controller
     {
         $data = Catalogues::query()->get();
         $products = Product::query()->get();
-
+        
         // Lấy tất cả sản phẩm
         $listSp = Product::where('is_active', 1)->get(); // Hiển thị tất cả sản phẩm
 
@@ -39,9 +40,10 @@ class ClientController extends Controller
         'status'
 
         ]);
+        $blogs = Blog::all(); 
 
 
-        return view('client.home', compact(['listSp', 'listHot', 'data', 'products','vouchers']));
+        return view('client.home', compact(['listSp', 'listHot', 'data', 'products','vouchers', 'blogs']));
     }
     public function getProductsByCategory(Request $request)
     {

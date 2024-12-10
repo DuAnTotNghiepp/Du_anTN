@@ -611,10 +611,12 @@ opacity: 1;
                         <div class="swiper-slide">
                             <div class="blog-card-m">
                                 <div class="blog-img-m">
-                                    <a href="blog-details.html"><img src="assets/images/blog/bm-1.png" alt></a>
+                                    @foreach ($blogs as $blog)
+                                    <a href="{{ route('blog.detail', $blog->id) }}"><img src="assets/images/blog/bm-1.png" alt></a>
                                     <div class="blog-actions">
                                         <a href="#"><i class="flaticon-share"></i></a>
                                     </div>
+                                    @endforeach
                                 </div>
                                 <div class="blog-content-m">
                                     <ul class="blog-info d-flex">
