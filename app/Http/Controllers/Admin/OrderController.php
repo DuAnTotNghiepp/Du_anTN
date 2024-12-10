@@ -41,10 +41,11 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = Order::with('items')->findOrFail($id);
+        $address = Address::find($order->user_address);
         // if ($order->items->isEmpty()) {
         //     dd('No items found for this order.'); // In ra thông báo nếu không có sản phẩm
         // }
-        return view('admin.order.show', compact('order'));
+        return view('admin.order.show', compact('order','address'));
     }
 
     /**
