@@ -4,17 +4,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::create('blog', function (Blueprint $table) {
-            $table->id(); 
+            $table->id();
             $table->string('title'); // Tiêu đề bài viết
-            $table->text('content'); // Nội dung bài viết
+            $table->text('content');
+            $table->string('image')->nullable(); // Thêm cột 'image', có thể là null
+
             $table->timestamps();
         });
     }

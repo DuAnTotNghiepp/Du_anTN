@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\User::class)->constrained();
             $table->foreignIdFor(\App\Models\Product::class)->constrained();
             $table->text('noidung');
+            $table->integer('rating')->nullable();
             $table->timestamps();
         });
     }
