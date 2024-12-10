@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -26,10 +25,10 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id'); // ID người dùng
             $table->unsignedBigInteger('product_id'); // ID sản phẩm
             $table->timestamps(); // Thời gian tạo và cập nhật bản ghi
+            $table->unsignedBigInteger('order_id')->nullable(); // Cột order_id không cần `after()`
 
             // Thiết lập khóa ngoại
-            $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade');
-            $table->foreign('product_variant_id')->references('id')->on('product__variants')->onDelete('cascade');
+
         });
     }
 
