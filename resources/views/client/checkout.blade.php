@@ -1,17 +1,16 @@
 @extends('client.layouts.app')
 
 @section('content')
-@if ($errors->any())
-    <ul>
-        @foreach ($errors->all() as $error)
-            <li>..........................{{ $error }}</li>
-        @endforeach
-    </ul>
-@endif
-
     <div class="breadcrumb-area ml-110">
         <div class="container-fluid p-0">
             <div class="row">
+                @if ($errors->any())
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach 
+                    </ul>
+                @endif
                 <div class="col-lg-12">
                     <div class="breadcrumb-bg d-flex justify-content-center align-items-center">
                         <div class="breadcrumb-shape1 position-absolute top-0 end-0">

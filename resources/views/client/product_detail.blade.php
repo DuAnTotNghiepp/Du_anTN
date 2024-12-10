@@ -147,11 +147,19 @@
                                             <input type="number" min="1" max="{{ $product->quantity }}" step="1" value="1" id="quantity-input"
                                                    data-available="{{ $product->quantity }}">
                                         </div>
+                                        @if(Auth::check())
+                                            <button type="button" class="pd-add-cart" id="buy-now-btn">
+                                                <a href="{{ route('checkout') }}" style="color:white">Mua Ngay</a>
+                                            </button>
+                                        @else
+                                        <a href="{{ route('login') }}"
+                                            onclick="event.preventDefault(); document.getElementById('login-form').submit();"
+                                            class="pd-add-cart">Mua Ngay</a>
 
-                                        <button type="button" class="pd-add-cart" id="buy-now-btn">
-                                            <a href="{{ route('checkout') }}" style="color:white">Mua Ngay</a>
-                                        </button>
-
+                                            <form id="login-form" action="{{ route('login') }}" method="GET" style="display: none;">
+                                                <input type="hidden" name="redirect_url" value="{{ url()->current() }}">
+                                            </form>
+                                        @endif
                                         <!-- Form Thêm vào Giỏ Hàng -->
                                         <form action="{{ route('cart.store') }}" method="POST" id="add-to-cart-form">
                                             @csrf
