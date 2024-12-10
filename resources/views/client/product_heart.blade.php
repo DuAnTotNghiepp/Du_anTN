@@ -24,7 +24,7 @@
                             <h2 class="page-title">Our All Products</h2>
                             <ul class="page-switcher d-flex ">
                                 <li><a href="index.html">Home</a> <i class="flaticon-arrow-pointing-to-right"></i></li>
-                                <li>Sản Phẩm Yêu Thích Của Bạn</li>
+                                <li>Product Favorites</li>
                             </ul>
                         </div>
                     </div>

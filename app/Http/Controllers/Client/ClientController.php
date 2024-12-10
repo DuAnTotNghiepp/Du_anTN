@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Address;
+use App\Models\Blog;
+use App\Models\Vouchers;
 
 class ClientController extends Controller
 {
@@ -22,14 +24,26 @@ class ClientController extends Controller
     {
         $data = Catalogues::query()->get();
         $products = Product::query()->get();
-
+        
         // Lấy tất cả sản phẩm
         $listSp = Product::where('is_active', 1)->get(); // Hiển thị tất cả sản phẩm
 
         // Lấy sản phẩm hot
         $listHot = Product::where('is_hot_deal', 1)->get();
 
-        return view('client.home', compact(['listSp', 'listHot', 'data', 'products']));
+        $vouchers = Vouchers::where('is_visible', 1) // Hiển thị các voucher đang được bật
+        ->where('status', 1) // Chỉ lấy voucher hoạt động
+        ->get(['id', 'code',
+        'value',
+        'minimum_order_value',
+        'end_date',
+        'status'
+
+        ]);
+        $blogs = Blog::all(); 
+
+
+        return view('client.home', compact(['listSp', 'listHot', 'data', 'products','vouchers', 'blogs']));
     }
     public function getProductsByCategory(Request $request)
     {
@@ -162,7 +176,7 @@ class ClientController extends Controller
     {
         return view('client.buying_guide');
     }
-}
+
 public function show_profile($id)
 {
     // Lấy thông tin người dùng theo id

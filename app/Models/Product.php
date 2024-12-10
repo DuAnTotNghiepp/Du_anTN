@@ -17,7 +17,6 @@ class Product extends Model
         'id',
         'catalogues_id',
         'name',
-        'slug',
         'sku',
         'quantity',
         'img_thumbnail',
@@ -30,9 +29,6 @@ class Product extends Model
         'is_active',
         'view',
         'is_hot_deal',
-        'is_good_deal',
-        'is_new',
-        'is_show_home',
         'created_at',
         'updated_at'
     ];

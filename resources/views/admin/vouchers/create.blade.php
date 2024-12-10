@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh Sách Đơn Hàng
+    Danh Sách Mã Giảm Giá
 @endsection
 @section('content')
     <!-- start page title -->
@@ -9,12 +9,12 @@
 
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Quản Lý Đơn Hàng</h4>
+                <h4 class="mb-sm-0">Quản Lý Mã Giảm Giá</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Quản Lý Đơn Hàng</a></li>
-                        <li class="breadcrumb-item active">Danh Sách Đơn Hàng</li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Quản Lý Mã Giảm Giá</a></li>
+                        <li class="breadcrumb-item active ">Thêm Mã Giảm Giá</li>
                     </ol>
                 </div>
 
@@ -34,8 +34,8 @@
                     <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
                         colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
                     <div class="mt-4 text-center">
-                        <h4 class="fs-semibold">Bạn có chắc chắn muốn xóa Đơn Hàng này không?</h4>
-                        <p class="text-muted fs-14 mb-4 pt-1">Xóa Đơn Hàng này sẽ xóa tất cả thông tin của Đơn Hàng khỏi cơ
+                        <h4 class="fs-semibold">Bạn có chắc chắn muốn xóa sản phẩm này không?</h4>
+                        <p class="text-muted fs-14 mb-4 pt-1">Xóa sản phẩm này sẽ xóa tất cả thông tin của sản phẩm khỏi cơ
                             sở dữ liệu.</p>
                         <div class="hstack gap-2 justify-content-center remove">
                             <button class="btn btn-link link-success fw-medium text-decoration-none"
@@ -51,7 +51,35 @@
     </div>
 
     <div class="row">
-
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center flex-wrap gap-2">
+                        <div class="flex-grow-1">
+                            <a href="{{ route('vouchers.create') }}" class="btn btn-info add-btn"><i
+                                    class="ri-add-fill me-1 align-bottom"></i> Add Voucher</a>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <div class="hstack text-nowrap gap-2">
+                                <button class="btn btn-soft-danger" id="remove-actions" onClick="deleteMultiple()"><i
+                                        class="ri-delete-bin-2-line"></i></button>
+                                <button class="btn btn-danger"><i class="ri-filter-2-line me-1 align-bottom"></i>
+                                    Filters</button>
+                                <button class="btn btn-soft-success">Import</button>
+                                <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown"
+                                    aria-expanded="false" class="btn btn-soft-info"><i class="ri-more-2-fill"></i></button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                    <li><a class="dropdown-item" href="#">All</a></li>
+                                    <li><a class="dropdown-item" href="#">Last Week</a></li>
+                                    <li><a class="dropdown-item" href="#">Last Month</a></li>
+                                    <li><a class="dropdown-item" href="#">Last Year</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--end col-->
         <div class="col-xxl-12">
             <div class="card" id="contactList">
@@ -59,8 +87,7 @@
                     <div class="row g-3">
                         <div class="col-md-4">
                             <div class="search-box">
-                                <input type="text" class="form-control search" id="searchInput"
-                                    placeholder="Search for contact...">
+                                <input type="text" class="form-control search" id="searchInput" placeholder="Search for contact...">
                                 <i class="ri-search-line search-icon"></i>
                             </div>
                         </div>
@@ -77,111 +104,80 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body m-3">
                     <div>
                         <div class="table-responsive table-card mb-3">
-                            <table class="table align-middle table-nowrap mb-0" id="customerTable">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th scope="col" style="width: 50px;">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="checkAll"
-                                                    value="option">
-                                            </div>
-                                        </th>
-                                        <th class="sort" data-sort="idsanpham" scope="col">ID</th>
-                                        <th class="sort" data-sort="name" scope="col">Tên Khách Hàng</th>
-                                        <th class="sort" data-sort="company_name" scope="col">Email</th>
-                                        <th class="sort" data-sort="email_id" scope="col">Số Điện Thoại</th>
-                                        <th class="sort" data-sort="category_name" scope="col">Địa Chỉ</th>
-                                        <th class="sort" data-sort="phone" scope="col">Tổng Giá</th>
-                                        <th class="sort" data-sort="lead_score" scope="col">Ngày Tạo</th>
-                                        <th class="sort" data-sort="" scope="col">Phương Thức Thanh Toán</th>
-                                        <th class="sort" data-sort="tags" scope="col">Trạng Thái</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="list form-check-all">
-                                    @foreach ($data as $order)
-                                        <tr>
-                                            <th scope="row">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="chk_child"
-                                                        value="option1">
-                                                </div>
-                                            </th>
-                                            <td class="id" style="display:none;"><a href="javascript:void(0);"
-                                                    class="fw-medium link-primary">#VZ001</a></td>
-                                            <td>{{ $order->id }}</td>
-                                            <td class="name">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="flex-shrink-0">
-                                                        {{ $order->user_name }}
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="company_name">{{ $order->user_email }}</td>
-                                            <td class="company_name">{{ $order->user_phone }}</td>
-                                            <td class="email_id">
-                                                @if ($order->address)
-                                                    {{ $order->address->address }}, {{ $order->address->city }}, {{ $order->address->state }}
-                                                @else
-                                                    Chưa có địa chỉ
-                                                @endif
-                                            </td>
-                                            <td class="category_name">{{ $order->total_price }}</td>
-                                            <td>{{ $order->created_at->format('d-m-Y H:i') }}</td>
-                                            <td class="company_name">
-                                                @if($order->payment_method === 'cash')
-                                                    Thanh toán khi nhận hàng
-                                                @elseif($order->payment_method === 'on')
-                                                    Thanh toán online
-                                                @endif
-                                            </td>
-                                            <td class="company_name">
-                                                @if($order->status == 'pending')
-                                                    Đang Xác Nhận
-                                                @elseif($order->status == 'completed')
-                                                    Đã Xác Nhận
-                                                @elseif($order->status == 'unpaid')
-                                                    Chưa Trả Tiền
-                                                @elseif($order->status == 'canceled')
-                                                    Đã hủy
-                                                @elseif($order->status == 'shipped')
-                                                    Đang giao hàng
-                                                @else
-                                                    {{ $order->status }}
-                                                @endif
-                                            </td>
+                            <table class="table align-middle table-nowrap mb-0 " id="customerTable">
+                                <h1 class="text-center ">Thêm Mã Giảm Giá</h1>
 
-                                            <td>
-                                                <ul class="list-inline hstack gap-2 mb-0">
-                                                    <li class="list-inline-item">
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-soft-secondary btn-sm dropdown"
-                                                                type="button" data-bs-toggle="dropdown"
-                                                                aria-expanded="false">
-                                                                <i class="ri-more-fill align-middle"></i>
-                                                            </button>
-                                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                                <li><a class="dropdown-item edit-item-btn"
-                                                                        href="{{ route('order.show', ['id' => $order->id]) }}"><i
-                                                                            class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                                        Show</a>
-                                                                </li>
-                                                                <li><a class="dropdown-item edit-item-btn"
-                                                                        href="{{ route('order.edit', ['id' => $order->id]) }}"><i
-                                                                            class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                                        Edit</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
+                                <form action="{{ route('vouchers.store') }}" method="POST">
+                                    @csrf
+                                    <div class="container mt-5">
+                                        <div class="row">
+                                            <!-- Mã Voucher -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="code" class="form-label">Mã Voucher</label>
+                                                <input type="text" name="code" id="code" class="form-control" required>
+                                            </div>
+
+                                            <!-- Loại Voucher -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="type" class="form-label">Loại Voucher</label>
+                                                <select name="type" id="type" class="form-select" required>
+                                                    <option value="fixed">Cố định</option>
+                                                    {{-- <option value="percent">Phần trăm</option> --}}
+                                                </select>
+                                            </div>
+
+                                            <!-- Giá trị -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="value" class="form-label">Giá trị</label>
+                                                <input type="number" name="value" id="value" class="form-control" required>
+                                            </div>
+
+                                            <!-- Giá trị đơn hàng tối thiểu -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="minimum_order_value" class="form-label">Giá trị đơn hàng tối thiểu</label>
+                                                <input type="number" name="minimum_order_value" id="minimum_order_value" class="form-control" required>
+                                            </div>
+
+                                            <!-- Giới hạn sử dụng -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="usage_limit" class="form-label">Giới hạn sử dụng</label>
+                                                <input type="number" name="usage_limit" id="usage_limit" class="form-control" required>
+                                            </div>
+
+                                            <!-- Ngày bắt đầu -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="start_date" class="form-label">Ngày bắt đầu</label>
+                                                <input type="datetime-local" name="start_date" id="start_date" class="form-control" required>
+                                            </div>
+
+                                            <!-- Ngày kết thúc -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="end_date" class="form-label">Ngày kết thúc</label>
+                                                <input type="datetime-local" name="end_date" id="end_date" class="form-control" required>
+                                            </div>
+                                            <!-- Trạng thái -->
+                                                <div class="col-md-6 mb-3">
+                                                    <select name="status" id="status" class="choices-categories-input" style="width: 290px;border: 2px solid #ced4da; border-radius: 5px" required>
+                                                        <option value="">Chọn Trạng Thái</option>
+                                                        <option value="active">Hoạt động</option>
+                                                        <option value="expired">Hết hạn</option>
+                                                        <option value="disabled">Tắt</option>
+                                                    </select>
+                                                </div>
+                                            <!-- Button Actions -->
+                                            <div class="col-12 d-flex justify-content-between">
+                                                <button type="submit" class="btn btn-primary">
+                                                    {{ isset($voucher) ? 'Cập nhật' : 'Tạo mới' }}
+                                                </button>
+                                                <a href="{{ route('vouchers.index') }}" class="btn btn-secondary">Quay lại</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
                             </table>
                             <div class="noresult" style="display: none">
                                 <div class="text-center">
@@ -356,55 +352,55 @@
     </div>
     <!-- end main content-->
     <script>
-        document.getElementById('searchInput').addEventListener('input', function() {
-            let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll('#customerTable tbody tr');
 
-            rows.forEach(function(row) {
-                let productName = row.querySelector('.name .flex-grow-1').textContent.toLowerCase();
-                let productPrice = row.querySelector('.company_name').textContent.toLowerCase();
-                let productCate = row.querySelector('.category_name').textContent.toLowerCase();
-                // Kiểm tra nếu tên Đơn Hàng hoặc giá khớp với giá trị tìm kiếm
-                if (productName.includes(filter) || productPrice.includes(filter) || productCate.includes(
-                        filter)) {
-                    row.style.display = ''; // Hiển thị nếu tên hoặc giá khớp với kết quả tìm kiếm
-                } else {
-                    row.style.display = 'none'; // Ẩn nếu không khớp
-                }
-            });
-        });
+document.getElementById('searchInput').addEventListener('input', function () {
+    let filter = this.value.toLowerCase();
+    let rows = document.querySelectorAll('#customerTable tbody tr');
+
+    rows.forEach(function (row) {
+        let productName = row.querySelector('.name .flex-grow-1').textContent.toLowerCase();
+        let productPrice = row.querySelector('.company_name').textContent.toLowerCase();
+        let productCate = row.querySelector('.category_name').textContent.toLowerCase();
+        // Kiểm tra nếu tên sản phẩm hoặc giá khớp với giá trị tìm kiếm
+        if (productName.includes(filter) || productPrice.includes(filter) || productCate.includes(filter)) {
+            row.style.display = ''; // Hiển thị nếu tên hoặc giá khớp với kết quả tìm kiếm
+        } else {
+            row.style.display = 'none'; // Ẩn nếu không khớp
+        }
+    });
+});
 
 
 
         document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                var productId = this.getAttribute('data-id');
-                var deleteModal = new bootstrap.Modal(document.getElementById('deleteRecordModal'));
-                deleteModal.show();
+        button.addEventListener('click', function() {
+            var productId = this.getAttribute('data-id');
+            var deleteModal = new bootstrap.Modal(document.getElementById('deleteRecordModal'));
+            deleteModal.show();
 
-                document.getElementById('confirmDelete').onclick = function() {
-                    fetch('/admin/products/' + productId + '/destroy', {
-                            method: 'DELETE',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                'Content-Type': 'application/json',
-                            }
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert(data.message);
-                                window.location.reload(); // Reload lại trang sau khi xóa
-                            } else {
-                                alert('Lỗi: ' + data.message);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Có lỗi xảy ra:', error);
-                        });
-                };
-            });
+            document.getElementById('confirmDelete').onclick = function() {
+                fetch('/admin/products/' + productId + '/destroy', {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(data.message);
+                            window.location.reload(); // Reload lại trang sau khi xóa
+                        } else {
+                            alert('Lỗi: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Có lỗi xảy ra:', error);
+                    });
+            };
         });
+    });
     </script>
 
 
@@ -412,3 +408,5 @@
 
     </html>
 @endsection
+
+

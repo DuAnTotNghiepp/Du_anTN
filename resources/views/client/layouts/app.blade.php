@@ -9,49 +9,57 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="{{asset('assets/images/favicon.png')}}" type="image/png" sizes="20x20">
-    <link rel="stylesheet" href="{{asset('assets/css/swiper.css')}}">
+    <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" type="image/png" sizes="20x20">
+    <link rel="stylesheet" href="{{ asset('assets/css/swiper.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/font/flaticon.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/font/flaticon.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assegit ts/css/bootstrap-icons.css')}}">
+    <link rel="stylesheet" href="{{ asset('assegit ts/css/bootstrap-icons.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/css/global.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/css/responsive.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/global.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
     <style>
         .price-regular {
-    text-decoration: line-through; /* Gạch ngang giá cũ */
-    color: gray; /* Màu xám cho giá cũ */
-}
+            text-decoration: line-through;
+            /* Gạch ngang giá cũ */
+            color: gray;
+            /* Màu xám cho giá cũ */
+        }
 
-.price-sale {
-    color: red; /* Màu đỏ cho giá khuyến mãi */
-    font-weight: bold; /* In đậm giá khuyến mãi */
-    font-size: 1.2em; /* Kích thước chữ lớn hơn */
-}
-.product-variation {
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
+        .price-sale {
+            color: red;
+            /* Màu đỏ cho giá khuyến mãi */
+            font-weight: bold;
+            /* In đậm giá khuyến mãi */
+            font-size: 1.2em;
+            /* Kích thước chữ lớn hơn */
+        }
 
-.product-variation:hover {
-    transform: scale(1.1); /* Phóng to nhẹ khi hover */
-}
+        .product-variation {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
 
-.pd-showcase-img img {
-    max-width: 90%;
-    transition: opacity 0.3s ease;
-}
-#hover-preview {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 5px;
-    border-radius: 5px;
-}
+        .product-variation:hover {
+            transform: scale(1.1);
+            /* Phóng to nhẹ khi hover */
+        }
+
+        .pd-showcase-img img {
+            max-width: 90%;
+            transition: opacity 0.3s ease;
+        }
+
+        #hover-preview {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 5px;
+            border-radius: 5px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
@@ -71,18 +79,19 @@
                         </div>
                         <div class="sidebar-bottom">
                             <ul class="sidebar-icons">
-                                <li>@if (auth()->check())
-                                    <!-- Hiển thị tên người dùng với liên kết đến trang profile -->
-                                    <a href="{{ route('profile', ['id' => auth()->user()->id]) }}">
-                                        <i class="flaticon-user">
-                                    </a></i>
-                                @else
-                                    <!-- Hiển thị liên kết đăng nhập và đăng ký nếu người dùng chưa đăng nhập -->
-                                    <a style="color: black" href="{{ route('login') }}">Đăng nhập</a> 
-                                    <a style="color: black" href="{{ route('register') }}">Đăng ký</a>
-                                @endif
-</li>
-                                <li><a href="product.html"><i class="flaticon-heart"></i></a></li>
+                                <li>
+                                    @if (auth()->check())
+                                        <!-- Hiển thị tên người dùng với liên kết đến trang profile -->
+                                        <a href="{{ route('profile', ['id' => auth()->user()->id]) }}">
+                                            <i class="flaticon-user">
+                                        </a></i>
+                                    @else
+                                        <!-- Hiển thị liên kết đăng nhập và đăng ký nếu người dùng chưa đăng nhập -->
+                                        <a style="color: black" href="{{ route('login') }}">Đăng nhập</a>
+                                        <a style="color: black" href="{{ route('register') }}">Đăng ký</a>
+                                    @endif
+                                </li>
+                                <li><a href="{{ route('favorites.index') }}"><i class="flaticon-heart"></i></a></li>
                                 <li class="cart-icon">
                                     <i class="flaticon-shopping-cart"></i>
                                     <div class="cart-count"><span>10</span></div>
@@ -91,30 +100,9 @@
                         </div>
 
                     </div>
-                    <div class="sidebar-bottom">
-                        <ul class="sidebar-icons">
-                            <li><a href="dashboard"><i class="flaticon-user"></i></a></li>
-                            <li><a href="{{route('favorites.index')}}"><i class="flaticon-heart"></i></a></li>
-                            <li class="cart-icon">
-                                <i class="flaticon-shopping-cart"></i>
-                                <div class="cart-count"><span>10</span></div>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="mobil-sidebar">
-        <ul class="mobil-sidebar-icons">
-            <li class="category-icon"><a href="#"><i class="flaticon-menu"></i></a></li>
-            <li><a href="dashboard.html"><i class="flaticon-user"></i></a></li>
-            <li><a href="#"><i class="flaticon-heart"></i></a></li>
-            <li class="cart-icon">
-                <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
-                <div class="cart-count"><span>10</span></div>
-            </li>
-        </ul>
     </div>
 
 
@@ -127,7 +115,8 @@
                 <ul class="cart-product-grid">
                     <li class="single-cart-product">
                         <div class="cart-product-info d-flex align-items-center">
-                            <div class="product-img"><img src="{{asset('assets/images/product/cart-p1.png')}}" alt class="img-fluid">
+                            <div class="product-img"><img src="{{ asset('assets/images/product/cart-p1.png') }}" alt
+                                    class="img-fluid">
                             </div>
                             <div class="product-info">
                                 <a href="product-details.html">
@@ -150,7 +139,8 @@
                     </li>
                     <li class="single-cart-product">
                         <div class="cart-product-info d-flex align-items-center">
-                            <div class="product-img"><img src="{{asset('assets/images/product/cart-p3.png')}}" alt class="img-fluid">
+                            <div class="product-img"><img src="{{ asset('assets/images/product/cart-p3.png') }}" alt
+                                    class="img-fluid">
                             </div>
                             <div class="product-info">
                                 <a href="product-details.html">
@@ -173,7 +163,8 @@
                     </li>
                     <li class="single-cart-product">
                         <div class="cart-product-info d-flex align-items-center">
-                            <div class="product-img"><img src="{{asset('assets/images/product/cart-p2.png')}}" alt class="img-fluid">
+                            <div class="product-img"><img src="{{ asset('assets/images/product/cart-p2.png') }}" alt
+                                    class="img-fluid">
                             </div>
                             <div class="product-info">
                                 <a href="product-details.html">
@@ -203,9 +194,10 @@
                 </div>
                 <div class="cart-btns">
                     <a href="checkout.html" class="cart-btn checkout">CHECKOUT</a>
-                    <a href="{{route('cart.index')}}" class="cart-btn cart">VIEW CART</a>
+                    <a href="{{ route('cart.index') }}" class="cart-btn cart">VIEW CART</a>
                 </div>
-                <p class="cart-shipping-text"><strong>SHIPPING:</strong> Continue shopping up to $64.08 and receive free
+                <p class="cart-shipping-text"><strong>SHIPPING:</strong> Continue shopping up to $64.08 and receive
+                    free
                     shipping. stay with EG </p>
             </div>
         </div>
@@ -330,15 +322,16 @@
                             <a href="mail.html"><span class="__cf_email__"
                                     data-cfemail="a7cec9c1c8d4d2d7d7c8d5d3e7c2dfc6cad7cbc289c4c8ca">[email&#160;:
                                     @if (auth()->check())
-                                    <!-- Hiển thị email người dùng với liên kết đến trang profile -->
-                                    {{ Auth::user()->email }}
-                                @else
-                                    <!-- Hiển thị liên kết đăng nhập và đăng ký nếu người dùng chưa đăng nhập -->
-                                    <a style="color: black" href="{{ route('login') }}">Đăng nhập</a> |
-                                    <a style="color: black" href="{{ route('register') }}">Đăng ký</a>
-                                @endif
-                                    
-                                    ]</span></a>
+                                        <!-- Hiển thị email người dùng với liên kết đến trang profile -->
+                                        {{ Auth::user()->email }}
+                                    @else
+                                        <!-- Hiển thị liên kết đăng nhập và đăng ký nếu người dùng chưa đăng nhập -->
+                                        <a style="color: black" href="{{ route('login') }}">Đăng nhập</a> |
+                                        <a style="color: black" href="{{ route('register') }}">Đăng ký</a>
+                                    @endif
+
+                                    ]
+                                </span></a>
                         </div>
                         <div class="topbar-social-icons">
                             <ul class="d-flex align-items-center">
@@ -373,7 +366,7 @@
                         class="col-xl-2 col-lg-12 col-md-12 col-sm-12 col-xs-12 d-xl-flex align-items-center justify-content-center">
                         <div class="main-logo d-flex justify-content-between align-items-center">
                             <a href="/">
-                                <img src="{{asset('assets/images/Logo.png')}}" alt>
+                                <img src="{{ asset('assets/images/Logo.png') }}" alt>
                             </a>
                             <div class="mobile-menu d-flex ">
                                 <a href="javascript:void(0)" class="hamburger d-block d-xl-none">
@@ -387,45 +380,28 @@
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 d-flex justify-content-center">
                         <nav class="main-nav">
                             <div class="inner-logo">
-                                <a href="/"><img src="{{asset('assets/images/logo-w.png')}}" alt></a>
+                                <a href="/"><img src="{{ asset('assets/images/logo-w.png') }}" alt></a>
                             </div>
                             <ul class="nav-item-list">
                                 <li><a href="/">Home</a></li>
-                </div>
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 d-flex justify-content-center">
-                    <nav class="main-nav">
-                        <div class="inner-logo">
-                            <a href="/"><img src="{{asset('assets/images/logo-w.png')}}" alt></a>
-                        </div>
-                        <ul class="nav-item-list">
-                            <li><a href="/">Home</a></li>
 
                                 <li class="has-child-menu">
                                     <a href="javascript:void(0)">Category</a>
                                     <i class="fl flaticon-plus">+</i>
                                     <ul class="sub-menu">
-                                        <li><a href="cart.html">Jacket</a></li>
-                                        <li><a href="checkout.html">Shirt</a></li>
-                                        <li><a href="login.html">Pants</a></li>
-                                        <li><a href="register.html">Dress</a></li>
-                                        <li><a href="profile.html">Accessories</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="shop">Shop</a></li>
-
-
-                                <li><a href="contact">Contact Us</a></li>
-                                <li><a href="about">About Us</a></li>
                                         <li><a href="{{ route('productcatalogue') }}">Tất cả sản phẩm</a></li>
-                                        @foreach($data as $cate)
-                                            <li><a href="{{ route('productcatalogue', ['catalogue_id' => $cate->id]) }}">{{ $cate->name }}</a></li>
+                                        @foreach ($data as $cate)
+                                            <li><a
+                                                    href="{{ route('productcatalogue', ['catalogue_id' => $cate->id]) }}">{{ $cate->name }}</a>
+                                            </li>
                                         @endforeach
                                     </ul>
                                 </li>
-                                <li><a href="shop">Shop</a></li>
-                                <li><a href="contact">Contact Us</a></li>
+                                <li><a href="{{ route('warranty') }}">Bảo Hành</a></li>
                                 <li><a href="about">About Us</a></li>
-
+                                <li><a href="{{ route('buying_guide') }}">Hướng Dẫn Mua Hàng</a></li>
+                            </ul>
+                            </li>
                             </ul>
                             <div class="inner-top">
                                 <div class="inner-mail">
@@ -495,8 +471,10 @@
                         <p class="about-company">EG STORE - We sell over 200+ branded products on our
                             web-site. </p>
                         <div class="footer-contact-actions">
-                            <div class="footer-action"><a href="#">168/170, Avenue 01, Mirpur DOHS, Bangladesh</a></div>
-                            <div class="footer-action"><span>Email : </span><a href="#"> <span class="__cf_email__"
+                            <div class="footer-action"><a href="#">168/170, Avenue 01, Mirpur DOHS,
+                                    Bangladesh</a></div>
+                            <div class="footer-action"><span>Email : </span><a href="#"> <span
+                                        class="__cf_email__"
                                         data-cfemail="563f38303916332e373b263a337835393b">[email&#160;protected]</span></a>
                             </div>
                         </div>
@@ -578,10 +556,10 @@
                             class="footer-bottom-paymant-option d-flex align-items-center justify-content-end flex-wrap">
                             <p>We Using Safe Payment For:</p>
                             <ul class="payment-options d-flex">
-                                <li><img src="{{asset('assets/images/payment/payment-1.png')}}" alt></li>
-                                <li><img src="{{asset('assets/images/payment/payment-2.png')}}" alt></li>
-                                <li><img src="{{asset('assets/images/payment/payment-3.png')}}" alt></li>
-                                <li><img src="{{asset('assets/images/payment/payment-2.png')}}" alt></li>
+                                <li><img src="{{ asset('assets/images/payment/payment-1.png') }}" alt></li>
+                                <li><img src="{{ asset('assets/images/payment/payment-2.png') }}" alt></li>
+                                <li><img src="{{ asset('assets/images/payment/payment-3.png') }}" alt></li>
+                                <li><img src="{{ asset('assets/images/payment/payment-2.png') }}" alt></li>
                             </ul>
                         </div>
                     </div>
@@ -592,14 +570,14 @@
 
 
     <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-    <script src="{{asset('assets/js/jquery-3.6.0.min.js')}}"></script>
-    <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('assets/js/popper.min.js')}}"></script>
-    <script src="{{asset('assets/js/swiper.js')}}"></script>
-    <script src="{{asset('assets/js/jquery-ui.min.js')}}"></script>
-    <script src="{{asset('assets/js/jquery.fancybox.min.js')}}"></script>
+    <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/js/swiper.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.fancybox.min.js') }}"></script>
 
-    <script src="{{asset('assets/js/main.js')}}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
 </body>
 
 <!-- Mirrored from demo-egenslab.b-cdn.net/html/eg-shop-fashion/v1/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 14 Jul 2024 08:24:04 GMT -->

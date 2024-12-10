@@ -89,5 +89,23 @@ class CartController extends Controller
         return redirect()->route('cart.index')
             ->with('success', 'Đã xóa sản phẩm khỏi giỏ hàng');
     }
+    public function calculateTotal(Request $request)
+    {
+        $request->validate([
+            'selected' => 'array', // Nhận một mảng ID của sản phẩm đã chọn
+            'selected.*' => 'exists:carts,id', // Kiểm tra từng ID có tồn tại không
+        ]);
+
+        $cartItems = Cart::with('product')
+            ->whereIn('id', $request->selected)
+            ->get();
+
+        // Tính tổng cho các sản phẩm đã chọn
+        $total = $cartItems->sum(function($item) {
+            return $item->product->price_sale * $item->quantity;
+        });
+
+        return response()->json(['total' => $total]);
+    }
 }
 

@@ -1,5 +1,5 @@
 <?php
-
+namespace App\Models;
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -9,8 +9,8 @@ class Cart extends Model
     protected $fillable = [
         'user_id',
         'product_id',
-        'variant_id',
-        'quantity'
+        'variant_id',  // Lưu variant_id
+        'quantity'  // Số lượng sản phẩm
     ];
 
     public function product()
@@ -20,7 +20,7 @@ class Cart extends Model
 
     public function variant()
     {
-        return $this->belongsTo(Variants::class);
+        return $this->belongsTo(Variants::class);  // Liên kết với bảng variants thông qua variant_id
     }
 
     public function user()
@@ -28,4 +28,3 @@ class Cart extends Model
         return $this->belongsTo(User::class);
     }
 }
-
