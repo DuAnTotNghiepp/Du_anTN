@@ -91,13 +91,17 @@
                         <div class="product-details-wrap">
                             <div class="pd-top">
                                 <ul class="product-rating d-flex align-items-center">
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star"></i></li>
-                                    {{-- <li class="count-review">(<span>23</span> Review)</li> --}}
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <li>
+                                            @if ($i <= $averageRating)
+                                                <i class="bi bi-star-fill" style="color: gold;"></i>
+                                            @else
+                                                <i class="bi bi-star"></i>
+                                            @endif
+                                        </li>
+                                    @endfor
                                 </ul>
+                                <span>(Trung bình: {{ $averageRating }} sao)</span>
                                 <h1>{{ $product->name }}</h1>
                                 <p><strong>Giá cũ:</strong> <span
                                         class="price-regular">{{ $product->price_regular }}</span>
@@ -129,10 +133,17 @@
                                     <li class="d-flex align-items-center">
                                         <span>Size :</span>
                                         <div class="size-option d-flex align-items-center">
+                                            @php
+                                                $defaultSize = $product->variants->firstWhere('name', 'Size');
+                                            @endphp
                                             @foreach ($product->variants as $variant)
                                                 @if ($variant->name === 'Size')
-                                                    <input type="radio" name="size" id="size{{ $variant->id }}" value="{{ $variant->id }}"
-                                                           {{ $loop->first ? 'checked' : '' }} class="size-option-input">
+                                                    <input type="radio"
+                                                           name="size"
+                                                           id="size{{ $variant->id }}"
+                                                           value="{{ $variant->id }}"
+                                                           {{ $defaultSize && $variant->id == $defaultSize->id ? 'checked' : '' }}
+                                                           class="size-option-input">
                                                     <label for="size{{ $variant->id }}">
                                                         <span class="p-size">{{ $variant->value }}</span>
                                                     </label>
@@ -147,11 +158,19 @@
                                             <input type="number" min="1" max="{{ $product->quantity }}" step="1" value="1" id="quantity-input"
                                                    data-available="{{ $product->quantity }}">
                                         </div>
+                                        @if(Auth::check())
+                                            <button type="button" class="pd-add-cart" id="buy-now-btn">
+                                                <a href="{{ route('checkout') }}" style="color:white">Mua Ngay</a>
+                                            </button>
+                                        @else
+                                        <a href="{{ route('login') }}"
+                                            onclick="event.preventDefault(); document.getElementById('login-form').submit();"
+                                            class="pd-add-cart">Mua Ngay</a>
 
-                                        <button type="button" class="pd-add-cart" id="buy-now-btn">
-                                            <a href="{{ route('checkout') }}" style="color:white">Mua Ngay</a>
-                                        </button>
-
+                                            <form id="login-form" action="{{ route('login') }}" method="GET" style="display: none;">
+                                                <input type="hidden" name="redirect_url" value="{{ url()->current() }}">
+                                            </form>
+                                        @endif
                                         <!-- Form Thêm vào Giỏ Hàng -->
                                         <form action="{{ route('cart.store') }}" method="POST" id="add-to-cart-form">
                                             @csrf
@@ -173,7 +192,7 @@
                                     <li class="pd-type">Danh mục sản phẩm: <span>{{ $product->catelogues->name }}</span>
                                     </li>
                                     <li class="pd-type">Mã sản phẩm: <span>{{ $product->sku }}</span></li>
-                                    <li class="pd-type">Số lượng: <span>{{ $product->quantity }}</span></li>
+                                    <li class="pd-type">Số lượng tồn kho: <span>{{ $product->quantity }}</span></li>
                                     <li class="pd-type">Chất liệu: <span>{{ $product->material }}</span></li>
                                 </ul>
                             </div>
@@ -319,7 +338,7 @@
                                     </form>
                                     <div id="response-message"></div> <!-- Nơi hiển thị phản hồi -->
                                 @else
-                                    <p class="mt-4">Vui lòng <a href="#">đăng nhập</a> để gửi bình luận.</p>
+                                    <p class="mt-4">Vui lòng <a href="{{route('login')}}">đăng nhập</a> để gửi bình luận.</p>
                                 @endauth
 
                                 <script>
