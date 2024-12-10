@@ -70,58 +70,60 @@ class CheckoutController extends Controller
 
     public function applyVoucher(Request $request)
     {
-        $quantity = session('quantity', 1);
-        $productPrice = session('product_price', 100000);
-        $tax = 5000;
         $orderTotal = $request->total_price;
-
         $voucherCode = $request->voucher_code;
-        Log::info('Current Time', ['current_time' => now()->toDateTimeString()]);
-
+        $appliedVouchers = []; // Tạo một mảng để lưu trữ mã giảm giá đã áp dụng tạm thời trong hàm
+    
+        // Kiểm tra nếu mã đã được áp dụng
+        if (in_array($voucherCode, $appliedVouchers)) {
+            return response([
+                'result' => false,
+                'message' => 'Mã giảm giá đã được áp dụng!'
+            ]);
+        }
+    
         $now = Carbon::now('Asia/Ho_Chi_Minh');
-
         $voucher = Vouchers::where('code', $voucherCode)
-        ->where('start_date', '<=', $now)
-        ->where('end_date', '>=', $now)
-        ->where('status', 'active')
-        ->first();
-
+            ->where('start_date', '<=', $now)
+            ->where('end_date', '>=', $now)
+            ->where('status', 'active')
+            ->first();
+    
         if (!$voucher) {
             return response([
                 'result' => false,
                 'message' => 'Mã giảm giá không hợp lệ hoặc đã hết hạn'
             ]);
         }
-
-        // Kiểm tra điều kiện áp dụng mã giảm giá
+    
         if ($voucher->minimum_order_value > $orderTotal) {
             return response([
                 'result' => false,
                 'message' => 'Giá trị đơn hàng không đủ để áp dụng mã giảm giá này.'
             ]);
-
         }
-
-
-        // Tính giá trị giảm giá
+    
         $discount = ($voucher->type === 'percent')
             ? ($voucher->value / 100) * $orderTotal
             : $voucher->value;
-
-
+    
         $discount = min($discount, $orderTotal);
-
-
+    
+        // Thay vì lưu vào session, chúng ta chỉ cần không cho phép áp dụng lại
+        $appliedVouchers[] = $voucherCode; // Lưu mã đã áp dụng vào mảng
+    
         $data = [
-            'voucher' => $voucher,                    // Thông tin mã giảm giá
-            'voucher_discount' => intval($discount),          // Giá trị giảm
+            'voucher_discount' => intval($discount),
             'final_total' => $orderTotal - $discount,
         ];
+    
         return response([
             'result' => true,
-            'data' => $data
+            'data' => $data,
+            'message' => 'Mã giảm giá đã được áp dụng thành công!' // Thêm thông báo thành công
         ]);
-
     }
+    
+    
 
 }
