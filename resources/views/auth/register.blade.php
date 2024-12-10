@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,19 +17,19 @@
 
     <style>
         .background-radial-gradient {
-            height: 800px;
-          background-color: hsl(218, 41%, 15%);
+          height: 900px;
+          background-color: hsl(220, 20%, 42%);
           background-image: radial-gradient(650px circle at 0% 0%,
-              hsl(218, 41%, 35%) 15%,
+              hsl(219, 12%, 49%) 15%,
               hsl(218, 41%, 30%) 35%,
-              hsl(218, 41%, 20%) 75%,
+              hsl(218, 26%, 29%) 75%,
               hsl(218, 41%, 19%) 80%,
               transparent 100%),
             radial-gradient(1250px circle at 100% 100%,
-              hsl(218, 41%, 45%) 15%,
+              hsl(218, 24%, 55%) 15%,
               hsl(218, 41%, 30%) 35%,
-              hsl(218, 41%, 20%) 75%,
-              hsl(218, 41%, 19%) 80%,
+              hsl(219, 17%, 50%) 75%,
+              hsl(219, 20%, 57%) 80%,
               transparent 100%);
         }
     
@@ -63,22 +65,22 @@
             <div class="row gx-lg-5 align-items-center mb-5">
                 <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
                     <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
-                        The best offer <br />
-                        <span style="color: hsl(218, 81%, 75%)">for your business</span>
+                        <img src="{{ Storage::url('logo.png') }}">
                     </h1>
                     <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                        Temporibus, expedita iusto veniam atque, magni tempora mollitia
-                        dolorum consequatur nulla, neque debitis eos reprehenderit quasi
-                        ab ipsum nisi dolorem modi. Quos?
+                        "Tinh Tế & Đẳng Cấp: Lựa Chọn Hoàn Hảo Cho Phong Cách Cuộc Sống"
                     </p>
                 </div>
-                <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+                <div class="col-lg-6 mb-5 mb-lg-0 position-relative ">
                     <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
                     <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
 
                     <div class="card bg-glass">
+                        <div class="card-hearder text-center mt-5">
+                            <h1>REGISTER</h1>
+                        </div>
                         <div class="card-body px-4 py-5 px-md-5">
+                            
                             <form action="{{ route('register') }}" method="POST">
                                 @csrf
                                 <div class="form-outline mb-4">

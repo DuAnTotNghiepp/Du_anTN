@@ -1,18 +1,12 @@
 @extends('client.profile')
+
+@section('content_profile')
 <style>
     body {
         font-family: Arial, sans-serif;
         background-color: #f8f9fa;
         padding: 20px;
     }
-    /* .invoice-container {
-        background: white;
-        border: 5px solid #e31e24;
-        border-radius: 10px;
-        padding: 20px;
-        max-width: 800px;
-        margin: auto;
-    } */
     .invoice-header {
         text-align: center;
         color: #e31e24;
@@ -54,7 +48,6 @@
         font-size: 12px;
     }
 </style>
-@section('content_profile')
 <div class="col-xxl-8 col-xl-8 col-lg-8">
     <div class="profile-form-wrapper">
 
@@ -210,7 +203,6 @@
 </div>
 </div>
 </div>
-@endsection
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Lấy tất cả các link "Xem chi tiết"
@@ -230,4 +222,6 @@
         });
     });
 </script>
+@endsection
+
 

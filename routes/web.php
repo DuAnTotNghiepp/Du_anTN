@@ -11,6 +11,7 @@ use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\ProductController as ControllersProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckRoleAdminMiddleware;
+use Illuminate\Support\Facades\Password;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,8 +62,11 @@ Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')-
 // Password Reset Routes
 Route::get('password/forgot', [AuthController::class, 'showForgotPasswordForm'])->name('password.forgot');
 Route::post('password/forgot', [AuthController::class, 'sendResetLinkEmail']);
+Route::post('/password/forgot', [AuthController::class, 'sendResetLinkEmail'])->name('password.forgot');
 Route::get('password/reset/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
 Route::post('password/reset', [AuthController::class, 'reset']);
+// Password::sendResetLink(['email' => $request->input('email')]);
+
 
 // Social Login Routes
 Route::get('login/facebook', [AuthController::class, 'redirectToFacebook']);

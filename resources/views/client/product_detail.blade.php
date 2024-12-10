@@ -1,5 +1,33 @@
 @extends('client.layouts.app')
+<style>
+    .scrollable-gallery {
+    display: flex;
+    overflow-x: auto; /* Cuộn ngang */
+    overflow-y: hidden; /* Ẩn cuộn dọc */
+    max-width: 100%; /* Giới hạn chiều ngang */
+    gap: 10px; /* Khoảng cách giữa các ảnh */
+}
 
+.product-variation {
+    flex: 0 0 auto; /* Bảo đảm các ảnh không co dãn */
+    width: 80px; /* Chiều rộng cố định cho ảnh */
+    height: 80px; /* Chiều cao cố định cho ảnh */
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.product-variation.active {
+    border-color: #007bff; /* Viền xanh khi được chọn */
+}
+
+.product-variation img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo ảnh cân đối */
+    border-radius: 5px; /* Bo tròn nhẹ */
+}
+
+</style>
 @section('content')
     div class="breadcrumb-area ml-110">
     <div class="container-fluid p-0">
@@ -30,14 +58,17 @@
                     <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-8">
                         <div class="product-switcher-wrap">
                             <!-- Danh sách ảnh liên quan -->
-                            <div class="nav product-tab" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                            <div class="nav product-tab scrollable-gallery" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                 <div class="product-variations">
+                                    <div class="product-variation" data-image="{{ Storage::url($product->img_thumbnail) }}">
+                                        <div class="pd-showcase-img">
+                                            <img src="{{ Storage::url($product->img_thumbnail) }}" alt="Product Image">
+                                        </div>
+                                    </div>
                                     @foreach ($product->galleries as $image)
-                                        <div class="product-variation {{ $loop->first ? 'active' : '' }}"
-                                            data-image="{{ Storage::url($image->image) }}">
+                                        <div class="product-variation {{ $loop->first ? 'active' : '' }}" data-image="{{ Storage::url($image->image) }}">
                                             <div class="pd-showcase-img">
-                                                <img src="{{ Storage::url($image->image) }}"
-                                                    alt="Product Image {{ $loop->iteration }}">
+                                                <img src="{{ Storage::url($image->image) }}" alt="Product Image {{ $loop->iteration }}">
                                             </div>
                                         </div>
                                     @endforeach
@@ -47,17 +78,29 @@
                             <div class="tab-content">
                                 <div class="tab-pane fade show active">
                                     <div class="pd-preview-img">
-                                        <img id="main-product-image" src="{{ Storage::url($product->img_thumbnail) }}"
-                                            alt="Main Product Image" class="img-fluid">
+                                        <img id="main-product-image" src="{{ Storage::url($product->img_thumbnail) }}" alt="Main Product Image" class="img-fluid">
                                     </div>
                                 </div>
                             </div>
                             <!-- Cửa sổ ảnh tạm thời (hover preview) -->
                             <div id="hover-preview" style="display: none; position: absolute; z-index: 1000;">
-                                <img id="hover-preview-image" src="" alt="Preview"
-                                    style="max-width: 300px; border: 1px solid #ccc;">
+                                <img id="hover-preview-image" src="" alt="Preview" style="max-width: 300px; border: 1px solid #ccc;">
                             </div>
                         </div>
+                       <script>
+                         document.querySelectorAll('.product-variation').forEach((element) => {
+                            element.addEventListener('click', function () {
+                                // Đổi ảnh chính
+                                const mainImage = document.getElementById('main-product-image');
+                                mainImage.src = this.dataset.image;
+                        
+                                // Cập nhật trạng thái active
+                                document.querySelectorAll('.product-variation').forEach((el) => el.classList.remove('active'));
+                                this.classList.add('active');
+                            });
+                        });
+                       </script>
+                        
                     </div>
                     <div class="col-xxl-6 col-xl-6 col-lg-6">
                         <div class="product-details-wrap">
