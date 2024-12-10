@@ -53,9 +53,6 @@ class ProductController extends Controller
             $params = $request->except('_token');
             $params['is_active'] = $request->has('is_active') ? 1 : 0;
             $params['is_hot_deal'] = $request->has('is_hot_deal') ? 1 : 0;
-            $params['is_good_deal'] = $request->has('is_good_deal') ? 1 : 0;
-            $params['is_new'] = $request->has('is_new') ? 1 : 0;
-            $params['is_show_home'] = $request->has('is_show_home') ? 1 : 0;
             if ($request->hasFile('img_thumbnail')) {
                 $flag = true;
                 $params['img_thumbnail'] = $request->file('img_thumbnail')->store('products', 'public');
@@ -65,12 +62,13 @@ class ProductController extends Controller
         }
         $res = Product::query()->create($params);
 
-
-        foreach ($request->id_variant as $value) {
-            Product_Variant::create([
-                'product_id' => $res->id,
-                'variants_id' => $value
-            ]);
+        if (!empty($request->id_variant) && is_array($request->id_variant)) {
+            foreach ($request->id_variant as $value) {
+                Product_Variant::create([
+                    'product_id' => $res->id,
+                    'variants_id' => $value
+                ]);
+            }
         }
 
         if ($request->hasFile('image')) {
@@ -131,9 +129,6 @@ class ProductController extends Controller
             $params = $request->except('_token');
             $params['is_active'] = $request->has('is_active') ? 1 : 0;
             $params['is_hot_deal'] = $request->has('is_hot_deal') ? 1 : 0;
-            $params['is_good_deal'] = $request->has('is_good_deal') ? 1 : 0;
-            $params['is_new'] = $request->has('is_new') ? 1 : 0;
-            $params['is_show_home'] = $request->has('is_show_home') ? 1 : 0;
 
             // Kiểm tra xem có ảnh mới được tải lên không
             if ($request->hasFile('img_thumbnail') && $request->file('img_thumbnail')->isValid()) {
