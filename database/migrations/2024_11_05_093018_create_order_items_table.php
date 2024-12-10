@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,10 +23,10 @@ return new class extends Migration
             $table->string('size'); // Tên kích thước của biến thể sản phẩm
             $table->string('color'); // Tên màu sắc của biến thể sản phẩm
             $table->timestamps(); // Thời gian tạo và cập nhật bản ghi
+            $table->unsignedBigInteger('order_id')->nullable(); // Cột order_id không cần `after()`
 
             // Thiết lập khóa ngoại
-            $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade');
-            $table->foreign('product_variant_id')->references('id')->on('product__variants')->onDelete('cascade');
+
         });
     }
 
