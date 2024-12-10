@@ -60,15 +60,11 @@
 
                                     <td>
                                         @php
-
                                             $colorVariant = $item->product->variants->firstWhere('name', 'Color');
-                                           
-
                                         @endphp
-                                        @if($colorVariant)
-                                            <!-- Hiển thị ô màu sắc thực tế -->
-                                            <span style="display:inline-block; width: 30px; height: 30px;border-radius: 20px; background-color: {{ $colorVariant->value }}; border: 1px solid #ddd;"></span>
-
+                                        @if($colorVariant && $colorVariant->value)
+                                            <!-- Hiển thị màu sắc thực tế -->
+                                            <span style="display:inline-block; width: 30px; height: 30px; border-radius: 20px; background-color: {{ $colorVariant->value }}; border: 1px solid #ddd;"></span>
                                         @else
                                             Không có màu
                                         @endif
@@ -76,15 +72,15 @@
 
                                     <td>
                                         @php
-
                                             $sizeVariant = $item->product->variants->firstWhere('name', 'Size');
                                         @endphp
-                                        @if($sizeVariant)
+                                        @if($sizeVariant && $sizeVariant->value)
                                             {{ $sizeVariant->value }}
                                         @else
                                             Không có kích thước
                                         @endif
                                     </td>
+
 
 
                                     <td>
@@ -170,16 +166,16 @@
         function updateTotal() {
             let total = 0;
             const checkboxes = document.querySelectorAll('.product-checkbox:checked');
-        
+
             checkboxes.forEach(checkbox => {
                 total += parseFloat(checkbox.dataset.price);
             });
-        
+
             // Cập nhật giá vào phần tổng giá
             document.getElementById('total-price').innerText = total.toLocaleString() + ' VND';
             document.getElementById('final-price').innerText = total.toLocaleString() + ' VND';
         }
-        
+
         function toggleSelectAll(selectAllCheckbox) {
             const checkboxes = document.querySelectorAll('.product-checkbox');
             checkboxes.forEach(checkbox => {
@@ -188,5 +184,5 @@
             updateTotal(); // Cập nhật tổng giá khi chọn hoặc bỏ chọn tất cả
         }
         </script>
-        
+
 @endsection
