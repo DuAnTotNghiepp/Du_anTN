@@ -110,7 +110,7 @@
                             <table class="table align-middle table-nowrap mb-0 " id="customerTable">
                                 <h1 class="text-center ">Thêm Blog</h1>
 
-                                <form action="{{ route('blog.store') }}" method="POST">
+                                <form action="{{ route('blog.store') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="container mt-5">
                                         <div class="row">
@@ -124,6 +124,10 @@
                                             <div class="col-md-6 mb-3">
                                                 <label for="type" class="form-label">Nội dung</label>
                                                 <textarea id="content" name="content" rows="5" cols="30" class="form-control" required></textarea>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="image" class="form-label">Ảnh </label>
+                                                <input type="file" name="image" id="image" class="form-control" accept="image/*" required>
                                             </div>
                                 
                                            

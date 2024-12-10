@@ -34,7 +34,9 @@
                         <table class="table cart-table">
                             <thead>
                             <tr>
-                                <th>#</th>
+                                <th>
+                                    <input type="checkbox" id="select-all" onclick="toggleSelectAll(this)" style="transform: scale(0.8);">
+                                </th>
                                 <th scope="col">Hình ảnh</th>
                                 <th scope="col">Tên sản phẩm</th>
                                 <th scope="col">Giá thường</th>
@@ -48,8 +50,9 @@
                             <tbody>
                             @foreach($cartItems as $item)
                                 <tr>
-                                    <td></td>
-                                    <td><img src="{{ asset('storage/' . $item->product->img_thumbnail) }}" alt="{{ $item->product->name }}" width="100"></td>
+                                    <td>
+                                        <input type="checkbox" class="product-checkbox" data-price="{{ $item->product->price_sale }}" onchange="updateTotal()" style="transform: scale(0.5);">
+                                    </td>                                    <td><img src="{{ asset('storage/' . $item->product->img_thumbnail) }}" alt="{{ $item->product->name }}" width="100"></td>
                                     <td>{{ $item->product->name }}</td>
                                     <td><del>{{ number_format($item->product->price_regular) }} VND</del></td>
                                     <td>{{ number_format($item->product->price_sale) }} VND</td>
@@ -59,6 +62,8 @@
                                         @php
 
                                             $colorVariant = $item->product->variants->firstWhere('name', 'Color');
+                                           
+
                                         @endphp
                                         @if($colorVariant)
                                             <!-- Hiển thị ô màu sắc thực tế -->
@@ -120,34 +125,16 @@
                 <div class="col-xxl-8 col-lg-8">
                     <table class="table total-table">
                         <tbody>
-                        <tr>
-                            <td class="tt-left">Tổng giá</td>
-                            <td></td>
-                            <td class="tt-right"></td>
-                        </tr>
-                        <tr>
-                            <td class="tt-left">Shipping</td>
-                            <td>
-                                <ul class="cart-cost-list">
-
-                                </ul>
-                            </td>
-                            <td class="tt-right cost-info-td">
-                                <ul class="cart-cost">
-                                    <li>Free</li>
-                                    <li>$15</li>
-                                    <li>$15</li>
-                                    <li>$5</li>
-                                    <li></li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tt-left">Giá: </td>
-                            <td>
-                            </td>
-                            <td class="tt-right"></td>
-                        </tr>
+                            <tbody>
+                                <tr>
+                                    <td class="tt-left">Tổng giá</td>
+                                    <td class="tt-right"><span id="total-price">{{ number_format($total) }} VND</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="tt-left">Giá:</td>
+                                    <td class="tt-right"><span id="final-price">{{ number_format($total) }} VND</span></td>
+                                </tr>
+                            </tbody>
                         </tbody>
                     </table>
                     <div class="cart-proceed-btns">
@@ -179,4 +166,27 @@
             </div>
         </div>
     </div>
+    <script>
+        function updateTotal() {
+            let total = 0;
+            const checkboxes = document.querySelectorAll('.product-checkbox:checked');
+        
+            checkboxes.forEach(checkbox => {
+                total += parseFloat(checkbox.dataset.price);
+            });
+        
+            // Cập nhật giá vào phần tổng giá
+            document.getElementById('total-price').innerText = total.toLocaleString() + ' VND';
+            document.getElementById('final-price').innerText = total.toLocaleString() + ' VND';
+        }
+        
+        function toggleSelectAll(selectAllCheckbox) {
+            const checkboxes = document.querySelectorAll('.product-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+            updateTotal(); // Cập nhật tổng giá khi chọn hoặc bỏ chọn tất cả
+        }
+        </script>
+        
 @endsection
