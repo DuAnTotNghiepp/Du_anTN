@@ -58,4 +58,11 @@ class User extends Authenticatable
     }
 
 
+    // app/Models/User.php
+public function addresses()
+{
+    return $this->hasMany(Address::class, 'user_id');
+}
+
+
 }

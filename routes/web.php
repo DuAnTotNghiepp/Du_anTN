@@ -16,6 +16,7 @@ use App\Http\Controllers\Client\VoucherController as ClientVoucherController;
 use App\Http\Controllers\ProductController as ControllersProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckRoleAdminMiddleware;
+use Illuminate\Support\Facades\Password;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,9 +42,11 @@ Route::get('register', [AuthController::class, 'showFormRegister']);
 Route::post('register', [AuthController::class, 'register'])->name('register');
 
 // Client Routes
-
 Route::get('/', [ClientController::class, 'index'])->name('index');
+
+// Route::get('product/{id}', [ClientController::class, 'show'])->name('product.product_detail');=
 Route::get('product/{id}', [ClientController::class, 'show'])->middleware('save.redirect')->name('product.product_detail');
+
 
 
 //profile
@@ -55,13 +58,11 @@ Route::post('/profile/address', [ClientController::class, 'storeAddress'])->name
 Route::put('/profile/address/update/{id}', [ClientController::class, 'updateAddress'])->name('profile.address.update');
 Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])->name('my_order.invoice');
 
+// Route::get('/checkout', [CheckoutController::class, 'form'])->middleware('auth')->name('checkout');
+// Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
+// Route::post('/orders/vnpay_ment', [OrderController::class, 'vnpay_ment'])->name('orders.vnpay_ment');
 
-
-Route::get('/checkout', [CheckoutController::class, 'form'])->middleware('auth')->name('checkout');
-Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
-Route::post('/orders/vnpay_ment', [OrderController::class, 'vnpay_ment'])->name('orders.vnpay_ment');
-
-Route::get('/checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('checkout.applyVoucher');
+// Route::get('/checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('checkout.applyVoucher');
 
 Route::get('/checkout', [CheckoutController::class, 'form'])->name('checkout');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
@@ -81,12 +82,14 @@ Route::post('/favorites/toggle', [ProductFavoriteController::class, 'toggleFavor
 Route::get('/favorites', [ProductFavoriteController::class, 'favoriteProducts'])->name('favorites.index');
 Route::get('/favorites/count', [ProductFavoriteController::class, 'favoriteCount'])->name('favorites.count');
 
-
 // Password Reset Routes
 Route::get('password/forgot', [AuthController::class, 'showForgotPasswordForm'])->name('password.forgot');
 Route::post('password/forgot', [AuthController::class, 'sendResetLinkEmail']);
+Route::post('/password/forgot', [AuthController::class, 'sendResetLinkEmail'])->name('password.forgot');
 Route::get('password/reset/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
 Route::post('password/reset', [AuthController::class, 'reset']);
+// Password::sendResetLink(['email' => $request->input('email')]);
+
 
 // Social Login Routes
 Route::get('login/facebook', [AuthController::class, 'redirectToFacebook']);

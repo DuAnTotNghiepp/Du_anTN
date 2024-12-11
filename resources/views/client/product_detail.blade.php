@@ -1,5 +1,33 @@
 @extends('client.layouts.app')
+<style>
+    .scrollable-gallery {
+    display: flex;
+    overflow-x: auto; /* Cuộn ngang */
+    overflow-y: hidden; /* Ẩn cuộn dọc */
+    max-width: 100%; /* Giới hạn chiều ngang */
+    gap: 10px; /* Khoảng cách giữa các ảnh */
+}
 
+.product-variation {
+    flex: 0 0 auto; /* Bảo đảm các ảnh không co dãn */
+    width: 80px; /* Chiều rộng cố định cho ảnh */
+    height: 80px; /* Chiều cao cố định cho ảnh */
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.product-variation.active {
+    border-color: #007bff; /* Viền xanh khi được chọn */
+}
+
+.product-variation img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo ảnh cân đối */
+    border-radius: 5px; /* Bo tròn nhẹ */
+}
+
+</style>
 @section('content')
     <div class="container-fluid p-0">
         <div class="row">
@@ -22,68 +50,56 @@
             </div>
         </div>
     </div>
-
-
-
     <div class="product-details-area mt-100 ml-110">
         <div class="container">
             <div class="product-details-wrapper">
                 <div class="row">
                     <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-8">
                         <div class="product-switcher-wrap">
-                            <div class="nav product-tab" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                <div class="product-variation active" id="v-pills-home-tab" data-bs-toggle="pill"
-                                     data-bs-target="#v-pills-home" role="tab" aria-controls="v-pills-home">
-                                    <div class="pd-showcase-img">
-                                        <img src="assets/images/product/pd-sm1.png" alt>
+                            <!-- Danh sách ảnh liên quan -->
+                            <div class="nav product-tab scrollable-gallery" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                <div class="product-variations">
+                                    <div class="product-variation" data-image="{{ Storage::url($product->img_thumbnail) }}">
+                                        <div class="pd-showcase-img">
+                                            <img src="{{ Storage::url($product->img_thumbnail) }}" alt="Product Image">
+                                        </div>
                                     </div>
+                                    @foreach ($product->galleries as $image)
+                                        <div class="product-variation {{ $loop->first ? 'active' : '' }}" data-image="{{ Storage::url($image->image) }}">
+                                            <div class="pd-showcase-img">
+                                                <img src="{{ Storage::url($image->image) }}" alt="Product Image {{ $loop->iteration }}">
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
-                                <div class="product-variation" id="v-pills-profile-tab" data-bs-toggle="pill"
-                                     data-bs-target="#v-pills-profile" role="tab" aria-controls="v-pills-profile">
-                                    <div class="pd-showcase-img">
-                                        <img src="assets/images/product/pd-sm2.png" alt>
-                                    </div>
-                                </div>
-                                <div class="product-variation" id="v-pills-messages-tab" data-bs-toggle="pill"
-                                     data-bs-target="#v-pills-messages" role="tab" aria-controls="v-pills-messages">
-                                    <div class="pd-showcase-img">
-                                        <img src="assets/images/product/pd-sm3.png" alt>
-                                    </div>
-                                </div>
-                                <div class="product-variation" id="v-pills-settings-tab" data-bs-toggle="pill"
-                                     data-bs-target="#v-pills-settings" role="tab" aria-controls="v-pills-settings">
-                                    <div class="pd-showcase-img">
-                                        <img src="assets/images/product/pd-sm4.png" alt>
+                            </div>
+                            <!-- Ảnh chính -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active">
+                                    <div class="pd-preview-img">
+                                        <img id="main-product-image" src="{{ Storage::url($product->img_thumbnail) }}" alt="Main Product Image" class="img-fluid">
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-content" id="v-pills-tabContent">
-                                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
-                                     aria-labelledby="v-pills-home-tab">
-                                    <div class="pd-preview-img">
-                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
-                                     aria-labelledby="v-pills-profile-tab">
-                                    <div class="pd-preview-img">
-                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
-                                     aria-labelledby="v-pills-messages-tab">
-                                    <div class="pd-preview-img">
-                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-settings" role="tabpanel"
-                                     aria-labelledby="v-pills-settings-tab">
-                                    <div class="pd-preview-img">
-                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
-                                    </div>
-                                </div>
+                            <!-- Cửa sổ ảnh tạm thời (hover preview) -->
+                            <div id="hover-preview" style="display: none; position: absolute; z-index: 1000;">
+                                <img id="hover-preview-image" src="" alt="Preview" style="max-width: 300px; border: 1px solid #ccc;">
                             </div>
                         </div>
+                       <script>
+                         document.querySelectorAll('.product-variation').forEach((element) => {
+                            element.addEventListener('click', function () {
+                                // Đổi ảnh chính
+                                const mainImage = document.getElementById('main-product-image');
+                                mainImage.src = this.dataset.image;
+                        
+                                // Cập nhật trạng thái active
+                                document.querySelectorAll('.product-variation').forEach((el) => el.classList.remove('active'));
+                                this.classList.add('active');
+                            });
+                        });
+                       </script>
+                        
                     </div>
 
 
@@ -96,7 +112,6 @@
                                     <li><i class="bi bi-star-fill"></i></li>
                                     <li><i class="bi bi-star-fill"></i></li>
                                     <li><i class="bi bi-star"></i></li>
-                                    {{-- <li class="count-review">(<span>23</span> Review)</li> --}}
                                 </ul>
                                 <h1>{{ $product->name }}</h1>
                                 <p><strong>Giá cũ:</strong> <span
@@ -131,8 +146,13 @@
                                         <div class="size-option d-flex align-items-center">
                                             @foreach ($product->variants as $variant)
                                                 @if ($variant->name === 'Size')
+
+                                                    <input type="radio" name="size" id="size{{ $variant->id }}"
+                                                        value="{{ $variant->value }}" {{ $loop->first ? 'checked' : '' }}>
+
                                                     <input type="radio" name="size" id="size{{ $variant->id }}" value="{{ $variant->id }}"
                                                            {{ $loop->first ? 'checked' : '' }} class="size-option-input">
+
                                                     <label for="size{{ $variant->id }}">
                                                         <span class="p-size">{{ $variant->value }}</span>
                                                     </label>
@@ -147,6 +167,24 @@
                                             <input type="number" min="1" max="{{ $product->quantity }}" step="1" value="1" id="quantity-input"
                                                    data-available="{{ $product->quantity }}">
                                         </div>
+
+                                        <button type="button" class="pd-add-cart" id="buy-now-btn">
+                                            <a href="{{ route('checkout') }}" style="color:white">Mua Ngay</a>
+                                        </button>
+
+                                        <form action="{{ route('cart.store') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <input type="hidden" name="color"
+                                                value="{{ $product->variants->firstWhere('name', 'Color')->value }}">
+                                            <input type="hidden" name="size"
+                                                value="{{ $product->variants->firstWhere('name', 'Size')->value }}">
+                                            <input type="hidden" name="quantity" value="1" id="cart-quantity">
+
+                                            <button type="submit" class="pd-add-cart">Thêm vào giỏ hàng</button>
+                                        </form>
+
+
                                         @if(Auth::check())
                                             <button type="button" class="pd-add-cart" id="buy-now-btn">
                                                 <a href="{{ route('checkout') }}" style="color:white">Mua Ngay</a>
@@ -185,7 +223,6 @@
                                     <li class="pd-type">Chất liệu: <span>{{ $product->material }}</span></li>
                                 </ul>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -240,7 +277,6 @@
                                             <div class="additition-variant"><span>:</span>S, M, L, Xl, XXL</div>
                                         </li>
                                         <li>
-
                                             <p><strong>Chất liệu:</strong> {{ $product->material }}</p>
                                         </li>
                                     </ul>
@@ -416,10 +452,60 @@
                 </div>
             </div>
         </div>
+    </div>
+    <script>
+        document.getElementById('buy-now-btn').addEventListener('click', function(event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định nếu nút nằm trong một form
+            // Lấy thông tin người dùng đã chọn
+            const color = document.querySelector('input[name="color"]:checked').value;
+            const size = document.querySelector('input[name="size"]:checked').value;
+            const quantity = document.getElementById('quantity-input').value;
+            const productImage = "{{ Storage::url($product->img_thumbnail) }}";
+            const productName = "{{ $product->name }}";
+            const productPrice = "{{ $product->price_sale }}";
+            // Tạo URL đến trang checkout
+            const checkoutUrl =
+                `{{ route('checkout') }}?color=${encodeURIComponent(color)}&size=${encodeURIComponent(size)}&quantity=${encodeURIComponent(quantity)}&image=${encodeURIComponent(productImage)}&name=${encodeURIComponent(productName)}&price=${encodeURIComponent(productPrice)}`;
+            // Chuyển hướng đến trang checkout
+            window.location.href = checkoutUrl;
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const productVariations = document.querySelectorAll('.product-variation');
+            const mainProductImage = document.getElementById('main-product-image');
+            const hoverPreview = document.getElementById('hover-preview');
+            const hoverPreviewImage = document.getElementById('hover-preview-image');
+            // Hover: Hiển thị cửa sổ ảnh liên quan
+            productVariations.forEach(variation => {
+                variation.addEventListener('mouseover', function(event) {
+                    const imageUrl = this.dataset.image;
+                    if (imageUrl) {
+                        hoverPreviewImage.src = imageUrl;
+                        hoverPreview.style.display = 'block';
+                        hoverPreview.style.top = event.pageY + 10 + 'px';
+                        hoverPreview.style.left = event.pageX + 10 + 'px';
+                    }
+                });
+                variation.addEventListener('mousemove', function(event) {
+                    hoverPreview.style.top = event.pageY + 10 + 'px';
+                    hoverPreview.style.left = event.pageX + 10 + 'px';
+                });
+                variation.addEventListener('mouseout', function() {
+                    hoverPreview.style.display = 'none';
+                });
+                // Click: Cập nhật ảnh chính
+                variation.addEventListener('click', function() {
+                    const imageUrl = this.dataset.image;
+                    if (imageUrl) {
+                        mainProductImage.src = imageUrl;
+                        // Xóa class active khỏi tất cả các ảnh
+                        productVariations.forEach(v => v.classList.remove('active'));
+                        // Thêm class active vào ảnh đã click
+                        this.classList.add('active');
+                    }
+                });
+            });
+        });
 
-
-
-        <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const colorRadios = document.querySelectorAll('input[name="color"]');
                 const sizeRadios = document.querySelectorAll('input[name="size"]');

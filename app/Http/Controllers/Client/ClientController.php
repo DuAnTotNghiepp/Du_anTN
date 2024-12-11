@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
 use App\Models\Catalogues;
 use App\Models\BinhLuan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
 use App\Models\Product;
 use App\Models\Variants;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
@@ -100,6 +102,9 @@ class ClientController extends Controller
         $query->where('name', 'like', '%' . $searchTerm . '%');
     }
 
+
+    public function checkout(){
+
     if (is_numeric($minPrice) && is_numeric($maxPrice)) {
         $query->whereBetween('price_regular', [$minPrice, $maxPrice]);
     }
@@ -127,23 +132,34 @@ class ClientController extends Controller
     // }
     public function checkout()
     {
+
         return view('client.checkout');
     }
 
-    // public function show_variants($id)
-    // {
-    //     // Lấy sản phẩm và các biến thể của sản phẩm
+    public function show_variants($id)
+{
+    // Lấy sản phẩm kèm các biến thể
     // $product = Product::with('variants')->findOrFail($id);
-
-    // // Lọc biến thể theo `color` và `size`
+    // $product1 = Product::with('ProductGallerie')->findOrFail($id);
+    // // Kiểm tra nếu có biến thể thì lọc theo `color` và `size`
     // $colors = $product->variants->where('name', 'color')->pluck('value')->unique();
     // $sizes = $product->variants->where('name', 'size')->pluck('value')->unique();
 
-    //    // Kiểm tra dữ liệu
-    //   dd($product, $colors, $sizes);
-    // // Trả về view với dữ liệu
-    // return view('client.product_detail', compact('product', 'colors', 'sizes'));
-    // }
+    // // Truyền biến `product`, `colors` và `sizes` vào view
+    // return view('client.product_detail', compact('product', 'product1','colors', 'sizes'));
+
+
+
+    $product = Product::with(['variants', 'galleries'])->findOrFail($id);
+
+    // Lọc color và size từ variants
+    $colors = $product->variants->where('name', 'color')->pluck('value')->unique();
+    $sizes = $product->variants->where('name', 'size')->pluck('value')->unique();
+
+    // Truyền dữ liệu vào view
+    return view('client.product_detail', compact('product', 'colors', 'sizes'));
+
+
 
     public function show_variants($id)
     {
@@ -230,6 +246,7 @@ public function storeAddress(Request $request)
     ]);
 
     return redirect()->route('profile', ['id' => auth()->user()->id])->with('success', 'Địa chỉ đã được lưu thành công!');
+
 }
 public function updateAddress(Request $request, $id)
 {
@@ -271,6 +288,85 @@ public function exportInvoice($id)
         }
     }
 
+
+
+public function show_profile($id)
+{
+    // Lấy thông tin người dùng theo id
+    $user = User::find($id);
+    $addresses = $user->addresses;
+
+    // Kiểm tra nếu người dùng không tồn tại
+    if (!$user) {
+        return redirect()->back()->with('error', 'Người dùng không tồn tại');
+    }
+
+    // Truyền dữ liệu người dùng vào view 'client.profile'
+    return view('client.my_profile', compact('user','addresses'));
+}
+public function show_my_order()
+{
+    // Lấy danh sách đơn hàng của người dùng hiện tại
+    $orders = Order::where('user_id', Auth::id())
+        ->with(['product', 'user.addresses']) // Lấy thông tin sản phẩm và địa chỉ thông qua user
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    return view('client.my_order', compact('orders'));
+}
+
+
+
+public function storeAddress(Request $request)
+{
+    $request->validate([
+        'first_name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'email' => 'required|email',
+        'contact_number' => 'required|string|max:15',
+        'city' => 'required|string|max:255',
+        'state' => 'required|string|max:255',
+        'commune' => 'required|string|max:255',
+        'address' => 'required|string|max:255',
+    ]);
+
+    Address::create([
+        'user_id' => auth()->id(),
+        'first_name' => $request->first_name,
+        'last_name' => $request->last_name,
+        'email' => $request->email,
+        'contact_number' => $request->contact_number,
+        'city' => $request->city,
+        'state' => $request->state,
+        'commune' => $request->commune,
+        'address' => $request->address,
+    ]);
+
+    return redirect()->route('profile', ['id' => auth()->user()->id])->with('success', 'Địa chỉ đã được lưu thành công!');
+}
+public function updateAddress(Request $request, $id)
+{
+    // Lấy địa chỉ từ ID
+    $address = Address::findOrFail($id);
+
+    // Cập nhật thông tin địa chỉ
+    $address->update($request->all());
+
+    // Redirect hoặc trả về thông báo
+    return redirect()->back()->with('success', 'Địa chỉ đã được cập nhật.');
+}
+
+public function exportInvoice($id)
+{
+    // Lấy thông tin chi tiết đơn hàng
+    $order = Order::with('product')->findOrFail($id);
+
+    // Sử dụng Facade PDF để render view và tạo file PDF
+    $pdf = Pdf::loadView('client.invoice', compact('order'));
+
+    // Trả file PDF về cho người dùng tải xuống
+    return $pdf->download('invoice-' . $order->id . '.pdf');
+}
 
 
 }

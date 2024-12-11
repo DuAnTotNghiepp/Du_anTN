@@ -228,14 +228,12 @@ class ProductController extends Controller
         }
     }
 
-
     //binh luan
     public function indexWithComments()
     {
         $listPro = Product::withCount('binh_luans')->latest('id')->get();
         return view('admin.comment.index', compact('listPro'));
     }
-
 
     public function getVariants($id)
     {
@@ -248,6 +246,5 @@ class ProductController extends Controller
         // Trả về các biến thể của sản phẩm
         return response()->json($product->variants);
     }
-
 
 }

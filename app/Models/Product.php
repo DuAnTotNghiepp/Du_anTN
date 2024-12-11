@@ -47,6 +47,11 @@ class Product extends Model
         return $this->hasMany(BinhLuan::class, 'product_id');
     }
 
+        public function galleries()
+    {
+        return $this->hasMany(ProductGallerie::class);
+    }
+
     public function orders()
     {
         return $this->hasMany(Order::class);
@@ -59,4 +64,5 @@ class Product extends Model
     {
         return $this->belongsToMany(Product::class, 'product_favorites', 'user_id', 'product_id');
     }
+
 }

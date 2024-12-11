@@ -33,6 +33,19 @@
             },
             "type": "library",
             "extra": {
+
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Barryvdh\\DomPDF\\ServiceProvider"
+                    ],
+                    "aliases": {
+                        "Pdf": "Barryvdh\\DomPDF\\Facade\\Pdf",
+                        "PDF": "Barryvdh\\DomPDF\\Facade\\Pdf"
+                    }
+
                 "laravel": {
                     "aliases": {
                         "PDF": "Barryvdh\\DomPDF\\Facade\\Pdf",
@@ -44,6 +57,7 @@
                 },
                 "branch-alias": {
                     "dev-master": "3.0-dev"
+
                 }
             },
             "autoload": {

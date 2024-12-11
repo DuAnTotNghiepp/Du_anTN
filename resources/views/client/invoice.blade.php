@@ -8,6 +8,7 @@
     <style>
         body {
             /* font-family: Arial, sans-serif; */
+
             font-family: 'DejaVu Sans', sans-serif;
             background-color: #f8f9fa;
             padding: 20px;
@@ -87,7 +88,8 @@
         $address = $order->user->addresses->first(); // Lấy địa chỉ đầu tiên của người dùng
             @endphp
             @if ($address)
-            <p><strong>Địa chỉ:</strong>{{ $address->address ?? '' }}, {{ $address->commune ?? '' }}, {{ $address->state ?? '' }}, {{ $address->city ?? '' }}</p>
+            <p><strong>Địa chỉ:</strong>{{ $address->first_name ?? '' }} {{ $address->last_name ?? '' }},</p>
+            <p>{{ $address->address ?? '' }}, {{ $address->commune ?? '' }}, {{ $address->state ?? '' }}, {{ $address->city ?? '' }}</p>
             <p><strong>Số điện thoại:</strong> {{ $address->contact_number ?? '' }}</p>
         @else
         <p>Không có thông tin địa chỉ</p>
