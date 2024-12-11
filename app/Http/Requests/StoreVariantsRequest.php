@@ -22,7 +22,17 @@ class StoreVariantsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'size_value' => 'required|alpha|max:255',
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+
+            'size_value.required' => 'Trường Size là bắt buộc.',
+            'size_value.string' => 'Giá trị Size phải là một chuỗi.',
+            'size_value.alpha' => 'Giá trị Size chỉ được phép chứa các chữ cái.',
+            'size_value.max' => 'Giá trị Size không được vượt quá 255 ký tự.',
         ];
     }
 }

@@ -40,6 +40,15 @@
     <body>
         <!-- start page title -->
         <div class="row">
+            {{-- @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif --}}
 
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
@@ -97,9 +106,13 @@
                             <div class="mb-3">
                                 <label class="form-label">Ảnh liên Quan</label>
                                 <div class="dropzone">
-                                    <input type="file" id="product-image-input" name="image[]" multiple accept="image/png, image/gif, image/jpeg" class="form-control">
+                                    <input type="file" id="product-image-input" name="image[]" multiple
+                                        accept="image/png, image/gif, image/jpeg" class="form-control">
                                     <div class="preview-gallery" id="galleryPreview"></div>
                                 </div>
+                                @error('image')
+                                <span style="color: red">{{ $message }}</span>
+                            @enderror
                             </div>
 
                             <div class="mb-3">
@@ -117,7 +130,9 @@
                                     <div class="mb-3 mb-lg-0">
                                         <label for="choices-priority-input" class="form-label">Giá Thường</label>
 
-                                        <input type="number" class="form-control" name="price_regular" id="price_regular" step="0.01" data-provider="flatpickr" data-date-format="d M, Y" value="{{ old('price_regular') }}">
+                                        <input type="number" class="form-control" name="price_regular" id="price_regular"
+                                            step="0.01" data-provider="flatpickr" data-date-format="d M, Y"
+                                            value="{{ old('price_regular') }}">
                                         @error('price_regular')
                                             <span id="price-regular-error" style="color: red">{{ $message }}</span>
                                         @enderror
@@ -128,8 +143,10 @@
                                 <div class="col-lg-4">
                                     <div class="mb-3 mb-lg-0">
                                         <label for="choices-status-input" class="form-label">Giá Khuyến Mãi</label>
-                                        <input type="number" class="form-control" name="price_sale" id="price_sale" value="{{ old('price_sale') }}">
-                                        <span id="priceSaleError" style="color: red; display: none;">Giá khuyến mãi không được lớn hơn giá thường.</span>
+                                        <input type="number" class="form-control" name="price_sale" id="price_sale"
+                                            value="{{ old('price_sale') }}">
+                                        <span id="priceSaleError" style="color: red; display: none;">Giá khuyến mãi không
+                                            được lớn hơn giá thường.</span>
                                         @error('price_sale')
                                             <span id="price-sale-error" style="color: red">{{ $message }}</span>
                                         @enderror
@@ -139,7 +156,9 @@
                                     <div>
                                         <label for="datepicker-deadline-input" class="form-label">Số Lượng</label>
 
-                                        <input type="number" class="form-control" name="quantity" id="quantity" data-provider="flatpickr" data-date-format="d M, Y" value="{{ old('quantity') }}">
+                                        <input type="number" class="form-control" name="quantity" id="quantity"
+                                            data-provider="flatpickr" data-date-format="d M, Y"
+                                            value="{{ old('quantity') }}">
                                         @error('quantity')
                                             <span id="quantity-error" style="color: red">{{ $message }}</span>
                                         @enderror
@@ -245,14 +264,21 @@
                     </div>
                     <div class="card-body">
                         <div>
-                            <input type="text" class="form-control" name="material" id="material" data-provider="flatpickr" data-date-format="d M, Y">
+                            <label for="material_id">Chất liệu</label>
+                            <select name="material_id" id="material_id" >
+                                <option value="">Chọn chất liệu</option>
+                                @foreach($materials as $material)
+                                    <option value="{{ $material->id }}">{{ $material->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        @error('material')
+                        @error('material_id')
                             <span id="material-error" style="color: red">{{ $message }}</span>
                         @enderror
                     </div>
                     <!-- end card body -->
                 </div>
+
                 <!-- end card -->
                 <div class="card">
                     <div class="card-header">
@@ -262,15 +288,17 @@
                         <div class="mb-3">
                             <label for="choices-categories-input" class="form-label">Màu Sắc</label>
                             @foreach ($Color as $col)
-                                <input type="checkbox" value="{{$col->id}}" name="id_variant[]">
-                                <div style="width: 20px; height: 20px; background-color: {{$col->value}}; display: inline-block; border: 1px solid #ccc;"></div>
+                                <input type="checkbox" value="{{ $col->id }}" name="id_variant[]">
+                                <div
+                                    style="width: 20px; height: 20px; background-color: {{ $col->value }}; display: inline-block; border: 1px solid #ccc;">
+                                </div>
                             @endforeach
                         </div>
                         <div class="mb-3">
                             <label for="choices-categories-input" class="form-label">Kích Thước</label>
                             @foreach ($Size as $col)
-                                <input type="checkbox" value="{{$col->id}}" name="id_variant[]">
-                                {{$col->value}}
+                                <input type="checkbox" value="{{ $col->id }}" name="id_variant[]">
+                                {{ $col->value }}
                             @endforeach
                         </div>
                     </div>
@@ -299,23 +327,7 @@
                     <!-- end card body -->
                 </div>
                 <!-- end card -->
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Title URL</h5>
-                        <input type="text" id="title" name="title">
-                    </div>
-                    <div class="card-body">
-                        <div>
-                            <div>
-                                <label class="form-label mb-0">URL</label>
-                                <input type="text" class="form-control" name="slug" id="slug" readonly>
-                                @error('slug')
-                                    <span id="slug-error" style="color: red">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 <!-- end card -->
 
                 <footer class="footer">
@@ -436,11 +448,11 @@
                 return str;
             }
 
-            document.getElementById('title').addEventListener('input', function() {
-                var title = this.value;
-                var slug = generateSlug(title);
-                document.getElementById('slug').value = slug;
-            });
+            // document.getElementById('title').addEventListener('input', function() {
+            //     var title = this.value;
+            //     var slug = generateSlug(title);
+            //     document.getElementById('slug').value = slug;
+            // });
         </script>
         <script>
             document.getElementById('price_sale').addEventListener('input', function() {
@@ -512,111 +524,111 @@
                 }
             });
         </script>
-<script>
-    var quantityInput = document.getElementById('quantity');
-    var quantityError = document.getElementById('quantity-error');
+        <script>
+            var quantityInput = document.getElementById('quantity');
+            var quantityError = document.getElementById('quantity-error');
 
-    quantityInput.addEventListener('focus', function() {
-        if (quantityError) {
-            quantityError.style.display = 'none';
-        }
-    });
-</script>
- <script>
-    var userManualInput = document.getElementById('user_manual');
-    var userManualError = document.getElementById('user-manual-error');
+            quantityInput.addEventListener('focus', function() {
+                if (quantityError) {
+                    quantityError.style.display = 'none';
+                }
+            });
+        </script>
+        <script>
+            var userManualInput = document.getElementById('user_manual');
+            var userManualError = document.getElementById('user-manual-error');
 
-    userManualInput.addEventListener('focus', function() {
-        if (userManualError) {
-            userManualError.style.display = 'none';
-        }
-    });
+            userManualInput.addEventListener('focus', function() {
+                if (userManualError) {
+                    userManualError.style.display = 'none';
+                }
+            });
 
-    userManualInput.addEventListener('blur', function() {
-        if (userManualInput.value.trim() === '' && userManualError) {
-            userManualError.style.display = 'block';
-        }
-    });
-</script>
-<script>
-    var skuInput = document.getElementById('sku');
-    var skuError = document.getElementById('sku-error');
-    var generateButton = document.getElementById('generateSKU');
+            userManualInput.addEventListener('blur', function() {
+                if (userManualInput.value.trim() === '' && userManualError) {
+                    userManualError.style.display = 'block';
+                }
+            });
+        </script>
+        <script>
+            var skuInput = document.getElementById('sku');
+            var skuError = document.getElementById('sku-error');
+            var generateButton = document.getElementById('generateSKU');
 
-    skuInput.addEventListener('focus', function() {
-        if (skuError) {
-            skuError.style.display = 'none';
-        }
-    });
+            skuInput.addEventListener('focus', function() {
+                if (skuError) {
+                    skuError.style.display = 'none';
+                }
+            });
 
-    skuInput.addEventListener('blur', function() {
-        if (skuInput.value.trim() === '' && skuError) {
-            skuError.style.display = 'block';
-        }
-    });
+            skuInput.addEventListener('blur', function() {
+                if (skuInput.value.trim() === '' && skuError) {
+                    skuError.style.display = 'block';
+                }
+            });
 
-    generateButton.addEventListener('click', function() {
-        if (skuError) {
-            skuError.style.display = 'none';
-        }
-    });
+            generateButton.addEventListener('click', function() {
+                if (skuError) {
+                    skuError.style.display = 'none';
+                }
+            });
 
-    generateButton.addEventListener('focus', function() {
-        if (skuError) {
-            skuError.style.display = 'none';
-        }
-    });
+            generateButton.addEventListener('focus', function() {
+                if (skuError) {
+                    skuError.style.display = 'none';
+                }
+            });
 
-    generateButton.addEventListener('blur', function() {
-        if (skuInput.value.trim() === '' && skuError) {
-            skuError.style.display = 'block';
-        }
-    });
-</script>
-<script>
-    var materialInput = document.getElementById('material');
-    var materialError = document.getElementById('material-error');
+            generateButton.addEventListener('blur', function() {
+                if (skuInput.value.trim() === '' && skuError) {
+                    skuError.style.display = 'block';
+                }
+            });
+        </script>
+        <script>
+            var materialInput = document.getElementById('material');
+            var materialError = document.getElementById('material-error');
 
-    materialInput.addEventListener('focus', function() {
-        if (materialError) {
-            materialError.style.display = 'none';
-        }
-    });
+            materialInput.addEventListener('focus', function() {
+                if (materialError) {
+                    materialError.style.display = 'none';
+                }
+            });
 
-    materialInput.addEventListener('blur', function() {
-        if (materialInput.value.trim() === '' && materialError) {
-            materialError.style.display = 'block';
-        }
-    });
+            materialInput.addEventListener('blur', function() {
+                if (materialInput.value.trim() === '' && materialError) {
+                    materialError.style.display = 'block';
+                }
+            });
 
-    document.addEventListener('click', function(event) {
-        if (event.target.type !== 'text' && materialInput.value.trim() === '' && materialError) {
-            materialError.style.display = 'block';
-        }
-    });
-</script>
-<script>
-    var slugInput = document.getElementById('slug');
-    var slugError = document.getElementById('slug-error');
+            document.addEventListener('click', function(event) {
+                if (event.target.type !== 'text' && materialInput.value.trim() === '' && materialError) {
+                    materialError.style.display = 'block';
+                }
+            });
+        </script>
+        <script>
+            var slugInput = document.getElementById('slug');
+            var slugError = document.getElementById('slug-error');
 
-    slugInput.addEventListener('focus', function() {
-        if (slugError) {
-            slugError.style.display = 'none';
-        }
-    });
+            slugInput.addEventListener('focus', function() {
+                if (slugError) {
+                    slugError.style.display = 'none';
+                }
+            });
 
-    slugInput.addEventListener('blur', function() {
-        if (slugInput.value.trim() === '' && slugError) {
-            slugError.style.display = 'block';
-        }
-    });
+            slugInput.addEventListener('blur', function() {
+                if (slugInput.value.trim() === '' && slugError) {
+                    slugError.style.display = 'block';
+                }
+            });
 
-    document.addEventListener('click', function(event) {
-        if (event.target !== slugInput && slugInput.value.trim() === '' && slugError) {
-            slugError.style.display = 'block';
-        }
-    });
-</script>
+            document.addEventListener('click', function(event) {
+                if (event.target !== slugInput && slugInput.value.trim() === '' && slugError) {
+                    slugError.style.display = 'block';
+                }
+            });
+        </script>
     </body>
 
     </html>

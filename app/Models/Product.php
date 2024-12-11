@@ -17,7 +17,6 @@ class Product extends Model
         'id',
         'catalogues_id',
         'name',
-        'slug',
         'sku',
         'quantity',
         'img_thumbnail',
@@ -62,5 +61,9 @@ class Product extends Model
     public function productFavorites()
     {
         return $this->belongsToMany(Product::class, 'product_favorites', 'user_id', 'product_id');
+    }
+    public function materials()
+    {
+        return $this->hasMany(Material::class);  // Một sản phẩm có thể có nhiều vật liệu
     }
 }

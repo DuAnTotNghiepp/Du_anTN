@@ -54,6 +54,7 @@
                 @endif
             </h2>
 
+
             <div class="col-lg-7">
                 <form action="{{ route('variant.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -72,6 +73,9 @@
                             <div class="mb-3" id="size-input" style="display: none;">
                                 <label class="form-label" for="size-value">Size</label>
                                 <input name="size_value" type="text" class="form-control" id="size-value" placeholder="Kích Thước (M, L, XL,...)">
+                                @error('size_value')
+                                <span id="size_value-error" style="color: red">{{ $message }}</span>
+                            @enderror
                             </div>
 
                             <!-- Input cho màu sắc -->

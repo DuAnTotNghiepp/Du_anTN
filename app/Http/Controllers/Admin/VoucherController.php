@@ -3,27 +3,29 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreVoucherRequest;
 use App\Models\Voucher;
+
 use App\Models\Vouchers;
 use Illuminate\Http\Request;
 
 class VoucherController extends Controller
 {
-  
+
     public function index()
     {
         $vouchers = Vouchers::all(); // Lấy danh sách voucher
         return view('admin.vouchers.index', compact('vouchers')); // Gửi dữ liệu đến view
     }
 
-    
+
     public function create()
     {
         return view('admin.vouchers.create');
     }
 
-   
-    public function store(Request $request)
+
+    public function store(StoreVoucherRequest $request)
     {
         // Validate dữ liệu
         $validated = $request->validate([
@@ -60,13 +62,14 @@ class VoucherController extends Controller
      *
 
      */
-    public function update(Request $request, $id)
+    public function update(StoreVoucherRequest $request, $id)
     {
         $voucher = Vouchers::findOrFail($id);
 
-        // Validate dữ liệu
+        // Xác thực dữ liệu
         $validated = $request->validate([
-            'code' => 'required|string|unique:vouchers,code,' . $voucher->id,
+            // Loại bỏ check unique cho 'code' khi cập nhật
+            'code' => 'required|string',  // Không cần kiểm tra tính duy nhất của 'code'
             'type' => 'required|in:fixed,percent',
             'value' => 'required|numeric|min:0',
             'minimum_order_value' => 'nullable|numeric|min:0',
@@ -79,8 +82,10 @@ class VoucherController extends Controller
         // Cập nhật dữ liệu
         $voucher->update($validated);
 
-        return redirect()->route('vouchers.index')->with('success', 'Voucher updated successfully!');
+        // Trả về trang danh sách voucher với thông báo thành công
+        return redirect()->route('vouchers.index')->with('success', 'Voucher cập nhật thành công!');
     }
+
 
     public function destroy($id)
     {
@@ -89,5 +94,5 @@ class VoucherController extends Controller
 
         return redirect()->route('vouchers.index')->with('success', 'Voucher deleted successfully!');
     }
-    
+
 }

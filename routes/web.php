@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\MaterialController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\VoucherController;
@@ -43,6 +44,8 @@ Route::post('register', [AuthController::class, 'register'])->name('register');
 
 Route::get('/', [ClientController::class, 'index'])->name('index');
 Route::get('product/{id}', [ClientController::class, 'show'])->name('product.product_detail');
+Route::put('product/{id}/update', [ProductController::class, 'update'])->name('product.update');
+
 
 
 //profile
@@ -119,7 +122,8 @@ Route::get('searchWarranty',[ClientController::class,'searchWarranty'])->name('s
 Route::post('/search', [ClientController::class, 'search'])->name('product.search');
 // Group routes under admin middleware
 Route::middleware('auth', 'admin')->group(function () {
-    Route::get('admin/accounts', [AdminController::class, 'index'])->name('admin.accounts');
+    // Route::get('admin/accounts', [AdminController::class, 'index'])->name('admin.accounts');
+    Route::get('/admin/accounts', [AdminController::class, 'index'])->name('admin.accounts');
     Route::get('admin/accounts/create', [AdminController::class, 'create'])->name('admin.accounts.create');
     Route::post('admin/accounts', [AdminController::class, 'store'])->name('admin.accounts.store');
     Route::get('admin/accounts/{user}/edit', [AdminController::class, 'edit'])->name('admin.accounts.edit');
@@ -127,6 +131,10 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::delete('admin/accounts/{user}', [AdminController::class, 'destroy'])->name('admin.accounts.destroy');
     //thong ke
 });
+Route::resource('materials', MaterialController::class);
+Route::get('/admin/materials/create', [MaterialController::class, 'create'])->name('materials.create');  // Hiển thị form tạo mới
+Route::post('/admin/materials', [MaterialController::class, 'store'])->name('materials.store');
+Route::delete('/admin/materials/{id}/destroy', [MaterialController::class, 'destroy'])->name('materials.destroy');
 
 
 Route::resource('cart', CartController::class);

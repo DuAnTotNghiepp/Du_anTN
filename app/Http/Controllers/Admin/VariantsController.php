@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Variants;
 use App\Http\Requests\StoreVariantsRequest;
 use App\Http\Requests\UpdateVariantsRequest;
+use Illuminate\Http\Request;
 
 class VariantsController extends Controller
 {
@@ -31,8 +32,11 @@ class VariantsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreVariantsRequest $request)
+    public function store(Request $request)
     {
+        // $validateData = $request->validated([
+
+        // ])
         // Khởi tạo một instance mới của Variants
         $variant = new Variants();
 

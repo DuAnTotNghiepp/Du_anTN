@@ -1,5 +1,14 @@
 @extends('admin.layouts.master')
 @section('update')
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="modal fade" id="showModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0">
@@ -74,6 +83,7 @@
                         </div>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>

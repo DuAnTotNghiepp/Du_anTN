@@ -105,6 +105,18 @@
                     </div>
                 </div>
                 <div class="card-body m-3">
+                    <h2>
+                        @if (session('success'))
+                            <div>
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                        @if (session('error'))
+                            <div>
+                                {{ session('error') }}
+                            </div>
+                        @endif
+                    </h2>
                     <div>
                         <div class="table-responsive table-card mb-3">
                             <table class="table align-middle table-nowrap mb-0 " id="customerTable">
@@ -117,58 +129,82 @@
                                             <!-- Mã Voucher -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="code" class="form-label">Mã Voucher</label>
-                                                <input type="text" name="code" id="code" class="form-control" required>
+                                                <input type="text" name="code" id="code" class="form-control" >
+                                                @error('code')
+                                                <span style="color: red">{{ $message }}</span>
+                                            @enderror
                                             </div>
-                                
+
                                             <!-- Loại Voucher -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="type" class="form-label">Loại Voucher</label>
-                                                <select name="type" id="type" class="form-select" required>
+                                                <select name="type" id="type" class="form-select" >
                                                     <option value="fixed">Cố định</option>
                                                     {{-- <option value="percent">Phần trăm</option> --}}
                                                 </select>
+                                                @error('type')
+                                                <span style="color: red">{{ $message }}</span>
+                                            @enderror
                                             </div>
-                                
+
                                             <!-- Giá trị -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="value" class="form-label">Giá trị</label>
-                                                <input type="number" name="value" id="value" class="form-control" required>
+                                                <input type="number" name="value" id="value" class="form-control" >
+                                                @error('value')
+                                                <span style="color: red">{{ $message }}</span>
+                                            @enderror
                                             </div>
-                                
+
                                             <!-- Giá trị đơn hàng tối thiểu -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="minimum_order_value" class="form-label">Giá trị đơn hàng tối thiểu</label>
-                                                <input type="number" name="minimum_order_value" id="minimum_order_value" class="form-control" required>
+                                                <input type="number" name="minimum_order_value" id="minimum_order_value" class="form-control" >
+                                                @error('minimum_order_value')
+                                                <span style="color: red">{{ $message }}</span>
+                                            @enderror
                                             </div>
-                                
+
                                             <!-- Giới hạn sử dụng -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="usage_limit" class="form-label">Giới hạn sử dụng</label>
-                                                <input type="number" name="usage_limit" id="usage_limit" class="form-control" required>
+                                                <input type="number" name="usage_limit" id="usage_limit" class="form-control" >
+                                                @error('usage_limit')
+                                                <span style="color: red">{{ $message }}</span>
+                                            @enderror
                                             </div>
-                                
+
                                             <!-- Ngày bắt đầu -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="start_date" class="form-label">Ngày bắt đầu</label>
-                                                <input type="datetime-local" name="start_date" id="start_date" class="form-control" required>
+                                                <input type="datetime-local" name="start_date" id="start_date" class="form-control" >
+                                                @error('start_date')
+                                                <span style="color: red">{{ $message }}</span>
+                                            @enderror
                                             </div>
-                                
+
                                             <!-- Ngày kết thúc -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="end_date" class="form-label">Ngày kết thúc</label>
-                                                <input type="datetime-local" name="end_date" id="end_date" class="form-control" required>
+                                                <input type="datetime-local" name="end_date" id="end_date" class="form-control" >
+                                                @error('end_date')
+                                                <span style="color: red">{{ $message }}</span>
+                                            @enderror
                                             </div>
-                                
+
                                             <!-- Trạng thái -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="status" class="form-label">Trạng thái</label>
-                                                <select name="status" id="status" class="form-select" required>
+                                                <select name="status" id="status" class="form-select" >
                                                     <option value="active">Hoạt động</option>
                                                     <option value="expired">Hết hạn</option>
                                                     <option value="disabled">Tắt</option>
                                                 </select>
+                                                @error('status')
+                                                <span style="color: red">{{ $message }}</span>
+                                            @enderror
                                             </div>
-                                
+
                                             <!-- Button Actions -->
                                             <div class="col-12 d-flex justify-content-between">
                                                 <button type="submit" class="btn btn-primary">
@@ -179,7 +215,7 @@
                                         </div>
                                     </div>
                                 </form>
-                                
+
                             </table>
                             <div class="noresult" style="display: none">
                                 <div class="text-center">
