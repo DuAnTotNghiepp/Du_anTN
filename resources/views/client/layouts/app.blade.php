@@ -73,9 +73,6 @@
                 <div class="col-lg-1 col-1">
                     <div class="sidebar-wrap d-flex justify-content-between flex-column">
                         <div class="sidebar-top d-flex flex-column align-items-center">
-                            <div class="category-icon">
-                                <i class="flaticon-menu"></i>
-                            </div>
                         </div>
                         <div class="sidebar-bottom">
                             <ul class="sidebar-icons">
@@ -137,54 +134,6 @@
                             <a href="javascript:void(0)"><i class="flaticon-letter-x"></i></a>
                         </div>
                     </li>
-                    <li class="single-cart-product">
-                        <div class="cart-product-info d-flex align-items-center">
-                            <div class="product-img"><img src="{{ asset('assets/images/product/cart-p3.png') }}" alt
-                                    class="img-fluid">
-                            </div>
-                            <div class="product-info">
-                                <a href="product-details.html">
-                                    <h5 class="product-title">Something Yellow Jens</h5>
-                                </a>
-                                <ul class="product-rating d-flex">
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star"></i></li>
-                                </ul>
-                                <p class="product-price"><span>1</span>x <span class="p-price">$10.32</span>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="cart-product-delete-btn">
-                            <a href="javascript:void(0)"><i class="flaticon-letter-x"></i></a>
-                        </div>
-                    </li>
-                    <li class="single-cart-product">
-                        <div class="cart-product-info d-flex align-items-center">
-                            <div class="product-img"><img src="{{ asset('assets/images/product/cart-p2.png') }}" alt
-                                    class="img-fluid">
-                            </div>
-                            <div class="product-info">
-                                <a href="product-details.html">
-                                    <h5 class="product-title">Woman Something Navy Top</h5>
-                                </a>
-                                <ul class="product-rating d-flex">
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star"></i></li>
-                                </ul>
-                                <p class="product-price"><span>1</span>x <span class="p-price">$10.32</span>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="cart-product-delete-btn">
-                            <a href="javascript:void(0)"><i class="flaticon-letter-x"></i></a>
-                        </div>
-                    </li>
                 </ul>
             </div>
             <div class="cart-bottom">
@@ -202,116 +151,6 @@
             </div>
         </div>
     </div>
-
-
-    <div class="category-wrapper">
-        <div class="category-bar">
-            <h5 class="cb-title text-uppercase category-icon">
-                All Catagory
-                <i class="flaticon-arrow-pointing-to-left"></i>
-            </h5>
-            <ul class="cb-category-list">
-                <li class="cb-single-category">
-                    <div class="cb-category-icon">
-                        <i class="flaticon-man"></i>
-                    </div>
-                    <a href="product.html">
-                        <h5 class="cb-category-title"> Men’s <i class="bi bi-arrow-right"></i></h5>
-                    </a>
-                </li>
-                <li class="cb-single-category">
-                    <div class="cb-category-icon">
-                        <i class="flaticon-woman"></i>
-                    </div>
-                    <a href="product.html">
-                        <h5 class="cb-category-title">Women stuffs <i class="bi bi-arrow-right"></i></h5>
-                    </a>
-                </li>
-                <li class="cb-single-category">
-                    <div class="cb-category-icon">
-                        <i class="flaticon-children"></i>
-                    </div>
-                    <a href="product.html">
-                        <h5 class="cb-category-title"> Kid Collection <i class="bi bi-arrow-right"></i></h5>
-                    </a>
-                </li>
-                <li class="cb-single-category">
-                    <div class="cb-category-icon">
-                        <i class="flaticon-sun-glasses"></i>
-                    </div>
-                    <a href="product.html">
-                        <h5 class="cb-category-title"> Accessorice <i class="bi bi-arrow-right"></i></h5>
-                    </a>
-                </li>
-                <li class="cb-single-category">
-                    <div class="cb-category-icon">
-                        <i class="flaticon-formal"></i>
-                    </div>
-                    <a href="product.html">
-                        <h5 class="cb-category-title"> Sleepwear <i class="bi bi-arrow-right"></i></h5>
-                    </a>
-                </li>
-                <li class="cb-single-category">
-                    <div class="cb-category-icon">
-                        <i class="flaticon-shoes"></i>
-                    </div>
-                    <a href="product.html">
-                        <h5 class="cb-category-title"> Shoe Collection <i class="bi bi-arrow-right"></i></h5>
-                    </a>
-                </li>
-                <li class="cb-single-category">
-                    <div class="cb-category-icon">
-                        <i class="flaticon-watch"></i>
-                    </div>
-                    <a href="product.html">
-                        <h5 class="cb-category-title"> Watches <i class="bi bi-arrow-right"></i></h5>
-                    </a>
-                </li>
-                <li class="cb-single-category">
-                    <div class="cb-category-icon">
-                        <i class="flaticon-necklace"></i>
-                    </div>
-                    <a href="product.html">
-                        <h5 class="cb-category-title"> Jewellery <i class="bi bi-arrow-right"></i></h5>
-                    </a>
-                </li>
-                <li class="cb-single-category">
-                    <div class="cb-category-icon">
-                        <i class="flaticon-diamond"></i>
-                    </div>
-                    <a href="product.html">
-                        <h5 class="cb-category-title"> Diamond <i class="bi bi-arrow-right"></i></h5>
-                    </a>
-                </li>
-                <li class="cb-single-category">
-                    <div class="cb-category-icon">
-                        <i class="flaticon-baby-boy"></i>
-                    </div>
-                    <a href="product.html">
-                        <h5 class="cb-category-title"> Baby Clothing <i class="bi bi-arrow-right"></i></h5>
-                    </a>
-                </li>
-                <li class="cb-single-category">
-                    <div class="cb-category-icon">
-                        <i class="flaticon-fashion"></i>
-                    </div>
-                    <a href="product.html">
-                        <h5 class="cb-category-title">Seasonal Wear <i class="bi bi-arrow-right"></i></h5>
-                    </a>
-                </li>
-                <li class="cb-single-category">
-                    <div class="cb-category-icon">
-                        <i class="flaticon-sports"></i>
-                    </div>
-                    <a href="product.html">
-                        <h5 class="cb-category-title"> Sports <i class="bi bi-arrow-right"></i></h5>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-
     <div class="topbar-area">
         <div class="container-fluid p-0">
             <div class="row align-items-center">
@@ -383,10 +222,10 @@
                                 <a href="/"><img src="{{ asset('assets/images/logo-w.png') }}" alt></a>
                             </div>
                             <ul class="nav-item-list">
-                                <li><a href="/">Home</a></li>
+                                <li><a href="/">Trang Chủ</a></li>
 
                                 <li class="has-child-menu">
-                                    <a href="javascript:void(0)">Category</a>
+                                    <a href="javascript:void(0)">Danh Mục Sản Phẩm</a>
                                     <i class="fl flaticon-plus">+</i>
                                     <ul class="sub-menu">
                                         <li><a href="{{ route('productcatalogue') }}">Tất cả sản phẩm</a></li>
@@ -398,7 +237,6 @@
                                     </ul>
                                 </li>
                                 <li><a href="{{ route('warranty') }}">Bảo Hành</a></li>
-                                <li><a href="about">About Us</a></li>
                                 <li><a href="{{ route('buying_guide') }}">Hướng Dẫn Mua Hàng</a></li>
                             </ul>
                             </li>

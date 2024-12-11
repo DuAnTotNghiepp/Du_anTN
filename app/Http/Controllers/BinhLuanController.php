@@ -17,9 +17,16 @@ class BinhLuanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function showProductReviews($productId)
     {
-        // Logic to display comments (if needed)
+        $comments = BinhLuan::where('product_id', $productId)->get();
+
+        $averageRating = $comments->avg('rating');
+
+        return view('product.show', [
+            'comments' => $comments,
+            'averageRating' => round($averageRating, 1) // Làm tròn kết quả
+        ]);
     }
 
     /**

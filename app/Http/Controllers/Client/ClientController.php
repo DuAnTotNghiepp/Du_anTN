@@ -24,9 +24,13 @@ class ClientController extends Controller
     {
         $data = Catalogues::query()->get();
         $products = Product::query()->get();
-        
-        // Lấy tất cả sản phẩm
-        $listSp = Product::where('is_active', 1)->get(); // Hiển thị tất cả sản phẩm
+
+        $listSp = Product::where('is_active', 1)->get()->map(function ($product) {
+            $averageRating = BinhLuan::where('product_id', $product->id)
+                ->avg('rating') ?? 0;
+            $product->average_rating = round($averageRating, 1);
+            return $product;
+        });
 
         // Lấy sản phẩm hot
         $listHot = Product::where('is_hot_deal', 1)->get();
@@ -40,7 +44,7 @@ class ClientController extends Controller
         'status'
 
         ]);
-        $blogs = Blog::all(); 
+        $blogs = Blog::all();
 
 
         return view('client.home', compact(['listSp', 'listHot', 'data', 'products','vouchers', 'blogs']));
