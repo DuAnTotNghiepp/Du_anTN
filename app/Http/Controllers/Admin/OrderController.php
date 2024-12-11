@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -14,10 +15,10 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
-        $data = Order::query()->latest('id')->get();
+        $data = Order::with('address')->latest('id')->get();
         return view('admin.order.index', compact('data'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -37,8 +38,15 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id) {}
-
+    public function show($id)
+    {
+        $order = Order::with('items')->findOrFail($id);
+        $address = Address::find($order->user_address);
+        // if ($order->items->isEmpty()) {
+        //     dd('No items found for this order.'); // In ra thông báo nếu không có sản phẩm
+        // }
+        return view('admin.order.show', compact('order','address'));
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -46,46 +54,53 @@ class OrderController extends Controller
     public function edit(int $id)
     {
         //
-        $orde = Order::find($id);
-        return view('admin.order.edit', compact('orde'));
+        $orde = Order::with('address')->find($id);
+        $address = Address::find($orde->user_address);
+        return view('admin.order.edit', compact('orde','address'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Order $order)
-{
-    // Kiểm tra xem user_id có tồn tại trong đơn hàng hay không
-    if (is_null($order->user_id)) {
-        return redirect()->back()->with('error', 'Không tìm thấy user_id cho đơn hàng.');
-    }
-
-    $validatedData = $request->validate([
-        'status' => 'required|in:pending,completed,canceled',
-        'user_note' => 'nullable|string',
-    ]);
-
-    // Cập nhật thông tin đơn hàng
-    $order->status = $validatedData['status'];
-    $order->user_note = $validatedData['user_note'];
-
-    // Lưu thay đổi vào cơ sở dữ liệu
-    if ($order->save()) {
-        return redirect()->back()->with('success', 'Trạng thái đơn hàng đã được cập nhật thành công');
-    } else {
-        return redirect()->back()->with('error', 'Cập nhật trạng thái đơn hàng không thành công');
-    }
-}
-
-
-
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
+    public function update(Request $request, $id)
     {
-        //
+        $order = Order::find($id);
+
+        if (!$order) {
+            return redirect()->back()->with('error', 'Không tìm thấy đơn hàng.');
+        }
+
+        if (!$order->user_id) {
+            return redirect()->back()->with('error', 'Không tìm thấy user_id cho đơn hàng.');
+        }
+
+        $validatedData = $request->validate([
+            'status' => 'required|in:pending,completed,canceled',
+            'user_note' => 'nullable|string',
+        ]);
+
+        $allowedStatusTransitions = [
+            'pending' => ['completed', 'canceled'],
+            'completed' => [],
+            'canceled' => [],
+            'unpaid' => ['pending'],
+        ];
+
+        $currentStatus = $order->status;
+        $newStatus = $validatedData['status'];
+
+        if (!array_key_exists($currentStatus, $allowedStatusTransitions)) {
+            return redirect()->back()->with('error', 'Trạng thái hiện tại không hợp lệ.');
+        }
+
+        if (!in_array($newStatus, $allowedStatusTransitions[$currentStatus])) {
+            return redirect()->back()->with('error', 'Không thể thay đổi trạng thái này.');
+        }
+        $order->update([
+            'status' => $validatedData['status'],
+            'user_note' => $validatedData['user_note'] ?? '',
+        ]);
+
+        return redirect()->route('order.edit', $id)->with('success', 'Cập nhật trạng thái thành công.');
     }
 }

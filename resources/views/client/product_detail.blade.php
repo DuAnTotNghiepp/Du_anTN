@@ -29,7 +29,6 @@
 
 </style>
 @section('content')
-    div class="breadcrumb-area ml-110">
     <div class="container-fluid p-0">
         <div class="row">
             <div class="col-lg-12">
@@ -102,6 +101,8 @@
                        </script>
                         
                     </div>
+
+
                     <div class="col-xxl-6 col-xl-6 col-lg-6">
                         <div class="product-details-wrap">
                             <div class="pd-top">
@@ -113,7 +114,8 @@
                                     <li><i class="bi bi-star"></i></li>
                                 </ul>
                                 <h1>{{ $product->name }}</h1>
-                                <p><strong>Giá cũ:</strong> <span class="price-regular">{{ $product->price_regular }}</span>
+                                <p><strong>Giá cũ:</strong> <span
+                                        class="price-regular">{{ $product->price_regular }}</span>
                                 </p>
                                 <p><strong>Giá khuyến mãi:</strong> <span
                                         class="price-sale">{{ $product->price_sale }}</span></p>
@@ -128,22 +130,29 @@
                                         <div class="color-option d-flex align-items-center">
                                             @foreach ($product->variants as $variant)
                                                 @if ($variant->name === 'Color')
-                                                    <input type="radio" name="color" id="color{{ $variant->id }}"
-                                                        value="{{ $variant->value }}" {{ $loop->first ? 'checked' : '' }}>
-                                                    <label for="color{{ $variant->id }}"><span class="p-color"
-                                                            style="background-color: {{ $variant->value }}"></span></label>
+                                                    <input type="radio" name="color" id="color{{ $variant->id }}" value="{{ $variant->id }}"
+                                                           {{ $loop->first ? 'checked' : '' }} class="color-option-input">
+                                                    <label for="color{{ $variant->id }}">
+                                                        <span class="p-color" style="background-color: {{ $variant->value }}"></span>
+                                                    </label>
                                                 @endif
                                             @endforeach
                                         </div>
                                     </li>
+
                                     <!-- Kích thước -->
                                     <li class="d-flex align-items-center">
                                         <span>Size :</span>
                                         <div class="size-option d-flex align-items-center">
                                             @foreach ($product->variants as $variant)
                                                 @if ($variant->name === 'Size')
+
                                                     <input type="radio" name="size" id="size{{ $variant->id }}"
                                                         value="{{ $variant->value }}" {{ $loop->first ? 'checked' : '' }}>
+
+                                                    <input type="radio" name="size" id="size{{ $variant->id }}" value="{{ $variant->id }}"
+                                                           {{ $loop->first ? 'checked' : '' }} class="size-option-input">
+
                                                     <label for="size{{ $variant->id }}">
                                                         <span class="p-size">{{ $variant->value }}</span>
                                                     </label>
@@ -151,13 +160,14 @@
                                             @endforeach
                                         </div>
                                     </li>
+
                                     <!-- Số lượng -->
                                     <li class="d-flex align-items-center pd-cart-btns">
                                         <div class="quantity">
-                                            <input type="number" min="1" max="{{ $product->quantity }}"
-                                                step="1" value="1" id="quantity-input"
-                                                data-available="{{ $product->quantity }}">
+                                            <input type="number" min="1" max="{{ $product->quantity }}" step="1" value="1" id="quantity-input"
+                                                   data-available="{{ $product->quantity }}">
                                         </div>
+
                                         <button type="button" class="pd-add-cart" id="buy-now-btn">
                                             <a href="{{ route('checkout') }}" style="color:white">Mua Ngay</a>
                                         </button>
@@ -174,6 +184,37 @@
                                             <button type="submit" class="pd-add-cart">Thêm vào giỏ hàng</button>
                                         </form>
 
+
+                                        @if(Auth::check())
+                                            <button type="button" class="pd-add-cart" id="buy-now-btn">
+                                                <a href="{{ route('checkout') }}" style="color:white">Mua Ngay</a>
+                                            </button>
+                                        @else
+                                        <a href="{{ route('login') }}"
+                                            onclick="event.preventDefault(); document.getElementById('login-form').submit();"
+                                            class="pd-add-cart">Mua Ngay</a>
+
+                                            <form id="login-form" action="{{ route('login') }}" method="GET" style="display: none;">
+                                                <input type="hidden" name="redirect_url" value="{{ url()->current() }}">
+                                            </form>
+                                        @endif
+                                        <!-- Form Thêm vào Giỏ Hàng -->
+                                        <form action="{{ route('cart.store') }}" method="POST" id="add-to-cart-form">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <input type="hidden" name="variant_id" id="variant_id"> <!-- variant_id ẩn -->
+                                            <input type="hidden" name="quantity" id="quantity"> <!-- quantity ẩn -->
+                                            <button type="submit" class="pd-add-cart">Thêm vào giỏ hàng</button>
+                                            <button class="pd-add-cart" style="background: none; border: none; background-color: red" id="favorite-btn" data-product-id="{{ $product->id }}">
+                                                <i class="flaticon-heart"></i>
+                                            </button>
+                                        </form>
+                                    </li>
+
+                                    <li id="quantity-warning" style="color: red; display: none;">
+                                        Số lượng sản phẩm đã đạt tối đa!
+                                    <li id="quantity-warning" style="color: red; display: none;">
+                                        Số lượng sản phẩm đã đạt tối đa!
                                     </li>
                                     <li class="pd-type">Danh mục sản phẩm: <span>{{ $product->catelogues->name }}</span>
                                     </li>
@@ -181,7 +222,6 @@
                                     <li class="pd-type">Số lượng: <span>{{ $product->quantity }}</span></li>
                                     <li class="pd-type">Chất liệu: <span>{{ $product->material }}</span></li>
                                 </ul>
-
                             </div>
                         </div>
                     </div>
@@ -191,26 +231,27 @@
                 <div class="row">
                     <div class="col-xxl-3 col-xl-3">
                         <div class="nav flex-column nav-pills discription-bar" id="v-pills-tab2" role="tablist"
-                            aria-orientation="vertical">
+                             aria-orientation="vertical">
                             <button class="nav-link active" id="pd-discription3" data-bs-toggle="pill"
-                                data-bs-target="#pd-discription-pill3" role="tab"
-                                aria-controls="pd-discription-pill3"> Discription
+                                    data-bs-target="#pd-discription-pill3" role="tab"
+                                    aria-controls="pd-discription-pill3"> Discription
                             </button>
                             <button class="nav-link" id="pd-discription2" data-bs-toggle="pill"
-                                data-bs-target="#pd-discription-pill2" role="tab"
-                                aria-controls="pd-discription-pill2">Additional
+                                    data-bs-target="#pd-discription-pill2" role="tab"
+                                    aria-controls="pd-discription-pill2">Additional
                                 Information
                             </button>
                             <button class="nav-link" id="pd-discription1" data-bs-toggle="pill"
-                                data-bs-target="#pd-discription-pill1" role="tab"
-                                aria-controls="pd-discription-pill1">Our Review (2)
+                                    data-bs-target="#pd-discription-pill1" role="tab"
+                                    aria-controls="pd-discription-pill1">Our Review (2)
                             </button>
                         </div>
                     </div>
+
                     <div class="col-xxl-9 col-xl-9">
                         <div class="tab-content discribtion-tab-content" id="v-pills-tabContent2">
                             <div class="tab-pane fade show active" id="pd-discription-pill3" role="tabpanel"
-                                aria-labelledby="pd-discription3">
+                                 aria-labelledby="pd-discription3">
                                 <div class="discription-texts">
                                     <p><strong>Mô tả:</strong> {{ $product->description }}</p>
                                 </div>
@@ -222,7 +263,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="pd-discription-pill2" role="tabpanel"
-                                aria-labelledby="pd-discription2">
+                                 aria-labelledby="pd-discription2">
                                 <div class="additional-discription">
                                     <ul>
                                         <li>
@@ -241,118 +282,171 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="tab-pane fade " id="pd-discription-pill1" role="tabpanel"
-                                aria-labelledby="pd-discription1">
+                            <div class="tab-pane fade" id="pd-discription-pill1" role="tabpanel"
+                                 aria-labelledby="pd-discription1">
                                 <div class="discription-review">
+                                    <h4 class="mb-4">Đánh giá của khách hàng</h4>
                                     <div class="clients-review-cards">
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="client-review-card">
-                                                    <div class="review-card-head">
-                                                        <div class="client-img">
-                                                            <img src="assets/images/shapes/reviewer1.png" alt>
-                                                        </div>
-                                                        <div class="client-info">
-                                                            <h5 class="client-name">Jenny Wilson <span
-                                                                    class="review-date">- 8th Jan 2021</span></h5>
-                                                            <ul class="review-rating d-flex">
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star"></i></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <p class="review-text">
-                                                        Aenean dolor massa, rhoncus ut tortor in, pretium tempus neque.
-                                                        Vestibulum venenatis leo et dictum finibus. Nulla vulputate
-                                                        dolor sit amet tristique dapibus.
-                                                    </p>
-                                                    <ul class="review-actions d-flex align-items-center">
-                                                        <li><a href="#"><i class="flaticon-like"></i></a></li>
-                                                        <li><a href="#"><i class="flaticon-heart"></i></a></li>
-                                                        <li><a href="#">Reply</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="client-review-card">
-                                                    <div class="review-card-head">
-                                                        <div class="client-img">
-                                                            <img src="assets/images/shapes/reviewer2.png" alt>
-                                                        </div>
-                                                        <div class="client-info">
-                                                            <h5 class="client-name">Jenny Wilson <span
-                                                                    class="review-date">- 8th Jan 2021</span></h5>
-                                                            <ul class="review-rating d-flex">
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star"></i></li>
-                                                            </ul>
+                                        <div class="row" id="comments-list">
+                                            @foreach ($comments as $comment)
+                                                <div class="col-lg-6 mb-3">
+                                                    <div class="card client-review-card">
+                                                        <div class="card-body">
+                                                            <div class="d-flex align-items-center mb-3">
+                                                                <div class="client-review-img me-3">
+                                                                    <img src="assets/images/blog/author.png"
+                                                                         alt="Client Image" class="rounded-circle"
+                                                                         width="50" height="50">
+                                                                </div>
+                                                                <div class="client-review-info">
+                                                                    <h5 class="client-name mb-1">
+                                                                        {{ $comment->user->name }}</h5>
+                                                                    <ul
+                                                                        class="product-rating d-flex align-items-center list-unstyled mb-0">
+                                                                        @for ($i = 1; $i <= 5; $i++)
+                                                                            <li class="me-1">
+                                                                                <i class="bi bi-star{{ $i <= $comment->rating ? '-fill' : '' }}"
+                                                                                   style="color: gold;"></i>
+                                                                            </li>
+                                                                        @endfor
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="client-review-text">
+                                                                <p class="mb-0">{{ $comment->noidung }}</p>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <p class="review-text">
-                                                        Aenean dolor massa, rhoncus ut tortor in, pretium tempus neque.
-                                                        Vestibulum venenatis leo et dictum finibus. Nulla vulputate
-                                                        dolor sit amet tristique dapibus.
-                                                    </p>
-                                                    <ul class="review-actions d-flex align-items-center">
-                                                        <li><a href="#"><i class="flaticon-like"></i></a></li>
-                                                        <li><a href="#"><i class="flaticon-heart"></i></a></li>
-                                                        <li><a href="#">Reply</a></li>
-                                                    </ul>
                                                 </div>
-                                            </div>
+                                            @endforeach
                                         </div>
                                     </div>
-                                    <div class="review-form-wrap">
-                                        <h5>Write a Review</h5>
-                                        <h3>Leave A Comment</h3>
-                                        <p>Your email address will not be published. Required fields are marked *</p>
-                                        <form action="#" method="POST" class="review-form">
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="review-input-group">
-                                                        <label for="fname">First Name</label>
-                                                        <input type="text" name="fname" id="fname"
-                                                            placeholder="Your first name">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="review-input-group">
-                                                        <label for="lname">Last Name</label>
-                                                        <input type="text" name="lname" id="lname"
-                                                            placeholder="Your last name ">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    <div class="review-input-group">
-                                                        <textarea name="review-area" id="review-area" cols="30" rows="7" placeholder="Your message"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    <div class="review-rating">
-                                                        <p>Your Rating</p>
-                                                        <ul class="d-flex">
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="submit-btn">
-                                                        <input type="submit" value="Post Comment">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
                                 </div>
+
+                                @if ($errors->any())
+                                    <div class="alert alert-danger mt-4">
+                                        <ul class="mb-0">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+
+                                @auth
+                                    <form id="comment-form" class="review-form mt-4">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        <!-- Thêm product_id -->
+                                        <div class="form-group">
+                                            <label for="content">Nội dung bình luận:</label>
+                                            <textarea id="content" name="noidung" class="form-control" required></textarea>
+                                        </div>
+                                        <div class="form-group mt-3">
+                                            <label for="rating">Đánh giá:</label>
+                                            <div class="d-flex">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    <div class="form-check">
+                                                        <input type="radio" class="form-check-input" name="rating"
+                                                               value="{{ $i }}" id="rating{{ $i }}"
+                                                               style="display: none;">
+                                                        <label class="form-check-label" for="rating{{ $i }}"
+                                                               style="cursor: pointer;">
+                                                            <i class="bi bi-star-fill star" data-value="{{ $i }}"
+                                                               style="font-size: 24px; color: gray;"></i>
+                                                        </label>
+                                                    </div>
+                                                @endfor
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary mt-3">Gửi bình luận</button>
+                                    </form>
+                                    <div id="response-message"></div> <!-- Nơi hiển thị phản hồi -->
+                                @else
+                                    <p class="mt-4">Vui lòng <a href="#">đăng nhập</a> để gửi bình luận.</p>
+                                @endauth
+
+                                <script>
+                                    document.getElementById('comment-form').addEventListener('submit', function(event) {
+                                        event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+                                        const formData = new FormData(this); // Lấy dữ liệu từ form
+
+                                        fetch("{{ route('comment.store', $product->id) }}", {
+                                            method: 'POST',
+                                            body: formData,
+                                            headers: {
+                                                'X-Requested-With': 'XMLHttpRequest',
+                                                'X-CSRF-TOKEN': '{{ csrf_token() }}', // Thêm token CSRF
+                                            },
+                                        })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    // Thêm bình luận mới vào danh sách
+                                                    const commentsList = document.getElementById('comments-list');
+                                                    commentsList.insertAdjacentHTML('afterbegin', `
+                                                <div class="col-lg-6 mb-3">
+                                                    <div class="card client-review-card">
+                                                        <div class="card-body">
+                                                            <div class="d-flex align-items-center mb-3">
+                                                                <div class="client-review-img me-3">
+                                                                    <img src="assets/images/blog/author.png" alt="Client Image" class="rounded-circle" width="50" height="50">
+                                                                </div>
+                                                                <div class="client-review-info">
+                                                                    <h5 class="client-name mb-1">${data.comment.user_name}</h5>
+                                                                   <ul class="product-rating d-flex align-items-center list-unstyled mb-0" style="font-size: 24px; color: gold;">
+    ${'★'.repeat(data.comment.rating)}${'☆'.repeat(5 - data.comment.rating)}
+</ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="client-review-text">
+                                                                <p class="mb-0">${data.comment.noidung}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            `);
+                                                    // Xóa nội dung form
+                                                    document.getElementById('content').value = '';
+                                                    document.querySelector('input[name="rating"]:checked').checked = false;
+                                                } else {
+                                                    document.getElementById('response-message').innerHTML =
+                                                        `<div class="alert alert-danger">${data.message}</div>`;
+                                                }
+                                            })
+                                            .catch(error => {
+                                                console.error('Error:', error);
+                                                document.getElementById('response-message').innerHTML =
+                                                    `<div class="alert alert-danger">Đã xảy ra lỗi, vui lòng thử lại.</div>`;
+                                            });
+                                    });
+
+                                    // JavaScript to handle star rating
+                                    const stars = document.querySelectorAll('.star');
+                                    stars.forEach(star => {
+                                        star.addEventListener('click', function() {
+                                            const ratingValue = this.getAttribute('data-value');
+
+                                            // Update the radio button selection
+                                            document.querySelector(`input[name="rating"][value="${ratingValue}"]`).checked = true;
+
+                                            // Set the color of the stars
+                                            stars.forEach((s, index) => {
+                                                s.style.color = index < ratingValue ? 'gold' : 'gray'; // Cập nhật màu sắc
+                                            });
+                                        });
+                                    });
+                                </script>
+
+                                <style>
+                                    /* Optional: Add some margin around stars */
+                                    .star {
+                                        margin-right: 5px;
+                                    }
+                                </style>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -411,5 +505,91 @@
                 });
             });
         });
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const colorRadios = document.querySelectorAll('input[name="color"]');
+                const sizeRadios = document.querySelectorAll('input[name="size"]');
+                const variantInput = document.getElementById('variant_id');
+                const quantityInput = document.getElementById('quantity-input');
+                const quantityHiddenInput = document.getElementById('quantity');
+                const buyNowBtn = document.getElementById('buy-now-btn');
+                const warningMessage = document.getElementById('quantity-warning');
+                const favoriteBtn = document.getElementById('favorite-btn');
+
+                // Xử lý chọn màu và size
+                function updateVariant(radio) {
+                    variantInput.value = radio.value;
+                }
+
+                colorRadios.forEach(radio => radio.addEventListener('change', () => updateVariant(radio)));
+                sizeRadios.forEach(radio => radio.addEventListener('change', () => updateVariant(radio)));
+
+                // Xử lý số lượng
+                function handleQuantityInput() {
+                    const maxQuantity = parseInt(quantityInput.getAttribute('max'));
+
+                    quantityHiddenInput.value = quantityInput.value;
+
+                    if (parseInt(quantityInput.value) > maxQuantity) {
+                        quantityInput.value = maxQuantity;
+                        warningMessage.style.display = 'block';
+                    } else {
+                        warningMessage.style.display = 'none';
+                    }
+                }
+
+                quantityInput.addEventListener('input', handleQuantityInput);
+
+                // Thiết lập mặc định
+                if (colorRadios.length > 0 && !variantInput.value) {
+                    variantInput.value = colorRadios[0].value;
+                }
+
+                if (sizeRadios.length > 0 && !variantInput.value) {
+                    variantInput.value = sizeRadios[0].value;
+                }
+
+                if (!quantityHiddenInput.value) {
+                    quantityHiddenInput.value = quantityInput.value;
+                }
+
+                // Xử lý mua ngay
+                buyNowBtn.addEventListener('click', function (event) {
+                    event.preventDefault();
+
+                    const color = document.querySelector('input[name="color"]:checked').value;
+                    const size = document.querySelector('input[name="size"]:checked').value;
+                    const quantity = quantityInput.value;
+                    const productImage = "{{ Storage::url($product->img_thumbnail) }}";
+                    const productName = "{{ $product->name }}";
+                    const productPrice = "{{ $product->price_sale }}";
+
+                    const checkoutUrl = `{{ route('checkout') }}?color=${encodeURIComponent(color)}&size=${encodeURIComponent(size)}&quantity=${encodeURIComponent(quantity)}&image=${encodeURIComponent(productImage)}&name=${encodeURIComponent(productName)}&price=${encodeURIComponent(productPrice)}`;
+
+                    window.location.href = checkoutUrl;
+                });
+
+                // Xử lý yêu thích
+                favoriteBtn.addEventListener('click', function () {
+                    const productId = this.dataset.productId;
+
+                    fetch('{{ route("favorites.toggle") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        },
+                        body: JSON.stringify({ product_id: productId }),
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'added') {
+                                alert('Sản phẩm đã được thêm vào yêu thích.');
+                            } else if (data.status === 'removed') {
+                                alert('Sản phẩm đã được xóa khỏi yêu thích.');
+                            }
+                        });
+                });
+            });
     </script>
 @endsection

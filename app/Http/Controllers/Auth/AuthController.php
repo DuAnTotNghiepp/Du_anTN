@@ -18,24 +18,29 @@ class AuthController extends Controller
 
     public function login(Request $request) {
         $user = $request->validate([
-            'email' => 'required|string|email|max:255', 
+            'email' => 'required|string|email|max:255',
             'password' => 'required|string'
         ]);
-    
+
         if (Auth::attempt($user)) {
             // Kiểm tra nếu là admin thì chuyển hướng tới trang admin
             if (Auth::user()->role === User::ROLE_ADMIN) {
                 return redirect()->intended('/admin');
             }
-    
+            if (Auth::attempt($user)) {
+                // Kiểm tra URL chuyển hướng trong session
+                $redirectUrl = $request->input('redirect_url') ?? session()->pull('redirect_url', '/');
+                return redirect()->intended($redirectUrl);
+            }
+
             return redirect()->intended('/');
         }
-    
+
         return redirect()->back()->withErrors([
             'email' => 'Thông tin người dùng không đúng'
         ]);
     }
-    
+
     // Đằng ký
     public function showFormRegister() {
         return view('auth.register');
@@ -62,10 +67,10 @@ class AuthController extends Controller
         Auth::logout(); // Đăng xuất người dùng
         $request->session()->invalidate(); // Hủy phiên hiện tại
         $request->session()->regenerateToken(); // Tạo lại token CSRF mới
-    
+
         return redirect('/login'); // Chuyển hướng người dùng đến trang đăng nhập
     }
-    
+
 
     //qmk
     public function showForgotPasswordForm()
@@ -115,21 +120,21 @@ class AuthController extends Controller
         return redirect()->route('login')->with('status', 'Your password has been reset!');
     }
 
-    
+
     //facebock
     public function redirectToFacebook()
     {
         return Socialite::driver('facebook')->redirect();
     }
-    
+
     public function handleFacebookCallback()
     {
         $user = Socialite::driver('facebook')->user();
-    
+
         // Bạn có thể sử dụng đối tượng $user để xác thực người dùng
         // Ví dụ, bạn có thể tạo một người dùng mới hoặc đăng nhập một người dùng hiện có
         // ...
-    
+
         return redirect()->route('home');
     }
 

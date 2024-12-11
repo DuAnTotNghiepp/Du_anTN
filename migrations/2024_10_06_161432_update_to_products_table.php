@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             //
-            $table->softDeletes();
-            $table->integer('quantity')->after('sku');; // số lượng sản phẩm
+            
         });
     }
 

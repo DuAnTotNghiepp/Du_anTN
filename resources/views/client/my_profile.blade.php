@@ -1,4 +1,5 @@
 
+
 @extends('client.profile')
 @section('content_profile')
 <div class="col-xxl-8 col-xl-8 col-lg-8">
@@ -79,6 +80,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
         <!-- Form chỉnh sửa địa chỉ -->
         <div id="address-edit-container" class="container mt-5" style="display: none;">
@@ -219,9 +221,9 @@
 
                         // Hiển thị form
                         editFormContainer.style.display = 'block';
-
                         // Đổ dữ liệu vào form
                         document.getElementById('fname').value = firstName;
+
                         document.getElementById('lname').value = lastName;
                         document.getElementById('email').value = email;
                         document.getElementById('Number').value = contactNumber;
@@ -237,7 +239,6 @@
                 });
             });
         </script>
-
         <!-- Form thêm địa chỉ -->
         <div id="address-form-container" class="container mt-5" style="display: none;">
             <div class="card">

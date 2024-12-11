@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <style>
         body {
+            /* font-family: Arial, sans-serif; */
+
             font-family: 'DejaVu Sans', sans-serif;
             background-color: #f8f9fa;
             padding: 20px;
