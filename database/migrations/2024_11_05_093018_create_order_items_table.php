@@ -21,7 +21,7 @@ return new class extends Migration
             $table->double('product_price_regular'); // Giá thông thường của sản phẩm
             $table->double('product_price_sale')->nullable(); // Giá giảm của sản phẩm, có thể là NULL
             $table->string('size'); // Tên kích thước của biến thể sản phẩm
-            $table->string('color'); // Tên màu sắc của biến thể sản phẩm
+            $table->string('color'); // Tên màu sắc của biến thể    sản phẩm
             $table->unsignedBigInteger('user_id'); // ID người dùng
             $table->unsignedBigInteger('product_id'); // ID sản phẩm
             $table->timestamps(); // Thời gian tạo và cập nhật bản ghi
