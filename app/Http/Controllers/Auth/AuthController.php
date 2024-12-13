@@ -28,6 +28,12 @@ class AuthController extends Controller
                 return redirect()->intended('/admin');
             }
 
+            if (Auth::attempt($user)) {
+                // Kiểm tra URL chuyển hướng trong session
+                $redirectUrl = $request->input('redirect_url') ?? session()->pull('redirect_url', '/');
+                return redirect()->intended($redirectUrl);
+            }
+
             return redirect()->intended('/');
         }
 

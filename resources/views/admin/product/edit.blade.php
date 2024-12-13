@@ -169,34 +169,18 @@
                                 <div id="ckeditor-classic">
                                     <div class="row gy-3">
                                         <div class="col-lg-12"
-                                            style="display: flex; justify-content: space-between; align-items: center;">
+                                            style="display: flex; justify-content: space-evenly;">
                                             <!-- Switches Color -->
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch" {{ $listPro->is_hot_deal ? 'checked' : '' }}
                                                     name="is_hot_deal" id="is_hot_deal">
                                                 <label class="form-check-label" for="SwitchCheck1">Sản phẩm hot</label>
                                             </div>
-                                            <div class="form-check form-switch form-switch-secondary">
-                                                <input class="form-check-input" type="checkbox" role="switch" {{ $listPro->is_good_deal ? 'checked' : '' }}
-                                                    name="is_good_deal" id="is_good_deal">
-                                                <label class="form-check-label" for="SwitchCheck2">Sản phẩm tốt</label>
-                                            </div>
-                                            <div class="form-check form-switch form-switch-success">
-                                                <input class="form-check-input" type="checkbox" role="switch" {{ $listPro->is_new ? 'checked' : '' }}
-                                                    name="is_new" id="is_new">
-                                                <label class="form-check-label" for="SwitchCheck3">Sản phẩm mới</label>
-                                            </div>
                                             <div class="form-check form-switch form-switch-warning">
                                                 <input class="form-check-input" type="checkbox" role="switch" {{ $listPro->is_active ? 'checked' : '' }}
                                                     name="is_active" id="is_active" checked>
                                                 <label class="form-check-label" for="SwitchCheck4">Trạng thái hoạt
                                                     động</label>
-                                            </div>
-                                            <div class="form-check form-switch form-switch-danger">
-                                                <input class="form-check-input" type="checkbox" role="switch" {{ $listPro->is_show_home ? 'checked' : '' }}
-                                                    name="is_show_home" id="is_show_home">
-                                                <label class="form-check-label" for="SwitchCheck5">Hiển thị trên trang
-                                                    chủ</label>
                                             </div>
                                         </div>
                                         <!-- end col -->
@@ -207,61 +191,9 @@
                         <!-- end card body -->
                     </div>
                     <!-- end card -->
-
-                    {{-- <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Attached files</h5>
-                    </div>
-                    <div class="card-body">
-                        <div>
-                            <p class="text-muted">Add Attached files here.</p>
-
-                            <div class="dropzone">
-                                <div class="fallback">
-                                    <input name="file" type="file" multiple="multiple">
-                                </div>
-                                <div class="dz-message needsclick">
-                                    <div class="mb-3">
-                                        <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
-                                    </div>
-
-                                    <h5>Drop files here or click to upload.</h5>
-                                </div>
-                            </div>
-
-                            <ul class="list-unstyled mb-0" id="dropzone-preview">
-                                <li class="mt-2" id="dropzone-preview-list">
-                                    <!-- This is used as the file preview template -->
-                                    <div class="border rounded">
-                                        <div class="d-flex p-2">
-                                            <div class="flex-shrink-0 me-3">
-                                                <div class="avatar-sm bg-light rounded">
-                                                    <img src="#" alt="Project-Image" data-dz-thumbnail
-                                                        class="img-fluid rounded d-block" />
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1">
-                                                <div class="pt-1">
-                                                    <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
-                                                    <p class="fs-13 text-muted mb-0" data-dz-size></p>
-                                                    <strong class="error text-danger" data-dz-errormessage></strong>
-                                                </div>
-                                            </div>
-                                            <div class="flex-shrink-0 ms-3">
-                                                <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <!-- end dropzon-preview -->
-                        </div>
-                    </div>
-                </div> --}}
-                    <!-- end card -->
                     <div class="text-end mb-4">
                         <button class="btn btn-success w-sm" type="submit">Sửa sản phẩm</button>
-                        <a class="btn btn-secondary w-sm" href="{{ route('product.index') }}">Quay lại trang chủ</a>
+                        <a class="btn btn-secondary w-sm" href="{{ route('product.index') }}">Quay lại danh sách</a>
                     </div>
             </div>
             <!-- end col -->
@@ -360,10 +292,13 @@
                     <!-- end card body -->
                 </div>
                 <!-- end card -->
+
                 <!-- end card -->
 
 
                 <!-- end card -->
+
+
             </div>
             <!-- end col -->
 
@@ -427,35 +362,6 @@
         <script>
             // Tích hợp CKEditor với trường 'content'
             CKEDITOR.replace('content');
-        </script>
-        <script>
-            function generateSlug(str) {
-                // Convert to lowercase
-                str = str.toLowerCase();
-
-                // Remove accents (dấu tiếng Việt)
-                str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-                // Replace spaces with hyphens
-                str = str.replace(/\s+/g, '-');
-
-                // Remove all non-alphanumeric characters except hyphens
-                str = str.replace(/[^\w\-]+/g, '');
-
-                // Remove multiple hyphens
-                str = str.replace(/\-\-+/g, '-');
-
-                // Trim hyphens from the start and end of the string
-                str = str.replace(/^-+/, '').replace(/-+$/, '');
-
-                return str;
-            }
-
-            document.getElementById('title').addEventListener('input', function() {
-                var title = this.value;
-                var slug = generateSlug(title);
-                document.getElementById('slug').value = slug;
-            });
         </script>
 
     </body>

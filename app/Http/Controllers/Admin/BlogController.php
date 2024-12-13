@@ -31,15 +31,40 @@ class BlogController extends Controller
      */
     public function store(StoreBlogRequest $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-        ]);
+        // Kiểm tra phương thức POST
+        if ($request->isMethod('post')) {
+            // Lấy tất cả dữ liệu từ request ngoại trừ token
+            $params = $request->except('_token');
 
-        // Tạo bài viết mới
-        Blog::create($request->all());
+            // Xác thực dữ liệu đầu vào
+            $request->validate([
+                'title' => 'required|string|max:255|unique:title',
+                'content' => 'required|string',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Kiểm tra định dạng và kích thước file
+            ]);
 
-        return redirect()->route('blog.index')->with('success', 'Bài viết đã được tạo thành công!');
+            // Kiểm tra và lưu hình ảnh
+            if ($request->hasFile('image')) {
+                // Lưu file hình ảnh vào thư mục public/images
+                $params['image'] = $request->file('image')->store('images', 'public');
+            } else {
+                $params['image'] = null; // Nếu không có hình ảnh, gán null
+            }
+
+            // Tạo mới bài viết
+            $blogPost = Blog::create([
+                'title' => $params['title'],
+                'content' => $params['content'],
+                'image' => $params['image'], // Lưu đường dẫn hình ảnh vào database
+            ]);
+
+            // Kiểm tra kết quả tạo bài viết
+            if ($blogPost) {
+                return redirect()->route('blog.index')->with('success', 'Bài viết đã được thêm mới thành công');
+            } else {
+                return redirect()->back()->with('error', 'Bài viết không thể được thêm mới');
+            }
+        };
     }
 
     /**

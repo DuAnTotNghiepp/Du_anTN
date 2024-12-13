@@ -95,10 +95,12 @@ Route::controller(VoucherController::class)
             ->name('create');
         Route::post('store', 'store')
             ->name('store');
-        Route::get('{id}/edit', 'edit')
-            ->name('edit');
-        Route::put('{id}/update', 'update')
-            ->name('update');
+
+        Route::get('{id}/edit', 'edit')->name('edit');
+        Route::put('{id}', 'update')->name('update');
+
+        Route::post('{id}/toggle-visibility', 'toggleVisibility')
+            ->name('toggleVisibility');
         Route::delete('{id}/destroy', 'destroy')
             ->name('destroy');
 });

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\MaterialController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\VariantsController;
 use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\Client\ProductCatalogueController;
 use App\Http\Controllers\Client\ProductFavoriteController;
+use App\Http\Controllers\Client\VoucherController as ClientVoucherController;
 use App\Http\Controllers\ProductController as ControllersProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckRoleAdminMiddleware;
@@ -43,8 +45,11 @@ Route::post('register', [AuthController::class, 'register'])->name('register');
 // Client Routes
 
 Route::get('/', [ClientController::class, 'index'])->name('index');
+
 Route::get('product/{id}', [ClientController::class, 'show'])->name('product.product_detail');
 Route::put('product/{id}/update', [ProductController::class, 'update'])->name('product.update');
+
+Route::get('product/{id}', [ClientController::class, 'show'])->middleware('save.redirect')->name('product.product_detail');
 
 
 
@@ -70,6 +75,7 @@ Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')-
 Route::post('/vnpay_payment', [OrderController::class, 'vnpayPayment'])->name('orders.vnpay_ment');
 Route::get('/vnpay/callback', [OrderController::class, 'vnpayCallback'])->name('vnpay.callback');
 
+Route::post('/variants', [VariantsController::class, 'store'])->name('variants.store');
 
 
 Route::middleware('auth')->group(function () {
@@ -138,6 +144,7 @@ Route::delete('/admin/materials/{id}/destroy', [MaterialController::class, 'dest
 
 
 Route::resource('cart', CartController::class);
+
 //chi tiet test
 Route::post('product/comment/{id}', [BinhLuanController::class, 'store'])->name('comment.store');
 Route::get('admin/comment/index', [ProductController::class, 'indexWithComments'])->name('comment.index');
@@ -154,3 +161,4 @@ Route::get('/admin/revenue-stats', [AdminController::class, 'getRevenueStats']);
 
 // Group routes under admin middleware
 Route::get('blog/{id}', [BlogController::class, 'show'])->name('blog.detail');
+

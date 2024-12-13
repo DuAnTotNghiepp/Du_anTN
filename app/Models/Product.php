@@ -24,14 +24,11 @@ class Product extends Model
         'price_sale',
         'description',
         'content',
-        'material',
+        'material_id',
         'user_manual',
         'is_active',
         'view',
         'is_hot_deal',
-        'is_good_deal',
-        'is_new',
-        'is_show_home',
         'created_at',
         'updated_at'
     ];

@@ -62,7 +62,8 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <label class="form-label" for="project-title-input">Tên Thuộc Tính</label>
-                                <select name="thuoctinh" class="form-select" id="attribute-select" data-choices data-choices-search-false>
+                                <select name="thuoctinh" class="form-select" id="attribute-select" data-choices
+                                    data-choices-search-false>
                                     <option value="">Tùy Chọn</option>
                                     <option value="Color">Color</option>
                                     <option value="Size">Size</option>
@@ -72,16 +73,18 @@
                             <!-- Input cho kích thước -->
                             <div class="mb-3" id="size-input" style="display: none;">
                                 <label class="form-label" for="size-value">Size</label>
-                                <input name="size_value" type="text" class="form-control" id="size-value" placeholder="Kích Thước (M, L, XL,...)">
+                                <input name="size_value" type="text" class="form-control" id="size-value"
+                                    placeholder="Kích Thước (M, L, XL,...)">
                                 @error('size_value')
-                                <span id="size_value-error" style="color: red">{{ $message }}</span>
-                            @enderror
+                                    <span id="size_value-error" style="color: red">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <!-- Input cho màu sắc -->
                             <div class="mb-3" id="color-input" style="display: none;">
                                 <label class="form-label" for="color-value">Color</label>
-                                <input name="color_value" type="color" class="form-control" id="color-value" placeholder="Màu Sắc">
+                                <input name="color_value" type="color" class="form-control" id="color-value"
+                                    placeholder="Màu Sắc">
                             </div>
                         </div>
                         <!-- end card body -->
@@ -90,7 +93,8 @@
                     <div class="text-end mb-4">
                         <button type="reset" class="btn btn-danger w-sm" id="resetButton">Reset</button>
                         <button class="btn btn-success w-sm" type="submit">Thêm Thuộc Tính</button>
-                        <a class="btn btn-secondary w-sm" href="{{ route('variant.index') }}">Quay lại Danh Sách Thuộc Tính</a>
+                        <a class="btn btn-secondary w-sm" href="{{ route('variant.index') }}">Quay lại Danh Sách Thuộc
+                            Tính</a>
                     </div>
             </div>
             <!-- end col -->
@@ -103,7 +107,7 @@
 
         <!-- end main content-->
         <script>
-            document.getElementById('attribute-select').addEventListener('change', function () {
+            document.getElementById('attribute-select').addEventListener('change', function() {
                 var sizeInput = document.getElementById('size-input');
                 var colorInput = document.getElementById('color-input');
 
@@ -117,7 +121,6 @@
             });
         </script>
         <script>
-
             document.getElementById('resetButton').addEventListener('click', function() {
                 // Lấy tất cả các input, textarea, và select trong form
                 let form = document.querySelector('form'); // Thay thế 'form' bằng id hoặc class cụ thể của form nếu cần

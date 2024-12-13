@@ -24,7 +24,7 @@ class OrderController extends Controller
             'user_phone' => 'required|string|max:20',
             'user_address' => 'nullable|string|max:255',
             'user_note' => 'nullable|string',
-            'payment_method' => 'required|in:cash,online',
+            'payment_method' => 'required|in:cash,vnpay',
             'product_id' => 'required|exists:products,id',
             'total_price' => 'required|numeric',
             'quantity' => 'integer|min:1',
@@ -36,9 +36,11 @@ class OrderController extends Controller
         if (!$validatedData['user_id']) {
             return redirect()->back()->with('error', 'Bạn cần đăng nhập để đặt hàng.');
         }
+        $validatedData['status'] = $request->payment_method === 'vnpay' ? 'err' : 'pending';
+
         $product = Product::findOrFail($validatedData['product_id']);
         $variant = $product->variants()->first();
-        
+
         $quantity = $validatedData['quantity'];
         if ($product->quantity < $quantity) {
             return redirect()->back()->withErrors(['message' => 'Số lượng sản phẩm không đủ trong kho.']);
@@ -50,6 +52,8 @@ class OrderController extends Controller
         $color = $request->input('color');
         Order_Items::create([
             'order_id' => $order->id,
+            'user_id' =>auth()->id(),
+            'product_id' => $product->id,
             'cart_id' => null,
             'product_variant_id' => $variant ? $variant->id : null,
             'quantity' => $quantity,
@@ -60,19 +64,18 @@ class OrderController extends Controller
             'product_price_sale' => $product->price_sale,
             'size' => $size,
             'color' => $color,
-            
+
         ]);
         $product->quantity -= $quantity;
         $product->save();
-        if ($request->input('payment_method') === 'online') {
-            // Xử lý thanh toán online qua VNPay
-            return redirect()->route('orders.vnpay_ment');
+        if ($request->payment_method === 'vnpay') {
+            return $this->vnpayPayment($order, $request);
         }
         // Chuyển hướng hoặc trả về thông báo thành công
-        return redirect()->route('index')->with('success', '......................Đơn hàng đã được thêm thành công.');
+        return redirect()->route('index')->with('success', 'Cảm Ơn Bạn Đã Đặt Hàng Của Chúng Tôi!');
     }
-    
-    
+
+
 
     public function vnpayPayment($order, Request $request)
     {
@@ -158,12 +161,12 @@ class OrderController extends Controller
                     $order = Order::find($inputData['vnp_TxnRef']);
 
                     if ($order && $order->status === 'err') {
-                        $order->status = 'paid'; 
+                        $order->status = 'completed';
                         $order->save();
                     }
 
                     DB::commit();
-                    return redirect()->route('index')->with('success', 'Payment successful. Order status updated.');
+                    return redirect()->route('index')->with('success', 'Đặt Hàng Thành Công. Thanh Toán Thành Công.');
                 } catch (Exception $e) {
                     DB::rollBack();
                     return redirect()->route('index')->with('error', 'Error processing payment: ' . $e->getMessage());
@@ -175,33 +178,5 @@ class OrderController extends Controller
             return redirect()->route('index')->with('error', 'Invalid signature.');
         }
     }
-
-
-//     public function vnpayReturn(Request $request)
-// {
-//     $vnp_HashSecret = "3W5U0M95R09Y84G2TXKGZZEI32AJLF2Z"; // Chuỗi bí mật của bạn
-//     $vnp_SecureHash = $request->get('vnp_SecureHash');
-//     $inputData = $request->except('vnp_SecureHash', 'vnp_SecureHashType');
-
-//     // Sắp xếp các tham số theo thứ tự A-Z
-//     ksort($inputData);
-//     $hashdata = "";
-//     foreach ($inputData as $key => $value) {
-//         $hashdata .= $key . '=' . $value . '&';
-//     }
-//     $hashdata = rtrim($hashdata, '&');
-
-//     // Tạo chữ ký
-//     $calculatedHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
-
-//     // Kiểm tra chữ ký
-//     if ($calculatedHash === $vnp_SecureHash) {
-//         // Chữ ký hợp lệ, xử lý tiếp
-//         return response()->json(['message' => 'Thanh toán thành công']);
-//     } else {
-//         // Chữ ký không hợp lệ
-//         return response()->json(['message' => 'Sai chữ ký'], 400);
-//     }
-// }
 
 }

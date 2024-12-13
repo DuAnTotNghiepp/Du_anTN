@@ -111,7 +111,7 @@
                             <table class="table align-middle table-nowrap mb-0" id="customerTable">
                                 <h1 class="text-center ">Sửa Mã Giảm Giá</h1>
 
-                                <form action="{{ route('vouchers.update', ['id' => $voucher->id]) }}" method="POST">
+                                <form action="{{ route('vouchers.update', $voucher->id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <div class="container mt-5">
@@ -130,7 +130,7 @@
                                                 <label for="type" class="form-label">Loại Voucher</label>
                                                 <select name="type" id="type" class="form-select" >
                                                     <option value="fixed" {{ $voucher->type == 'fixed' ? 'selected' : '' }}>Cố định</option>
-                                                    {{-- <option value="percent" {{ $voucher->type == 'percent' ? 'selected' : '' }}>Phần trăm</option> --}}
+                                                    <option value="percent" {{ $voucher->type == 'percent' ? 'selected' : '' }}>Phần trăm</option>
                                                 </select>
                                                 @error('type')
                                                 <span style="color: red">{{ $message }}</span>
@@ -149,15 +149,19 @@
                                             <!-- Giá trị đơn hàng tối thiểu -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="minimum_order_value" class="form-label">Giá trị đơn hàng tối thiểu</label>
+
                                                 <input type="number" name="minimum_order_value" id="minimum_order_value" class="form-control" value="{{ $voucher->minimum_order_value }}" >
                                                 @error('minimum_order_value')
                                                 <span style="color: red">{{ $message }}</span>
                                             @enderror
+
+
                                             </div>
 
                                             <!-- Giới hạn sử dụng -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="usage_limit" class="form-label">Giới hạn sử dụng</label>
+
                                                 <input type="number" name="usage_limit" id="usage_limit" class="form-control" value="{{ $voucher->usage_limit }}" >
                                                 @error('usage_limit')
                                                 <span style="color: red">{{ $message }}</span>
@@ -168,26 +172,35 @@
                                             <div class="col-md-6 mb-3">
                                                 <label for="start_date" class="form-label">Ngày bắt đầu</label>
                                                 <input type="datetime-local" name="start_date" id="start_date" class="form-control"
+
                                                     value="{{ \Carbon\Carbon::parse($voucher->start_date)->format('Y-m-d\TH:i') }}" >
                                                     @error('start_date')
                                                     <span style="color: red">{{ $message }}</span>
                                                 @enderror
+
                                             </div>
 
                                             <!-- Ngày kết thúc -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="end_date" class="form-label">Ngày kết thúc</label>
                                                 <input type="datetime-local" name="end_date" id="end_date" class="form-control"
+
                                                     value="{{ \Carbon\Carbon::parse($voucher->end_date)->format('Y-m-d\TH:i') }}" >
                                                     @error('end_date')
                                                     <span style="color: red">{{ $message }}</span>
                                                 @enderror
+
+                                                       {{-- <value="{{ date('Y-m-d\TH:i', strtotime($voucher->end_date)) }}" required> --}}
+
                                             </div>
 
                                             <!-- Trạng thái -->
                                             <div class="col-md-6 mb-3">
+
                                                 <label for="status" class="form-label">Trạng thái</label>
-                                                <select name="status" id="status" class="form-select" style="width: 50%;" >
+
+
+                                                <select name="status" id="status" class="form-select" style="width: 290px;border: 2px solid #ced4da; border-radius: 5px" required>
                                                     <option value="active" {{ $voucher->status == 'active' ? 'selected' : '' }}>Hoạt động</option>
                                                     <option value="expired" {{ $voucher->status == 'expired' ? 'selected' : '' }}>Hết hạn</option>
                                                     <option value="disabled" {{ $voucher->status == 'disabled' ? 'selected' : '' }}>Tắt</option>
@@ -197,14 +210,19 @@
                                             @enderror
                                             </div>
 
+
                                             <!-- Nút hành động -->
+
+                                            <!-- Button Actions -->
+
                                             <div class="col-12 d-flex justify-content-between">
-                                                <button type="submit" class="btn btn-primary">{{ isset($voucher) ? 'Cập nhật' : 'Tạo mới' }}</button>
+                                                <button type="submit" class="btn btn-primary">Cập nhật</button>
                                                 <a href="{{ route('vouchers.index') }}" class="btn btn-secondary">Quay lại</a>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
+
 
                             </table>
                             <div class="noresult" style="display: none">

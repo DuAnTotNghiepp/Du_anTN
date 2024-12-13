@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVoucherRequest;
+use App\Http\Requests\UpdateVoucherRequest;
 use App\Models\Voucher;
 
 use App\Models\Vouchers;
@@ -14,6 +15,14 @@ class VoucherController extends Controller
 
     public function index()
     {
+        Vouchers::where('end_date', '<', now())
+        ->where('status', 'active')
+        ->update(['status' => 'expired']);
+
+        Vouchers::where('end_date', '>=', now())
+        ->where('status', '!=', 'active')
+        ->update(['status' => 'active']);
+
         $vouchers = Vouchers::all(); // Lấy danh sách voucher
         return view('admin.vouchers.index', compact('vouchers')); // Gửi dữ liệu đến view
     }
@@ -44,6 +53,17 @@ class VoucherController extends Controller
 
         return redirect()->route('vouchers.index')->with('success', 'Voucher created successfully!');
     }
+    public function toggleVisibility($id)
+{
+    $voucher = Vouchers::findOrFail($id);
+
+    // Đổi trạng thái hiển thị
+    $voucher->is_visible = !$voucher->is_visible;
+    $voucher->save();
+
+    return redirect()->route('vouchers.index')->with('success', 'Cập nhật trạng thái hiển thị thành công!');
+}
+
 
     /**
      * Hiển thị form chỉnh sửa voucher.
@@ -53,7 +73,7 @@ class VoucherController extends Controller
      */
     public function edit($id)
     {
-        $voucher = Vouchers::findOrFail($id); // Lấy voucher theo id
+        $voucher = Vouchers::findOrFail($id);
         return view('admin.vouchers.edit', compact('voucher'));
     }
 
@@ -62,9 +82,10 @@ class VoucherController extends Controller
      *
 
      */
-    public function update(StoreVoucherRequest $request, $id)
+    public function update(UpdateVoucherRequest $request, $id)
     {
         $voucher = Vouchers::findOrFail($id);
+
 
         // Xác thực dữ liệu
         $validated = $request->validate([
@@ -79,12 +100,25 @@ class VoucherController extends Controller
             'status' => 'required|in:active,expired,disabled',
         ]);
 
-        // Cập nhật dữ liệu
+    // Kiểm tra ngày kết thúc
+    $currentDate = now(); // Lấy ngày hiện tại
+    if (strtotime($validated['end_date']) > strtotime($currentDate)) {
+        $validated['status'] = 'active'; // Cập nhật trạng thái về hoạt động nếu ngày kết thúc còn hiệu lực
+    } else {
+        $validated['status'] = 'expired'; // Đảm bảo trạng thái là hết hạn nếu ngày kết thúc đã qua
+    }
+
         $voucher->update($validated);
+
 
         // Trả về trang danh sách voucher với thông báo thành công
         return redirect()->route('vouchers.index')->with('success', 'Voucher cập nhật thành công!');
+
+
+        return redirect()->route('vouchers.index')->with('success', 'Voucher updated successfully!');
+
     }
+
 
 
     public function destroy($id)
