@@ -39,7 +39,6 @@
     <body>
         <!-- start page title -->
         <div class="row">
-
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                     <h4 class="mb-sm-0">Quản Lý Sản Phẩm</h4>
@@ -79,6 +78,9 @@
                                 <label class="form-label" for="project-title-input">Tên Sản Phẩm</label>
                                 <input type="text" class="form-control" id="project-title-input" name="name" value="{{$listPro->name}}"
                                     placeholder="Enter Tên Sản Phẩm">
+                                    @error('name')
+                                            <span id="name-error" style="color: red">{{ $message }}</span>
+                                        @enderror
                             </div>
 
                             <div class="mb-3">
@@ -86,6 +88,9 @@
                                 <input class="form-control" id="project-thumbnail-img" name="img_thumbnail" type="file"
                                     accept="image/png, image/gif, image/jpeg">
                                     <img id="imgPreview" src="{{Storage::url($listPro->img_thumbnail)}}" style="width: 100px;">
+                                    @error('img_thumbnail')
+                                            <span id="img_thumbnail-error" style="color: red">{{ $message }}</span>
+                                        @enderror
                             </div>
 
                             <div class="mb-3">
@@ -98,14 +103,20 @@
                                         @endforeach
                                     </div>
                                 </div>
+                                @error('image')
+                                            <span id="image-error" style="color: red">{{ $message }}</span>
+                                        @enderror
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Mô Tả Sản Phẩm</label>
                                 <div id="ckeditor-classic">
                                     <textarea class="form-control" placeholder="Enter Description" name="description" id="description" rows="3"
-                                        required>{{$listPro->description}}</textarea>
+                                        >{{$listPro->description}}</textarea>
                                 </div>
+                                @error('description')
+                                            <span id="description-error" style="color: red">{{ $message }}</span>
+                                        @enderror
                             </div>
 
                             <div class="row">
@@ -113,22 +124,31 @@
                                     <div class="mb-3 mb-lg-0">
                                         <label for="choices-priority-input" class="form-label">Giá Thường</label>
                                         <input type="number" class="form-control" name="price_regular" id="price_regular" value="{{$listPro->price_regular}}"
-                                            step="0.01" required data-provider="flatpickr" data-date-format="d M, Y">
+                                            step="0.01"  data-provider="flatpickr" data-date-format="d M, Y">
                                     </div>
+                                    @error('price_regular')
+                                            <span id="price_regular-error" style="color: red">{{ $message }}</span>
+                                        @enderror
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="mb-3 mb-lg-0">
                                         <label for="choices-status-input" class="form-label">Giá Khuyến Mãi</label>
                                         <input type="number" class="form-control" name="price_sale" id="price_sale" value="{{$listPro->price_sale}}"
-                                            step="0.01" required data-provider="flatpickr" data-date-format="d M, Y">
+                                            step="0.01"  data-provider="flatpickr" data-date-format="d M, Y">
                                     </div>
+                                    @error('price_sale')
+                                            <span id="price_sale-error" style="color: red">{{ $message }}</span>
+                                        @enderror
                                 </div>
                                 <div class="col-lg-4">
                                     <div>
                                         <label for="datepicker-deadline-input" class="form-label">Số Lượng</label>
-                                        <input type="number" class="form-control" name="quantity" id="quantity" required value="{{$listPro->quantity}}"
+                                        <input type="number" class="form-control" name="quantity" id="quantity"  value="{{$listPro->quantity}}"
                                             data-provider="flatpickr" data-date-format="d M, Y">
                                     </div>
+                                    @error('quantity')
+                                            <span id="quantity-error" style="color: red">{{ $message }}</span>
+                                        @enderror
                                 </div>
                             </div><br>
 
@@ -136,7 +156,7 @@
                                 <label class="form-label">Hướng Dẫn Sử Dụng</label>
                                 <div id="ckeditor-classic">
                                     <textarea class="form-control" placeholder="Enter User_manual" name="user_manual" id="user_manual" rows="3"
-                                        required>{{$listPro->user_manual}}</textarea>
+                                        >{{$listPro->user_manual}}</textarea>
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -186,14 +206,17 @@
                         <div>
                             <label class="form-label mb-0">Mã sản phẩm (SKU)</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="sku" id="sku" value="{{$listPro->sku}}" required>
+                                <input type="text" class="form-control" name="sku" id="sku" value="{{$listPro->sku}}" >
                                 <button type="button" class="btn btn-outline-secondary" id="generateSKU">Random</button>
                             </div>
+                            @error('sku')
+                            <span id="sku-error" style="color: red">{{ $message }}</span>
+                        @enderror
                         </div>
                     </div>
                 </div>
                 <!-- end card -->
-                <div class="card">
+                {{-- <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">Chất Liệu</h5>
                     </div>
@@ -204,7 +227,28 @@
                         </div>
                     </div>
                     <!-- end card body -->
+                </div> --}}
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Chất Liệu</h5>
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            <label for="material" class="form-label">Chọn Chất Liệu</label>
+                            <select name="material_id" id="material" class="form-control">
+                                {{-- <option value="">Chọn chất liệu</option> --}}
+                                @foreach ($materials as $material)
+                                <option value="{{ $material->id }}" @if ($material->id == $listPro->material_id) selected @endif>
+                                    {{ $material->name }}
+                                </option>
+                            @endforeach
+                            </select>
+                        </div>
+
+                    </div>
+                    <!-- end card body -->
                 </div>
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">Thuộc Tính Sản Phẩm</h5>
@@ -248,6 +292,13 @@
                     <!-- end card body -->
                 </div>
                 <!-- end card -->
+
+                <!-- end card -->
+
+
+                <!-- end card -->
+
+
             </div>
             <!-- end col -->
 

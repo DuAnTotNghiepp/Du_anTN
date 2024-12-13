@@ -40,6 +40,15 @@
     <body>
         <!-- start page title -->
         <div class="row">
+            {{-- @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif --}}
 
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
@@ -97,9 +106,13 @@
                             <div class="mb-3">
                                 <label class="form-label">Ảnh liên Quan</label>
                                 <div class="dropzone">
-                                    <input type="file" id="product-image-input" name="image[]" multiple accept="image/png, image/gif, image/jpeg" class="form-control">
+                                    <input type="file" id="product-image-input" name="image[]" multiple
+                                        accept="image/png, image/gif, image/jpeg" class="form-control">
                                     <div class="preview-gallery" id="galleryPreview"></div>
                                 </div>
+                                @error('image')
+                                    <span style="color: red">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
@@ -117,7 +130,9 @@
                                     <div class="mb-3 mb-lg-0">
                                         <label for="choices-priority-input" class="form-label">Giá Thường</label>
 
-                                        <input type="number" class="form-control" name="price_regular" id="price_regular" step="0.01" data-provider="flatpickr" data-date-format="d M, Y" value="{{ old('price_regular') }}">
+                                        <input type="number" class="form-control" name="price_regular" id="price_regular"
+                                            step="0.01" data-provider="flatpickr" data-date-format="d M, Y"
+                                            value="{{ old('price_regular') }}">
                                         @error('price_regular')
                                             <span id="price-regular-error" style="color: red">{{ $message }}</span>
                                         @enderror
@@ -128,8 +143,10 @@
                                 <div class="col-lg-4">
                                     <div class="mb-3 mb-lg-0">
                                         <label for="choices-status-input" class="form-label">Giá Khuyến Mãi</label>
-                                        <input type="number" class="form-control" name="price_sale" id="price_sale" value="{{ old('price_sale') }}">
-                                        <span id="priceSaleError" style="color: red; display: none;">Giá khuyến mãi không được lớn hơn giá thường.</span>
+                                        <input type="number" class="form-control" name="price_sale" id="price_sale"
+                                            value="{{ old('price_sale') }}">
+                                        <span id="priceSaleError" style="color: red; display: none;">Giá khuyến mãi không
+                                            được lớn hơn giá thường.</span>
                                         @error('price_sale')
                                             <span id="price-sale-error" style="color: red">{{ $message }}</span>
                                         @enderror
@@ -139,7 +156,9 @@
                                     <div>
                                         <label for="datepicker-deadline-input" class="form-label">Số Lượng</label>
 
-                                        <input type="number" class="form-control" name="quantity" id="quantity" data-provider="flatpickr" data-date-format="d M, Y" value="{{ old('quantity') }}">
+                                        <input type="number" class="form-control" name="quantity" id="quantity"
+                                            data-provider="flatpickr" data-date-format="d M, Y"
+                                            value="{{ old('quantity') }}">
                                         @error('quantity')
                                             <span id="quantity-error" style="color: red">{{ $message }}</span>
                                         @enderror
@@ -171,8 +190,7 @@
                             <div class="mb-3">
                                 <div id="ckeditor-classic">
                                     <div class="row gy-3">
-                                        <div class="col-lg-12"
-                                            style="display: flex; justify-content: space-evenly;">
+                                        <div class="col-lg-12" style="display: flex; justify-content: space-evenly;">
                                             <!-- Switches Color -->
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
@@ -223,67 +241,116 @@
                 </div>
                 <!-- end card -->
                 <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Chất Liệu</h5>
-                    </div>
-                    <div class="card-body">
-                        <div>
-                            <input type="text" class="form-control" name="material" id="material" data-provider="flatpickr" data-date-format="d M, Y">
-                        </div>
-                        @error('material')
-                            <span id="material-error" style="color: red">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <!-- end card body -->
-                </div>
-                <!-- end card -->
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Thuộc Tính Sản Phẩm</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <label for="choices-categories-input" class="form-label">Màu Sắc</label>
-                            @foreach ($Color as $col)
-                                <input type="checkbox" value="{{$col->id}}" name="id_variant[]">
-                                <div style="width: 20px; height: 20px; background-color: {{$col->value}}; display: inline-block; border: 1px solid #ccc;"></div>
-                            @endforeach
-                        </div>
-                        <div class="mb-3">
-                            <label for="choices-categories-input" class="form-label">Kích Thước</label>
-                            @foreach ($Size as $col)
-                                <input type="checkbox" value="{{$col->id}}" name="id_variant[]">
-                                {{$col->value}}
-                            @endforeach
-                        </div>
-                    </div>
-                    <!-- end card body -->
-                </div>
-                <!-- end card -->
 
-                <!-- end card -->
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Categories</h5>
-                    </div>
                     <div class="card-body">
-                        <div class="mb-3">
-                            <label for="choices-categories-input" class="form-label">Categories</label>
-                            <select name="catalogues_id" class="form-select" data-choices data-choices-search-false
-                                id="choices-categories-input">
-                                @foreach ($listCate as $category)
-                                    <option value="{{ $category->id }}" @if ($category->id == old('catalogues_id')) selected @endif>
-                                        {{ $category->name }}
-                                    </option>
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Material</h5>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="material_id">Chất liệu</label>
+                                    <select name="material_id" class="form-select" data-choices data-choices-search-false
+                                        id="choices-categories-input">
+                                        <option value="" disabled selected>Chọn chất liệu</option>
+                                        @foreach ($materials as $material)
+                                            <option value="{{ $material->id }}"
+                                                @if (old('material_id') == $material->id) selected @endif>
+                                                {{ $material->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            @error('material_id')
+                                <span id="material-error" style="color: red">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <!-- end card body -->
+                    </div>
+
+                    <!-- end card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Thuộc Tính Sản Phẩm</h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- Màu sắc -->
+                            <div class="mb-3">
+                                <label for="choices-categories-input" class="form-label">Màu Sắc</label>
+                                @foreach ($Color as $col)
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            value="{{ $col->id }}"
+                                            name="variants_id[]"
+                                            @if (is_array(old('variants_id')) && in_array($col->id, old('variants_id'))) checked @endif
+                                        >
+                                        <div
+                                            style="width: 20px; height: 20px; background-color: {{ $col->value }}; display: inline-block; border: 1px solid #ccc;">
+                                        </div>
+                                    </label>
                                 @endforeach
-                            </select>
+                            </div>
+
+                            <!-- Kích thước -->
+                            <div class="mb-3">
+                                <label for="choices-categories-input" class="form-label">Kích Thước</label>
+                                @foreach ($Size as $col)
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            value="{{ $col->id }}"
+                                            name="variants_id[]"
+                                            @if (is_array(old('variants_id')) && in_array($col->id, old('variants_id'))) checked @endif
+                                        >
+                                        {{ $col->value }}
+                                    </label>
+                                @endforeach
+                            </div>
+
+                            <!-- Hiển thị thông báo lỗi -->
+                            @error('variants_id')
+                            <span class="text-danger" style="color: red">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
-                    <!-- end card body -->
-                </div>
-                <!-- end card -->
 
-                <footer class="footer">
+
+                    <!-- end card -->
+
+                    <!-- end card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Categories</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="choices-categories-input" class="form-label">Categories</label>
+                                <select name="catalogues_id" class="form-select" data-choices data-choices-search-false id="choices-categories-input">
+                                    <option value="" disabled selected>Chọn danh mục</option>
+                                    @foreach ($listCate as $category)
+                                        <option value="{{ $category->id }}" @if ($category->id == old('catalogues_id')) selected @endif>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            @error('catalogues_id') <!-- Chú ý tên trường khớp với tên trong form -->
+                                <span id="catalogues_id-error" style="color: red">{{ $message }}</span>
+                            @enderror
+
+                        </div>
+                        <!-- end card body -->
+                    </div>
+                    <!-- end card -->
+
+                    <!-- end card -->
+
+
+                    {{-- <footer class="footer">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-sm-6">
@@ -298,239 +365,295 @@
                             </div>
                         </div>
                     </div>
-                </footer>
-                <!-- end card -->
+                </footer> --}}
+                    <!-- end card -->
+                </div>
+                <!-- end col -->
+
             </div>
-            <!-- end col -->
-
-        </div>
-        <!-- end main content-->
-        </form><!-- end form -->
+            <!-- end main content-->
+            </form><!-- end form -->
 
 
 
-        <!-- end main content-->
-        <script>
-            document.getElementById('project-thumbnail-img').addEventListener('change', function(event) {
-                const [file] = event.target.files;
-                if (file) {
-                    document.getElementById('imgPreview').src = URL.createObjectURL(file);
-                }
-            });
-
-            // Hiển thị xem trước ảnh trong bộ sưu tập
-            document.getElementById('product-image-input').addEventListener('change', function(event) {
-                const galleryPreview = document.getElementById('galleryPreview');
-                galleryPreview.innerHTML = ''; // Xóa ảnh cũ trong gallery
-                Array.from(event.target.files).forEach(file => {
-                    const imgElement = document.createElement('img');
-                    imgElement.src = URL.createObjectURL(file);
-                    imgElement.classList.add('preview-img');
-                    galleryPreview.appendChild(imgElement);
-                });
-            });
-            document.getElementById('generateSKU').addEventListener('click', function() {
-                // Hàm sinh mã SKU ngẫu nhiên gồm 8 ký tự chữ và số, viết hoa
-                function generateRandomSKU(length = 8) {
-                    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                    let sku = '';
-                    for (let i = 0; i < length; i++) {
-                        sku += chars.charAt(Math.floor(Math.random() * chars.length));
+            <!-- end main content-->
+            <script>
+                document.getElementById('project-thumbnail-img').addEventListener('change', function(event) {
+                    const [file] = event.target.files;
+                    if (file) {
+                        document.getElementById('imgPreview').src = URL.createObjectURL(file);
                     }
-                    return sku;
+                });
+
+                // Hiển thị xem trước ảnh trong bộ sưu tập
+                document.getElementById('product-image-input').addEventListener('change', function(event) {
+                    const galleryPreview = document.getElementById('galleryPreview');
+                    galleryPreview.innerHTML = ''; // Xóa ảnh cũ trong gallery
+                    Array.from(event.target.files).forEach(file => {
+                        const imgElement = document.createElement('img');
+                        imgElement.src = URL.createObjectURL(file);
+                        imgElement.classList.add('preview-img');
+                        galleryPreview.appendChild(imgElement);
+                    });
+                });
+                document.getElementById('generateSKU').addEventListener('click', function() {
+                    // Hàm sinh mã SKU ngẫu nhiên gồm 8 ký tự chữ và số, viết hoa
+                    function generateRandomSKU(length = 8) {
+                        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                        let sku = '';
+                        for (let i = 0; i < length; i++) {
+                            sku += chars.charAt(Math.floor(Math.random() * chars.length));
+                        }
+                        return sku;
+                    }
+
+                    // Gán giá trị SKU vào input
+                    document.getElementById('sku').value = generateRandomSKU();
+                });
+                // Bắt sự kiện khi chọn ảnh
+                document.getElementById('project-thumbnail-img').addEventListener('change', function(event) {
+                    var file = event.target.files[0];
+                    var reader = new FileReader();
+
+                    // Đọc file ảnh
+                    reader.onload = function(e) {
+                        // Hiển thị ảnh bằng cách thay đổi thuộc tính 'src' của img
+                        document.getElementById('imgPreview').src = e.target.result;
+                    }
+
+                    // Kiểm tra nếu có file được chọn và là ảnh
+                    if (file && file.type.match('image.*')) {
+                        reader.readAsDataURL(file); // Đọc dữ liệu dưới dạng URL
+                    }
+                });
+                document.getElementById('resetButton').addEventListener('click', function() {
+                    // Lấy tất cả các input, textarea, và select trong form
+                    let form = document.querySelector('form'); // Thay thế 'form' bằng id hoặc class cụ thể của form nếu cần
+                    let inputs = form.querySelectorAll('input, textarea, select');
+
+                    // Xóa giá trị của tất cả các trường
+                    inputs.forEach(input => {
+                        if (input.type === 'checkbox' || input.type === 'radio') {
+                            input.checked = false; // Bỏ chọn các checkbox hoặc radio
+                        } else {
+                            input.value = ''; // Xóa giá trị của các input, textarea, select
+                        }
+                    });
+                });
+            </script>
+            <script>
+                // Tích hợp CKEditor với trường 'content'
+                CKEDITOR.replace('content');
+            </script>
+            <script>
+                function generateSlug(str) {
+                    // Convert to lowercase
+                    str = str.toLowerCase();
+
+                    // Remove accents (dấu tiếng Việt)
+                    str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+                    // Replace spaces with hyphens
+                    str = str.replace(/\s+/g, '-');
+
+                    // Remove all non-alphanumeric characters except hyphens
+                    str = str.replace(/[^\w\-]+/g, '');
+
+                    // Remove multiple hyphens
+                    str = str.replace(/\-\-+/g, '-');
+
+                    // Trim hyphens from the start and end of the string
+                    str = str.replace(/^-+/, '').replace(/-+$/, '');
+
+                    return str;
                 }
 
-                // Gán giá trị SKU vào input
-                document.getElementById('sku').value = generateRandomSKU();
-            });
-            // Bắt sự kiện khi chọn ảnh
-            document.getElementById('project-thumbnail-img').addEventListener('change', function(event) {
-                var file = event.target.files[0];
-                var reader = new FileReader();
+                // document.getElementById('title').addEventListener('input', function() {
+                //     var title = this.value;
+                //     var slug = generateSlug(title);
+                //     document.getElementById('slug').value = slug;
+                // });
+            </script>
+            <script>
+                document.getElementById('price_sale').addEventListener('input', function() {
+                    var priceRegular = parseFloat(document.getElementById('price_regular').value);
+                    var priceSale = parseFloat(this.value);
+                    var priceSaleError = document.getElementById('priceSaleError');
 
-                // Đọc file ảnh
-                reader.onload = function(e) {
-                    // Hiển thị ảnh bằng cách thay đổi thuộc tính 'src' của img
-                    document.getElementById('imgPreview').src = e.target.result;
-                }
-
-                // Kiểm tra nếu có file được chọn và là ảnh
-                if (file && file.type.match('image.*')) {
-                    reader.readAsDataURL(file); // Đọc dữ liệu dưới dạng URL
-                }
-            });
-            document.getElementById('resetButton').addEventListener('click', function() {
-                // Lấy tất cả các input, textarea, và select trong form
-                let form = document.querySelector('form'); // Thay thế 'form' bằng id hoặc class cụ thể của form nếu cần
-                let inputs = form.querySelectorAll('input, textarea, select');
-
-                // Xóa giá trị của tất cả các trường
-                inputs.forEach(input => {
-                    if (input.type === 'checkbox' || input.type === 'radio') {
-                        input.checked = false; // Bỏ chọn các checkbox hoặc radio
+                    if (priceSale > priceRegular) {
+                        priceSaleError.style.display = 'block';
+                        this.classList.add('is-invalid'); // Thêm class 'is-invalid' để highlight input
                     } else {
-                        input.value = ''; // Xóa giá trị của các input, textarea, select
+                        priceSaleError.style.display = 'none';
+                        this.classList.remove('is-invalid');
                     }
                 });
-            });
-        </script>
-        <script>
-            // Tích hợp CKEditor với trường 'content'
-            CKEDITOR.replace('content');
-        </script>
-        <script>
-            document.getElementById('price_sale').addEventListener('input', function() {
-                var priceRegular = parseFloat(document.getElementById('price_regular').value);
-                var priceSale = parseFloat(this.value);
+            </script>
+            <script>
+                var nameInput = document.getElementById('project-title-input');
+                var nameError = document.querySelector('#project-title-input + span'); // Tìm element span kế tiếp của input
+
+                nameInput.addEventListener('input', function() {
+                    if (this.value.trim() === '') {
+                        nameError.style.display = 'block';
+                        this.classList.add('is-invalid');
+                    } else {
+                        nameError.style.display = 'none';
+                        this.classList.remove('is-invalid');
+                    }
+                });
+
+                nameInput.addEventListener('focus', function() {
+                    if (this.value.trim() === '') {
+                        nameError.style.display = 'block';
+                        this.classList.add('is-invalid');
+                    }
+                });
+            </script>
+            <script>
+                var descriptionInput = document.getElementById('description');
+                var descriptionError = document.getElementById('description-error');
+
+                descriptionInput.addEventListener('blur', function() {
+                    if (this.value.trim() === '') {
+                        descriptionError.style.display = 'block';
+                    }
+                });
+
+                descriptionInput.addEventListener('focus', function() {
+                    descriptionError.style.display = 'none';
+                });
+            </script>
+            <script>
+                var priceRegularInput = document.getElementById('price_regular');
+                var priceRegularError = document.getElementById('price-regular-error');
+
+                priceRegularInput.addEventListener('focus', function() {
+                    priceRegularError.style.display = 'none';
+                });
+            </script>
+            <script>
+                var priceSaleInput = document.getElementById('price_sale');
                 var priceSaleError = document.getElementById('priceSaleError');
+                var priceSaleErrorSpan = document.getElementById('price-sale-error');
 
-                if (priceSale > priceRegular) {
-                    priceSaleError.style.display = 'block';
-                    this.classList.add('is-invalid'); // Thêm class 'is-invalid' để highlight input
-                } else {
+                priceSaleInput.addEventListener('focus', function() {
                     priceSaleError.style.display = 'none';
-                    this.classList.remove('is-invalid');
-                }
-            });
-        </script>
-        <script>
-            var nameInput = document.getElementById('project-title-input');
-            var nameError = document.querySelector('#project-title-input + span'); // Tìm element span kế tiếp của input
+                    if (priceSaleErrorSpan) {
+                        priceSaleErrorSpan.style.display = 'none';
+                    }
+                });
+            </script>
+            <script>
+                var quantityInput = document.getElementById('quantity');
+                var quantityError = document.getElementById('quantity-error');
 
-            nameInput.addEventListener('input', function() {
-                if (this.value.trim() === '') {
-                    nameError.style.display = 'block';
-                    this.classList.add('is-invalid');
-                } else {
-                    nameError.style.display = 'none';
-                    this.classList.remove('is-invalid');
-                }
-            });
+                quantityInput.addEventListener('focus', function() {
+                    if (quantityError) {
+                        quantityError.style.display = 'none';
+                    }
+                });
+            </script>
+            <script>
+                var userManualInput = document.getElementById('user_manual');
+                var userManualError = document.getElementById('user-manual-error');
 
-            nameInput.addEventListener('focus', function() {
-                if (this.value.trim() === '') {
-                    nameError.style.display = 'block';
-                    this.classList.add('is-invalid');
-                }
-            });
-        </script>
-        <script>
-            var descriptionInput = document.getElementById('description');
-            var descriptionError = document.getElementById('description-error');
+                userManualInput.addEventListener('focus', function() {
+                    if (userManualError) {
+                        userManualError.style.display = 'none';
+                    }
+                });
 
-            descriptionInput.addEventListener('blur', function() {
-                if (this.value.trim() === '') {
-                    descriptionError.style.display = 'block';
-                }
-            });
+                userManualInput.addEventListener('blur', function() {
+                    if (userManualInput.value.trim() === '' && userManualError) {
+                        userManualError.style.display = 'block';
+                    }
+                });
+            </script>
+            <script>
+                var skuInput = document.getElementById('sku');
+                var skuError = document.getElementById('sku-error');
+                var generateButton = document.getElementById('generateSKU');
 
-            descriptionInput.addEventListener('focus', function() {
-                descriptionError.style.display = 'none';
-            });
-        </script>
-        <script>
-            var priceRegularInput = document.getElementById('price_regular');
-            var priceRegularError = document.getElementById('price-regular-error');
+                skuInput.addEventListener('focus', function() {
+                    if (skuError) {
+                        skuError.style.display = 'none';
+                    }
+                });
 
-            priceRegularInput.addEventListener('focus', function() {
-                priceRegularError.style.display = 'none';
-            });
-        </script>
-        <script>
-            var priceSaleInput = document.getElementById('price_sale');
-            var priceSaleError = document.getElementById('priceSaleError');
-            var priceSaleErrorSpan = document.getElementById('price-sale-error');
+                skuInput.addEventListener('blur', function() {
+                    if (skuInput.value.trim() === '' && skuError) {
+                        skuError.style.display = 'block';
+                    }
+                });
 
-            priceSaleInput.addEventListener('focus', function() {
-                priceSaleError.style.display = 'none';
-                if (priceSaleErrorSpan) {
-                    priceSaleErrorSpan.style.display = 'none';
-                }
-            });
-        </script>
-<script>
-    var quantityInput = document.getElementById('quantity');
-    var quantityError = document.getElementById('quantity-error');
+                generateButton.addEventListener('click', function() {
+                    if (skuError) {
+                        skuError.style.display = 'none';
+                    }
+                });
 
-    quantityInput.addEventListener('focus', function() {
-        if (quantityError) {
-            quantityError.style.display = 'none';
-        }
-    });
-</script>
- <script>
-    var userManualInput = document.getElementById('user_manual');
-    var userManualError = document.getElementById('user-manual-error');
+                generateButton.addEventListener('focus', function() {
+                    if (skuError) {
+                        skuError.style.display = 'none';
+                    }
+                });
 
-    userManualInput.addEventListener('focus', function() {
-        if (userManualError) {
-            userManualError.style.display = 'none';
-        }
-    });
+                generateButton.addEventListener('blur', function() {
+                    if (skuInput.value.trim() === '' && skuError) {
+                        skuError.style.display = 'block';
+                    }
+                });
+            </script>
+            <script>
+                var materialInput = document.getElementById('material');
+                var materialError = document.getElementById('material-error');
 
-    userManualInput.addEventListener('blur', function() {
-        if (userManualInput.value.trim() === '' && userManualError) {
-            userManualError.style.display = 'block';
-        }
-    });
-</script>
-<script>
-    var skuInput = document.getElementById('sku');
-    var skuError = document.getElementById('sku-error');
-    var generateButton = document.getElementById('generateSKU');
+                materialInput.addEventListener('focus', function() {
+                    if (materialError) {
+                        materialError.style.display = 'none';
+                    }
+                });
 
-    skuInput.addEventListener('focus', function() {
-        if (skuError) {
-            skuError.style.display = 'none';
-        }
-    });
+                materialInput.addEventListener('blur', function() {
+                    if (materialInput.value.trim() === '' && materialError) {
+                        materialError.style.display = 'block';
+                    }
+                });
 
-    skuInput.addEventListener('blur', function() {
-        if (skuInput.value.trim() === '' && skuError) {
-            skuError.style.display = 'block';
-        }
-    });
 
-    generateButton.addEventListener('click', function() {
-        if (skuError) {
-            skuError.style.display = 'none';
-        }
-    });
+                document.addEventListener('click', function(event) {
+                    if (event.target.type !== 'text' && materialInput.value.trim() === '' && materialError) {
+                        materialError.style.display = 'block';
+                    }
+                });
+            </script>
+            <script>
+                var slugInput = document.getElementById('slug');
+                var slugError = document.getElementById('slug-error');
 
-    generateButton.addEventListener('focus', function() {
-        if (skuError) {
-            skuError.style.display = 'none';
-        }
-    });
+                slugInput.addEventListener('focus', function() {
+                    if (slugError) {
+                        slugError.style.display = 'none';
+                    }
+                });
 
-    generateButton.addEventListener('blur', function() {
-        if (skuInput.value.trim() === '' && skuError) {
-            skuError.style.display = 'block';
-        }
-    });
-</script>
-<script>
-    var materialInput = document.getElementById('material');
-    var materialError = document.getElementById('material-error');
+                slugInput.addEventListener('blur', function() {
+                    if (slugInput.value.trim() === '' && slugError) {
+                        slugError.style.display = 'block';
+                    }
+                });
 
-    materialInput.addEventListener('focus', function() {
-        if (materialError) {
-            materialError.style.display = 'none';
-        }
-    });
+                document.addEventListener('click', function(event) {
+                    if (event.target !== slugInput && slugInput.value.trim() === '' && slugError) {
+                        slugError.style.display = 'block';
+                    }
+                });
+            </script>
 
-    materialInput.addEventListener('blur', function() {
-        if (materialInput.value.trim() === '' && materialError) {
-            materialError.style.display = 'block';
-        }
-    });
 
-    document.addEventListener('click', function(event) {
-        if (event.target.type !== 'text' && materialInput.value.trim() === '' && materialError) {
-            materialError.style.display = 'block';
-        }
-    });
-</script>
+            </script>
+
     </body>
 
     </html>

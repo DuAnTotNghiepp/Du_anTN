@@ -5,6 +5,15 @@
 @endsection
 @section('content')
     <!-- start page title -->
+    {{-- @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif --}}
     <div class="row">
 
         <div class="col-12">
@@ -87,7 +96,8 @@
                     <div class="row g-3">
                         <div class="col-md-4">
                             <div class="search-box">
-                                <input type="text" class="form-control search" id="searchInput" placeholder="Search for contact...">
+                                <input type="text" class="form-control search" id="searchInput"
+                                    placeholder="Search for contact...">
                                 <i class="ri-search-line search-icon"></i>
                             </div>
                         </div>
@@ -120,7 +130,7 @@
                                         <th class="sort" data-sort="name" scope="col">Tên Sản Phẩm</th>
                                         <th class="sort" data-sort="company_name" scope="col">Giá Thường</th>
                                         <th class="sort" data-sort="email_id" scope="col">Giá Khuyến Mãi</th>
-                                        <th class="sort" data-sort="category_name" scope="col">Danh Mục Sản Phẩm</th>
+                                        <th class="sort" data-sort="category_name" scope="col">Danh Mục Sản Phẩm </th>
                                         <th class="sort" data-sort="phone" scope="col">Số Lượng</th>
                                         <th class="sort" data-sort="lead_score" scope="col">Mã Sản Phẩm</th>
                                         <th class="sort" data-sort="tags" scope="col">Trạng Thái</th>
@@ -147,7 +157,7 @@
                                                             khong co hinh anh
                                                         @else
                                                             <img src="{{ Storage::url($pr->img_thumbnail) }}"
-                                                                alt="" class="avatar-xs rounded-circle"  >
+                                                                alt="" class="avatar-xs rounded-circle">
                                                         @endif
                                                     </div>
                                                     <div class="flex-grow-1 ms-2 name">{{ $pr->name }}</div>
@@ -365,55 +375,55 @@
     </div>
     <!-- end main content-->
     <script>
+        document.getElementById('searchInput').addEventListener('input', function() {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll('#customerTable tbody tr');
 
-document.getElementById('searchInput').addEventListener('input', function () {
-    let filter = this.value.toLowerCase();
-    let rows = document.querySelectorAll('#customerTable tbody tr');
-
-    rows.forEach(function (row) {
-        let productName = row.querySelector('.name .flex-grow-1').textContent.toLowerCase();
-        let productPrice = row.querySelector('.company_name').textContent.toLowerCase();
-        let productCate = row.querySelector('.category_name').textContent.toLowerCase();
-        // Kiểm tra nếu tên sản phẩm hoặc giá khớp với giá trị tìm kiếm
-        if (productName.includes(filter) || productPrice.includes(filter) || productCate.includes(filter)) {
-            row.style.display = ''; // Hiển thị nếu tên hoặc giá khớp với kết quả tìm kiếm
-        } else {
-            row.style.display = 'none'; // Ẩn nếu không khớp
-        }
-    });
-});
+            rows.forEach(function(row) {
+                let productName = row.querySelector('.name .flex-grow-1').textContent.toLowerCase();
+                let productPrice = row.querySelector('.company_name').textContent.toLowerCase();
+                let productCate = row.querySelector('.category_name').textContent.toLowerCase();
+                // Kiểm tra nếu tên sản phẩm hoặc giá khớp với giá trị tìm kiếm
+                if (productName.includes(filter) || productPrice.includes(filter) || productCate.includes(
+                        filter)) {
+                    row.style.display = ''; // Hiển thị nếu tên hoặc giá khớp với kết quả tìm kiếm
+                } else {
+                    row.style.display = 'none'; // Ẩn nếu không khớp
+                }
+            });
+        });
 
 
 
         document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            var productId = this.getAttribute('data-id');
-            var deleteModal = new bootstrap.Modal(document.getElementById('deleteRecordModal'));
-            deleteModal.show();
+            button.addEventListener('click', function() {
+                var productId = this.getAttribute('data-id');
+                var deleteModal = new bootstrap.Modal(document.getElementById('deleteRecordModal'));
+                deleteModal.show();
 
-            document.getElementById('confirmDelete').onclick = function() {
-                fetch('/admin/products/' + productId + '/destroy', {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Content-Type': 'application/json',
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert(data.message);
-                            window.location.reload(); // Reload lại trang sau khi xóa
-                        } else {
-                            alert('Lỗi: ' + data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Có lỗi xảy ra:', error);
-                    });
-            };
+                document.getElementById('confirmDelete').onclick = function() {
+                    fetch('/admin/products/' + productId + '/destroy', {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json',
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert(data.message);
+                                window.location.reload(); // Reload lại trang sau khi xóa
+                            } else {
+                                alert('Lỗi: ' + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Có lỗi xảy ra:', error);
+                        });
+                };
+            });
         });
-    });
     </script>
 
 
