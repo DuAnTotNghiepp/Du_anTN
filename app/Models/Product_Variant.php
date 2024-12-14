@@ -9,15 +9,19 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class Product_Variant extends Pivot
 {
     protected $table = 'product__variants';
+    protected  $fillable = [
+        'id',
+        'product_id',
+        'variants_id',
+        'quantity',
+    ];
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+    public function variant()
+    {
+        return $this->belongsTo(Variants::class, 'variants_id');
+    }
+
 }
-
-
-// class Product_Variant extends Model
-// {
-//     use HasFactory;
-//     protected  $fillable=[
-//         'id',
-//         'product_id',
-//         'variants_id',
-//     ];
-// }

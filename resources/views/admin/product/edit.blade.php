@@ -141,10 +141,11 @@
                                         @enderror
                                 </div>
                                 <div class="col-lg-4">
-                                    <div>
+                                    {{-- <div>
                                         <label for="datepicker-deadline-input" class="form-label">Số Lượng</label>
                                         <input type="number" class="form-control" name="quantity" id="quantity"  value="{{$listPro->quantity}}"
                                             data-provider="flatpickr" data-date-format="d M, Y">
+                                    </div> --}}
                                     </div>
                                     @error('quantity')
                                             <span id="quantity-error" style="color: red">{{ $message }}</span>

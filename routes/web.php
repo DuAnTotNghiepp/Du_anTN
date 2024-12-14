@@ -51,6 +51,7 @@ Route::put('product/{id}/update', [ProductController::class, 'update'])->name('p
 
 Route::get('product/{id}', [ClientController::class, 'show'])->middleware('save.redirect')->name('product.product_detail');
 
+Route::get('/api/variant-stock', [ClientController::class, 'getVariantStock']);
 
 
 //profile
@@ -64,13 +65,15 @@ Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])
 
 
 
-Route::get('/checkout', [CheckoutController::class, 'form'])->middleware('auth')->name('checkout');
+Route::match(['get', 'post'],'/checkout1', [CheckoutController::class, 'checkout1'])->middleware('auth')->name('checkout1');
+Route::match(['get', 'post'],'/checkout', [CheckoutController::class, 'form'])->middleware('auth')->name('checkout');
+Route::post('/orders/store1', [OrderController::class, 'store1'])->name('orders.store1')->middleware('auth');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
 Route::post('/orders/vnpay_ment', [OrderController::class, 'vnpay_ment'])->name('orders.vnpay_ment');
 
 Route::get('/checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('checkout.applyVoucher');
 
-Route::get('/checkout', [CheckoutController::class, 'form'])->name('checkout');
+
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
 Route::post('/vnpay_payment', [OrderController::class, 'vnpayPayment'])->name('orders.vnpay_ment');
 Route::get('/vnpay/callback', [OrderController::class, 'vnpayCallback'])->name('vnpay.callback');
