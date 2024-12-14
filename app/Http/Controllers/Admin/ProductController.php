@@ -61,6 +61,7 @@ class ProductController extends Controller
             }
         }
         $res = Product::query()->create($params);
+        $res->calculateTotalQuantity();
 
         if (!empty($request->id_variant) && is_array($request->id_variant)) {
             foreach ($request->id_variant as $value) {
@@ -247,6 +248,23 @@ class ProductController extends Controller
 
         // Trả về các biến thể của sản phẩm
         return response()->json($product->variants);
+    }
+    public function updateQuantity($id)
+    {
+        $product = Product::with('variants')->find($id);
+
+        if (!$product) {
+            return redirect()->route('product.index')->with('error', 'Sản phẩm không tồn tại!');
+        }
+
+        // Tính tổng số lượng từ các biến thể
+        $totalQuantity = $product->variants->sum('pivot.quantity');
+
+        // Cập nhật số lượng vào bảng product
+        $product->quantity = $totalQuantity;
+        $product->save();
+
+        return redirect()->route('product.index')->with('success', 'Số lượng sản phẩm đã được cập nhật!');
     }
 
 

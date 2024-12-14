@@ -111,9 +111,11 @@
                             <div class="mb-3">
                                 <label>Trạng Thái Đơn Hàng</label>
                                 <select name="status" class="form-control">
-                                    <option value="pending" {{ $orde->status == 'pending' ? 'selected' : '' }}>Đang Xác Nhận
+                                    <option value="pending" {{ $orde->status == 'pending' ? 'selected' : '' }}>Chờ Xác Nhận
                                     </option>
                                     <option value="completed" {{ $orde->status == 'completed' ? 'selected' : '' }}>Đã Xác Nhận</option>
+                                    <option value="delivery" {{ $orde->status == 'delivery' ? 'selected' : '' }}>Đang Giao
+                                    <option value="delivered" {{ $orde->status == 'delivered' ? 'selected' : '' }}>Đã Giao
                                     <option value="canceled" {{ $orde->status == 'canceled' ? 'selected' : '' }}>Đã Hủy
                                     </option>
                                 </select>

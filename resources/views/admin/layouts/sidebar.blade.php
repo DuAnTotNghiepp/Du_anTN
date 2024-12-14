@@ -75,6 +75,18 @@
                         </ul>
                     </div>
                 </li><!-- end Dashboard Menu -->
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="ri-share-line"></i> <span data-key="t-dashboards">Sản Phẩm Biến Thể</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarDashboards">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('product_variant.index') }}" class="nav-link" data-key="t-analytics"> Danh Sách Sản Phẩm Biến Thể</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li><!-- end Dashboard Menu -->
                 </li>
 
                 <li class="nav-item">

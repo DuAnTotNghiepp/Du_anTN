@@ -32,10 +32,10 @@
         </div>
     </div>
 
-    <div class="checkout-area ml-110 mt-100">
+    <div class="checkout-area mt-100 ml-110">
         <div class="container">
             <div class="row">
-                <form action="{{ route('orders.store') }}" method="POST" class="row">
+                <form action="{{ route('orders.store1') }}" method="POST" class="row">
                     @csrf
                     <div class="col-xxl-8">
                         <div class="billing-from">
@@ -90,74 +90,82 @@
                             <div class="added-product-summary">
                                 <h5 class="checkout-title">Order Summary</h5>
                                 <ul class="added-products">
-                                    <!-- Hiển thị sản phẩm từ trang chi tiết -->
-                                        @if(session('productcheckout'))
+                                    <!-- Hiển thị các sản phẩm trong giỏ hàng -->
+                                    @foreach ($cartItems as $item)
                                         <li class="single-product">
                                             <div class="product-img">
-                                                <img src="{{ session('productcheckout')['image'] }}" alt="{{ session('productcheckout')['productName'] }}"
+                                                <img src="{{ asset('storage/' . $item->product->img_thumbnail) }}"
+                                                    alt="{{ $item->product->name }}"
                                                     style="max-width: 100px; border-radius: 5px;">
                                             </div>
                                             <div class="product-info">
-                                                <h5 class="product-title">{{ session('productcheckout')['productName'] }}</h5>
+                                                <h5 class="product-title">{{ $item->product->name }}</h5>
                                                 <div class="product-total">
                                                     <div class="">
-                                                        <span class="product-quantity">{{ session('productcheckout')['quantity'] }}</span>
-                                                        <input type="hidden" name="quantity" value="{{ session('productcheckout')['quantity'] }}">
+                                                        <span class="product-quantity">{{ $item->quantity }}</span>
+                                                        <input type="hidden" name="quantity[]" value="{{ $item->quantity }}">
                                                     </div>
                                                     <strong>
                                                         <i class="bi bi-x-lg"></i>
-                                                        <span class="product-price">{{ number_format(session('productcheckout')['productPrice'], 0, ',', '.') }}</span>
+                                                        <span class="product-price">{{ number_format($item->product->price_sale, 0, ',', '.') }}</span>
                                                         VND
                                                     </strong>
+                                                    <input type="hidden" name="product_id[]" value="{{ $item->product->id }}">
+                                                    <input type="hidden" name="variant_id[]" value="{{ $item->variant_id ?? '' }}">
+                                                    <input type="hidden" name="product_name[]" value="{{ $item->product->name }}">
+                                                    <input type="hidden" name="product_sku[]" value="{{ $item->product->sku }}">
+                                                    <input type="hidden" name="product_img_thumbnail[]" value="{{ $item->product->img_thumbnail }}">
+                                                    <input type="hidden" name="product_price_regular[]" value="{{ $item->product->price_regular }}">
+                                                    <input type="hidden" name="product_price_sale[]" value="{{ $item->product->price_sale }}">
+                                                    <input type="hidden" name="size[]" value="{{ $item->size }}">
+                                                    <input type="hidden" name="color[]" value="{{ $item->color }}">
                                                 </div>
                                                 <p><strong>Màu: </strong>
-                                                    <span class="color-box"
-                                                        style="display: inline-block; width: 20px; height: 20px; background-color: {{ session('productcheckout')['color'] ?? 'Chưa chọn' }}; border: 1px solid #ddd; border-radius: 10px;"></span>
-                                                    <input type="hidden" name="color" value="{{ session('productcheckout')['color'] ?? 'Chưa chọn' }}">
+                                                    <input type="hidden" name="color[]" value="{{ $item->color }}"><span class="color-box" style="display: inline-block; width: 20px; height: 20px; background-color: {{ $item->color }}; border: 1px solid #ddd; border-radius: 10px;"></span>
                                                 </p>
-                                                <p><strong>Cỡ: </strong>{{ session('productcheckout')['size'] ?? 'Chưa chọn' }}</p>
-                                                <input type="hidden" name="size" value="{{ session('productcheckout')['size'] ?? 'Chưa chọn' }}">
+                                                <p><strong>Cỡ: </strong>{{ $item->size }}</p>
+                                                <input type="hidden" name="size[]" value="{{ $item->size }}">
                                             </div>
                                         </li>
-                                    @endif
+                                    @endforeach
                                 </ul>
                             </div>
 
-                            <div class="total-cost-summary">
-                                <ul>
-                                    <!-- Hiển thị Tổng Giá -->
-                                    <li class="subtotal">Tổng Giá
-                                        <span id="subtotal">{{ number_format(($checkoutData['quantity'] ?? 0) * ($checkoutData['productPrice'] ?? 0)) }} VND</span>
-                                    </li>
-
-                                    <!-- Hiển thị Thuế -->
-                                    <li>Thuế
-                                        <span id="tax">5000 VND</span>
-                                    </li>
-
-                                    <!-- Hiển thị Tổng Đơn Hàng -->
-                                    <li>Tổng Đơn Hàng (Bao gồm cả thuế)
-                                        <span id="total">
-                                            {{ number_format(($checkoutData['quantity'] ?? 0) * ($checkoutData['productPrice'] ?? 0) + 5000) }}
-                                        </span>VND
-                                    </li>
-
-                                    <!-- Các trường ẩn -->
-                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    <input type="hidden" name="total_price" id="total_price" value="{{ ($checkoutData['quantity'] * $checkoutData['productPrice'] ?? 0) + 5000 }}">
-                                </ul>
-
-                                <!-- Form áp dụng mã giảm giá -->
-                                <div id="applyVoucher">
-                                    <div class="input-group">
-                                        <input type="text" name="voucher_code" id="voucher_code" class="form-control" placeholder="Nhập mã giảm giá">
-                                        <button type="button" class="pd-add-cart" style="height: 45px; border: 1px solid #ced4da" onclick="getVoucherInfo()">Áp dụng</button>
-                                    </div>
-                                    <span id="errorMessage" class="error-message"></span><br>
-                                </div>
-                            </div>
                         </div>
 
+                        <div class="total-cost-summary">
+                            <ul>
+                                <!-- Hiển thị Tổng Giá -->
+                                <li class="subtotal">Tổng Giá
+                                    <span id="subtotal">{{ number_format($total) }} VND</span>
+                                </li>
+
+                                <!-- Hiển thị Thuế -->
+                                <li>Thuế
+                                    <span id="tax">5000 VND</span>
+                                </li>
+
+                                <!-- Hiển thị Tổng Đơn Hàng -->
+                                <li>Tổng Đơn Hàng (Bao gồm thuế)
+                                    <span id="total">{{ number_format($totalWithTax) }} VND</span>
+                                </li>
+                            </ul>
+
+                            <!-- Các trường ẩn -->
+                            <input type="hidden" name="total_price" id="total_price" value="{{ $total + 5000 }}">
+
+                            <!-- Form áp dụng mã giảm giá -->
+                            <div id="applyVoucher">
+                                <div class="input-group">
+                                    <input type="text" name="voucher_code" id="voucher_code" class="form-control"
+                                        placeholder="Nhập mã giảm giá">
+                                    <button type="button" class="pd-add-cart"
+                                        style="height: 45px; border: 1px solid #ced4da" onclick="getVoucherInfo()">Áp
+                                        dụng</button>
+                                </div>
+                                <span id="errorMessage" class="error-message"></span><br>
+                            </div>
+                        </div>
                         <div class="payment-form">
                             <div class="payment-methods">
                                 <div class="form-group">
@@ -182,11 +190,9 @@
                             </div>
                         </div>
                     </div>
+                </form>
             </div>
-            </form>
         </div>
-
-    </div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -215,78 +221,5 @@
                 }
             });
         });
-
-        function updateTotalPrice() {
-        const subtotal = {{ $quantity * $productPrice }};
-        const tax = 5000; // Thuế cố định
-        const voucherValue = parseInt(document.getElementById('voucher_value').innerText.replace(/\D/g, '')) || 0;
-
-        const total = subtotal + tax - voucherValue;
-
-        // Cập nhật giá trị hiển thị
-        document.getElementById('total').innerText = total.toLocaleString('vi-VN') + ' VND';
-
-        // Cập nhật giá trị vào input ẩn
-        document.getElementById('total_price').value = total;
-    }
-
-
-        let appliedVouchers = []; // Mảng để lưu trữ các mã đã áp dụng
-
-        function getVoucherInfo() {
-            const errorMessage = document.getElementById('errorMessage');
-            const voucherCode = document.getElementById('voucher_code').value;
-
-            const voucher_value = document.getElementById('voucher_value');
-            const final_total = document.getElementById('total');
-
-            const totalPrice = document.getElementById('total_price').value;
-
-            // Gửi yêu cầu GET đến API để lấy thông tin mã giảm giá
-            if (!voucherCode) {
-                errorMessage.textContent = "Vui lòng nhập mã giảm giá";
-                errorMessage.style.color = "red";
-                return;
-            }
-
-            // Kiểm tra nếu mã đã được áp dụng
-            if (appliedVouchers.includes(voucherCode)) {
-                errorMessage.textContent = "Mã giảm giá đã được áp dụng!";
-                errorMessage.style.color = "red";
-                return;
-            }
-
-            fetch(`http://127.0.0.1:8000/checkout/apply-voucher?voucher_code=${voucherCode}&total_price=${totalPrice}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Xử lý dữ liệu trả về từ API
-                    if (data.result === true) {
-                        voucher_value.textContent = data.data.voucher_discount;
-                        final_total.textContent = data.data.final_total;
-                        let hiddenInput = document.getElementById('total_price');
-                        hiddenInput.value = data.data.final_total;
-
-                        // Lưu mã giảm giá đã áp dụng vào mảng
-                        appliedVouchers.push(voucherCode);
-
-                        // Hiển thị thông báo áp dụng thành công
-                        errorMessage.textContent = "Mã giảm giá đã được áp dụng thành công!";
-                        errorMessage.style.color = "green";
-                    } else {
-                        errorMessage.textContent = data.message;
-                        errorMessage.style.color = "red";
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    errorMessage.textContent = "Đã xảy ra lỗi khi lấy thông tin mã giảm giá";
-                    errorMessage.style.color = "red";
-                });
-        }
     </script>
 @endsection
