@@ -27,6 +27,7 @@ class AuthController extends Controller
             if (Auth::user()->role === User::ROLE_ADMIN) {
                 return redirect()->intended('/admin');
             }
+
             if (Auth::attempt($user)) {
                 // Kiểm tra URL chuyển hướng trong session
                 $redirectUrl = $request->input('redirect_url') ?? session()->pull('redirect_url', '/');

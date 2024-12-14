@@ -13,7 +13,7 @@ class ProductController extends Controller
 {
     // Lấy sản phẩm theo slug
     $product = Product::where('slug', $slug)->firstOrFail();
-    
+
     // Lấy bình luận cho sản phẩm với phân trang
     $comments = BinhLuan::where('product_id', $product->id)->orderBy('created_at', 'desc')->paginate(6); // Hiển thị 6 bình luận mỗi trang
 
@@ -23,7 +23,7 @@ class ProductController extends Controller
     return view('product-detail', compact('product', 'comments', 'averageRating'));
 }
 
-    
+
     public function indexWithComments()
     {
         // Lấy danh sách sản phẩm cùng với số bình luận và điểm đánh giá trung bình hùng..

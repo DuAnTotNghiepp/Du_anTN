@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\MaterialController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\VariantsController;
 use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthController;
@@ -43,9 +45,14 @@ Route::post('register', [AuthController::class, 'register'])->name('register');
 // Client Routes
 
 Route::get('/', [ClientController::class, 'index'])->name('index');
+
+Route::get('product/{id}', [ClientController::class, 'show'])->name('product.product_detail');
+Route::put('product/{id}/update', [ProductController::class, 'update'])->name('product.update');
+
 Route::get('product/{id}', [ClientController::class, 'show'])->middleware('save.redirect')->name('product.product_detail');
 
 Route::get('/api/variant-stock', [ClientController::class, 'getVariantStock']);
+
 
 //profile
 Route::get('/profile/{id}', [ClientController::class, 'show_profile'])->name('profile');
@@ -71,6 +78,7 @@ Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')-
 Route::post('/vnpay_payment', [OrderController::class, 'vnpayPayment'])->name('orders.vnpay_ment');
 Route::get('/vnpay/callback', [OrderController::class, 'vnpayCallback'])->name('vnpay.callback');
 
+Route::post('/variants', [VariantsController::class, 'store'])->name('variants.store');
 
 
 Route::middleware('auth')->group(function () {
@@ -123,7 +131,8 @@ Route::get('searchWarranty',[ClientController::class,'searchWarranty'])->name('s
 Route::post('/search', [ClientController::class, 'search'])->name('product.search');
 // Group routes under admin middleware
 Route::middleware('auth', 'admin')->group(function () {
-    Route::get('admin/accounts', [AdminController::class, 'index'])->name('admin.accounts');
+    // Route::get('admin/accounts', [AdminController::class, 'index'])->name('admin.accounts');
+    Route::get('/admin/accounts', [AdminController::class, 'index'])->name('admin.accounts');
     Route::get('admin/accounts/create', [AdminController::class, 'create'])->name('admin.accounts.create');
     Route::post('admin/accounts', [AdminController::class, 'store'])->name('admin.accounts.store');
     Route::get('admin/accounts/{user}/edit', [AdminController::class, 'edit'])->name('admin.accounts.edit');
@@ -131,6 +140,10 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::delete('admin/accounts/{user}', [AdminController::class, 'destroy'])->name('admin.accounts.destroy');
     //thong ke
 });
+Route::resource('materials', MaterialController::class);
+Route::get('/admin/materials/create', [MaterialController::class, 'create'])->name('materials.create');  // Hiển thị form tạo mới
+Route::post('/admin/materials', [MaterialController::class, 'store'])->name('materials.store');
+Route::delete('/admin/materials/{id}/destroy', [MaterialController::class, 'destroy'])->name('materials.destroy');
 
 
 Route::resource('cart', CartController::class);

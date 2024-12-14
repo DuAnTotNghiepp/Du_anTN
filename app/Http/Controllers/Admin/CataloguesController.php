@@ -66,23 +66,39 @@ class CataloguesController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        $item = Catalogues::findOrFail($id);
-        $data = $request->except('cover');
-        $data['is_active'] ??= 0;
+{
+    // Validate dữ liệu đầu vào
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'is_active' => 'nullable|boolean',
+        'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Giới hạn file ảnh
+    ]);
 
-        if ($request->hasFile('cover')) {
-            $data['cover'] = Storage::put(self::PATH_UPLOAD, $request->file('cover'));
-        }
+    $item = Catalogues::findOrFail($id);
+
+    // Lấy dữ liệu từ request ngoại trừ file
+    $data = $request->except('cover');
+    $data['is_active'] ??= 0;
+
+    // Xử lý file cover nếu có
+    if ($request->hasFile('cover')) {
+        // Lưu file mới
+        $data['cover'] = Storage::put(self::PATH_UPLOAD, $request->file('cover'));
+
+        // Xóa file cũ nếu tồn tại
         $currentCover = $item->cover;
-        $item->update($data);
-
         if ($currentCover && Storage::exists($currentCover)) {
             Storage::delete($currentCover);
         }
-
-        return redirect()->route('admin.index')->with('model', $item); // Nếu cần truyền về view khác
     }
+
+    // Cập nhật dữ liệu
+    $item->update($data);
+
+    // Chuyển hướng và thông báo
+    return redirect()->route('admin.index')->with('success', 'Cập nhật thành công!');
+}
+
 
     /**
      * Remove the specified resource from storage.
