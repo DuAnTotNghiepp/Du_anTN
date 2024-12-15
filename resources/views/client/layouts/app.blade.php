@@ -283,7 +283,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="newslatter-wrap text-center">
-                        <h5>Connect To Mai Lan</h5>
+                        <h5>Connect To  Nguyên</h5>
                         <h2 class="newslatter-title">Join Our Newsletter</h2>
                         <p>Hey you, sign up it only, Get this limited-edition T-shirt Free!</p>
                         <form action="#" method="POST">
