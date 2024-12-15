@@ -75,27 +75,33 @@ class OrderController extends Controller
         }
 
         $validatedData = $request->validate([
-            'status' => 'required|in:pending,completed,canceled',
+            'status' => 'required|in:pending,completed,canceled,delivery,delivered,confirmed',  // Thêm 'confirmed' nếu trạng thái của bạn là 'đã xác nhận'
             'user_note' => 'nullable|string',
         ]);
 
+        // Mảng trạng thái hợp lệ
         $allowedStatusTransitions = [
             'pending' => ['completed', 'canceled'],
-            'completed' => [],
+            'completed' => ['delivery'],
+            'delivery' => ['delivered'],
+            'delivered' => [],
             'canceled' => [],
-            'unpaid' => ['pending'],
         ];
 
         $currentStatus = $order->status;
         $newStatus = $validatedData['status'];
 
+        // Kiểm tra xem trạng thái hiện tại có hợp lệ không
         if (!array_key_exists($currentStatus, $allowedStatusTransitions)) {
             return redirect()->back()->with('error', 'Trạng thái hiện tại không hợp lệ.');
         }
 
+        // Kiểm tra xem trạng thái mới có thể chuyển từ trạng thái hiện tại không
         if (!in_array($newStatus, $allowedStatusTransitions[$currentStatus])) {
             return redirect()->back()->with('error', 'Không thể thay đổi trạng thái này.');
         }
+
+        // Cập nhật đơn hàng với trạng thái mới và ghi chú của người dùng
         $order->update([
             'status' => $validatedData['status'],
             'user_note' => $validatedData['user_note'] ?? '',
@@ -103,4 +109,6 @@ class OrderController extends Controller
 
         return redirect()->route('order.edit', $id)->with('success', 'Cập nhật trạng thái thành công.');
     }
+
+
 }

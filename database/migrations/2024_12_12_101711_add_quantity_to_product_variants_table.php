@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('products', function (Blueprint $table) {
+        Schema::table('product__variants', function (Blueprint $table) {
             //
-            $table->softDeletes();
-            $table->integer('quantity')->after('sku')->nullable(); // số lượng sản phẩm
+            $table->integer('quantity')->default(0)->after('variants_id');
         });
     }
 
@@ -23,9 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('products', function (Blueprint $table) {
+        Schema::table('product__variants', function (Blueprint $table) {
             //
-            $table->dropSoftDeletes();
             $table->dropColumn('quantity');
         });
     }

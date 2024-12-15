@@ -135,7 +135,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
+                                {{-- <div class="col-lg-4">
                                     <div>
                                         <label for="datepicker-deadline-input" class="form-label">Số Lượng</label>
 
@@ -147,7 +147,7 @@
 
 
                                     </div>
-                                </div>
+                                </div> --}}
                             </div> <br>
 
                             <div class="mb-3">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Catalogues;
 use App\Models\BinhLuan;
+use App\Models\Product_Variant;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
 use App\Models\Product;
@@ -165,11 +166,36 @@ class ClientController extends Controller
     public function show($id)
     {
         $product = Product::with('variants')->findOrFail($id);
+        $variants = $product->variants->map(function ($variant) {
+            return [
+                'id' => $variant->id,
+                'color' => $variant->name === 'Color' ? $variant->value : null,
+                'size' => $variant->name === 'Size' ? $variant->value : null,
+                'quantity' => $variant->pivot->quantity, // Giả sử số lượng lưu trong bảng pivot
+            ];
+        });
         $comments = BinhLuan::where('product_id', $product->id)->orderBy('created_at', 'desc')->paginate(6); // Hiển thị 6 bình luận mỗi trang
         // Tính toán điểm đánh giá trung bình
         $averageRating = $comments->count() > 0 ? $comments->avg('rating') : 0;
-        return view('client.product_detail', compact('product', 'comments', 'averageRating'));
+        return view('client.product_detail', compact('product', 'comments', 'averageRating', 'variants'));
     }
+    public function getVariantStock(Request $request)
+    {
+        $productId = $request->input('product_id');
+        $variantId = $request->input('variant_id');
+
+        // Lấy số lượng tồn kho từ bảng product__variants
+        $productVariant = Product_Variant::where('product_id', $productId)
+                                          ->where('variants_id', $variantId)
+                                          ->first();
+
+        // Trả về số lượng tồn kho dưới dạng JSON
+        return response()->json([
+            'quantity' => $productVariant->quantity ?? 0
+        ]);
+    }
+
+
 
     public function warranty()
     {

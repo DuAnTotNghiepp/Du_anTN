@@ -124,11 +124,11 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
-                                    <div>
+                                    {{-- <div>
                                         <label for="datepicker-deadline-input" class="form-label">Số Lượng</label>
                                         <input type="number" class="form-control" name="quantity" id="quantity" required value="{{$listPro->quantity}}"
                                             data-provider="flatpickr" data-date-format="d M, Y">
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div><br>
 
