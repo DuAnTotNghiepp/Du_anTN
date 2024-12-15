@@ -121,7 +121,7 @@
                                         <th scope="col" data-sort="id">ID</th>
                                         <th scope="col" data-sort="code">Tiêu Đề</th>
                                         <th scope="col" data-sort="type">Nội dung</th>
-                                        
+                                        <th scope="col" data-sort="type">Ảnh</th>
                                         <th scope="col">Hành động</th>
                                     </tr>
                                     </thead>
@@ -135,9 +135,16 @@
                                             </td>
                                             <td>{{ $post->id }}</td>
                                             <td>{{ $post->title }}</td>
-                                            <td>{{ Str::limit($post->content, 50) }} <a href="{{ route('blog.index', $post->id) }}">Xem thêm</a></td>
-                                            
+                                            <td>{{ Str::limit($post->content, 50) }} </a></td>
                                             <td>
+                                                @if($post->image)
+                                                    <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}" style="width: 100px; height: auto;">
+                                                @else
+                                                    Không có hình ảnh
+                                                @endif
+                                            </td>
+                                            <td>
+                                               
                                                 <a href="{{ route('blog.edit', $post->id) }}" class="btn btn-sm btn-warning">Sửa</a>
                                                 <form action="{{ route('blog.destroy', $post->id) }}" method="POST" style="display:inline;">
                                                     @csrf

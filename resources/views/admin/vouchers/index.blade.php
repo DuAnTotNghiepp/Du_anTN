@@ -128,6 +128,7 @@
                                         <th scope="col" data-sort="end_date">Ngày kết thúc</th>
                                         <th scope="col" data-sort="status">Trạng thái</th>
                                         <th scope="col" data-sort="create_at">Ngày tạo</th>
+                                        <th scope="col">Trạng thái hiển thị</th>
                                         <th scope="col">Hành động</th>
                                     </tr>
                                     </thead>
@@ -169,6 +170,13 @@
                                                 @endif
                                             </td>
                                             <td>{{ $voucher->created_at }}</td>
+                                            <td>
+                                                <form action="{{ route('vouchers.toggleVisibility', $voucher->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" style="background-color: {{ $voucher->is_visible ? '#28a745' : '#dc3545' }}; color: white; border: none; padding: 8px 20px; border-radius: 5px;">
+                                                        {{ $voucher->is_visible ? 'Hiển thị' : 'Ẩn' }}
+                                                    </button>
+                                                </form>
                                             <td>
                                                 <a href="{{ route('vouchers.edit', $voucher->id) }}" class="btn btn-sm btn-warning">Sửa</a>
                                                 <form action="{{ route('vouchers.destroy', $voucher->id) }}" method="POST" style="display:inline;">
