@@ -41,9 +41,7 @@
                             <li class="nav-item">
                                 <a href="{{route('admin.index')}}" class="nav-link" data-key="t-api-key">Danh sách danh mục</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="apps-api-key.html" class="nav-link" data-key="t-api-key">Thêm mới</a>
-                            </li>
+
                         </ul>
                     </div>
                 </li>
@@ -64,7 +62,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Thuộc Tính Sản Phẩm</span>
+                        <i class="ri-share-line"></i> <span data-key="t-dashboards">Quản Lý Thuộc Tính Sản Phẩm</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarDashboards">
                         <ul class="nav nav-sm flex-column">
@@ -77,11 +75,23 @@
                         </ul>
                     </div>
                 </li><!-- end Dashboard Menu -->
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="ri-share-line"></i> <span data-key="t-dashboards">Sản Phẩm Biến Thể</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarDashboards">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('product_variant.index') }}" class="nav-link" data-key="t-analytics"> Danh Sách Sản Phẩm Biến Thể</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li><!-- end Dashboard Menu -->
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarComments" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarComments">
-                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Bình Luận</span>
+                        <i class="ri-file-list-3-line"></i> <span data-key="t-dashboards">Quản Lý Bình Luận</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarComments">
                         <ul class="nav nav-sm flex-column">
@@ -96,7 +106,7 @@
 
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarAccounts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Tài Khoản</span>
+                        <i class="ri-account-circle-line"></i> <span data-key="t-dashboards">Quản Lý Tài Khoản</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarAccounts">
                         <ul class="nav nav-sm flex-column">
@@ -110,44 +120,46 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarAccounts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Tài Đơn Hàng</span>
+                    <a class="nav-link menu-link" href="#sidebarOrders" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarOrders">
+                        <i class="ri-shopping-cart-line"></i> <span data-key="t-dashboards">Quản Lý Tài Đơn Hàng</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarAccounts">
+                    <div class="collapse menu-dropdown" id="sidebarOrders">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('order.index') }}" class="nav-link" data-key="t-analytics"> Danh Sách Đơn Hàng </a>
+                                <a href="{{ route('order.index') }}" class="nav-link" data-key="t-analytics">Danh Sách Đơn Hàng</a>
                             </li>
                         </ul>
                     </div>
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarAccounts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Mã Giảm Giá</span>
+                    <a class="nav-link menu-link" href="#sidebarVouchers" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarVouchers">
+                        <i class="ri-price-tag-3-line"></i> <span data-key="t-dashboards">Quản Lý Mã Giảm Giá</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarAccounts">
+                    <div class="collapse menu-dropdown" id="sidebarVouchers">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('vouchers.index') }}" class="nav-link" data-key="t-analytics"> Danh Sách Mã Giảm Giá </a>
+                                <a href="{{ route('vouchers.index') }}" class="nav-link" data-key="t-analytics">Danh Sách Mã Giảm Giá</a>
                             </li>
                         </ul>
                     </div>
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarAccounts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Quản Lý Blog</span>
+                    <a class="nav-link menu-link" href="#sidebarBlogs" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarBlogs">
+                        <i class="ri-bookmark-line"></i> <span data-key="t-dashboards">Quản Lý Blog</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarAccounts">
+                    <div class="collapse menu-dropdown" id="sidebarBlogs">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('blog.index') }}" class="nav-link" data-key="t-analytics"> Danh Sách Blog </a>
+                                <a href="{{ route('blog.index') }}" class="nav-link" data-key="t-analytics">Danh Sách Blog</a>
                             </li>
                         </ul>
                     </div>
                 </li>
+
             </li>
-           
-           
+
         </div>
         <!-- Sidebar -->
     </div>

@@ -19,11 +19,11 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
-    {
-        //
-        $data = Catalogues::all(); // Lấy danh sách danh mục
-        view()->share('data', $data);
-        Paginator::useBootstrap();
-    }
+   public function boot(): void
+   {
+       //
+       $data = Catalogues::all(); // Lấy danh sách danh mục
+       view()->share('data', $data);
+       Paginator::useBootstrap();
+   }
 }

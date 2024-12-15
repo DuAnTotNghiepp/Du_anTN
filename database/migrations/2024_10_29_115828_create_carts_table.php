@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();  // Khóa chính của bảng
             $table->foreignId('user_id')->constrained()->onDelete('cascade');  // Khóa ngoại liên kết với bảng users
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');  // Khóa ngoại liên kết với bảng products
-            $table->foreignId('variant_id')->constrained('variants')->onDelete('cascade');  // Khóa ngoại liên kết với bảng variants
+            $table->string('color')->nullable();  // Thêm cột color
+            $table->string('size')->nullable();   // Thêm cột size
+            $table->decimal('price', 10, 2)->nullable();  // Thêm cột price
+            $table->decimal('total_price', 10, 2)->nullable(); // Thêm cột total_price
             $table->integer('quantity')->default(1);  // Số lượng sản phẩm trong giỏ hàng
             $table->timestamps();  // Created at và updated at
         });

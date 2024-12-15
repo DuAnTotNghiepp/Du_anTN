@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -24,7 +25,7 @@ class OrderController extends Controller
             'user_phone' => 'required|string|max:20',
             'user_address' => 'nullable|string|max:255',
             'user_note' => 'nullable|string',
-            'payment_method' => 'required|in:cash,online',
+            'payment_method' => 'required|in:cash,vnpay',
             'product_id' => 'required|exists:products,id',
             'total_price' => 'required|numeric',
             'quantity' => 'integer|min:1',
@@ -36,20 +37,25 @@ class OrderController extends Controller
         if (!$validatedData['user_id']) {
             return redirect()->back()->with('error', 'Bạn cần đăng nhập để đặt hàng.');
         }
+        $validatedData['status'] = $request->payment_method === 'vnpay' ? 'err' : 'pending';
+
         $product = Product::findOrFail($validatedData['product_id']);
         $variant = $product->variants()->first();
-        
+
         $quantity = $validatedData['quantity'];
         if ($product->quantity < $quantity) {
             return redirect()->back()->withErrors(['message' => 'Số lượng sản phẩm không đủ trong kho.']);
         }
-        $validatedData['total_price'] = $product->price_sale*$quantity;
+        $shippingFee = 5000; // Có thể cấu hình linh hoạt
+        $validatedData['total_price'] = ($variant->sale_price ?? $product->price_sale) * $validatedData['quantity'] + $shippingFee;
         $order = Order::create($validatedData);
 
         $size = $request->input('size');
         $color = $request->input('color');
         Order_Items::create([
             'order_id' => $order->id,
+            'user_id' =>auth()->id(),
+            'product_id' => $product->id,
             'cart_id' => null,
             'product_variant_id' => $variant ? $variant->id : null,
             'quantity' => $quantity,
@@ -60,19 +66,68 @@ class OrderController extends Controller
             'product_price_sale' => $product->price_sale,
             'size' => $size,
             'color' => $color,
-            
+
         ]);
         $product->quantity -= $quantity;
         $product->save();
-        if ($request->input('payment_method') === 'online') {
-            // Xử lý thanh toán online qua VNPay
-            return redirect()->route('orders.vnpay_ment');
+        if ($request->payment_method === 'vnpay') {
+            return $this->vnpayPayment($order, $request);
         }
         // Chuyển hướng hoặc trả về thông báo thành công
-        return redirect()->route('index')->with('success', '......................Đơn hàng đã được thêm thành công.');
+        return redirect()->route('index')->with('success', 'Cảm Ơn Bạn Đã Đặt Hàng Của Chúng Tôi!');
     }
-    
-    
+    public function store1(Request $request)
+    {
+        // Validate input
+        $request->validate([
+            'user_address' => 'required|exists:addresses,id',
+            'user_name' => 'required|string|max:255',
+            'user_email' => 'required|email|max:255',
+            'user_phone' => 'required|string|max:20',
+            'payment_method' => 'required|string',
+            'total_price' => 'required|numeric',
+            'quantity' => 'required|array',
+            'color' => 'required|array',
+            'size' => 'required|array',
+            'voucher_code' => 'nullable|string',
+        ]);
+
+        // Create a new order
+        $order = Order::create([
+            'user_id' => Auth::id(),
+            'user_name' => $request->user_name,
+            'user_email' => $request->user_email,
+            'user_phone' => $request->user_phone,
+            'user_address' => $request->user_address,
+            'user_note' => $request->user_note ?? '',
+            'payment_method' => $request->payment_method,
+            'status' => 'pending', // Set default status as pending
+            'total_price' => $request->total_price,
+        ]);
+
+        // Save the order items (from the cart)
+        foreach ($request->quantity as $key => $quantity) {
+            Order_Items::create([
+                'order_id' => $order->id,
+                'user_id' => Auth::id(),
+                'product_id' => $request->product_id[$key],
+                'product_variant_id' => $request->variant_id[$key] ?? null, // Assuming you may have variant ID
+                'quantity' => $quantity,
+                'product_name' => $request->product_name[$key],
+                'product_sku' => $request->product_sku[$key],
+                'product_img_thumbnail' => $request->product_img_thumbnail[$key],
+                'product_price_regular' => $request->product_price_regular[$key],
+                'product_price_sale' => $request->product_price_sale[$key],
+                'size' => $request->size[$key],
+                'color' => $request->color[$key],
+            ]);
+        }
+
+        // Redirect to order confirmation page
+        return redirect()->route('index')->with('success', 'Cảm Ơn Bạn Đã Đặt Hàng Của Chúng Tôi!');
+    }
+
+
 
     public function vnpayPayment($order, Request $request)
     {
@@ -158,12 +213,12 @@ class OrderController extends Controller
                     $order = Order::find($inputData['vnp_TxnRef']);
 
                     if ($order && $order->status === 'err') {
-                        $order->status = 'paid'; 
+                        $order->status = 'completed';
                         $order->save();
                     }
 
                     DB::commit();
-                    return redirect()->route('index')->with('success', 'Payment successful. Order status updated.');
+                    return redirect()->route('index')->with('success', 'Đặt Hàng Thành Công. Thanh Toán Thành Công.');
                 } catch (Exception $e) {
                     DB::rollBack();
                     return redirect()->route('index')->with('error', 'Error processing payment: ' . $e->getMessage());
@@ -175,33 +230,5 @@ class OrderController extends Controller
             return redirect()->route('index')->with('error', 'Invalid signature.');
         }
     }
-
-
-//     public function vnpayReturn(Request $request)
-// {
-//     $vnp_HashSecret = "3W5U0M95R09Y84G2TXKGZZEI32AJLF2Z"; // Chuỗi bí mật của bạn
-//     $vnp_SecureHash = $request->get('vnp_SecureHash');
-//     $inputData = $request->except('vnp_SecureHash', 'vnp_SecureHashType');
-
-//     // Sắp xếp các tham số theo thứ tự A-Z
-//     ksort($inputData);
-//     $hashdata = "";
-//     foreach ($inputData as $key => $value) {
-//         $hashdata .= $key . '=' . $value . '&';
-//     }
-//     $hashdata = rtrim($hashdata, '&');
-
-//     // Tạo chữ ký
-//     $calculatedHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
-
-//     // Kiểm tra chữ ký
-//     if ($calculatedHash === $vnp_SecureHash) {
-//         // Chữ ký hợp lệ, xử lý tiếp
-//         return response()->json(['message' => 'Thanh toán thành công']);
-//     } else {
-//         // Chữ ký không hợp lệ
-//         return response()->json(['message' => 'Sai chữ ký'], 400);
-//     }
-// }
 
 }

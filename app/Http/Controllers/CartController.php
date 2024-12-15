@@ -6,64 +6,80 @@ use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Variants;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
     public function index()
     {
-        $cartItems = Cart::with(['product', 'variant'])
-            ->where('user_id', auth()->id())
-            ->get();
+        $cartItems = Cart::where('user_id', auth()->id())->get();
+        $selectedProducts = []; // Mảng các sản phẩm được chọn
+        // Logic để lấy selectedProducts nếu có
 
         $total = $cartItems->sum(function($item) {
-            return $item->product->price_sale * $item->quantity;
+            return $item->price * $item->quantity;
         });
 
-        return view('client.cart', compact('cartItems', 'total'));
+        return view('client.cart', compact('cartItems', 'selectedProducts', 'total'));
     }
+
+
 
     public function store(Request $request)
     {
-        // Validate input
-        $request->validate([
+        // Kiểm tra dữ liệu nhận được từ request
+        $validatedData = $request->validate([
             'product_id' => 'required|exists:products,id',
-            'variant_id' => 'required|exists:variants,id',
-            'quantity' => 'integer|min:1|max:100'
+            'color' => 'required|string',
+            'size' => 'required|string',
+            'quantity' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0',
         ]);
 
-        // Lấy sản phẩm và variant
-        $product = Product::findOrFail($request->product_id);
-        $variant = Variants::findOrFail($request->variant_id);
+        $validatedData['user_id'] = Auth::id();
 
-        // Kiểm tra xem người dùng đã đăng nhập chưa
-        if (!auth()->check()) {
-            return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng');
+        // Lấy sản phẩm và kiểm tra sự tồn tại
+        $product = Product::find($validatedData['product_id']);
+        if (!$product) {
+            return redirect()->back()->with('error', 'Sản phẩm không tồn tại.');
         }
 
-        // Kiểm tra xem sản phẩm có trong giỏ hàng chưa (kiểm tra cả product_id và variant_id)
-        $cartItem = Cart::where('user_id', auth()->id())
-            ->where('product_id', $request->product_id)
-            ->where('variant_id', $request->variant_id)
+        // Tìm biến thể màu
+        $colorVariant = Variants::where('name', 'color')
+            ->where('value', $validatedData['color'])
             ->first();
 
-        // Số lượng sản phẩm
-        $quantity = $request->quantity ?? 1;
+        // Tìm biến thể kích thước
+        $sizeVariant = Variants::where('name', 'size')
+            ->where('value', $validatedData['size'])
+            ->first();
 
-        if ($cartItem) {
-            // Nếu sản phẩm đã có trong giỏ, cập nhật số lượng
-            $cartItem->update(['quantity' => $cartItem->quantity + $quantity]);
-        } else {
-            // Nếu sản phẩm chưa có trong giỏ, tạo mục giỏ hàng mới
-            Cart::create([
-                'user_id' => auth()->id(),
-                'product_id' => $request->product_id,
-                'variant_id' => $request->variant_id,
-                'quantity' => $quantity
-            ]);
+        // Kiểm tra xem cả hai biến thể có tồn tại hay không
+        if (!$colorVariant || !$sizeVariant) {
+            return redirect()->back()->withErrors(['variant' => 'Biến thể màu hoặc kích thước không tồn tại.']);
         }
 
-        return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng');
+        // Kiểm tra nếu sản phẩm đã có trong giỏ hàng của người dùng
+        $cartItem = Cart::where('product_id', $validatedData['product_id'])
+            ->where('color', $validatedData['color'])
+            ->where('size', $validatedData['size'])
+            ->where('user_id', $validatedData['user_id'])
+            ->first();
+
+        if ($cartItem) {
+            // Cập nhật số lượng và tổng giá
+            $cartItem->quantity += $validatedData['quantity'];
+            $cartItem->total_price = $cartItem->quantity * $cartItem->price;
+            $cartItem->save();
+        } else {
+            // Thêm mới sản phẩm vào giỏ hàng
+            $validatedData['total_price'] = $validatedData['quantity'] * $validatedData['price'];
+            Cart::create($validatedData);
+        }
+
+        return redirect()->back()->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
     }
+
 
 
 
@@ -88,6 +104,24 @@ class CartController extends Controller
 
         return redirect()->route('cart.index')
             ->with('success', 'Đã xóa sản phẩm khỏi giỏ hàng');
+    }
+    public function calculateTotal(Request $request)
+    {
+        $request->validate([
+            'selected' => 'array', // Nhận một mảng ID của sản phẩm đã chọn
+            'selected.*' => 'exists:carts,id', // Kiểm tra từng ID có tồn tại không
+        ]);
+
+        $cartItems = Cart::with('product')
+            ->whereIn('id', $request->selected)
+            ->get();
+
+        // Tính tổng cho các sản phẩm đã chọn
+        $total = $cartItems->sum(function($item) {
+            return $item->product->price_sale * $item->quantity;
+        });
+
+        return response()->json(['total' => $total]);
     }
 }
 

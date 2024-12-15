@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh Sách Đơn Hàng
+    Danh Sách Sản Phẩm
 @endsection
 @section('content')
     <!-- start page title -->
@@ -9,12 +9,12 @@
 
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Quản Lý Đơn Hàng</h4>
+                <h4 class="mb-sm-0">Quản Lý Sản Phẩm</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Quản Lý Đơn Hàng</a></li>
-                        <li class="breadcrumb-item active">Danh Sách Đơn Hàng</li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Quản Lý Sản Phẩm Biến Thể</a></li>
+                        <li class="breadcrumb-item active">Danh Sách Sản Phẩm Biến thể</li>
                     </ol>
                 </div>
 
@@ -34,8 +34,8 @@
                     <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
                         colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
                     <div class="mt-4 text-center">
-                        <h4 class="fs-semibold">Bạn có chắc chắn muốn xóa Đơn Hàng này không?</h4>
-                        <p class="text-muted fs-14 mb-4 pt-1">Xóa Đơn Hàng này sẽ xóa tất cả thông tin của Đơn Hàng khỏi cơ
+                        <h4 class="fs-semibold">Bạn có chắc chắn muốn xóa sản phẩm này không?</h4>
+                        <p class="text-muted fs-14 mb-4 pt-1">Xóa sản phẩm này sẽ xóa tất cả thông tin của sản phẩm khỏi cơ
                             sở dữ liệu.</p>
                         <div class="hstack gap-2 justify-content-center remove">
                             <button class="btn btn-link link-success fw-medium text-decoration-none"
@@ -51,7 +51,35 @@
     </div>
 
     <div class="row">
-
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center flex-wrap gap-2">
+                        <div class="flex-grow-1">
+                            <a href="{{ route('product.create') }}" class="btn btn-info add-btn"><i
+                                    class="ri-add-fill me-1 align-bottom"></i> Add Product</a>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <div class="hstack text-nowrap gap-2">
+                                <button class="btn btn-soft-danger" id="remove-actions" onClick="deleteMultiple()"><i
+                                        class="ri-delete-bin-2-line"></i></button>
+                                <button class="btn btn-danger"><i class="ri-filter-2-line me-1 align-bottom"></i>
+                                    Filters</button>
+                                <button class="btn btn-soft-success">Import</button>
+                                <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown"
+                                    aria-expanded="false" class="btn btn-soft-info"><i class="ri-more-2-fill"></i></button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                    <li><a class="dropdown-item" href="#">All</a></li>
+                                    <li><a class="dropdown-item" href="#">Last Week</a></li>
+                                    <li><a class="dropdown-item" href="#">Last Month</a></li>
+                                    <li><a class="dropdown-item" href="#">Last Year</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--end col-->
         <div class="col-xxl-12">
             <div class="card" id="contactList">
@@ -59,8 +87,7 @@
                     <div class="row g-3">
                         <div class="col-md-4">
                             <div class="search-box">
-                                <input type="text" class="form-control search" id="searchInput"
-                                    placeholder="Search for contact...">
+                                <input type="text" class="form-control search" id="searchInput" placeholder="Search for contact...">
                                 <i class="ri-search-line search-icon"></i>
                             </div>
                         </div>
@@ -90,19 +117,14 @@
                                             </div>
                                         </th>
                                         <th class="sort" data-sort="idsanpham" scope="col">ID</th>
-                                        <th class="sort" data-sort="name" scope="col">Tên Khách Hàng</th>
-                                        <th class="sort" data-sort="company_name" scope="col">Email</th>
-                                        <th class="sort" data-sort="email_id" scope="col">Số Điện Thoại</th>
-                                        <th class="sort" data-sort="category_name" scope="col">Địa Chỉ</th>
-                                        <th class="sort" data-sort="phone" scope="col">Tổng Giá</th>
-                                        <th class="sort" data-sort="lead_score" scope="col">Ngày Tạo</th>
-                                        <th class="sort" data-sort="" scope="col">Phương Thức Thanh Toán</th>
-                                        <th class="sort" data-sort="tags" scope="col">Trạng Thái</th>
+                                        <th class="sort" data-sort="name" scope="col">ID Sản Phẩm Biến Thể</th>
+                                        <th class="sort" data-sort="company_name" scope="col">ID Các Biến Thể</th>
+                                        <th class="sort" data-sort="email_id" scope="col">Số Lượng Sản Phẩm Của Biến Thể</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="list form-check-all">
-                                    @foreach ($data as $order)
+                                    @foreach ($listPro as $pr)
                                         <tr>
                                             <th scope="row">
                                                 <div class="form-check">
@@ -112,46 +134,15 @@
                                             </th>
                                             <td class="id" style="display:none;"><a href="javascript:void(0);"
                                                     class="fw-medium link-primary">#VZ001</a></td>
-                                            <td>{{ $order->id }}</td>
+                                            <td>{{ $pr->id }}</td>
                                             <td class="name">
                                                 <div class="d-flex align-items-center">
-                                                    <div class="flex-shrink-0">
-                                                        {{ $order->user_name }}
-                                                    </div>
+                                                    <div class="flex-grow-1 ms-2 name">{{ $pr->product_id }}</div>
                                                 </div>
                                             </td>
-                                            <td class="company_name">{{ $order->user_email }}</td>
-                                            <td class="company_name">{{ $order->user_phone }}</td>
-                                            <td class="email_id">
-                                                @if ($order->address)
-                                                    {{ $order->address->address }}, {{ $order->address->city }}, {{ $order->address->state }}
-                                                @else
-                                                    Chưa có địa chỉ
-                                                @endif
+                                            <td class="company_name">{{ $pr->variants_id }}</td>
+                                            <td class="email_id">{{ $pr->quantity }}</td>
                                             </td>
-                                            <td class="category_name">{{ $order->total_price }}</td>
-                                            <td>{{ $order->created_at->format('d-m-Y H:i') }}</td>
-                                            <td class="company_name">
-                                                @if($order->payment_method === 'cash')
-                                                    Thanh toán khi nhận hàng
-                                                @elseif($order->payment_method === 'on')
-                                                    Thanh toán online
-                                                @endif
-                                            </td>
-                                            <td class="company_name">
-                                                @if($order->status == 'pending')
-                                                    Chờ Xác Nhận
-                                                @elseif($order->status == 'completed')
-                                                    Đã Xác Nhận
-                                                @elseif($order->status == 'delivery')
-                                                    Đang Giao Hàng
-                                                @elseif($order->status == 'delivered')
-                                                    Giao Hàng Thành Công
-                                                @elseif($order->status == 'canceled')
-                                                    Đã hủy
-                                                @endif
-                                            </td>
-
                                             <td>
                                                 <ul class="list-inline hstack gap-2 mb-0">
                                                     <li class="list-inline-item">
@@ -163,15 +154,16 @@
                                                             </button>
                                                             <ul class="dropdown-menu dropdown-menu-end">
                                                                 <li><a class="dropdown-item edit-item-btn"
-                                                                        href="{{ route('order.show', ['id' => $order->id]) }}"><i
+                                                                        href="{{ route('product_variant.edit', ['id' => $pr->id]) }}"><i
                                                                             class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                                        Show</a>
+                                                                        Edit</a></li>
+                                                                <li>
+                                                                    <button class="dropdown-item delete-btn"
+                                                                        data-id="{{ $pr->id }}"><i
+                                                                            class="ri-delete-bin-2-line"></i> Xóa</button>
                                                                 </li>
-                                                                <li><a class="dropdown-item edit-item-btn"
-                                                                        href="{{ route('order.edit', ['id' => $order->id]) }}"><i
-                                                                            class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                                        Edit</a>
-                                                                </li>
+
+
                                                             </ul>
                                                         </div>
                                                     </li>
@@ -354,55 +346,55 @@
     </div>
     <!-- end main content-->
     <script>
-        document.getElementById('searchInput').addEventListener('input', function() {
-            let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll('#customerTable tbody tr');
 
-            rows.forEach(function(row) {
-                let productName = row.querySelector('.name .flex-grow-1').textContent.toLowerCase();
-                let productPrice = row.querySelector('.company_name').textContent.toLowerCase();
-                let productCate = row.querySelector('.category_name').textContent.toLowerCase();
-                // Kiểm tra nếu tên Đơn Hàng hoặc giá khớp với giá trị tìm kiếm
-                if (productName.includes(filter) || productPrice.includes(filter) || productCate.includes(
-                        filter)) {
-                    row.style.display = ''; // Hiển thị nếu tên hoặc giá khớp với kết quả tìm kiếm
-                } else {
-                    row.style.display = 'none'; // Ẩn nếu không khớp
-                }
-            });
-        });
+document.getElementById('searchInput').addEventListener('input', function () {
+    let filter = this.value.toLowerCase();
+    let rows = document.querySelectorAll('#customerTable tbody tr');
+
+    rows.forEach(function (row) {
+        let productName = row.querySelector('.name .flex-grow-1').textContent.toLowerCase();
+        let productPrice = row.querySelector('.company_name').textContent.toLowerCase();
+        let productCate = row.querySelector('.category_name').textContent.toLowerCase();
+        // Kiểm tra nếu tên sản phẩm hoặc giá khớp với giá trị tìm kiếm
+        if (productName.includes(filter) || productPrice.includes(filter) || productCate.includes(filter)) {
+            row.style.display = ''; // Hiển thị nếu tên hoặc giá khớp với kết quả tìm kiếm
+        } else {
+            row.style.display = 'none'; // Ẩn nếu không khớp
+        }
+    });
+});
 
 
 
         document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                var productId = this.getAttribute('data-id');
-                var deleteModal = new bootstrap.Modal(document.getElementById('deleteRecordModal'));
-                deleteModal.show();
+        button.addEventListener('click', function() {
+            var productId = this.getAttribute('data-id');
+            var deleteModal = new bootstrap.Modal(document.getElementById('deleteRecordModal'));
+            deleteModal.show();
 
-                document.getElementById('confirmDelete').onclick = function() {
-                    fetch('/admin/products/' + productId + '/destroy', {
-                            method: 'DELETE',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                'Content-Type': 'application/json',
-                            }
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert(data.message);
-                                window.location.reload(); // Reload lại trang sau khi xóa
-                            } else {
-                                alert('Lỗi: ' + data.message);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Có lỗi xảy ra:', error);
-                        });
-                };
-            });
+            document.getElementById('confirmDelete').onclick = function() {
+                fetch('/admin/product_variants/' + productId + '/destroy', {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(data.message);
+                            window.location.reload(); // Reload lại trang sau khi xóa
+                        } else {
+                            alert('Lỗi: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Có lỗi xảy ra:', error);
+                    });
+            };
         });
+    });
     </script>
 
 

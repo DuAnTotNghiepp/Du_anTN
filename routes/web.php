@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Auth\FacebookController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\VoucherController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\Client\ProductCatalogueController;
 use App\Http\Controllers\Client\ProductFavoriteController;
+use App\Http\Controllers\Client\VoucherController as ClientVoucherController;
 use App\Http\Controllers\ProductController as ControllersProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckRoleAdminMiddleware;
@@ -42,8 +44,9 @@ Route::post('register', [AuthController::class, 'register'])->name('register');
 // Client Routes
 
 Route::get('/', [ClientController::class, 'index'])->name('index');
-Route::get('product/{id}', [ClientController::class, 'show'])->name('product.product_detail');
+Route::get('product/{id}', [ClientController::class, 'show'])->middleware('save.redirect')->name('product.product_detail');
 
+Route::get('/api/variant-stock', [ClientController::class, 'getVariantStock']);
 
 //profile
 Route::get('/profile/{id}', [ClientController::class, 'show_profile'])->name('profile');
@@ -56,13 +59,15 @@ Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])
 
 
 
-Route::get('/checkout', [CheckoutController::class, 'form'])->middleware('auth')->name('checkout');
+Route::match(['get', 'post'],'/checkout1', [CheckoutController::class, 'checkout1'])->middleware('auth')->name('checkout1');
+Route::match(['get', 'post'],'/checkout', [CheckoutController::class, 'form'])->middleware('auth')->name('checkout');
+Route::post('/orders/store1', [OrderController::class, 'store1'])->name('orders.store1')->middleware('auth');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
 Route::post('/orders/vnpay_ment', [OrderController::class, 'vnpay_ment'])->name('orders.vnpay_ment');
 
 Route::get('/checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('checkout.applyVoucher');
 
-Route::get('/checkout', [CheckoutController::class, 'form'])->name('checkout');
+
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
 Route::post('/vnpay_payment', [OrderController::class, 'vnpayPayment'])->name('orders.vnpay_ment');
 Route::get('/vnpay/callback', [OrderController::class, 'vnpayCallback'])->name('vnpay.callback');
@@ -88,8 +93,9 @@ Route::get('password/reset/{token}', [AuthController::class, 'showResetPasswordF
 Route::post('password/reset', [AuthController::class, 'reset']);
 
 // Social Login Routes
-Route::get('login/facebook', [AuthController::class, 'redirectToFacebook']);
-Route::get('login/facebook/callback', [AuthController::class, 'handleFacebookCallback']);
+
+Route::get('login/facebook', [FacebookController::class, 'loginWithFacebook']);
+Route::get('login/facebook/callback', [FacebookController::class, 'loginCallBack']);
 
 // Admin Routes (Requires auth and admin middleware)
 
@@ -130,6 +136,7 @@ Route::middleware('auth', 'admin')->group(function () {
 
 
 Route::resource('cart', CartController::class);
+
 //chi tiet test
 Route::post('product/comment/{id}', [BinhLuanController::class, 'store'])->name('comment.store');
 Route::get('admin/comment/index', [ProductController::class, 'indexWithComments'])->name('comment.index');
@@ -146,3 +153,4 @@ Route::get('/admin/revenue-stats', [AdminController::class, 'getRevenueStats']);
 
 // Group routes under admin middleware
 Route::get('blog/{id}', [BlogController::class, 'show'])->name('blog.detail');
+
