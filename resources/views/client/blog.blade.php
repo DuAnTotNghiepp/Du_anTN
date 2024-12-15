@@ -50,35 +50,37 @@
        
     </div>
 </nav>
- <div class="container">
-        <div class="blog-content">
-            <!-- Hình ảnh bài viết -->
-            <img src="{{ Storage::url($blog->image) }}" alt="Xu Hướng Thời Trang" class="blog-header-image mb-4 rounded">
-            
-            <!-- Thông tin bài viết -->
-            <div class="text-center mb-4">
-                <span class="badge bg-primary mb-2">Thời Trang</span>
-                <h1 class="display-5 mb-3">{{ $blog->title }}</h1>
-
+ <div class=" blog-content container">
+    
+        <div class="row align-items-start">
+            <!-- Nội dung bài viết (bên trái) -->
+            <div class="col-md-8">
+                <div class="text-center mb-4">
+                    <span class="badge bg-primary mb-2">Thời Trang</span>
+                    <h1 class="display-5 mb-3">{{ $blog->title }}</h1>
+                </div>
+                <article>
+                    <h3 class="lead">{{ $blog->content }}</h3>
+                </article>
             </div>
-
-            <!-- Nội dung chính -->
-            <article>
-                <h3 class="lead">{{ $blog->content }} </h3>
-
-                
-            </article>
-
+    
+            <!-- Hình ảnh bài viết (bên phải) -->
+            <div class="col-md-4 text-center">
+                <img src="{{ Storage::url($blog->image) }}" alt="Xu Hướng Thời Trang" class="img-fluid mb-4 rounded">
+            </div>
+        </div>
+    
+    
           
             
 
             <!-- Bài viết liên quan -->
-        <div class="related-posts">
+        <div class="row">
                 <h3 class="text-center mb-4">Bài Viết Liên Quan</h3>
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <div class="card related-post-card h-100">
-                            <img src="{{ Storage::url($blog->image) }}" class="card-img-top" alt="Bài viết liên quan 1">
+                            <img src="assets/images/banner/image.png" class="card-img-top" alt="Bài viết liên quan 1">
                             <div class="card-body">
                                 <h5 class="card-title">AI Trong Kinh Doanh</h5>
                                 <p class="card-text text-muted">Cách AI đang cách mạng hóa các mô hình kinh doanh</p>
