@@ -85,111 +85,101 @@
                             <div class="added-product-summary">
                                 <h5 class="checkout-title">Order Summary</h5>
                                 <ul class="added-products">
+                                    <!-- Hiển thị sản phẩm từ trang chi tiết -->
+                                        @if(session('productcheckout'))
                                         <li class="single-product">
                                             <div class="product-img">
-                                                <img src="{{ $checkoutData['image'] }}" alt="{{ $checkoutData['productName'] }}" style="max-width: 100px; border-radius: 5px;">
+                                                <img src="{{ session('productcheckout')['image'] }}" alt="{{ session('productcheckout')['productName'] }}"
+                                                    style="max-width: 100px; border-radius: 5px;">
                                             </div>
                                             <div class="product-info">
-                                                <h5 class="product-title">{{ $checkoutData['productName'] }}</h5>
+                                                <h5 class="product-title">{{ session('productcheckout')['productName'] }}</h5>
                                                 <div class="product-total">
                                                     <div class="">
-                                                        <span class="product-quantity">{{ $checkoutData['quantity'] }}</span>
-                                                        <input type="hidden" name="quantity" value="{{ $checkoutData['quantity'] }}">
+                                                        <span class="product-quantity">{{ session('productcheckout')['quantity'] }}</span>
+                                                        <input type="hidden" name="quantity" value="{{ session('productcheckout')['quantity'] }}">
                                                     </div>
                                                     <strong>
                                                         <i class="bi bi-x-lg"></i>
-                                                        <span class="product-price">{{ number_format($checkoutData['productPrice'], 0, ',', '.') }}</span> VND
+                                                        <span class="product-price">{{ number_format(session('productcheckout')['productPrice'], 0, ',', '.') }}</span>
+                                                        VND
                                                     </strong>
                                                 </div>
-                                                <p><strong>Color: </strong>
-                                                    <span class="color-box" style="display: inline-block; width: 20px; height: 20px; background-color: {{ $checkoutData['color'] }}; border: 1px solid #ddd; border-radius: 10px;"></span>
-                                                    <input type="hidden" name="color" value="{{ $checkoutData['color'] }}">
-
+                                                <p><strong>Màu: </strong>
+                                                    <span class="color-box"
+                                                        style="display: inline-block; width: 20px; height: 20px; background-color: {{ session('productcheckout')['color'] ?? 'Chưa chọn' }}; border: 1px solid #ddd; border-radius: 10px;"></span>
+                                                    <input type="hidden" name="color" value="{{ session('productcheckout')['color'] ?? 'Chưa chọn' }}">
                                                 </p>
-                                                <p><strong>SIZE: </strong> {{ $checkoutData['size'] }}</p>
-                                                <input type="hidden" name="size" value="{{ $checkoutData['size'] }}">
-
+                                                <p><strong>Cỡ: </strong>{{ session('productcheckout')['size'] ?? 'Chưa chọn' }}</p>
+                                                <input type="hidden" name="size" value="{{ session('productcheckout')['size'] ?? 'Chưa chọn' }}">
                                             </div>
                                         </li>
+                                    @endif
                                 </ul>
-
                             </div>
+
                             <div class="total-cost-summary">
                                 <ul>
                                     <!-- Hiển thị Tổng Giá -->
                                     <li class="subtotal">Tổng Giá
-                                        <span id="subtotal">{{ number_format($quantity * $productPrice) }} VND</span>
+                                        <span id="subtotal">{{ number_format(($checkoutData['quantity'] ?? 0) * ($checkoutData['productPrice'] ?? 0)) }} VND</span>
                                     </li>
 
                                     <!-- Hiển thị Thuế -->
                                     <li>Thuế
                                         <span id="tax">5000 VND</span>
                                     </li>
-                                    <li>Giảm giá: <strong>- <span id="voucher_value">0<span> VNĐ</strong></li>
-                                    {{-- <!-- Hiển thị Giá trị Giảm Giá -->
-                                    @if(session('voucher'))
-                                        <li class="discount">Giảm Giá ({{ session('voucher')->code }})
-                                            <span id="discount">-{{ number_format(session('voucher_discount')) }} VND</span>
-                                        </li>
-                                    @endif --}}
 
-                                    <!-- Hiển thị Tổng Đơn Hàng (Bao gồm thuế và giảm giá) -->
+                                    <!-- Hiển thị Tổng Đơn Hàng -->
                                     <li>Tổng Đơn Hàng (Bao gồm cả thuế)
                                         <span id="total">
-                                            {{ number_format(($quantity * $productPrice + 5000) ) }} VND
-                                        </span>
+                                            {{ number_format(($checkoutData['quantity'] ?? 0) * ($checkoutData['productPrice'] ?? 0) + 5000) }}
+                                        </span>VND
                                     </li>
 
                                     <!-- Các trường ẩn -->
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    <input type="hidden" name="total_price" id="total_price"
-                                           value="{{ ($quantity * $productPrice + 5000)}}">
+                                    <input type="hidden" name="total_price" id="total_price" value="{{ ($checkoutData['quantity'] * $checkoutData['productPrice'] ?? 0) + 5000 }}">
                                 </ul>
 
                                 <!-- Form áp dụng mã giảm giá -->
-                                    <div id="applyVoucher">
-                                        <div class="input-group">
-                                            <input type="text" name="voucher_code" id="voucher_code" class="form-control" placeholder="Nhập mã giảm giá">
-                                            <button type="button" class="pd-add-cart" style="height: 45px; border: 1px solid #ced4da" onclick="getVoucherInfo()">Áp dụng</button>
-
-                                        </div>
-                                        <span id="errorMessage" class="error-message"></span><br>
+                                <div id="applyVoucher">
+                                    <div class="input-group">
+                                        <input type="text" name="voucher_code" id="voucher_code" class="form-control" placeholder="Nhập mã giảm giá">
+                                        <button type="button" class="pd-add-cart" style="height: 45px; border: 1px solid #ced4da" onclick="getVoucherInfo()">Áp dụng</button>
                                     </div>
-
-
-                            </div>
-
-                            </div>
-
-                            <div class="payment-form">
-                                <div class="payment-methods">
-                                    <div class="form-group">
-                                        <label for="payment_method">Payment Method</label>
-                                        <select name="payment_method" id="payment_method" class="form-control" required>
-                                            <option value="cash">Cash on Delivery</option>
-                                            <option value="vnpay">VNPay</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group" id="bank_code_group" style="display: none;">
-                                        <label for="bank_code">Bank</label>
-                                        <select name="bank_code" id="bank_code" class="form-control">
-                                            <option value="NCB">NCB</option>
-                                            <option value="Vietcombank">Vietcombank</option>
-                                            <!-- Add other bank options as needed -->
-                                        </select>
-                                    </div>
-
-                                </div>
-                                <div class="place-order-btn">
-                                    <button type="submit">Place Order</button>
+                                    <span id="errorMessage" class="error-message"></span><br>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                </form>
+                        <div class="payment-form">
+                            <div class="payment-methods">
+                                <div class="form-group">
+                                    <label for="payment_method">Payment Method</label>
+                                    <select name="payment_method" id="payment_method" class="form-control" required>
+                                        <option value="cash">Thanh Toán Khi Nhận Hàng</option>
+                                        <option value="vnpay">Thanh Toán VNPay</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" id="bank_code_group" style="display: none;">
+                                    <label for="bank_code">Bank</label>
+                                    <select name="bank_code" id="bank_code" class="form-control">
+                                        <option value="NCB">NCB</option>
+                                        <option value="Vietcombank">Vietcombank</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="place-order-btn">
+                                <button type="submit">Place Order</button>
+                            </div>
+                        </div>
+                    </div>
             </div>
+            </form>
+        </div>
 
         </div>
     </div>
@@ -221,67 +211,77 @@
             });
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const quantityInput = document.querySelector('.quantity-input');
-            const subtotalElement = document.getElementById('subtotal');
-            const totalElement = document.getElementById('total');
-            const tax = 5000;
+        function updateTotalPrice() {
+        const subtotal = {{ $quantity * $productPrice }};
+        const tax = 5000; // Thuế cố định
+        const voucherValue = parseInt(document.getElementById('voucher_value').innerText.replace(/\D/g, '')) || 0;
 
-            if (!quantityInput || !subtotalElement || !totalElement) {
-                console.error('Missing elements for calculation.');
+        const total = subtotal + tax - voucherValue;
+
+        // Cập nhật giá trị hiển thị
+        document.getElementById('total').innerText = total.toLocaleString('vi-VN') + ' VND';
+
+        // Cập nhật giá trị vào input ẩn
+        document.getElementById('total_price').value = total;
+    }
+
+
+        let appliedVouchers = []; // Mảng để lưu trữ các mã đã áp dụng
+
+        function getVoucherInfo() {
+            const errorMessage = document.getElementById('errorMessage');
+            const voucherCode = document.getElementById('voucher_code').value;
+
+            const voucher_value = document.getElementById('voucher_value');
+            const final_total = document.getElementById('total');
+
+            const totalPrice = document.getElementById('total_price').value;
+
+            // Gửi yêu cầu GET đến API để lấy thông tin mã giảm giá
+            if (!voucherCode) {
+                errorMessage.textContent = "Vui lòng nhập mã giảm giá";
+                errorMessage.style.color = "red";
                 return;
             }
 
-            quantityInput.addEventListener('input', function() {
-                const quantity = parseInt(quantityInput.value);
-                const productPrice = parseFloat(quantityInput.dataset.price); // Lấy giá từ thuộc tính data-price
-                const subtotal = quantity * productPrice;
-                const total = subtotal + tax;
-
-                subtotalElement.textContent = subtotal.toLocaleString('vi-VN') + ' VND';
-                totalElement.textContent = total.toLocaleString('vi-VN') + ' VND';
-            });
-        });
-            function getVoucherInfo() {
-                const errorMessage = document.getElementById('errorMessage');
-                const voucherCode = document.getElementById('voucher_code').value;
-
-                const voucher_value = document.getElementById('voucher_value');
-                const final_total = document.getElementById('total');
-
-                const totalPrice = document.getElementById('total_price').value;
-                // Gửi yêu cầu GET đến API để lấy thông tin mã giảm giá
-                if(!voucherCode) {
-                    errorMessage.textContent = "Vui lòng nhập mã giảm giá";
-                    errorMessage.style.color = "red";
-                    return;
-                }
-                console.log(totalPrice)
-                fetch(`http://127.0.0.1:8000/checkout/apply-voucher?voucher_code=${voucherCode}&total_price=${totalPrice}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        // Xử lý dữ liệu trả về từ API
-                        console.log(data.voucher_discount);
-                        if (data.result == true) {
-                            voucher_value.textContent = data.data.voucher_discount
-                            final_total.textContent = data.data.final_total
-                            let hiddenInput = document.getElementById('total_price');
-                            hiddenInput.value = data.data.final_total;
-                        } else {
-                            errorMessage.textContent = data.message;
-                            errorMessage.style.color = "red";
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        errorMessage.textContent = "Đã xảy ra lỗi khi lấy thông tin mã giảm giá";
-                        errorMessage.style.color = "red";
-                    });
+            // Kiểm tra nếu mã đã được áp dụng
+            if (appliedVouchers.includes(voucherCode)) {
+                errorMessage.textContent = "Mã giảm giá đã được áp dụng!";
+                errorMessage.style.color = "red";
+                return;
             }
+
+            fetch(`http://127.0.0.1:8000/checkout/apply-voucher?voucher_code=${voucherCode}&total_price=${totalPrice}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Xử lý dữ liệu trả về từ API
+                    if (data.result === true) {
+                        voucher_value.textContent = data.data.voucher_discount;
+                        final_total.textContent = data.data.final_total;
+                        let hiddenInput = document.getElementById('total_price');
+                        hiddenInput.value = data.data.final_total;
+
+                        // Lưu mã giảm giá đã áp dụng vào mảng
+                        appliedVouchers.push(voucherCode);
+
+                        // Hiển thị thông báo áp dụng thành công
+                        errorMessage.textContent = "Mã giảm giá đã được áp dụng thành công!";
+                        errorMessage.style.color = "green";
+                    } else {
+                        errorMessage.textContent = data.message;
+                        errorMessage.style.color = "red";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    errorMessage.textContent = "Đã xảy ra lỗi khi lấy thông tin mã giảm giá";
+                    errorMessage.style.color = "red";
+                });
+        }
     </script>
 @endsection

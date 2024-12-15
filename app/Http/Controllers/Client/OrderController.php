@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -45,7 +46,8 @@ class OrderController extends Controller
         if ($product->quantity < $quantity) {
             return redirect()->back()->withErrors(['message' => 'Số lượng sản phẩm không đủ trong kho.']);
         }
-        $validatedData['total_price'] = $product->price_sale*$quantity;
+        $shippingFee = 5000; // Có thể cấu hình linh hoạt
+        $validatedData['total_price'] = ($variant->sale_price ?? $product->price_sale) * $validatedData['quantity'] + $shippingFee;
         $order = Order::create($validatedData);
 
         $size = $request->input('size');
@@ -72,6 +74,56 @@ class OrderController extends Controller
             return $this->vnpayPayment($order, $request);
         }
         // Chuyển hướng hoặc trả về thông báo thành công
+        return redirect()->route('index')->with('success', 'Cảm Ơn Bạn Đã Đặt Hàng Của Chúng Tôi!');
+    }
+    public function store1(Request $request)
+    {
+        // Validate input
+        $request->validate([
+            'user_address' => 'required|exists:addresses,id',
+            'user_name' => 'required|string|max:255',
+            'user_email' => 'required|email|max:255',
+            'user_phone' => 'required|string|max:20',
+            'payment_method' => 'required|string',
+            'total_price' => 'required|numeric',
+            'quantity' => 'required|array',
+            'color' => 'required|array',
+            'size' => 'required|array',
+            'voucher_code' => 'nullable|string',
+        ]);
+
+        // Create a new order
+        $order = Order::create([
+            'user_id' => Auth::id(),
+            'user_name' => $request->user_name,
+            'user_email' => $request->user_email,
+            'user_phone' => $request->user_phone,
+            'user_address' => $request->user_address,
+            'user_note' => $request->user_note ?? '',
+            'payment_method' => $request->payment_method,
+            'status' => 'pending', // Set default status as pending
+            'total_price' => $request->total_price,
+        ]);
+
+        // Save the order items (from the cart)
+        foreach ($request->quantity as $key => $quantity) {
+            Order_Items::create([
+                'order_id' => $order->id,
+                'user_id' => Auth::id(),
+                'product_id' => $request->product_id[$key],
+                'product_variant_id' => $request->variant_id[$key] ?? null, // Assuming you may have variant ID
+                'quantity' => $quantity,
+                'product_name' => $request->product_name[$key],
+                'product_sku' => $request->product_sku[$key],
+                'product_img_thumbnail' => $request->product_img_thumbnail[$key],
+                'product_price_regular' => $request->product_price_regular[$key],
+                'product_price_sale' => $request->product_price_sale[$key],
+                'size' => $request->size[$key],
+                'color' => $request->color[$key],
+            ]);
+        }
+
+        // Redirect to order confirmation page
         return redirect()->route('index')->with('success', 'Cảm Ơn Bạn Đã Đặt Hàng Của Chúng Tôi!');
     }
 

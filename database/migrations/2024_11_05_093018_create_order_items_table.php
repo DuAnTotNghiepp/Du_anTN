@@ -12,8 +12,8 @@ return new class extends Migration
     {
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('cart_id'); // ID của giỏ hàng mà mục này thuộc về
-            $table->unsignedBigInteger('product_variant_id'); // ID của biến thể sản phẩm
+            $table->unsignedBigInteger('cart_id')->nullable(); // ID của giỏ hàng mà mục này thuộc về
+            $table->unsignedBigInteger('product_variant_id')->nullable(); // ID của biến thể sản phẩm
             $table->unsignedInteger('quantity')->default(0); // Số lượng sản phẩm trong giỏ hàng, mặc định là 0
             $table->string('product_name'); // Tên sản phẩm
             $table->string('product_sku'); // SKU (Stock Keeping Unit) của sản phẩm

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CataloguesController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\Product_VariantController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\VariantsController;
 use App\Http\Controllers\Admin\VoucherController;
@@ -52,6 +53,19 @@ Route::controller(ProductController::class)
                 Route::put('{id}/update', 'update')->name('update');
             });
     });
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::controller(Product_VariantController::class)
+            ->name('product_variant.')
+            ->prefix('admin/product_variants/')
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::post('store', 'store')->name('store');
+                Route::get('{id}/show', 'show')->name('show');
+                Route::get('{id}/edit', 'edit')->name('edit');
+                Route::put('{id}/update', 'update')->name('update');
+            });
+    });
+    Route::get('/products/{id}/update-quantity', [ProductController::class, 'updateQuantity']);
 
 Route::controller(VariantsController::class)
     ->name('variant.')

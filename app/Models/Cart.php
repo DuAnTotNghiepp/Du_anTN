@@ -1,6 +1,5 @@
 <?php
 namespace App\Models;
-namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,8 +8,11 @@ class Cart extends Model
     protected $fillable = [
         'user_id',
         'product_id',
-        'variant_id',  // Lưu variant_id
-        'quantity'  // Số lượng sản phẩm
+        'quantity',
+        'color',
+        'size',
+        'price',
+        'total_price'
     ];
 
     public function product()
@@ -27,4 +29,15 @@ class Cart extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function color()
+    {
+        return $this->belongsTo(Variants::class, 'color');
+    }
+
+    public function size()
+    {
+        return $this->belongsTo(Variants::class, 'size');
+    }
+
+
 }

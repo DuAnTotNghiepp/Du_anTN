@@ -108,6 +108,18 @@
                     <div>
                         <div class="table-responsive table-card mb-3">
                             <table class="table align-middle table-nowrap mb-0" id="customerTable">
+                                @if(session('success'))
+                                    <div class="alert alert-success">
+                                        {{ session('success') }}
+                                    </div>
+                                @endif
+
+                                @if(session('error'))
+                                    <div class="alert alert-danger">
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
+
                                 <thead class="table-light">
                                     <tr>
                                         <th scope="col" style="width: 50px;">
@@ -156,7 +168,8 @@
                                             <td class="company_name">{{ $pr->price_regular }}</td>
                                             <td class="email_id">{{ $pr->price_sale }}</td>
                                             <td class="category_name">{{ $pr->catelogues->name }}</td>
-                                            <td class="phone">{{ $pr->quantity }}</td>
+                                            <td class="phone">{{ $pr->quantity }}
+                                            </td>
                                             <td class="lead_score">{{ $pr->sku }}</td>
                                             <td class="tags">
                                                 {{ $pr->is_active ? 'Còn hàng' : 'Hết hàng' }}
@@ -176,6 +189,10 @@
                                                                         href="{{ route('product.edit', ['id' => $pr->id]) }}"><i
                                                                             class="ri-pencil-fill align-bottom me-2 text-muted"></i>
                                                                         Edit</a></li>
+                                                                        <li><a href="{{ url('/products/' . $pr->id . '/update-quantity') }}" class="btn btn-primary">
+                                                                            Cập nhật số lượng
+                                                                        </a>
+                                                                        </li>
                                                                 <li>
                                                                     <button class="dropdown-item delete-btn"
                                                                         data-id="{{ $pr->id }}"><i
