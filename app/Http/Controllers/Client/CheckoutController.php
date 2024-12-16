@@ -114,6 +114,8 @@ class CheckoutController extends Controller
         $voucherCode = $request->voucher_code;
         $appliedVouchers = []; // Tạo một mảng để lưu trữ mã giảm giá đã áp dụng tạm thời trong hàm
 
+
+
         // Kiểm tra nếu mã đã được áp dụng
         if (in_array($voucherCode, $appliedVouchers)) {
             return response([
@@ -121,7 +123,6 @@ class CheckoutController extends Controller
                 'message' => 'Mã giảm giá đã được áp dụng!'
             ]);
         }
-
         $now = Carbon::now('Asia/Ho_Chi_Minh');
         $voucher = Vouchers::where('code', $voucherCode)
             ->where('start_date', '<=', $now)
@@ -143,6 +144,18 @@ class CheckoutController extends Controller
             ]);
         }
 
+    
+        $discount = ($voucher->type === 'percent')
+            ? ($voucher->value / 100) * $orderTotal
+            : $voucher->value;
+    
+        $discount = min($discount, $orderTotal);
+    
+        // Thay vì lưu vào session, chúng ta chỉ cần không cho phép áp dụng lại
+        $appliedVouchers[] = $voucherCode; // Lưu mã đã áp dụng vào mảng
+    
+
+
         $discount = ($voucher->type === 'percent')
             ? ($voucher->value / 100) * $orderTotal
             : $voucher->value;
@@ -157,10 +170,16 @@ class CheckoutController extends Controller
             'final_total' => $orderTotal - $discount,
         ];
 
+
         return response([
             'result' => true,
             'data' => $data,
             'message' => 'Mã giảm giá đã được áp dụng thành công!' // Thêm thông báo thành công
         ]);
     }
+
+    
+    
+
+
 }
