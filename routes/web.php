@@ -86,6 +86,10 @@ Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')-
 Route::post('/orders/vnpay_ment', [OrderController::class, 'vnpay_ment'])->name('orders.vnpay_ment');
 
 Route::get('/checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('checkout.applyVoucher');
+Route::get('/checkout1/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('checkout.applyVoucher');
+
+
+
 
 
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
