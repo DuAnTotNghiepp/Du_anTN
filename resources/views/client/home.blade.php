@@ -5,10 +5,18 @@
 
     <head>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
+       
     </head>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        .fixed-image {
+    width: 300px;      
+    height: 200px;     
+    object-fit: cover; 
+    display: block;    
+    margin: 0 auto;   
+}
+
         .copy-icon {
             color: #070c10;
             cursor: pointer;
@@ -400,139 +408,46 @@
             <div class="row">
                 <div class="swiper-blog-container overflow-hidden">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="blog-card-m">
-                                <div class="blog-img-m">
-                                    @foreach ($blogs as $blog)
-                                        <a href="{{ route('blog.detail', $blog->id) }}"><img
-                                                src="assets/images/blog/bm-1.png" alt></a>
+                        @foreach ($blogs as $post)
+                            <div class="swiper-slide">
+                                <div class="blog-card-m">
+                                    <div class="blog-img-m">
+                                        <a href="{{ route('blog.detail', $post->id) }}">
+                                            <img src="{{ Storage::url($post->image) }}" alt="{{ $post->title }}" class="fixed-image">
+                                        </a>
                                         <div class="blog-actions">
                                             <a href="#"><i class="flaticon-share"></i></a>
                                         </div>
-                                    @endforeach
-                                </div>
-                                <div class="blog-content-m">
-                                    <ul class="blog-info d-flex">
-                                        <li class="blog-author">
-                                            <img src="assets/images/blog/blog-author1.png" alt class="author-img">
-                                            <a href="#">Alex Avater</a>
-                                        </li>
-                                        <li class="blog-date">
-                                            <i class="flaticon-time"></i>
-                                            4th Jan 2021
-                                        </li>
-                                    </ul>
-                                    <div class="blog-bottom">
-                                        <h4 class="blog-title"><a href="blog-details.html">How can have anything you
-                                                want in life if
-                                                you dress for it.</a></h4>
-                                        <div class="blog-link-btn">
-                                            <a href="blog-details.html">View This Story <i
-                                                    class="flaticon-arrow-pointing-to-right"></i></a>
+                                    </div>
+                                    <div class="blog-content-m">
+                                        <ul class="blog-info d-flex">
+                                            <li class="blog-author">
+                                                <img src="assets/images/blog/blog-author1.png" alt="Author" class="author-img">
+                                                <a href="{{ route('blog.detail', $post->id) }}">Alex Avater</a>
+                                            </li>
+                                           
+                                        </ul>
+                                        <div class="blog-bottom">
+                                            <h4 class="blog-title">
+                                                <a href="{{ route('blog.detail', $post->id) }}">{{ $post->title }}</a>
+                                            </h4>
+                                            <div class="blog-link-btn">
+                                                <a href="{{ route('blog.detail', $post->id) }}">
+                                                    View This Story <i class="flaticon-arrow-pointing-to-right"></i>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="blog-card-m">
-                                <div class="blog-img-m">
-                                    <a href="blog-details.html"><img src="assets/images/blog/bm-2.png" alt></a>
-                                    <div class="blog-actions">
-                                        <a href="#"><i class="flaticon-share"></i></a>
-                                    </div>
-                                </div>
-                                <div class="blog-content-m">
-                                    <ul class="blog-info d-flex">
-                                        <li class="blog-author">
-                                            <img src="assets/images/blog/blog-author1.png" alt class="author-img">
-                                            <a href="#">Alex Avater</a>
-                                        </li>
-                                        <li class="blog-date">
-                                            <i class="flaticon-time"></i>
-                                            4th Jan 2021
-                                        </li>
-                                    </ul>
-                                    <div class="blog-bottom">
-                                        <h4 class="blog-title"><a href="blog-details.html">The Coolest Fashion People to
-                                                Follow in Every Age Group</a></h4>
-                                        <div class="blog-link-btn">
-                                            <a href="blog-details.html">View This Story <i
-                                                    class="flaticon-arrow-pointing-to-right"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="blog-card-m">
-                                <div class="blog-img-m">
-                                    <a href="blog-details.html"><img src="assets/images/blog/bm-3.png" alt></a>
-                                    <div class="blog-actions">
-                                        <a href="#"><i class="flaticon-share"></i></a>
-                                    </div>
-                                </div>
-                                <div class="blog-content-m">
-                                    <ul class="blog-info d-flex">
-                                        <li class="blog-author">
-                                            <img src="assets/images/blog/blog-author1.png" alt class="author-img">
-                                            <a href="#">Alex Avater</a>
-                                        </li>
-                                        <li class="blog-date">
-                                            <i class="flaticon-time"></i>
-                                            4th Jan 2021
-                                        </li>
-                                    </ul>
-                                    <div class="blog-bottom">
-                                        <h4 class="blog-title"><a href="blog-details.html">Let us know your thoughts in
-                                                this
-                                                is comments below</a></h4>
-                                        <div class="blog-link-btn">
-                                            <a href="blog-details.html">View This Story <i
-                                                    class="flaticon-arrow-pointing-to-right"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="blog-card-m">
-                                <div class="blog-img-m">
-                                    <a href="blog-details.html"><img src="assets/images/blog/bm-4.png" alt></a>
-                                    <div class="blog-actions">
-                                        <a href="#"><i class="flaticon-share"></i></a>
-                                    </div>
-                                </div>
-                                <div class="blog-content-m">
-                                    <ul class="blog-info d-flex">
-                                        <li class="blog-author">
-                                            <img src="assets/images/blog/blog-author1.png" alt class="author-img">
-                                            <a href="#">Alex Avater</a>
-                                        </li>
-                                        <li class="blog-date">
-                                            <i class="flaticon-time"></i>
-                                            4th Jan 2021
-                                        </li>
-                                    </ul>
-                                    <div class="blog-bottom">
-                                        <h4 class="blog-title"><a href="blog-details.html">How to come up with a good
-                                                name
-                                                for your fashion blog?</a></h4>
-                                        <div class="blog-link-btn">
-                                            <a href="blog-details.html">View This Story <i
-                                                    class="flaticon-arrow-pointing-to-right"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
-
+            
                     <div class="swiper-button-next"><i class="flaticon-arrow-pointing-to-right"></i></div>
                     <div class="swiper-button-prev"><i class="flaticon-arrow-pointing-to-left"></i></div>
-
                 </div>
             </div>
+            
         </div>
     </div>
     <script>

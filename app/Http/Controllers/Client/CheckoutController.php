@@ -74,6 +74,8 @@ class CheckoutController extends Controller
         // Lấy dữ liệu các sản phẩm đã chọn
         $cartItems = Cart::where('user_id', auth()->id())->get();
         $selectedProducts = json_decode($request->input('selected_products'), true);
+       
+
         if (!$selectedProducts || count($selectedProducts) == 0) {
             return redirect()->back()->with('error', 'Bạn chưa chọn sản phẩm nào.');
         }
