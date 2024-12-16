@@ -139,12 +139,6 @@ class ProductController extends Controller
                 $params['img_thumbnail'] = $request->file('img_thumbnail')->store('products', 'public');
             }
 
-
-        }
-        $res = Product::query()->create($params);
-        $res->calculateTotalQuantity();
-
-
             // Create the product
             $product = Product::create($params);
 
