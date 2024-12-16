@@ -51,7 +51,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         try {
-            // Validate trực tiếp các input với custom messages
+            // Validate inputs with custom messages
             $validated = $request->validate([
                 'name' => 'required|string|min:3|max:255|unique:products,name',
                 'img_thumbnail' => 'required|image|mimes:jpeg,png,gif,jpg|max:2048',
@@ -129,28 +129,24 @@ class ProductController extends Controller
 
             $params = $request->except('_token');
 
-            // Lấy material_id từ request, cho phép null
+            // Allow null for material_id
             $params['material_id'] = $request->input('material_id', null);
 
-            // Các thuộc tính boolean
+            // Boolean attributes
             $params['is_active'] = $request->has('is_active') ? 1 : 0;
             $params['is_hot_deal'] = $request->has('is_hot_deal') ? 1 : 0;
 
-            // Xử lý hình ảnh thumbnail
+            // Handle thumbnail image
             if ($request->hasFile('img_thumbnail')) {
                 $params['img_thumbnail'] = $request->file('img_thumbnail')->store('products', 'public');
             } else {
                 $params['img_thumbnail'] = null;
             }
-        }
-        $res = Product::query()->create($params);
-        $res->calculateTotalQuantity();
 
-
-            // Tạo sản phẩm mới
+            // Create product
             $product = Product::create($params);
 
-            // Thêm thông tin sản phẩm variant nếu có
+            // Handle product variants
             if ($request->has('variants_id')) {
                 foreach ($request->variants_id as $variantId) {
                     Product_Variant::create([
@@ -160,7 +156,7 @@ class ProductController extends Controller
                 }
             }
 
-            // Thêm hình ảnh liên quan nếu có
+            // Handle related images
             if ($request->hasFile('image')) {
                 foreach ($request->file('image') as $image) {
                     $path = $image->store('product_galleries', 'public');
@@ -178,6 +174,7 @@ class ProductController extends Controller
             return redirect()->back()->with('error', 'Đã có lỗi xảy ra: ' . $e->getMessage());
         }
     }
+
 
 
 

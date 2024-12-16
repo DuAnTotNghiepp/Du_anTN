@@ -126,52 +126,55 @@
                                 </thead>
                                 <tbody class="list form-check-all">
                                     @foreach ($listVari as $vr)
-                                        <tr>
-                                            <th scope="row">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="chk_child"
-                                                        value="option1">
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="chk_child" value="option1">
+                                            </div>
+                                        </th>
+                                        <td class="id" style="display:none;">
+                                            <a href="javascript:void(0);" class="fw-medium link-primary">#{{ $vr->id }}</a>
+                                        </td>
+                                        <td>{{ $vr->id }}</td>
+                                        <td class="name">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-grow-1 ms-2 name">
+                                                    {{ $vr->name }}
                                                 </div>
-                                            </th>
-                                            <td class="id" style="display:none;"><a href="javascript:void(0);"
-                                                    class="fw-medium link-primary">#VZ001</a></td>
-                                            <td>{{ $vr->id }}</td>
-                                            <td class="name">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="flex-grow-1 ms-2 name">
-                                                        {{ $vr->name }} <!-- Hiển thị giá trị gốc để kiểm tra -->
+                                            </div>
+                                        </td>
+                                        <td class="company_name">
+                                            {{ $vr->value }}
+                                        </td>
+                                        <td>
+                                            <ul class="list-inline hstack gap-2 mb-0">
+                                                <li class="list-inline-item">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown"
+                                                            aria-expanded="false">
+                                                            <i class="ri-more-fill align-middle"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end">
+                                                            {{-- Nút sửa (Edit) --}}
+                                                            <li>
+                                                                <a class="dropdown-item edit-item-btn" href="{{ route('variant.edit', ['id' => $vr->id]) }}">
+                                                                    <i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Sửa
+                                                                </a>
+                                                            </li>
+                                                            {{-- Nút xóa (Delete) --}}
+                                                            <li>
+                                                                <button class="dropdown-item delete-btn" data-id="{{ $vr->id }}">
+                                                                    <i class="ri-delete-bin-2-line"></i> Xóa
+                                                                </button>
+                                                            </li>
+                                                        </ul>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td class="company_name">{{ $vr->value }}</td>
-                                            <td>
-                                                <ul class="list-inline hstack gap-2 mb-0">
-                                                    <li class="list-inline-item">
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-soft-secondary btn-sm dropdown"
-                                                                type="button" data-bs-toggle="dropdown"
-                                                                aria-expanded="false">
-                                                                <i class="ri-more-fill align-middle"></i>
-                                                            </button>
-                                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                                {{-- <li><a class="dropdown-item edit-item-btn"
-                                                                        href="{{ route('variant.edit', ['id' => $vr->id]) }}"><i
-                                                                            class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                                        Edit</a></li> --}}
-                                                                <li>
-                                                                    <button class="dropdown-item delete-btn"
-                                                                        data-id="{{ $vr->id }}"><i
-                                                                            class="ri-delete-bin-2-line"></i> Xóa</button>
-                                                                </li>
-
-
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </td>
-                                        </tr>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
                                     @endforeach
+
                                 </tbody>
                             </table>
                             <div class="noresult" style="display: none">
