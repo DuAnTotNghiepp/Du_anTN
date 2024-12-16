@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
@@ -30,47 +31,51 @@ class AdminController extends Controller
             'income' => $income,
         ]);
     }
-
+  
 
 
     public function getRevenueStats(Request $request)
-    {
-        $timeRange = $request->get('time', '1Y');
+{
+    $timeRange = $request->get('time', '1Y');
 
-        $monthsInVietnamese = [
-            'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
-            'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
-        ];
+    $monthsInVietnamese = [
+        'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
+        'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+    ];
 
-        $months = [];
-        $revenueData = [];
-        $orderCount = 0;
-        $totalRevenue = 0;
+    $months = [];
+    $revenueData = [];
+    $orderData = [];  // Mảng lưu trữ số lượng đơn hàng thanh toán
+    $totalRevenue = 0;
 
-        for ($i = 0; $i < 12; $i++) {
-            $currentMonth = date('n', strtotime("-$i month"));
-            $months[] = $monthsInVietnamese[$currentMonth - 1];
+    for ($i = 0; $i < 12; $i++) {
+        $currentMonth = date('n', strtotime("-$i month"));
+        $months[] = $monthsInVietnamese[$currentMonth - 1];
 
-            $monthlyRevenue = Order::whereYear('created_at', date('Y', strtotime("-$i month")))
-                                   ->whereMonth('created_at', date('m', strtotime("-$i month")))
-                                   ->sum('total_price');
-            $revenueData[] = $monthlyRevenue;
+        // Tính doanh thu
+        $monthlyRevenue = Order::where('status', 'paid')
+            ->whereYear('created_at', date('Y', strtotime("-$i month")))
+            ->whereMonth('created_at', date('m', strtotime("-$i month")))
+            ->sum('total_price');
+        $revenueData[] = $monthlyRevenue;
+        $totalRevenue += $monthlyRevenue;
 
-            $totalRevenue += $monthlyRevenue;
-
-            $monthlyOrderCount = Order::whereYear('created_at', date('Y', strtotime("-$i month")))
-                                      ->whereMonth('created_at', date('m', strtotime("-$i month")))
-                                      ->count();
-            $orderCount += $monthlyOrderCount;
-        }
-
-        return response()->json([
-            'months' => array_reverse($months),
-            'revenueData' => array_reverse($revenueData),
-            'totalRevenue' => $totalRevenue,
-            'orderCount' => $orderCount,
-        ]);
+        // Tính số lượng đơn hàng thanh toán
+        $monthlyOrderCount = Order::where('status', 'paid')
+            ->whereYear('created_at', date('Y', strtotime("-$i month")))
+            ->whereMonth('created_at', date('m', strtotime("-$i month")))
+            ->count();
+        $orderData[] = $monthlyOrderCount;
     }
+
+    return response()->json([
+        'months' => array_reverse($months),
+        'revenueData' => array_reverse($revenueData),
+        'orderData' => array_reverse($orderData), // Trả về số đơn hàng thanh toán
+        'totalRevenue' => $totalRevenue,
+    ]);
+}
+
 
 
     public function create()

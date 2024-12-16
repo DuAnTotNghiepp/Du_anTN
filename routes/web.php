@@ -148,6 +148,10 @@ Route::get('/admin/revenue-stats', [AdminController::class, 'getRevenueStats']);
 
 
 
+
 // Group routes under admin middleware
 Route::get('blog/{id}', [BlogController::class, 'show'])->name('blog.detail');
 
+Route::prefix('admin')->group(function () {
+    Route::get('/statistical/bestSellingProducts', [ProductController::class, 'bestSellingProducts'])->name('products.best-selling');;
+});
