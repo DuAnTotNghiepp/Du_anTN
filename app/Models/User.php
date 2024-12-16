@@ -57,5 +57,4 @@ class User extends Authenticatable
         return $this->belongsToMany(Product::class, 'product_favorites', 'user_id', 'product_id');
     }
 
-
 }

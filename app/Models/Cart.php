@@ -22,21 +22,21 @@ class Cart extends Model
 
     public function variant()
     {
-        return $this->belongsTo(Variants::class);  // Liên kết với bảng variants thông qua variant_id
+        return $this->belongsTo(Variant::class);  // Liên kết với bảng variants thông qua variant_id
     }
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    public function color()
+    public function cartsAsColor()
     {
-        return $this->belongsTo(Variants::class, 'color');
+        return $this->hasMany(Cart::class, 'color');
     }
 
-    public function size()
+    public function cartsAsSize()
     {
-        return $this->belongsTo(Variants::class, 'size');
+        return $this->hasMany(Cart::class, 'size');
     }
 
 

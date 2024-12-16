@@ -1,6 +1,46 @@
 @extends('client.layouts.app')
 
 @section('content')
+    <style>
+        .color-radio {
+            display: none;
+            /* Ẩn radio button mặc định */
+        }
+
+        .color-radio+label {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .color-radio:checked+label {
+            border: 5px solid #000;
+            /* Đổi viền khi được chọn */
+        }
+
+        .size-radio {
+            display: none;
+            /* Ẩn radio button mặc định */
+        }
+
+        .size-radio+label {
+            display: inline-block;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .size-radio:checked+label {
+            background-color: #000;
+            color: #fff;
+            /* Đổi màu nền và chữ khi được chọn */
+        }
+    </style>
     <div class="container-fluid p-0">
         <div class="row">
             <div class="col-lg-12">
@@ -73,7 +113,7 @@
             border-color: #007bff;
         }
 
-            /* Ẩn dấu cộng và trừ mặc định cho tất cả trình duyệt */
+        /* Ẩn dấu cộng và trừ mặc định cho tất cả trình duyệt */
         .quantity1 input[type="number"]::-webkit-outer-spin-button,
         .quantity1 input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -81,8 +121,10 @@
         }
 
         .quantity1 input[type="number"] {
-            -moz-appearance: textfield; /* Firefox */
-            appearance: none; /* Cho trình duyệt hiện đại */
+            -moz-appearance: textfield;
+            /* Firefox */
+            appearance: none;
+            /* Cho trình duyệt hiện đại */
         }
 
         /* Đảm bảo input không hiển thị dấu cộng và trừ */
@@ -91,7 +133,6 @@
             -moz-appearance: textfield;
             appearance: none;
         }
-
     </style>
 
 
@@ -106,12 +147,6 @@
                     @if (session('error'))
                         <div class="alert alert-danger">{{ session('error') }}</div>
                     @endif
-                    @if (session('error'))
-                        <div class="alert alert-danger">{{ session('error') }}</div>
-                    @endif
-                    @if (session('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
-                    @endif
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             @foreach ($errors->all() as $error)
@@ -121,59 +156,50 @@
                     @endif
                     <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-8">
                         <div class="product-switcher-wrap">
-                            <div class="nav product-tab" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                <div class="product-variation active" id="v-pills-home-tab" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-home" role="tab" aria-controls="v-pills-home">
-                                    <div class="pd-showcase-img">
-                                        <img src="assets/images/product/pd-sm1.png" alt>
+                            <!-- Danh sách ảnh liên quan -->
+                            <div class="nav product-tab scrollable-gallery" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                <div class="product-variations">
+                                    <div class="product-variation" data-image="{{ Storage::url($product->img_thumbnail) }}">
+                                        <div class="pd-showcase-img">
+                                            <img src="{{ Storage::url($product->img_thumbnail) }}" alt="Product Image">
+                                        </div>
                                     </div>
+                                    @foreach ($product->galleries as $image)
+                                        <div class="product-variation {{ $loop->first ? 'active' : '' }}" data-image="{{ Storage::url($image->image) }}">
+                                            <div class="pd-showcase-img">
+                                                <img src="{{ Storage::url($image->image) }}" alt="Product Image {{ $loop->iteration }}">
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
-                                <div class="product-variation" id="v-pills-profile-tab" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-profile" role="tab" aria-controls="v-pills-profile">
-                                    <div class="pd-showcase-img">
-                                        <img src="assets/images/product/pd-sm2.png" alt>
-                                    </div>
-                                </div>
-                                <div class="product-variation" id="v-pills-messages-tab" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-messages" role="tab" aria-controls="v-pills-messages">
-                                    <div class="pd-showcase-img">
-                                        <img src="assets/images/product/pd-sm3.png" alt>
-                                    </div>
-                                </div>
-                                <div class="product-variation" id="v-pills-settings-tab" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-settings" role="tab" aria-controls="v-pills-settings">
-                                    <div class="pd-showcase-img">
-                                        <img src="assets/images/product/pd-sm4.png" alt>
+                            </div>
+                            <!-- Ảnh chính -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active">
+                                    <div class="pd-preview-img">
+                                        <img id="main-product-image" src="{{ Storage::url($product->img_thumbnail) }}"  alt="Main Product Image" class="img-fluid">
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-content" id="v-pills-tabContent">
-                                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
-                                    aria-labelledby="v-pills-home-tab">
-                                    <div class="pd-preview-img">
-                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
-                                    aria-labelledby="v-pills-profile-tab">
-                                    <div class="pd-preview-img">
-                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
-                                    aria-labelledby="v-pills-messages-tab">
-                                    <div class="pd-preview-img">
-                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-settings" role="tabpanel"
-                                    aria-labelledby="v-pills-settings-tab">
-                                    <div class="pd-preview-img">
-                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
-                                    </div>
-                                </div>
+                            <!-- Cửa sổ ảnh tạm thời (hover preview) -->
+                            <div id="hover-preview" style="display: none; position: absolute; z-index: 1000;">
+                                <img id="hover-preview-image" src="" alt="Preview" style="max-width: 300px; border: 1px solid #ccc;">
                             </div>
                         </div>
+                       <script>
+                         document.querySelectorAll('.product-variation').forEach((element) => {
+                            element.addEventListener('click', function () {
+                                // Đổi ảnh chính
+                                const mainImage = document.getElementById('main-product-image');
+                                mainImage.src = this.dataset.image;
+
+                                // Cập nhật trạng thái active
+                                document.querySelectorAll('.product-variation').forEach((el) => el.classList.remove('active'));
+                                this.classList.add('active');
+                            });
+                        });
+                       </script>
+
                     </div>
 
 
@@ -203,53 +229,44 @@
 
                             <div class="pd-quick-discription">
                                 <ul>
-                                  <!-- Màu sắc -->
                                     <li class="d-flex align-items-center">
                                         <span>Color :</span>
                                         <div class="color-option d-flex align-items-center">
-                                            @foreach ($product->variants as $variant)
-                                                @if ($variant->name === 'Color')
-                                                    <input type="radio" name="color" id="color{{ $variant->id }}"
-                                                        value="{{ $variant->value }}"
-                                                        data-product-id="{{ $product->id }}"
-                                                        data-variant-id="{{ $variant->id }}"
-                                                        {{ $loop->first ? 'checked' : '' }}
-                                                        class="color-option-input">
-                                                    <label for="color{{ $variant->id }}">
-                                                        <span class="p-color" style="background-color: {{ $variant->value }}"></span>
-                                                    </label>
-                                                @endif
+                                            @foreach ($colors as $color)
+                                                <div class="color-item" data-color="{{ $color }}">
+                                                    <div class="color-options">
+                                                        <input type="radio" id="color-{{ $color }}"
+                                                            name="color" value="{{ $color }}"
+                                                            data-color="{{ $color }}" class="color-radio color-option-input">
+                                                        <label for="color-{{ $color }}"
+                                                            style="background-color: {{ $color }}; width: 20px; height: 20px; display: inline-block; cursor: pointer;"></label>
+                                                    </div>
+                                                </div>
                                             @endforeach
                                         </div>
                                     </li>
-
-                                    <!-- Kích thước -->
                                     <li class="d-flex align-items-center">
                                         <span>Size :</span>
                                         <div class="size-option d-flex align-items-center">
-                                            @foreach ($product->variants as $variant)
-                                                @if ($variant->name === 'Size')
-                                                    <input type="radio" name="size" id="size{{ $variant->id }}"
-                                                        value="{{ $variant->value }}"
-                                                        data-product-id="{{ $product->id }}"
-                                                        data-variant-id="{{ $variant->id }}"
-                                                        {{ $loop->first ? 'checked' : '' }}
-                                                        class="size-option-input">
-                                                    <label for="size{{ $variant->id }}">
-                                                        <span class="p-size">{{ $variant->value }}</span>
-                                                    </label>
-                                                @endif
+                                            @foreach ($sizes as $size)
+                                                <div class="size-item" data-size="{{ $size }}">
+                                                    <div class="size-options">
+                                                        <input type="radio" id="size-{{ $size }}"
+                                                            name="size" value="{{ $size }}"
+                                                            data-size="{{ $size }}" class="size-radio size-option-input">
+                                                        <label for="size-{{ $size }}"
+                                                            style="cursor: pointer;">{{ $size }}</label>
+                                                    </div>
+                                                </div>
                                             @endforeach
                                         </div>
                                     </li>
-
-
                                     <!-- Số lượng -->
                                     <li class="d-flex align-items-center pd-cart-btns">
                                         <div class="quantity1">
                                             <button type="button" id="decrease-btn">-</button>
-                                            <input name="quantity" type="number" min="1" max="{{ $product->variants->first()->pivot->quantity ?? 0 }}"
-                                                   step="1" value="1" id="quantity-input">
+                                            <input name="quantity" type="number" min="1" max="{{ $productVariant->stock }}"
+                                                step="1" value="1" id="quantity-input">
                                             <button type="button" id="increase-btn">+</button>
                                         </div>
                                         @if (Auth::check())
@@ -285,17 +302,13 @@
                                             <i class="flaticon-heart"></i>
                                         </button>
                                     </li>
-
-                                    {{-- <li id="quantity-warning" style="color: red; display: none;">
-                                        Số lượng sản phẩm đã đạt tối đa!
-                                    <li id="quantity-warning" style="color: red; display: none;">
-                                        Số lượng sản phẩm đã đạt tối đa!
-                                    </li> --}}
                                     <li class="pd-type">Danh mục sản phẩm: <span>{{ $product->catelogues->name }}</span>
                                     </li>
                                     <li class="pd-type">Mã sản phẩm: <span>{{ $product->sku }}</span></li>
                                     <!-- Số lượng tồn kho -->
-                                    <li class="pd-type">Số lượng tồn kho: <span id="stock-quantity">{{ $product->variants->first()->pivot->quantity ?? 0 }}</span></li>
+                                    <li class="pd-type">Số lượng tồn kho:<span id="selected-quantity">Số lượng</span>
+
+                                    </li>
                                     <li class="pd-type">Chất liệu: <span>{{ $product->material }}</span></li>
                                 </ul>
 
@@ -533,38 +546,57 @@
             </div>
         </div>
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const variantInputs = document.querySelectorAll('input[name="color"], input[name="size"]');
-                const stockQuantityElement = document.getElementById('stock-quantity');
+            // Khai báo các biến cần thiết
+            const colors = @json($colors);
+            const sizes = @json($sizes);
+            const variantQuantities = @json($variantQuantities);
+            let selectedColor = null;
+            let selectedSize = null;
 
-                // Cập nhật số lượng tồn kho khi thay đổi biến thể
-                function updateStockQuantity(productId, variantId) {
-                    fetch(`/api/variant-stock?product_id=${productId}&variant_id=${variantId}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            // Cập nhật số lượng tồn kho
-                            stockQuantityElement.textContent = data.quantity;
-                        })
-                        .catch(error => {
-                            console.error('Error fetching stock quantity:', error);
-                        });
-                }
-
-                // Lắng nghe sự thay đổi trên các input màu sắc và kích thước
-                variantInputs.forEach(input => {
-                    input.addEventListener('change', function () {
-                        const productId = this.dataset.productId;
-                        const variantId = this.dataset.variantId;
-
-                        // Cập nhật số lượng tồn kho cho biến thể đã chọn
-                        updateStockQuantity(productId, variantId);
-                    });
+            document.querySelectorAll('.color-radio').forEach(item => {
+                item.addEventListener('change', function() {
+                    selectedColor = this.value;
+                    updateStockAndQuantity();
                 });
             });
 
-        </script>
-        <script>
-            // Lắng nghe sự kiện khi người dùng chọn màu
+            document.querySelectorAll('.size-radio').forEach(item => {
+                item.addEventListener('change', function() {
+                    selectedSize = this.value;
+                    updateStockAndQuantity();
+                });
+            });
+
+            function updateStockAndQuantity() {
+                const quantityInput = document.getElementById('quantity-input');
+                const stockDisplay = document.getElementById('selected-quantity');
+
+                if (selectedColor && selectedSize) {
+                    const key = `${selectedColor}-${selectedSize}`;
+                    const stock = variantQuantities[key] || 0;
+
+                    // Cập nhật giá trị tối đa cho input số lượng
+                    quantityInput.max = stock;
+
+                    // Hiển thị số lượng tồn kho
+                    if (stock > 0) {
+                        stockDisplay.innerText = `Còn ${stock} sản phẩm`;
+                    } else {
+                        stockDisplay.innerText = 'Sản phẩm không có sẵn';
+                    }
+
+                    // Nếu số lượng hiện tại vượt quá tồn kho, đặt lại số lượng về tồn kho tối đa
+                    if (parseInt(quantityInput.value) > stock) {
+                        quantityInput.value = stock;
+                    }
+                } else {
+                    // Nếu chưa chọn đủ màu và size, đặt tồn kho về mặc định
+                    stockDisplay.innerText = 'Chọn màu và kích thước để xem số lượng';
+                    quantityInput.max = 0;
+                    quantityInput.value = 1;
+                }
+            }
+            // Giả sử bạn có các dropdown hoặc lựa chọn màu sắc và kích thước
             document.querySelectorAll('.color-option-input').forEach(input => {
                 input.addEventListener('change', function() {
                     var selectedColor = this.value;
@@ -578,114 +610,85 @@
                     document.getElementById('selected-size').value = selectedSize;
                 });
             });
-
-            // Lắng nghe sự kiện khi người dùng thay đổi số lượng
             document.addEventListener('DOMContentLoaded', function () {
                 const quantityInput = document.getElementById('quantity-input');
-                const increaseBtn = document.getElementById('increase-btn');
+                const hiddenQuantity = document.getElementById('quantity');
                 const decreaseBtn = document.getElementById('decrease-btn');
-                const stockQuantityElement = document.getElementById('stock-quantity');
+                const increaseBtn = document.getElementById('increase-btn');
 
-                // Cập nhật số lượng tồn kho khi thay đổi biến thể
-                function updateMaxQuantity(productId, variantId) {
-                    fetch(`/api/variant-stock?product_id=${productId}&variant_id=${variantId}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            const stockQuantity = data.quantity;
-                            // Cập nhật giá trị max của input số lượng
-                            quantityInput.max = stockQuantity;
-
-                            // Nếu số lượng người dùng nhập vượt quá max, cập nhật lại giá trị
-                            if (parseInt(quantityInput.value) > stockQuantity) {
-                                quantityInput.value = stockQuantity;
-                            }
-
-                            // Cập nhật hiển thị số lượng tồn kho
-                            stockQuantityElement.textContent = stockQuantity;
-
-                            // Kiểm tra và vô hiệu hóa nút tăng giảm
-                            toggleQuantityButtons(stockQuantity);
-                        })
-                        .catch(error => {
-                            console.error('Error fetching stock quantity:', error);
-                        });
-                }
-
-                // Vô hiệu hóa nút tăng/giảm nếu đạt giới hạn
-                function toggleQuantityButtons(stockQuantity) {
-                    const currentQuantity = parseInt(quantityInput.value);
-
-                    // Nếu số lượng đã đạt tối đa, vô hiệu hóa nút cộng
-                    if (currentQuantity >= stockQuantity) {
-                        increaseBtn.disabled = true;
-                    } else {
-                        increaseBtn.disabled = false;
-                    }
-
-                    // Nếu số lượng bằng 1, vô hiệu hóa nút trừ
-                    if (currentQuantity <= 1) {
-                        decreaseBtn.disabled = true;
-                    } else {
-                        decreaseBtn.disabled = false;
-                    }
-                }
-
-                // Lắng nghe sự thay đổi trên các input màu sắc và kích thước
-                const variantInputs = document.querySelectorAll('input[name="color"], input[name="size"]');
-                variantInputs.forEach(input => {
-                    input.addEventListener('change', function () {
-                        const productId = this.dataset.productId;
-                        const variantId = this.dataset.variantId;
-
-                        // Cập nhật max quantity và stock quantity cho biến thể đã chọn
-                        updateMaxQuantity(productId, variantId);
-                    });
-                });
-
-                // Lắng nghe sự thay đổi của input số lượng
+                // Đồng bộ giá trị khi số lượng thay đổi
                 quantityInput.addEventListener('input', function () {
-                    // Nếu giá trị nhập vào vượt quá số lượng tồn kho, tự động chỉnh lại
-                    if (parseInt(quantityInput.value) > parseInt(quantityInput.max)) {
-                        quantityInput.value = quantityInput.max;
-                    }
-
-                    // Kiểm tra và vô hiệu hóa nút tăng/giảm
-                    toggleQuantityButtons(parseInt(quantityInput.max));
+                    hiddenQuantity.value = quantityInput.value;
                 });
 
-                // Lắng nghe sự kiện click vào nút tăng số lượng
-                increaseBtn.addEventListener('click', function () {
-                    let currentQuantity = parseInt(quantityInput.value);
-                    if (currentQuantity < parseInt(quantityInput.max)) {
-                        quantityInput.value = currentQuantity + 1;
-                    }
-
-                    // Kiểm tra và vô hiệu hóa nút tăng/giảm
-                    toggleQuantityButtons(parseInt(quantityInput.max));
-                });
-
-                // Lắng nghe sự kiện click vào nút giảm số lượng
+                // Giảm số lượng
                 decreaseBtn.addEventListener('click', function () {
-                    let currentQuantity = parseInt(quantityInput.value);
-                    if (currentQuantity > 1) {
-                        quantityInput.value = currentQuantity - 1;
+                    let currentValue = parseInt(quantityInput.value);
+                    if (currentValue > parseInt(quantityInput.min)) {
+                        quantityInput.value = currentValue - 0;
+                        hiddenQuantity.value = quantityInput.value; // Cập nhật ô hidden
                     }
+                });
 
-                    // Kiểm tra và vô hiệu hóa nút tăng/giảm
-                    toggleQuantityButtons(parseInt(quantityInput.max));
+                // Tăng số lượng
+                increaseBtn.addEventListener('click', function () {
+                    let currentValue = parseInt(quantityInput.value);
+                    if (currentValue < parseInt(quantityInput.max)) {
+                        quantityInput.value = currentValue + 0;
+                        hiddenQuantity.value = quantityInput.value; // Cập nhật ô hidden
+                    }
+                });
+
+                // Đồng bộ giá trị trước khi form được gửi
+                const addToCartForm = document.getElementById('add-to-cart-form');
+                addToCartForm.addEventListener('submit', function () {
+                    hiddenQuantity.value = quantityInput.value;
                 });
             });
 
-            function updatePrice() {
-                // Cập nhật lại giá dựa trên lựa chọn màu sắc và kích thước
-                var price = {{ $product->price_sale }};
-                // Nếu cần, thay đổi giá dựa trên lựa chọn (ví dụ, theo kích thước hoặc màu)
-                // Cập nhật lại giá hiển thị
-                document.getElementById('selected-price').value = price;
-            }
         </script>
+        <script>
+            document.getElementById('decrease-btn').addEventListener('click', function() {
+                const quantityInput = document.getElementById('quantity-input');
+                const currentQuantity = parseInt(quantityInput.value) || 1;
 
+                if (currentQuantity > 1) {
+                    quantityInput.value = currentQuantity - 1;
+                }
+            });
 
+            document.getElementById('increase-btn').addEventListener('click', function() {
+                const quantityInput = document.getElementById('quantity-input');
+                const currentQuantity = parseInt(quantityInput.value) || 1;
+                const maxQuantity = parseInt(quantityInput.max) || 0;
+
+                if (currentQuantity < maxQuantity) {
+                    quantityInput.value = currentQuantity + 1;
+                }
+            });
+
+            // Đảm bảo giá trị nhập tay không vượt quá max
+            document.getElementById('quantity-input').addEventListener('input', function() {
+                const maxQuantity = parseInt(this.max) || 0;
+
+                if (parseInt(this.value) > maxQuantity) {
+                    this.value = maxQuantity;
+                }
+
+                if (parseInt(this.value) < 1) {
+                    this.value = 1;
+                }
+            });
+            document.getElementById('add-to-cart-form').addEventListener('submit', function(event) {
+                const quantityInput = document.getElementById('quantity-input');
+                const maxQuantity = parseInt(quantityInput.max) || 0;
+
+                if (parseInt(quantityInput.value) > maxQuantity) {
+                    alert('Số lượng vượt quá tồn kho!');
+                    event.preventDefault(); // Ngăn form gửi đi
+                }
+            });
+        </script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const colorRadios = document.querySelectorAll('input[name="color"]');
@@ -750,13 +753,6 @@
                     const productImage = "{{ Storage::url($product->img_thumbnail) }}";
                     const productName = "{{ $product->name }}";
                     const productPrice = "{{ $product->price_sale }}";
-
-                    console.log("Color:", color.value);
-                    console.log("Size:", size.value);
-                    console.log("Quantity:", quantity);
-                    console.log("Product Image:", productImage);
-                    console.log("Product Name:", productName);
-                    console.log("Product Price:", productPrice);
 
                     const checkoutUrl =
                         `{{ route('checkout') }}?color=${encodeURIComponent(color.value)}&size=${encodeURIComponent(size.value)}&quantity=${encodeURIComponent(quantity)}&image=${encodeURIComponent(productImage)}&name=${encodeURIComponent(productName)}&price=${encodeURIComponent(productPrice)}`;

@@ -27,6 +27,13 @@
 
     <div class="cart-area mt-100 ml-110">
         <div class="container">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    @foreach ($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
             <div class="row justify-content-center">
                 <div class="col-xxl-12 col-xl-12 col-md-12 col-sm-8">
                     @if($cartItems->count() > 0)
@@ -63,15 +70,19 @@
                                         <td>
                                             {{ $item->size ?? 'Không có kích thước' }}
                                         </td>
-                                        <td class="quantity">
-                                            <input type="number" class="quantity-input" value="{{ $item->quantity }}" min="1">
+                                        <td>
+                                            <form action="{{ route('cart.updateQuantity', $item->id) }}" method="POST">
+                                                @csrf
+                                                <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" class="form-control" style="width: 80px;">
+                                                <button type="submit" class="btn btn-primary btn-sm mt-2">Cập nhật</button>
+                                            </form>
                                         </td>
-                                        <td>{{ number_format($item->price * $item->quantity) }} VND</td>
+                                        <td>{{ number_format($item->total_price) }} VND</td>
                                         <td>
                                             <form action="{{ route('cart.destroy', $item->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-primary" style="color: black" type="submit">Xóa</button>
+                                                <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -92,8 +103,7 @@
                             <tr>
                                 <td class="tt-left">Tổng Giá Giỏ Hàng</td>
                                 <td class="tt-right">
-                                    {{-- Hiển thị tổng giá toàn bộ đơn hàng --}}
-                                    <span id="total-price" data-initial="{{ $total }}">{{ number_format($total) }} VND</span>
+                                    <h3 id="total-price">{{ number_format($total) }} VND</h3>
                                 </td>
                             </tr>
                         </tbody>
@@ -128,8 +138,43 @@
             selectedProductsInput.value = JSON.stringify(cartItems);
         });
     });
+    document.querySelectorAll('.quantity-input').forEach(input => {
+        input.addEventListener('change', function () {
+            const quantity = parseInt(this.value);
+            const maxStock = parseInt(this.dataset.stock);
+            const cartItemId = this.dataset.id;
 
-    </script>
+            // Kiểm tra nếu số lượng vượt quá tồn kho
+            if (quantity > maxStock) {
+                alert('Số lượng vượt quá tồn kho. Vui lòng giảm số lượng.');
+                this.value = maxStock; // Reset về số lượng tối đa
+                return;
+            }
+
+            // Gửi yêu cầu Ajax để cập nhật giỏ hàng
+            fetch(`/cart/update/${cartItemId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ quantity: quantity })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Cập nhật tổng giá
+                    document.getElementById('total-price').textContent = new Intl.NumberFormat().format(data.total) + ' VND';
+                } else {
+                    alert(data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+
+
+
         function updateTotal() {
             let total = 0;
             const checkboxes = document.querySelectorAll('.product-checkbox:checked');
