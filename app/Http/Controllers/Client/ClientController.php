@@ -16,6 +16,7 @@ use App\Models\Order;
 use App\Models\User;
 use App\Models\Address;
 use App\Models\Blog;
+use App\Models\Cart;
 use App\Models\Vouchers;
 
 class ClientController extends Controller
@@ -25,7 +26,7 @@ class ClientController extends Controller
     {
         $data = Catalogues::query()->get();
         $products = Product::query()->get();
-
+        $cartItems = Cart::where('user_id', auth()->id())->get();
         $listSp = Product::where('is_active', 1)->get()->map(function ($product) {
             $averageRating = BinhLuan::where('product_id', $product->id)
                 ->avg('rating') ?? 0;
@@ -48,7 +49,7 @@ class ClientController extends Controller
         $blogs = Blog::all();
 
 
-        return view('client.home', compact(['listSp', 'listHot', 'data', 'products','vouchers', 'blogs']));
+        return view('client.home', compact(['listSp', 'listHot', 'data', 'products','vouchers', 'blogs', 'cartItems']));
     }
     public function getProductsByCategory(Request $request)
     {
@@ -165,19 +166,26 @@ class ClientController extends Controller
 
     public function show($id)
     {
-        $product = Product::with('variants')->findOrFail($id);
-        $variants = $product->variants->map(function ($variant) {
+        $product = Product::with(['productVariants.color', 'productVariants.size'])->findOrFail($id);
+        $productVariant = Product_Variant::where('product_id', $product->id)->first();
+        $cartItems = Cart::where('user_id', auth()->id())->get();
+
+        // Lấy danh sách màu sắc và kích thước
+        $colors = $product->productVariants->pluck('color.value')->unique(); // ['#ffdd00', '#000000']
+        $sizes = $product->productVariants->pluck('size.value')->unique();   // ['M', 'L']
+
+        // Tạo dữ liệu số lượng theo kết hợp màu và kích thước
+        $variantQuantities = $product->productVariants->mapWithKeys(function ($variant) {
             return [
-                'id' => $variant->id,
-                'color' => $variant->name === 'Color' ? $variant->value : null,
-                'size' => $variant->name === 'Size' ? $variant->value : null,
-                'quantity' => $variant->pivot->quantity, // Giả sử số lượng lưu trong bảng pivot
+                $variant->color->value . '-' . $variant->size->value => $variant->stock
             ];
         });
+        // dd($colors, $sizes, $variantQuantities);
+
         $comments = BinhLuan::where('product_id', $product->id)->orderBy('created_at', 'desc')->paginate(6); // Hiển thị 6 bình luận mỗi trang
         // Tính toán điểm đánh giá trung bình
         $averageRating = $comments->count() > 0 ? $comments->avg('rating') : 0;
-        return view('client.product_detail', compact('product', 'comments', 'averageRating', 'variants'));
+        return view('client.product_detail', compact('product', 'variantQuantities', 'comments', 'averageRating', 'colors', 'sizes', 'productVariant', 'cartItems'));
     }
     public function getVariantStock(Request $request)
     {

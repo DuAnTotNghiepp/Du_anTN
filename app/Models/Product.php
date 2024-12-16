@@ -40,7 +40,8 @@ class Product extends Model
 
     public function variants()
     {
-        return $this->belongsToMany(Variants::class, 'product__variants','product_id', 'variants_id')->withPivot('quantity');
+        return $this->belongsToMany(Variant::class, 'product_variants', 'product_id', 'color_variant_id')
+                    ->withPivot('color_variant_id', 'size_variant_id', 'stock');
     }
     public function productVariants()
     {

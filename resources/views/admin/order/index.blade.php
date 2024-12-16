@@ -93,9 +93,8 @@
                                         <th class="sort" data-sort="name" scope="col">Tên Khách Hàng</th>
                                         <th class="sort" data-sort="company_name" scope="col">Email</th>
                                         <th class="sort" data-sort="email_id" scope="col">Số Điện Thoại</th>
-                                        <th class="sort" data-sort="category_name" scope="col">Địa Chỉ</th>
                                         <th class="sort" data-sort="phone" scope="col">Tổng Giá</th>
-                                        <th class="sort" data-sort="lead_score" scope="col">Ngày Tạo</th>
+                                        <th class="sort" data-sort="lead_score" scope="col">Ngày Đặt</th>
                                         <th class="sort" data-sort="" scope="col">Phương Thức Thanh Toán</th>
                                         <th class="sort" data-sort="tags" scope="col">Trạng Thái</th>
                                         <th scope="col">Action</th>
@@ -122,13 +121,6 @@
                                             </td>
                                             <td class="company_name">{{ $order->user_email }}</td>
                                             <td class="company_name">{{ $order->user_phone }}</td>
-                                            <td class="email_id">
-                                                @if ($order->address)
-                                                    {{ $order->address->address }}, {{ $order->address->city }}, {{ $order->address->state }}
-                                                @else
-                                                    Chưa có địa chỉ
-                                                @endif
-                                            </td>
                                             <td class="category_name">{{ $order->total_price }}</td>
                                             <td>{{ $order->created_at->format('d-m-Y H:i') }}</td>
                                             <td class="company_name">

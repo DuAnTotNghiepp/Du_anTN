@@ -211,77 +211,84 @@
             });
         });
 
-        function updateTotalPrice() {
-        const subtotal = {{ $quantity * $productPrice }};
-        const tax = 5000; // Thuế cố định
-        const voucherValue = parseInt(document.getElementById('voucher_value').innerText.replace(/\D/g, '')) || 0;
+        document.addEventListener('DOMContentLoaded', function() {
+            const quantityInput = document.querySelector('.quantity-input');
+            const subtotalElement = document.getElementById('subtotal');
+            const totalElement = document.getElementById('total');
+            const tax = 5000;
 
-        const total = subtotal + tax - voucherValue;
+            if (!quantityInput || !subtotalElement || !totalElement) {
+                console.error('Missing elements for calculation.');
+                return;
+            }
 
-        // Cập nhật giá trị hiển thị
-        document.getElementById('total').innerText = total.toLocaleString('vi-VN') + ' VND';
+            quantityInput.addEventListener('input', function() {
+                const quantity = parseInt(quantityInput.value);
+                const productPrice = parseFloat(quantityInput.dataset
+                    .price); // Lấy giá từ thuộc tính data-price
+                const subtotal = quantity * productPrice;
+                const total = subtotal + tax;
 
-        // Cập nhật giá trị vào input ẩn
-        document.getElementById('total_price').value = total;
-    }
-
-
+                subtotalElement.textContent = subtotal.toLocaleString('vi-VN') + ' VND';
+                totalElement.textContent = total.toLocaleString('vi-VN') + ' VND';
+            });
+        });
         let appliedVouchers = []; // Mảng để lưu trữ các mã đã áp dụng
 
-        function getVoucherInfo() {
-            const errorMessage = document.getElementById('errorMessage');
-            const voucherCode = document.getElementById('voucher_code').value;
+function getVoucherInfo() {
+    const errorMessage = document.getElementById('errorMessage');
+    const voucherCode = document.getElementById('voucher_code').value;
 
-            const voucher_value = document.getElementById('voucher_value');
-            const final_total = document.getElementById('total');
+    const voucher_value = document.getElementById('voucher_value');
+    const final_total = document.getElementById('total');
 
-            const totalPrice = document.getElementById('total_price').value;
+    const totalPrice = document.getElementById('total_price').value;
 
-            // Gửi yêu cầu GET đến API để lấy thông tin mã giảm giá
-            if (!voucherCode) {
-                errorMessage.textContent = "Vui lòng nhập mã giảm giá";
-                errorMessage.style.color = "red";
-                return;
+    // Gửi yêu cầu GET đến API để lấy thông tin mã giảm giá
+    if (!voucherCode) {
+        errorMessage.textContent = "Vui lòng nhập mã giảm giá";
+        errorMessage.style.color = "red";
+        return;
+    }
+
+    // Kiểm tra nếu mã đã được áp dụng
+    if (appliedVouchers.includes(voucherCode)) {
+        errorMessage.textContent = "Mã giảm giá đã được áp dụng!";
+        errorMessage.style.color = "red";
+        return;
+    }
+
+    fetch(`http://127.0.0.1:8000/checkout/apply-voucher?voucher_code=${voucherCode}&total_price=${totalPrice}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
+            return response.json();
+        })
+        .then(data => {
+            // Xử lý dữ liệu trả về từ API
+            if (data.result === true) {
+                voucher_value.textContent = data.data.voucher_discount;
+                final_total.textContent = data.data.final_total;
+                let hiddenInput = document.getElementById('total_price');
+                hiddenInput.value = data.data.final_total;
 
-            // Kiểm tra nếu mã đã được áp dụng
-            if (appliedVouchers.includes(voucherCode)) {
-                errorMessage.textContent = "Mã giảm giá đã được áp dụng!";
+                // Lưu mã giảm giá đã áp dụng vào mảng
+                appliedVouchers.push(voucherCode);
+
+                // Hiển thị thông báo áp dụng thành công
+                errorMessage.textContent = "Mã giảm giá đã được áp dụng thành công!";
+                errorMessage.style.color = "green";
+            } else {
+                errorMessage.textContent = data.message;
                 errorMessage.style.color = "red";
-                return;
             }
-
-            fetch(`http://127.0.0.1:8000/checkout/apply-voucher?voucher_code=${voucherCode}&total_price=${totalPrice}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Xử lý dữ liệu trả về từ API
-                    if (data.result === true) {
-                        voucher_value.textContent = data.data.voucher_discount;
-                        final_total.textContent = data.data.final_total;
-                        let hiddenInput = document.getElementById('total_price');
-                        hiddenInput.value = data.data.final_total;
-
-                        // Lưu mã giảm giá đã áp dụng vào mảng
-                        appliedVouchers.push(voucherCode);
-
-                        // Hiển thị thông báo áp dụng thành công
-                        errorMessage.textContent = "Mã giảm giá đã được áp dụng thành công!";
-                        errorMessage.style.color = "green";
-                    } else {
-                        errorMessage.textContent = data.message;
-                        errorMessage.style.color = "red";
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    errorMessage.textContent = "Đã xảy ra lỗi khi lấy thông tin mã giảm giá";
-                    errorMessage.style.color = "red";
-                });
-        }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            errorMessage.textContent = "Đã xảy ra lỗi khi lấy thông tin mã giảm giá";
+            errorMessage.style.color = "red";
+        });
+}
     </script>
 @endsection
