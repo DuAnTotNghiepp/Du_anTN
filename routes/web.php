@@ -17,6 +17,7 @@ use App\Http\Controllers\Client\VoucherController as ClientVoucherController;
 use App\Http\Controllers\ProductController as ControllersProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckRoleAdminMiddleware;
+use Illuminate\Support\Facades\Password;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,8 +43,25 @@ Route::get('register', [AuthController::class, 'showFormRegister']);
 Route::post('register', [AuthController::class, 'register'])->name('register');
 
 // Client Routes
-
 Route::get('/', [ClientController::class, 'index'])->name('index');
+Route::get('product/{id}', [ClientController::class, 'show'])->name('product.product_detail');
+
+//profile
+Route::get('/profile/{id}', [ClientController::class, 'show_profile'])->name('profile');
+Route::get('/my_orders', [ClientController::class, 'show_my_order'])->name('my_orders');
+Route::post('profile', [ClientController::class, 'updateProfile'])->name('updateProfile');
+// routes/web.php
+Route::post('/profile/address', [ClientController::class, 'storeAddress'])->name('profile.address.store');
+Route::put('/profile/address/update/{id}', [ClientController::class, 'updateAddress'])->name('profile.address.update');
+Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])->name('my_order.invoice');
+
+
+// Route::group(['prefix'=>'checkout'], function(){
+//     Route::get('/',[CheckoutController::class, 'form'])->name('checkout');
+//     Route::post('/',[CheckoutController::class, 'submit_form'])->name('checkout');
+// });
+Route::get('/checkout', [CheckoutController::class, 'form'])->name('checkout');
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
 Route::get('product/{id}', [ClientController::class, 'show'])->middleware('save.redirect')->name('product.product_detail');
 
 Route::get('/api/variant-stock', [ClientController::class, 'getVariantStock']);
@@ -87,12 +105,14 @@ Route::post('/favorites/toggle', [ProductFavoriteController::class, 'toggleFavor
 Route::get('/favorites', [ProductFavoriteController::class, 'favoriteProducts'])->name('favorites.index');
 Route::get('/favorites/count', [ProductFavoriteController::class, 'favoriteCount'])->name('favorites.count');
 
-
 // Password Reset Routes
 Route::get('password/forgot', [AuthController::class, 'showForgotPasswordForm'])->name('password.forgot');
 Route::post('password/forgot', [AuthController::class, 'sendResetLinkEmail']);
+Route::post('/password/forgot', [AuthController::class, 'sendResetLinkEmail'])->name('password.forgot');
 Route::get('password/reset/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
 Route::post('password/reset', [AuthController::class, 'reset']);
+// Password::sendResetLink(['email' => $request->input('email')]);
+
 
 // Social Login Routes
 

@@ -156,59 +156,50 @@
                     @endif
                     <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-8">
                         <div class="product-switcher-wrap">
-                            <div class="nav product-tab" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                <div class="product-variation active" id="v-pills-home-tab" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-home" role="tab" aria-controls="v-pills-home">
-                                    <div class="pd-showcase-img">
-                                        <img src="assets/images/product/pd-sm1.png" alt>
+                            <!-- Danh sách ảnh liên quan -->
+                            <div class="nav product-tab scrollable-gallery" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                <div class="product-variations">
+                                    <div class="product-variation" data-image="{{ Storage::url($product->img_thumbnail) }}">
+                                        <div class="pd-showcase-img">
+                                            <img src="{{ Storage::url($product->img_thumbnail) }}" alt="Product Image">
+                                        </div>
                                     </div>
+                                    @foreach ($product->galleries as $image)
+                                        <div class="product-variation {{ $loop->first ? 'active' : '' }}" data-image="{{ Storage::url($image->image) }}">
+                                            <div class="pd-showcase-img">
+                                                <img src="{{ Storage::url($image->image) }}" alt="Product Image {{ $loop->iteration }}">
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
-                                <div class="product-variation" id="v-pills-profile-tab" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-profile" role="tab" aria-controls="v-pills-profile">
-                                    <div class="pd-showcase-img">
-                                        <img src="assets/images/product/pd-sm2.png" alt>
-                                    </div>
-                                </div>
-                                <div class="product-variation" id="v-pills-messages-tab" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-messages" role="tab" aria-controls="v-pills-messages">
-                                    <div class="pd-showcase-img">
-                                        <img src="assets/images/product/pd-sm3.png" alt>
-                                    </div>
-                                </div>
-                                <div class="product-variation" id="v-pills-settings-tab" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-settings" role="tab" aria-controls="v-pills-settings">
-                                    <div class="pd-showcase-img">
-                                        <img src="assets/images/product/pd-sm4.png" alt>
+                            </div>
+                            <!-- Ảnh chính -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active">
+                                    <div class="pd-preview-img">
+                                        <img id="main-product-image" src="{{ Storage::url($product->img_thumbnail) }}"  alt="Main Product Image" class="img-fluid">
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-content" id="v-pills-tabContent">
-                                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
-                                    aria-labelledby="v-pills-home-tab">
-                                    <div class="pd-preview-img">
-                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
-                                    aria-labelledby="v-pills-profile-tab">
-                                    <div class="pd-preview-img">
-                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
-                                    aria-labelledby="v-pills-messages-tab">
-                                    <div class="pd-preview-img">
-                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-settings" role="tabpanel"
-                                    aria-labelledby="v-pills-settings-tab">
-                                    <div class="pd-preview-img">
-                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt class="img-fluid">
-                                    </div>
-                                </div>
+                            <!-- Cửa sổ ảnh tạm thời (hover preview) -->
+                            <div id="hover-preview" style="display: none; position: absolute; z-index: 1000;">
+                                <img id="hover-preview-image" src="" alt="Preview" style="max-width: 300px; border: 1px solid #ccc;">
                             </div>
                         </div>
+                       <script>
+                         document.querySelectorAll('.product-variation').forEach((element) => {
+                            element.addEventListener('click', function () {
+                                // Đổi ảnh chính
+                                const mainImage = document.getElementById('main-product-image');
+                                mainImage.src = this.dataset.image;
+
+                                // Cập nhật trạng thái active
+                                document.querySelectorAll('.product-variation').forEach((el) => el.classList.remove('active'));
+                                this.classList.add('active');
+                            });
+                        });
+                       </script>
+
                     </div>
 
 

@@ -28,6 +28,12 @@ class Order extends Model
     public function product() {
         return $this->belongsTo(Product::class, 'product_id');
     }
+
+    // public function items()
+    // {
+    //     return $this->hasMany(Order_Items::class);
+    // }
+
     public function address()
     {
         return $this->belongsTo(Address::class, 'user_address', 'id');
