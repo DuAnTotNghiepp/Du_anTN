@@ -1,0 +1,280 @@
+[33mcommit 01441b1715664707f7302aa6ac61531b2bbcc9a8[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;32mnguyen[m[33m)[m
+Author: nguyen0512 <nguyenvgtph37509@fpt.edu.vn>
+Date:   Sun Nov 24 21:17:30 2024 +0700
+
+    update cart
+
+[33mcommit 6cabd77122c5e2f9b39c0f408d999e19cd251513[m
+Merge: 5f42f9d b3255dd
+Author: nguyen0512 <nguyenvgtph37509@fpt.edu.vn>
+Date:   Thu Nov 21 22:41:18 2024 +0700
+
+    updateee
+
+[33mcommit 5f42f9d793cbda0ef3f869f78c8d6bd536d9276e[m
+Merge: d313c81 29cf412
+Author: nguyen0512 <nguyenvgtph37509@fpt.edu.vn>
+Date:   Thu Nov 21 21:58:16 2024 +0700
+
+    Merge branch 'main' of https://github.com/nguyen051204/Du_anTN
+
+[33mcommit d313c812eb37d00694c7d795bdb2eac4d34526b0[m
+Author: nguyen0512 <nguyenvgtph37509@fpt.edu.vn>
+Date:   Thu Nov 21 21:57:35 2024 +0700
+
+    updatesibar
+
+[33mcommit 29cf4122ba4eb2218a13f171fce40e9ea85631a7[m
+Author: sondnph37464 <sondangngoc1112004@gmail.com>
+Date:   Tue Nov 19 22:40:22 2024 +0700
+
+    fix config
+
+[33mcommit f300ee86e8259afb8d3ce07c9c933e15b57d45d7[m
+Merge: be8f837 b5d8c70
+Author: sondnph37464 <sondangngoc1112004@gmail.com>
+Date:   Tue Nov 19 22:36:29 2024 +0700
+
+    flig
+
+[33mcommit be8f837bb0644924542e15a673f98813d5fededd[m
+Author: sondnph37464 <sondangngoc1112004@gmail.com>
+Date:   Tue Nov 19 21:56:41 2024 +0700
+
+    warranty
+
+[33mcommit 8489e70a63e585bfc51ed2d7e14db29403ff8727[m[33m ([m[1;31morigin/nguyen[m[33m)[m
+Author: nguyen0512 <nguyenvgtph37509@fpt.edu.vn>
+Date:   Tue Nov 19 21:42:52 2024 +0700
+
+    updatecomment1
+
+[33mcommit 83ff69c831969abda9105a46ce769008e55638cf[m
+Author: sondnph37464 <sondangngoc1112004@gmail.com>
+Date:   Tue Nov 19 20:48:26 2024 +0700
+
+    null
+
+[33mcommit 331fb8ea573c0577fe48d44c45df49b30505f63a[m
+Merge: 308108e 870887c
+Author: nguyen0512 <nguyenvgtph37509@fpt.edu.vn>
+Date:   Tue Nov 19 20:45:05 2024 +0700
+
+    updateComment
+
+[33mcommit b5d8c702b54338ab90feda580ab00cc6b54fcd3d[m
+Merge: 8ecc29f 308108e
+Author: nguyen051204 <150788694+nguyen051204@users.noreply.github.com>
+Date:   Tue Nov 19 20:37:09 2024 +0700
+
+    Merge pull request #25 from DuAnTotNghiepp/nguyen
+    
+    bigUpdate
+
+[33mcommit fb1e77ce5579460696457241471402130fccd2b9[m
+Author: sondnph37464 <sondangngoc1112004@gmail.com>
+Date:   Tue Nov 19 20:23:18 2024 +0700
+
+    commit
+
+[33mcommit 308108e98ca3c0f7be0025596a0f7e99ed993f2c[m
+Merge: 491026b 8ecc29f
+Author: nguyen0512 <nguyenvgtph37509@fpt.edu.vn>
+Date:   Tue Nov 19 19:43:49 2024 +0700
+
+    Merge branch 'main' of https://github.com/nguyen051204/Du_anTN into nguyen
+
+[33mcommit 8ecc29f01b6fd0145cabcf95d5388b951a88d9f2[m
+Author: nguyen0512 <nguyenvgtph37509@fpt.edu.vn>
+Date:   Tue Nov 19 19:42:04 2024 +0700
+
+    update
+
+[33mcommit b3255dd8d2cc02a377a50582c59633402b304c55[m
+Author: duph39199 <dutvph39199@fpt.edu.vn>
+Date:   Tue Nov 19 18:49:23 2024 +0700
+
+    fiter bộ sưu tập
+
+[33mcommit 870887c3513a1fca2dd58f7bef1be16cba2a4b70[m
+Author: Hungddph <hungddph38084@fpt.edu.vn>
+Date:   Mon Nov 18 22:02:25 2024 +0700
+
+    Thong ke gan full
+
+[33mcommit 491026b2d3460ba873c9397dc3eb2c4bf10f017c[m
+Merge: 9605022 76f4682
+Author: nguyen0512 <nguyenvgtph37509@fpt.edu.vn>
+Date:   Mon Nov 18 20:55:11 2024 +0700
+
+    Merge branch 'main' of https://github.com/nguyen051204/Du_anTN into nguyen
+
+[33mcommit 960502210cb423335f024cc88b3fe53f4f162cdf[m
+Merge: f2d212c 3d657f7
+Author: nguyen0512 <nguyenvgtph37509@fpt.edu.vn>
+Date:   Mon Nov 18 20:53:21 2024 +0700
+
+    Merge branch 'main' of https://github.com/nguyen051204/Du_anTN into nguyen
+
+[33mcommit 76f468232c66af4ab4862f3eef4ae65f3d4ace3d[m
+Merge: b852f51 3d657f7
+Author: nguyen0512 <nguyenvgtph37509@fpt.edu.vn>
+Date:   Mon Nov 18 20:52:08 2024 +0700
+
+    update
+
+[33mcommit b852f51f202eeb0bd76c51b22c2e6f3201d3d71d[m
+Author: nguyen0512 <nguyenvgtph37509@fpt.edu.vn>
+Date:   Mon Nov 18 20:51:02 2024 +0700
+
+    update cart
+
+[33mcommit 35eacd4c8bc074fb52196963caad5b7dabacb30d[m
+Merge: 986cf2b 3d657f7
+Author: Hungddph <156703728+Hungddph@users.noreply.github.com>
+Date:   Mon Nov 18 19:42:22 2024 +0700
+
+    Merge pull request #24 from DuAnTotNghiepp/main
+    
+    shop
+
+[33mcommit 3d657f7b0a57c6d3c0550c858cd27c6ea6c21303[m
+Merge: a062f36 986cf2b
+Author: Hungddph <156703728+Hungddph@users.noreply.github.com>
+Date:   Mon Nov 18 19:41:44 2024 +0700
+
+    Merge branch 'hungddph38084' into main
+
+[33mcommit 986cf2b95a7c9d33e20c9c7a164dec979161dd2d[m
+Author: Hungddph <hungddph38084@fpt.edu.vn>
+Date:   Fri Nov 15 22:59:53 2024 +0700
+
+    sap xep theo gia
+
+[33mcommit 96fc039488785af47d4d2e81ee153c82b0d083c0[m
+Author: Hungddph <hungddph38084@fpt.edu.vn>
+Date:   Fri Nov 15 22:32:54 2024 +0700
+
+    tim kiem va loc theo gia
+
+[33mcommit b30f9b4089566b3f45918c23deefa9143f57860b[m
+Author: Hungddph <hungddph38084@fpt.edu.vn>
+Date:   Fri Nov 15 21:20:24 2024 +0700
+
+    len bl
+
+[33mcommit 5f4cdb36c6859b2a86681babeb87469521e44845[m
+Merge: 949050c 58aab18
+Author: duph39199 <dutvph39199@fpt.edu.vn>
+Date:   Fri Nov 15 21:12:08 2024 +0700
+
+    Merge branch 'duph39199_01' of https://github.com/nguyen051204/Du_anTN into duph39199_01
+
+[33mcommit 949050c32943cb745eda1153f171333f1f601b8a[m
+Author: duph39199 <dutvph39199@fpt.edu.vn>
+Date:   Fri Nov 15 21:12:02 2024 +0700
+
+    fiter theo danh muc
+
+[33mcommit 58aab186cabd43e54f9a5a3a2f80f1da5031e86e[m
+Merge: 5edcc5b a062f36
+Author: duph39199 <150453519+duph39199@users.noreply.github.com>
+Date:   Fri Nov 15 21:11:29 2024 +0700
+
+    Merge pull request #20 from DuAnTotNghiepp/main
+    
+    lay ve
+
+[33mcommit 21942c87d8958725d90f57e6e843f26bed10eeab[m[33m ([m[1;31morigin/sondnph37464[m[33m)[m
+Merge: 949198a a062f36
+Author: sondnph37464 <135816498+sondnph37464@users.noreply.github.com>
+Date:   Fri Nov 15 13:51:49 2024 +0700
+
+    Merge branch 'main' into sondnph37464
+
+[33mcommit 949198a3175f1438baea291e66f25190cb9a8fc6[m
+Merge: 07cdeda 003ccfc
+Author: sondnph37464 <sondangngoc1112004@gmail.com>
+Date:   Wed Nov 6 17:16:02 2024 +0700
+
+    commit
+
+[33mcommit a062f364065347a93261b8c8b77535aae7f4537e[m
+Author: nguyen0512 <nguyenvgtph37509@fpt.edu.vn>
+Date:   Tue Nov 5 20:09:34 2024 +0700
+
+    order
+
+[33mcommit 9bbde17f0e406cb52357cf2fee1df524e4082a21[m
+Merge: fcf45c6 5edcc5b
+Author: Hungddph <nguyenvgtph37509@fpt.edu.vn>
+Date:   Tue Nov 5 19:57:15 2024 +0700
+
+    oder
+
+[33mcommit f2d212cc909795e34822d8093ef49bae51574808[m
+Merge: 46002ea 0b88302
+Author: Hungddph <nguyenvgtph37509@fpt.edu.vn>
+Date:   Tue Nov 5 19:49:02 2024 +0700
+
+    n
+
+[33mcommit 5edcc5b09389992c32de9b7b8a6cb4e14c25a175[m
+Author: duph39199 <dutvph39199@fpt.edu.vn>
+Date:   Tue Nov 5 16:40:28 2024 +0700
+
+    quản Lý Đơn Hàng
+
+[33mcommit e3ba352e8f7fcc311977102d1e1290ac143e683c[m
+Author: duph39199 <dutvph39199@fpt.edu.vn>
+Date:   Mon Nov 4 22:00:00 2024 +0700
+
+    orders
+
+[33mcommit f7b6e26cef173398e1867a5505989c73fc2712bd[m
+Merge: 4bad00b 0b88302
+Author: duph39199 <150453519+duph39199@users.noreply.github.com>
+Date:   Mon Nov 4 12:11:59 2024 +0700
+
+    Merge pull request #18 from DuAnTotNghiepp/nguyen
+    
+    update cart
+
+[33mcommit 0b88302983b0e71845e6594e4022474189104a56[m
+Merge: ba1d3e3 4bad00b
+Author: duph39199 <150453519+duph39199@users.noreply.github.com>
+Date:   Mon Nov 4 12:11:49 2024 +0700
+
+    Merge branch 'duph39199_01' into nguyen
+
+[33mcommit fcf45c6f0653db8e6d3a260558b474cad050b60a[m
+Merge: 6ccce98 f67df99
+Author: Hungddph <nguyenvgtph37509@fpt.edu.vn>
+Date:   Mon Nov 4 01:36:52 2024 +0700
+
+    comment
+
+[33mcommit 6ccce98b74f222c377ea3842aad55976902d9db1[m
+Author: Hungddph <nguyenvgtph37509@fpt.edu.vn>
+Date:   Mon Nov 4 01:33:36 2024 +0700
+
+    update
+
+[33mcommit f67df99a33e1a0169db6623eb25ae7a8ec84bfd8[m
+Merge: d23511f 49a83a1
+Author: nguyen051204 <150788694+nguyen051204@users.noreply.github.com>
+Date:   Mon Nov 4 01:31:01 2024 +0700
+
+    Merge pull request #17 from DuAnTotNghiepp/hungddph38084
+    
+    comment
+
+[33mcommit 49a83a130cc04af3158cef3c5aac85589dda7a12[m
+Author: Hungddph <hungddph38084@fpt.edu.vn>
+Date:   Mon Nov 4 01:30:13 2024 +0700
+
+    pushthu
+
+[33mcommit d23511fa55a8f083f24a1be30eb25f4c5a396d55[m
+Merge: a22803f a5f34b9
+Author: Hungddph <156703728+Hungddph@users.noreply.githu

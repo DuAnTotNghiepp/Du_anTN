@@ -31,7 +31,7 @@
               hsl(219, 20%, 57%) 80%,
               transparent 100%);
         }
-    
+
         #radius-shape-1 {
           height: 220px;
           width: 220px;
@@ -40,7 +40,7 @@
           background: radial-gradient(#44006b, #ad1fff);
           overflow: hidden;
         }
-    
+
         #radius-shape-2 {
           border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
           bottom: -60px;
@@ -50,11 +50,42 @@
           background: radial-gradient(#44006b, #ad1fff);
           overflow: hidden;
         }
-    
+
         .bg-glass {
           background-color: hsla(0, 0%, 100%, 0.9) !important;
           backdrop-filter: saturate(200%) blur(25px);
         }
+        .custom-error-alert {
+            background-color: #f8d7da;
+            color: #842029;
+            border: 1px solid #f5c2c7;
+            width: 500px;
+            justify-content: center;
+            border-radius: 6px;
+            padding: 10px 15px;
+            margin: 10px 0;
+            font-size: 14px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-error-alert ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .custom-error-alert li {
+            margin: 3px 0;            /* Khoảng cách giữa các lỗi nhỏ hơn */
+            display: flex;
+            align-items: center;
+        }
+
+        .custom-error-alert i {
+            margin-right: 8px;        /* Giảm khoảng cách giữa icon và text */
+            font-size: 16px;          /* Kích thước icon nhỏ hơn */
+            color: #842029;
+        }
+
     </style>
 </head>
 <body>
@@ -88,31 +119,33 @@
                                     <input type="email" name="email" id="form3Example3" class="form-control" />
                                     <label class="form-label" for="form3Example3">Email</label>
                                 </div>
-  
+
                                 <!-- Password input -->
                                 <div class="form-outline mb-4">
                                     <input type="password" name="password" id="form3Example4" class="form-control" />
                                     <label class="form-label" for="form3Example4">Password</label>
                                 </div>
-                                
+
                                 <div class="row mb-3">
                                     <div class="radius">
                                         <div class="form-check m-2">
+
                                             <label class="form-check-label">
                                                 <a href="{{route('password.forgot')}}">Forgot password</a>
+
                                             </label>
                                             <a class="float-end me-3" href="/register">Register</a>
                                             
                                         </div>
                                     </div>
                                 </div>
-        
+
                                 <div class="row mb-0">
                                     <div class="col-md-8 offset-md-4">
                                         <button type="submit" class="btn btn-primary ms-4">
                                             {{ __('Login') }}
                                         </button>
-        
+
                                         @if (Route::has('password.request'))
                                             <a class="btn btn-link" href="{{ route('password.request') }}">
                                                 {{ __('Forgot Your Password?') }}
@@ -121,8 +154,8 @@
                                     </div>
                                 </div>
 
-                        
-                               
+
+
 
 
                                 <!-- Register buttons -->

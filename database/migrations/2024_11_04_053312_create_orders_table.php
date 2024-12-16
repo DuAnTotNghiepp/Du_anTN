@@ -14,19 +14,14 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('product_id')->nullable();
             $table->string('user_name');
             $table->string('user_email');
             $table->string('user_phone');
             $table->string('user_address')->nullable();
             $table->string('user_note');
-            $table->boolean('is_ship_user_same_user')->default(true);
-            $table->string('ship_user_name')->nullable();
-            $table->string('ship_user_email')->nullable();
-            $table->string('ship_user_phone')->nullable();
-            $table->string('ship_user_address')->nullable();
-            $table->string('ship_user_note')->nullable();
-            $table->string('status')->default('unpaid');
+            $table->string('payment_method')->nullable();
+            $table->string('status')->default('pending');
             $table->double('total_price', 15, 2);
             $table->timestamps();
 

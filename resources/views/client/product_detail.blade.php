@@ -29,7 +29,6 @@
 
 </style>
 @section('content')
-    div class="breadcrumb-area ml-110">
     <div class="container-fluid p-0">
         <div class="row">
             <div class="col-lg-12">
@@ -51,10 +50,102 @@
             </div>
         </div>
     </div>
+    <style>
+        /* Container cho nút cộng, trừ và input */
+        .quantity1 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 16px;
+        }
+
+        /* Nút cộng và trừ */
+        .quantity1 button {
+            width: 35px;
+            height: 35px;
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .quantity1 button:hover {
+            background-color: #ddd;
+        }
+
+        .quantity1 button:disabled {
+            background-color: #f1f1f1;
+            cursor: not-allowed;
+        }
+
+        /* Input số lượng */
+        .quantity1 input {
+            width: 60px;
+            height: 35px;
+            text-align: center;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+            margin: 0;
+            outline: none;
+        }
+
+        .quantity1 input:focus {
+            border-color: #007bff;
+        }
+
+            /* Ẩn dấu cộng và trừ mặc định cho tất cả trình duyệt */
+        .quantity1 input[type="number"]::-webkit-outer-spin-button,
+        .quantity1 input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .quantity1 input[type="number"] {
+            -moz-appearance: textfield; /* Firefox */
+            appearance: none; /* Cho trình duyệt hiện đại */
+        }
+
+        /* Đảm bảo input không hiển thị dấu cộng và trừ */
+        .quantity1 input {
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+            appearance: none;
+        }
+
+    </style>
+
     <div class="product-details-area mt-100 ml-110">
         <div class="container">
             <div class="product-details-wrapper">
                 <div class="row">
+                    @if (session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
+
+                    @if (session('error'))
+                        <div class="alert alert-danger">{{ session('error') }}</div>
+                    @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger">{{ session('error') }}</div>
+                    @endif
+                    @if (session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            @foreach ($errors->all() as $error)
+                                <p>{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
                     <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-8">
                         <div class="product-switcher-wrap">
                             <!-- Danh sách ảnh liên quan -->
@@ -102,18 +193,26 @@
                        </script>
                         
                     </div>
+
+
                     <div class="col-xxl-6 col-xl-6 col-lg-6">
                         <div class="product-details-wrap">
                             <div class="pd-top">
                                 <ul class="product-rating d-flex align-items-center">
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star"></i></li>
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <li>
+                                            @if ($i <= $averageRating)
+                                                <i class="bi bi-star-fill" style="color: gold;"></i>
+                                            @else
+                                                <i class="bi bi-star"></i>
+                                            @endif
+                                        </li>
+                                    @endfor
                                 </ul>
+                                <span>(Trung bình: {{ $averageRating }} sao)</span>
                                 <h1>{{ $product->name }}</h1>
-                                <p><strong>Giá cũ:</strong> <span class="price-regular">{{ $product->price_regular }}</span>
+                                <p><strong>Giá cũ:</strong> <span
+                                        class="price-regular">{{ $product->price_regular }}</span>
                                 </p>
                                 <p><strong>Giá khuyến mãi:</strong> <span
                                         class="price-sale">{{ $product->price_sale }}</span></p>
@@ -122,20 +221,26 @@
 
                             <div class="pd-quick-discription">
                                 <ul>
-                                    <!-- Màu sắc -->
+                                  <!-- Màu sắc -->
                                     <li class="d-flex align-items-center">
                                         <span>Color :</span>
                                         <div class="color-option d-flex align-items-center">
                                             @foreach ($product->variants as $variant)
                                                 @if ($variant->name === 'Color')
                                                     <input type="radio" name="color" id="color{{ $variant->id }}"
-                                                        value="{{ $variant->value }}" {{ $loop->first ? 'checked' : '' }}>
-                                                    <label for="color{{ $variant->id }}"><span class="p-color"
-                                                            style="background-color: {{ $variant->value }}"></span></label>
+                                                        value="{{ $variant->value }}"
+                                                        data-product-id="{{ $product->id }}"
+                                                        data-variant-id="{{ $variant->id }}"
+                                                        {{ $loop->first ? 'checked' : '' }}
+                                                        class="color-option-input">
+                                                    <label for="color{{ $variant->id }}">
+                                                        <span class="p-color" style="background-color: {{ $variant->value }}"></span>
+                                                    </label>
                                                 @endif
                                             @endforeach
                                         </div>
                                     </li>
+
                                     <!-- Kích thước -->
                                     <li class="d-flex align-items-center">
                                         <span>Size :</span>
@@ -143,7 +248,15 @@
                                             @foreach ($product->variants as $variant)
                                                 @if ($variant->name === 'Size')
                                                     <input type="radio" name="size" id="size{{ $variant->id }}"
-                                                        value="{{ $variant->value }}" {{ $loop->first ? 'checked' : '' }}>
+
+                                                        {{-- value="{{ $variant->value }}" {{ $loop->first ? 'checked' : '' }}> --}}
+
+                                                        value="{{ $variant->value }}"
+                                                        data-product-id="{{ $product->id }}"
+                                                        data-variant-id="{{ $variant->id }}"
+                                                        {{ $loop->first ? 'checked' : '' }}
+                                                        class="size-option-input">
+
                                                     <label for="size{{ $variant->id }}">
                                                         <span class="p-size">{{ $variant->value }}</span>
                                                     </label>
@@ -151,15 +264,47 @@
                                             @endforeach
                                         </div>
                                     </li>
+
+
                                     <!-- Số lượng -->
                                     <li class="d-flex align-items-center pd-cart-btns">
-                                        <div class="quantity">
-                                            <input type="number" min="1" max="{{ $product->quantity }}"
-                                                step="1" value="1" id="quantity-input"
-                                                data-available="{{ $product->quantity }}">
+                                        <div class="quantity1">
+                                            <button type="button" id="decrease-btn">-</button>
+                                            <input name="quantity" type="number" min="1" max="{{ $product->variants->first()->pivot->quantity ?? 0 }}"
+                                                   step="1" value="1" id="quantity-input">
+                                            <button type="button" id="increase-btn">+</button>
                                         </div>
-                                        <button type="button" class="pd-add-cart" id="buy-now-btn">
-                                            <a href="{{ route('checkout') }}" style="color:white">Mua Ngay</a>
+                                        @if (Auth::check())
+                                            <button type="button" class="pd-add-cart" id="buy-now-btn">
+                                                <a href="{{ route('checkout') }}" style="color:white">Mua Ngay</a>
+                                            </button>
+                                        @else
+                                            <a href="{{ route('login') }}"
+                                                onclick="event.preventDefault(); document.getElementById('login-form').submit();"
+                                                class="pd-add-cart">Mua Ngay</a>
+
+                                            <form id="login-form" action="{{ route('login') }}" method="GET"
+                                                style="display: none;">
+                                                <input type="hidden" name="redirect_url"
+                                                    value="{{ url()->current() }}">
+                                            </form>
+                                        @endif
+                                        {{-- Form Thêm vào Giỏ Hàng --}}
+                                        <form action="{{ route('cart.store') }}" method="POST" id="add-to-cart-form">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <input type="hidden" name="variant_id" id="variant_id">
+                                            <input type="hidden" name="color" id="selected-color" value="">
+                                            <input type="hidden" name="size" id="selected-size" value="">
+                                            <input type="hidden" name="quantity" id="quantity" value="1">
+                                            <input type="hidden" name="price" id="selected-price"
+                                                value="{{ $product->price_sale }}">
+                                            <button type="submit" class="pd-add-cart">Thêm vào giỏ hàng</button>
+                                        </form>
+                                        <button class="pd-add-cart"
+                                            style="background: none; border: none; background-color: red"
+                                            id="favorite-btn" data-product-id="{{ $product->id }}">
+                                            <i class="flaticon-heart"></i>
                                         </button>
 
                                         <form action="{{ route('cart.store') }}" method="POST">
@@ -175,10 +320,17 @@
                                         </form>
 
                                     </li>
+
+                                    {{-- <li id="quantity-warning" style="color: red; display: none;">
+                                        Số lượng sản phẩm đã đạt tối đa!
+                                    <li id="quantity-warning" style="color: red; display: none;">
+                                        Số lượng sản phẩm đã đạt tối đa!
+                                    </li> --}}
                                     <li class="pd-type">Danh mục sản phẩm: <span>{{ $product->catelogues->name }}</span>
                                     </li>
                                     <li class="pd-type">Mã sản phẩm: <span>{{ $product->sku }}</span></li>
-                                    <li class="pd-type">Số lượng: <span>{{ $product->quantity }}</span></li>
+                                    <!-- Số lượng tồn kho -->
+                                    <li class="pd-type">Số lượng tồn kho: <span id="stock-quantity">{{ $product->variants->first()->pivot->quantity ?? 0 }}</span></li>
                                     <li class="pd-type">Chất liệu: <span>{{ $product->material }}</span></li>
                                 </ul>
 
@@ -207,6 +359,7 @@
                             </button>
                         </div>
                     </div>
+
                     <div class="col-xxl-9 col-xl-9">
                         <div class="tab-content discribtion-tab-content" id="v-pills-tabContent2">
                             <div class="tab-pane fade show active" id="pd-discription-pill3" role="tabpanel"
@@ -241,118 +394,172 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="tab-pane fade " id="pd-discription-pill1" role="tabpanel"
+                            <div class="tab-pane fade" id="pd-discription-pill1" role="tabpanel"
                                 aria-labelledby="pd-discription1">
                                 <div class="discription-review">
+                                    <h4 class="mb-4">Đánh giá của khách hàng</h4>
                                     <div class="clients-review-cards">
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="client-review-card">
-                                                    <div class="review-card-head">
-                                                        <div class="client-img">
-                                                            <img src="assets/images/shapes/reviewer1.png" alt>
-                                                        </div>
-                                                        <div class="client-info">
-                                                            <h5 class="client-name">Jenny Wilson <span
-                                                                    class="review-date">- 8th Jan 2021</span></h5>
-                                                            <ul class="review-rating d-flex">
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star"></i></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <p class="review-text">
-                                                        Aenean dolor massa, rhoncus ut tortor in, pretium tempus neque.
-                                                        Vestibulum venenatis leo et dictum finibus. Nulla vulputate
-                                                        dolor sit amet tristique dapibus.
-                                                    </p>
-                                                    <ul class="review-actions d-flex align-items-center">
-                                                        <li><a href="#"><i class="flaticon-like"></i></a></li>
-                                                        <li><a href="#"><i class="flaticon-heart"></i></a></li>
-                                                        <li><a href="#">Reply</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="client-review-card">
-                                                    <div class="review-card-head">
-                                                        <div class="client-img">
-                                                            <img src="assets/images/shapes/reviewer2.png" alt>
-                                                        </div>
-                                                        <div class="client-info">
-                                                            <h5 class="client-name">Jenny Wilson <span
-                                                                    class="review-date">- 8th Jan 2021</span></h5>
-                                                            <ul class="review-rating d-flex">
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star-fill"></i></li>
-                                                                <li><i class="bi bi-star"></i></li>
-                                                            </ul>
+                                        <div class="row" id="comments-list">
+                                            @foreach ($comments as $comment)
+                                                <div class="col-lg-6 mb-3">
+                                                    <div class="card client-review-card">
+                                                        <div class="card-body">
+                                                            <div class="d-flex align-items-center mb-3">
+                                                                <div class="client-review-img me-3">
+                                                                    <img src="assets/images/blog/author.png"
+                                                                        alt="Client Image" class="rounded-circle"
+                                                                        width="50" height="50">
+                                                                </div>
+                                                                <div class="client-review-info">
+                                                                    <h5 class="client-name mb-1">
+                                                                        {{ $comment->user->name }}</h5>
+                                                                    <ul
+                                                                        class="product-rating d-flex align-items-center list-unstyled mb-0">
+                                                                        @for ($i = 1; $i <= 5; $i++)
+                                                                            <li class="me-1">
+                                                                                <i class="bi bi-star{{ $i <= $comment->rating ? '-fill' : '' }}"
+                                                                                    style="color: gold;"></i>
+                                                                            </li>
+                                                                        @endfor
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="client-review-text">
+                                                                <p class="mb-0">{{ $comment->noidung }}</p>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <p class="review-text">
-                                                        Aenean dolor massa, rhoncus ut tortor in, pretium tempus neque.
-                                                        Vestibulum venenatis leo et dictum finibus. Nulla vulputate
-                                                        dolor sit amet tristique dapibus.
-                                                    </p>
-                                                    <ul class="review-actions d-flex align-items-center">
-                                                        <li><a href="#"><i class="flaticon-like"></i></a></li>
-                                                        <li><a href="#"><i class="flaticon-heart"></i></a></li>
-                                                        <li><a href="#">Reply</a></li>
-                                                    </ul>
                                                 </div>
-                                            </div>
+                                            @endforeach
                                         </div>
                                     </div>
-                                    <div class="review-form-wrap">
-                                        <h5>Write a Review</h5>
-                                        <h3>Leave A Comment</h3>
-                                        <p>Your email address will not be published. Required fields are marked *</p>
-                                        <form action="#" method="POST" class="review-form">
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="review-input-group">
-                                                        <label for="fname">First Name</label>
-                                                        <input type="text" name="fname" id="fname"
-                                                            placeholder="Your first name">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="review-input-group">
-                                                        <label for="lname">Last Name</label>
-                                                        <input type="text" name="lname" id="lname"
-                                                            placeholder="Your last name ">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    <div class="review-input-group">
-                                                        <textarea name="review-area" id="review-area" cols="30" rows="7" placeholder="Your message"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    <div class="review-rating">
-                                                        <p>Your Rating</p>
-                                                        <ul class="d-flex">
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                            <li><i class="bi bi-star-fill"></i></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="submit-btn">
-                                                        <input type="submit" value="Post Comment">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
                                 </div>
+
+                                @if ($errors->any())
+                                    <div class="alert alert-danger mt-4">
+                                        <ul class="mb-0">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+
+                                @auth
+                                    <form id="comment-form" class="review-form mt-4">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        <!-- Thêm product_id -->
+                                        <div class="form-group">
+                                            <label for="content">Nội dung bình luận:</label>
+                                            <textarea id="content" name="noidung" class="form-control" required></textarea>
+                                        </div>
+                                        <div class="form-group mt-3">
+                                            <label for="rating">Đánh giá:</label>
+                                            <div class="d-flex">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    <div class="form-check">
+                                                        <input type="radio" class="form-check-input" name="rating"
+                                                            value="{{ $i }}" id="rating{{ $i }}"
+                                                            style="display: none;">
+                                                        <label class="form-check-label" for="rating{{ $i }}"
+                                                            style="cursor: pointer;">
+                                                            <i class="bi bi-star-fill star" data-value="{{ $i }}"
+                                                                style="font-size: 24px; color: gray;"></i>
+                                                        </label>
+                                                    </div>
+                                                @endfor
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary mt-3">Gửi bình luận</button>
+                                    </form>
+                                    <div id="response-message"></div> <!-- Nơi hiển thị phản hồi -->
+                                @else
+                                    <p class="mt-4">Vui lòng <a href="{{ route('login') }}">đăng nhập</a> để gửi bình luận.
+                                    </p>
+                                @endauth
+
+                                <script>
+                                    document.getElementById('comment-form').addEventListener('submit', function(event) {
+                                        event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+                                        const formData = new FormData(this); // Lấy dữ liệu từ form
+
+                                        fetch("{{ route('comment.store', $product->id) }}", {
+                                                method: 'POST',
+                                                body: formData,
+                                                headers: {
+                                                    'X-Requested-With': 'XMLHttpRequest',
+                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}', // Thêm token CSRF
+                                                },
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    // Thêm bình luận mới vào danh sách
+                                                    const commentsList = document.getElementById('comments-list');
+                                                    commentsList.insertAdjacentHTML('afterbegin', `
+                                                <div class="col-lg-6 mb-3">
+                                                    <div class="card client-review-card">
+                                                        <div class="card-body">
+                                                            <div class="d-flex align-items-center mb-3">
+                                                                <div class="client-review-img me-3">
+                                                                    <img src="assets/images/blog/author.png" alt="Client Image" class="rounded-circle" width="50" height="50">
+                                                                </div>
+                                                                <div class="client-review-info">
+                                                                    <h5 class="client-name mb-1">${data.comment.user_name}</h5>
+                                                                   <ul class="product-rating d-flex align-items-center list-unstyled mb-0" style="font-size: 24px; color: gold;">
+    ${'★'.repeat(data.comment.rating)}${'☆'.repeat(5 - data.comment.rating)}
+</ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="client-review-text">
+                                                                <p class="mb-0">${data.comment.noidung}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            `);
+                                                    // Xóa nội dung form
+                                                    document.getElementById('content').value = '';
+                                                    document.querySelector('input[name="rating"]:checked').checked = false;
+                                                } else {
+                                                    document.getElementById('response-message').innerHTML =
+                                                        `<div class="alert alert-danger">${data.message}</div>`;
+                                                }
+                                            })
+                                            .catch(error => {
+                                                console.error('Error:', error);
+                                                document.getElementById('response-message').innerHTML =
+                                                    `<div class="alert alert-danger">Đã xảy ra lỗi, vui lòng thử lại.</div>`;
+                                            });
+                                    });
+
+                                    // JavaScript to handle star rating
+                                    const stars = document.querySelectorAll('.star');
+                                    stars.forEach(star => {
+                                        star.addEventListener('click', function() {
+                                            const ratingValue = this.getAttribute('data-value');
+
+                                            // Update the radio button selection
+                                            document.querySelector(`input[name="rating"][value="${ratingValue}"]`).checked = true;
+
+                                            // Set the color of the stars
+                                            stars.forEach((s, index) => {
+                                                s.style.color = index < ratingValue ? 'gold' : 'gray'; // Cập nhật màu sắc
+                                            });
+                                        });
+                                    });
+                                </script>
+
+                                <style>
+                                    /* Optional: Add some margin around stars */
+                                    .star {
+                                        margin-right: 5px;
+                                    }
+                                </style>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -413,3 +620,262 @@
         });
     </script>
 @endsection
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const variantInputs = document.querySelectorAll('input[name="color"], input[name="size"]');
+                const stockQuantityElement = document.getElementById('stock-quantity');
+
+                // Cập nhật số lượng tồn kho khi thay đổi biến thể
+                function updateStockQuantity(productId, variantId) {
+                    fetch(`/api/variant-stock?product_id=${productId}&variant_id=${variantId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Cập nhật số lượng tồn kho
+                            stockQuantityElement.textContent = data.quantity;
+                        })
+                        .catch(error => {
+                            console.error('Error fetching stock quantity:', error);
+                        });
+                }
+
+                // Lắng nghe sự thay đổi trên các input màu sắc và kích thước
+                variantInputs.forEach(input => {
+                    input.addEventListener('change', function () {
+                        const productId = this.dataset.productId;
+                        const variantId = this.dataset.variantId;
+
+                        // Cập nhật số lượng tồn kho cho biến thể đã chọn
+                        updateStockQuantity(productId, variantId);
+                    });
+                });
+            });
+
+        </script>
+        <script>
+            // Lắng nghe sự kiện khi người dùng chọn màu
+            document.querySelectorAll('.color-option-input').forEach(input => {
+                input.addEventListener('change', function() {
+                    var selectedColor = this.value;
+                    document.getElementById('selected-color').value = selectedColor;
+                });
+            });
+
+            document.querySelectorAll('.size-option-input').forEach(input => {
+                input.addEventListener('change', function() {
+                    var selectedSize = this.value;
+                    document.getElementById('selected-size').value = selectedSize;
+                });
+            });
+
+            // Lắng nghe sự kiện khi người dùng thay đổi số lượng
+            document.addEventListener('DOMContentLoaded', function () {
+                const quantityInput = document.getElementById('quantity-input');
+                const increaseBtn = document.getElementById('increase-btn');
+                const decreaseBtn = document.getElementById('decrease-btn');
+                const stockQuantityElement = document.getElementById('stock-quantity');
+
+                // Cập nhật số lượng tồn kho khi thay đổi biến thể
+                function updateMaxQuantity(productId, variantId) {
+                    fetch(`/api/variant-stock?product_id=${productId}&variant_id=${variantId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const stockQuantity = data.quantity;
+                            // Cập nhật giá trị max của input số lượng
+                            quantityInput.max = stockQuantity;
+
+                            // Nếu số lượng người dùng nhập vượt quá max, cập nhật lại giá trị
+                            if (parseInt(quantityInput.value) > stockQuantity) {
+                                quantityInput.value = stockQuantity;
+                            }
+
+                            // Cập nhật hiển thị số lượng tồn kho
+                            stockQuantityElement.textContent = stockQuantity;
+
+                            // Kiểm tra và vô hiệu hóa nút tăng giảm
+                            toggleQuantityButtons(stockQuantity);
+                        })
+                        .catch(error => {
+                            console.error('Error fetching stock quantity:', error);
+                        });
+                }
+
+                // Vô hiệu hóa nút tăng/giảm nếu đạt giới hạn
+                function toggleQuantityButtons(stockQuantity) {
+                    const currentQuantity = parseInt(quantityInput.value);
+
+                    // Nếu số lượng đã đạt tối đa, vô hiệu hóa nút cộng
+                    if (currentQuantity >= stockQuantity) {
+                        increaseBtn.disabled = true;
+                    } else {
+                        increaseBtn.disabled = false;
+                    }
+
+                    // Nếu số lượng bằng 1, vô hiệu hóa nút trừ
+                    if (currentQuantity <= 1) {
+                        decreaseBtn.disabled = true;
+                    } else {
+                        decreaseBtn.disabled = false;
+                    }
+                }
+
+                // Lắng nghe sự thay đổi trên các input màu sắc và kích thước
+                const variantInputs = document.querySelectorAll('input[name="color"], input[name="size"]');
+                variantInputs.forEach(input => {
+                    input.addEventListener('change', function () {
+                        const productId = this.dataset.productId;
+                        const variantId = this.dataset.variantId;
+
+                        // Cập nhật max quantity và stock quantity cho biến thể đã chọn
+                        updateMaxQuantity(productId, variantId);
+                    });
+                });
+
+                // Lắng nghe sự thay đổi của input số lượng
+                quantityInput.addEventListener('input', function () {
+                    // Nếu giá trị nhập vào vượt quá số lượng tồn kho, tự động chỉnh lại
+                    if (parseInt(quantityInput.value) > parseInt(quantityInput.max)) {
+                        quantityInput.value = quantityInput.max;
+                    }
+
+                    // Kiểm tra và vô hiệu hóa nút tăng/giảm
+                    toggleQuantityButtons(parseInt(quantityInput.max));
+                });
+
+                // Lắng nghe sự kiện click vào nút tăng số lượng
+                increaseBtn.addEventListener('click', function () {
+                    let currentQuantity = parseInt(quantityInput.value);
+                    if (currentQuantity < parseInt(quantityInput.max)) {
+                        quantityInput.value = currentQuantity + 1;
+                    }
+
+                    // Kiểm tra và vô hiệu hóa nút tăng/giảm
+                    toggleQuantityButtons(parseInt(quantityInput.max));
+                });
+
+                // Lắng nghe sự kiện click vào nút giảm số lượng
+                decreaseBtn.addEventListener('click', function () {
+                    let currentQuantity = parseInt(quantityInput.value);
+                    if (currentQuantity > 1) {
+                        quantityInput.value = currentQuantity - 1;
+                    }
+
+                    // Kiểm tra và vô hiệu hóa nút tăng/giảm
+                    toggleQuantityButtons(parseInt(quantityInput.max));
+                });
+            });
+
+            function updatePrice() {
+                // Cập nhật lại giá dựa trên lựa chọn màu sắc và kích thước
+                var price = {{ $product->price_sale }};
+                // Nếu cần, thay đổi giá dựa trên lựa chọn (ví dụ, theo kích thước hoặc màu)
+                // Cập nhật lại giá hiển thị
+                document.getElementById('selected-price').value = price;
+            }
+        </script>
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const colorRadios = document.querySelectorAll('input[name="color"]');
+                const sizeRadios = document.querySelectorAll('input[name="size"]');
+                const variantInput = document.getElementById('variant_id');
+                const quantityInput = document.getElementById('quantity-input');
+                const quantityHiddenInput = document.getElementById('quantity');
+                const buyNowBtn = document.getElementById('buy-now-btn');
+                const warningMessage = document.getElementById('quantity-warning');
+                const favoriteBtn = document.getElementById('favorite-btn');
+
+                // Xử lý chọn màu và size
+                function updateVariant(radio) {
+                    variantInput.value = radio.value;
+                }
+
+                colorRadios.forEach(radio => radio.addEventListener('change', () => updateVariant(radio)));
+                sizeRadios.forEach(radio => radio.addEventListener('change', () => updateVariant(radio)));
+
+                // Xử lý số lượng
+                function handleQuantityInput() {
+                    const maxQuantity = parseInt(quantityInput.getAttribute('max'));
+
+                    quantityHiddenInput.value = quantityInput.value;
+
+                    if (parseInt(quantityInput.value) > maxQuantity) {
+                        quantityInput.value = maxQuantity;
+                        warningMessage.style.display = 'block';
+                    } else {
+                        warningMessage.style.display = 'none';
+                    }
+                }
+
+                quantityInput.addEventListener('input', handleQuantityInput);
+
+                // Thiết lập mặc định
+                if (colorRadios.length > 0 && !variantInput.value) {
+                    variantInput.value = colorRadios[0].value;
+                }
+
+                if (sizeRadios.length > 0 && !variantInput.value) {
+                    variantInput.value = sizeRadios[0].value;
+                }
+
+                if (!quantityHiddenInput.value) {
+                    quantityHiddenInput.value = quantityInput.value;
+                }
+
+                // Xử lý mua ngay
+                buyNowBtn.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    const color = document.querySelector('input[name="color"]:checked');
+                    const size = document.querySelector('input[name="size"]:checked');
+                    const quantity = quantityInput.value;
+
+                    if (!color || !size || !quantity) {
+                        alert("Vui lòng chọn màu sắc, kích thước và số lượng.");
+                        return;
+                    }
+
+                    const productImage = "{{ Storage::url($product->img_thumbnail) }}";
+                    const productName = "{{ $product->name }}";
+                    const productPrice = "{{ $product->price_sale }}";
+
+                    console.log("Color:", color.value);
+                    console.log("Size:", size.value);
+                    console.log("Quantity:", quantity);
+                    console.log("Product Image:", productImage);
+                    console.log("Product Name:", productName);
+                    console.log("Product Price:", productPrice);
+
+                    const checkoutUrl =
+                        `{{ route('checkout') }}?color=${encodeURIComponent(color.value)}&size=${encodeURIComponent(size.value)}&quantity=${encodeURIComponent(quantity)}&image=${encodeURIComponent(productImage)}&name=${encodeURIComponent(productName)}&price=${encodeURIComponent(productPrice)}`;
+
+                    window.location.href = checkoutUrl;
+                });
+
+
+                // Xử lý yêu thích
+                favoriteBtn.addEventListener('click', function() {
+                    const productId = this.dataset.productId;
+
+                    fetch('{{ route('favorites.toggle') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            },
+                            body: JSON.stringify({
+                                product_id: productId
+                            }),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'added') {
+                                alert('Sản phẩm đã được thêm vào yêu thích.');
+                            } else if (data.status === 'removed') {
+                                alert('Sản phẩm đã được xóa khỏi yêu thích.');
+                            }
+                        });
+                });
+            });
+        </script>
+    @endsection

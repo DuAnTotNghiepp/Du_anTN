@@ -96,6 +96,7 @@
                                         <th class="sort" data-sort="category_name" scope="col">Địa Chỉ</th>
                                         <th class="sort" data-sort="phone" scope="col">Tổng Giá</th>
                                         <th class="sort" data-sort="lead_score" scope="col">Ngày Tạo</th>
+                                        <th class="sort" data-sort="" scope="col">Phương Thức Thanh Toán</th>
                                         <th class="sort" data-sort="tags" scope="col">Trạng Thái</th>
                                         <th scope="col">Action</th>
                                     </tr>
@@ -121,10 +122,36 @@
                                             </td>
                                             <td class="company_name">{{ $order->user_email }}</td>
                                             <td class="company_name">{{ $order->user_phone }}</td>
-                                            <td class="email_id">{{ $order->user_address }}</td>
+                                            <td class="email_id">
+                                                @if ($order->address)
+                                                    {{ $order->address->address }}, {{ $order->address->city }}, {{ $order->address->state }}
+                                                @else
+                                                    Chưa có địa chỉ
+                                                @endif
+                                            </td>
                                             <td class="category_name">{{ $order->total_price }}</td>
                                             <td>{{ $order->created_at->format('d-m-Y H:i') }}</td>
-                                            <td class="company_name">{{ $order->status }}</td>
+                                            <td class="company_name">
+                                                @if($order->payment_method === 'cash')
+                                                    Thanh toán khi nhận hàng
+                                                @elseif($order->payment_method === 'on')
+                                                    Thanh toán online
+                                                @endif
+                                            </td>
+                                            <td class="company_name">
+                                                @if($order->status == 'pending')
+                                                    Chờ Xác Nhận
+                                                @elseif($order->status == 'completed')
+                                                    Đã Xác Nhận
+                                                @elseif($order->status == 'delivery')
+                                                    Đang Giao Hàng
+                                                @elseif($order->status == 'delivered')
+                                                    Giao Hàng Thành Công
+                                                @elseif($order->status == 'canceled')
+                                                    Đã hủy
+                                                @endif
+                                            </td>
+
                                             <td>
                                                 <ul class="list-inline hstack gap-2 mb-0">
                                                     <li class="list-inline-item">

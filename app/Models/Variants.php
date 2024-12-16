@@ -8,23 +8,27 @@ use Illuminate\Database\Eloquent\Model;
 class Variants extends Model
 {
     use HasFactory;
-    Protected $fillable=[
-        'id',
-        'name',
-        'value',
-        'created_at',
-        'updated_at'
-    ];
+    protected $table = 'variants'; // Chỉ rõ bảng 'variants'
     public $timestamps = false;
     // public function variants()
     // {
     //     return $this->belongsTo(Product::class, 'product_id');
     // }
     use HasFactory;
+    protected $fillable = [
+        'name',
+        'value',
+    ];
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'product__variants');
+        return $this->belongsToMany(Product::class, 'product__variants', 'variants_id', 'product_id')->withPivot('quantity');;
     }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class, 'color')->orWhere('size', 'id');
+    }
+
 
 }

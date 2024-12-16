@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
 use App\Models\BinhLuan;
 use App\Models\Catalogues;
 use App\Models\Product;
 use App\Models\Product_Variant;
 use App\Models\ProductGallerie;
 use App\Models\Variants;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -47,15 +47,12 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductRequest $request)
+    public function store(Request $request)
     {
         if ($request->isMethod('post')) {
             $params = $request->except('_token');
             $params['is_active'] = $request->has('is_active') ? 1 : 0;
             $params['is_hot_deal'] = $request->has('is_hot_deal') ? 1 : 0;
-            $params['is_good_deal'] = $request->has('is_good_deal') ? 1 : 0;
-            $params['is_new'] = $request->has('is_new') ? 1 : 0;
-            $params['is_show_home'] = $request->has('is_show_home') ? 1 : 0;
             if ($request->hasFile('img_thumbnail')) {
                 $flag = true;
                 $params['img_thumbnail'] = $request->file('img_thumbnail')->store('products', 'public');
@@ -64,13 +61,15 @@ class ProductController extends Controller
             }
         }
         $res = Product::query()->create($params);
+//        $res->calculateTotalQuantity();
 
-
-        foreach ($request->id_variant as $value) {
-            Product_Variant::create([
-                'product_id' => $res->id,
-                'variants_id' => $value
-            ]);
+        if (!empty($request->id_variant) && is_array($request->id_variant)) {
+            foreach ($request->id_variant as $value) {
+                Product_Variant::create([
+                    'product_id' => $res->id,
+                    'variants_id' => $value
+                ]);
+            }
         }
 
         if ($request->hasFile('image')) {
@@ -112,19 +111,13 @@ class ProductController extends Controller
         $Color = Variants::where('name', 'Color')->get();
         $Size = Variants::where('name', 'Size')->get();
         $vari_id = DB::table('product__variants')->where('product_id', $id)->pluck('variants_id')->toArray();
-        // foreach ($Color as $key => $value) {
-        //     echo "<pre>";
-        //     var_dump(in_array($value->id,$vari_id));
-        // }
-        // dd($vari_id);
-        // Trả về view với dữ liệu danh mục và sản phẩm
         return view('admin.product.edit', compact('listPro', 'listCate', 'Color', 'Size', 'vari_id','listImg'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request, int $id)
+    public function update(Request $request, int $id)
     {
         //
         // Lấy thông tin sản phẩm cần cập nhật
@@ -137,9 +130,6 @@ class ProductController extends Controller
             $params = $request->except('_token');
             $params['is_active'] = $request->has('is_active') ? 1 : 0;
             $params['is_hot_deal'] = $request->has('is_hot_deal') ? 1 : 0;
-            $params['is_good_deal'] = $request->has('is_good_deal') ? 1 : 0;
-            $params['is_new'] = $request->has('is_new') ? 1 : 0;
-            $params['is_show_home'] = $request->has('is_show_home') ? 1 : 0;
 
             // Kiểm tra xem có ảnh mới được tải lên không
             if ($request->hasFile('img_thumbnail') && $request->file('img_thumbnail')->isValid()) {
@@ -256,6 +246,23 @@ class ProductController extends Controller
 
         // Trả về các biến thể của sản phẩm
         return response()->json($product->variants);
+    }
+    public function updateQuantity($id)
+    {
+        $product = Product::with('variants')->find($id);
+
+        if (!$product) {
+            return redirect()->route('product.index')->with('error', 'Sản phẩm không tồn tại!');
+        }
+
+        // Tính tổng số lượng từ các biến thể
+        $totalQuantity = $product->variants->sum('pivot.quantity');
+
+        // Cập nhật số lượng vào bảng product
+        $product->quantity = $totalQuantity;
+        $product->save();
+
+        return redirect()->route('product.index')->with('success', 'Số lượng sản phẩm đã được cập nhật!');
     }
 
 }

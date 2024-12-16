@@ -10,8 +10,10 @@
                     </div>
                     <div class="card-body">
                         <div class="card-body text-center">
+
                             <img src="{{ Storage::url($user->img_use ?? 'users/dd.jpg') }}" alt="User Avatar"
                                 style="width: 180px; height: 180px" class="rounded-circle mb-3 img-thumbnail">
+
                             <h5 id="user-name" class="fw-bold ">{{ $user->name }}</h5>
                         </div>
                         <div class="mb-3">
@@ -50,15 +52,6 @@
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <!-- Gắn data-attributes vào nút Sửa -->
-                                                        {{-- <button type="button" class="btn edit-button" data-id="123"
-                                                            data-bs-toggle="modal" data-bs-target="#editAddressModal">
-                                                            
-                                                            Sửa
-                                                        </button> --}}
-                                                        {{-- @foreach ($addresses as $address) --}}
-
-                                                        {{-- <p>{{ $address->address }}</p> --}}
                                                         <button class="btn edit-address-btn" data-bs-toggle="modal"
                                                             data-bs-target="#editAddressModal"
                                                             data-id="{{ $address->id }}"
@@ -360,7 +353,12 @@
                             document.getElementById('editWardName').value = address.commune_name;
                         });
                     });
-                });
+
+                // document.getElementById('toggle-form-btn').addEventListener('click', function() {
+                //     const formContainer = document.getElementById('address-form-container');
+                //     formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
+                // });
+            });
             </script>
         </div>
     </div>
