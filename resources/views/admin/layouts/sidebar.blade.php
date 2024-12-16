@@ -88,6 +88,7 @@
                         </ul>
                     </div>
                 </li><!-- end Dashboard Menu -->
+
                 </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
@@ -103,6 +104,7 @@
                             </li>
                         </ul>
                     </div>
+
                 </li>
 
                 <li class="nav-item">

@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\BlogController;
+
 use App\Http\Controllers\Admin\MaterialController;
+
+use App\Http\Controllers\Auth\FacebookController;
+
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\VariantsController;
@@ -100,8 +104,9 @@ Route::get('password/reset/{token}', [AuthController::class, 'showResetPasswordF
 Route::post('password/reset', [AuthController::class, 'reset']);
 
 // Social Login Routes
-Route::get('login/facebook', [AuthController::class, 'redirectToFacebook']);
-Route::get('login/facebook/callback', [AuthController::class, 'handleFacebookCallback']);
+
+Route::get('login/facebook', [FacebookController::class, 'loginWithFacebook']);
+Route::get('login/facebook/callback', [FacebookController::class, 'loginCallBack']);
 
 // Admin Routes (Requires auth and admin middleware)
 

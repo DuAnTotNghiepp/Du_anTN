@@ -123,6 +123,7 @@
                 const productId = row.getAttribute('data-product-id');
                 const quantity = row.querySelector('.quantity-input').value;
                 cartItems.push({ product_id: productId, quantity: quantity });
+
             });
 
             selectedProductsInput.value = JSON.stringify(cartItems);
@@ -130,4 +131,34 @@
     });
 
     </script>
+
+            });
+
+            selectedProductsInput.value = JSON.stringify(cartItems);
+        });
+    });
+
+    </script>
+        function updateTotal() {
+            let total = 0;
+            const checkboxes = document.querySelectorAll('.product-checkbox:checked');
+
+            checkboxes.forEach(checkbox => {
+                total += parseFloat(checkbox.dataset.price);
+            });
+
+            // Cập nhật giá vào phần tổng giá
+            document.getElementById('total-price').innerText = total.toLocaleString() + ' VND';
+            document.getElementById('final-price').innerText = total.toLocaleString() + ' VND';
+        }
+
+        function toggleSelectAll(selectAllCheckbox) {
+            const checkboxes = document.querySelectorAll('.product-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+            updateTotal(); // Cập nhật tổng giá khi chọn hoặc bỏ chọn tất cả
+        }
+        </script>
+
 @endsection

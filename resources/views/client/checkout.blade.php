@@ -44,16 +44,14 @@
                                 <div class="col-lg-12">
                                     <!-- Select Address -->
                                     <div class="eg-input-group">
-                                        <label for="address-selection">Chọn Địa chỉ nhận</label><a
-                                            href="{{ route('profile', ['id' => auth()->user()->id]) }}">
+                                        <label for="address-selection">Chọn Địa chỉ nhận</label><a href="{{ route('profile', ['id' => auth()->user()->id]) }}">
                                             Thêm Địa Chỉ Khác
                                         </a>
                                         <select id="address-selection" name="user_address" class="form-control" required>
                                             <option value="">-- Chọn Địa chỉ --</option>
                                             @foreach ($addresses as $address)
                                                 <option value="{{ $address->id }}">
-                                                    {{ $address->address }}, {{ $address->commune }}, {{ $address->city }},
-                                                    {{ $address->state }}
+                                                    {{ $address->address }}, {{ $address->commune }}, {{ $address->city }}, {{ $address->state }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -62,18 +60,15 @@
                                     <div id="selected-address-info">
                                         <div class="eg-input-group">
                                             <label for="selected-first-name">Tên</label>
-                                            <input type="text" id="selected-first-name" name="user_name" value=""
-                                                readonly placeholder="Your first name">
+                                            <input type="text" id="selected-first-name" name="user_name" value="" readonly placeholder="Your first name">
                                         </div>
                                         <div class="eg-input-group">
                                             <label for="selected-email">Email</label>
-                                            <input type="email" id="selected-email" name="user_email" value=""
-                                                readonly placeholder="Your Email">
+                                            <input type="email" id="selected-email" name="user_email" value="" readonly placeholder="Your Email">
                                         </div>
                                         <div class="eg-input-group">
                                             <label for="selected-contact-number">Số Điện Thoại</label>
-                                            <input type="text" id="selected-contact-number" name="user_phone"
-                                                value="" readonly placeholder="Your Phone">
+                                            <input type="text" id="selected-contact-number" name="user_phone" value="" readonly placeholder="Your Phone">
                                         </div>
                                     </div>
                                 </div>
@@ -186,10 +181,10 @@
             </form>
         </div>
 
-    </div>
+        </div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
             const addressSelect = document.getElementById('address-selection');
             const addresses = @json($addresses); // Dữ liệu địa chỉ từ backend
             const firstNameInput = document.getElementById('selected-first-name');
@@ -197,7 +192,7 @@
             const phoneInput = document.getElementById('selected-contact-number');
 
             // Lắng nghe sự kiện thay đổi địa chỉ
-            addressSelect.addEventListener('change', function() {
+            addressSelect.addEventListener('change', function () {
                 const selectedId = this.value;
 
                 // Tìm địa chỉ tương ứng

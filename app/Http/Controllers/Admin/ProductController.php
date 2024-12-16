@@ -139,6 +139,12 @@ class ProductController extends Controller
                 $params['img_thumbnail'] = $request->file('img_thumbnail')->store('products', 'public');
             }
 
+
+        }
+        $res = Product::query()->create($params);
+        $res->calculateTotalQuantity();
+
+
             // Create the product
             $product = Product::create($params);
 
@@ -398,6 +404,7 @@ class ProductController extends Controller
 
         // Tính tổng số lượng từ các biến thể
         $totalQuantity = $product->variants->sum('pivot.quantity');
+
 
         // Cập nhật số lượng vào bảng product
         $product->quantity = $totalQuantity;
