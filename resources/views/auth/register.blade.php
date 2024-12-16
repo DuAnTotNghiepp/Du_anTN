@@ -17,7 +17,7 @@
 
     <style>
         .background-radial-gradient {
-          height: 900px;
+          height: 100%;
           background-color: hsl(220, 20%, 42%);
           background-image: radial-gradient(650px circle at 0% 0%,
               hsl(219, 12%, 49%) 15%,

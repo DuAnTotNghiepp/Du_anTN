@@ -98,30 +98,31 @@ public function show_my_order()
 
 public function storeAddress(Request $request)
 {
-    $request->validate([
+    
+    $validated = $request->validate([
         'first_name' => 'required|string|max:255',
         'last_name' => 'required|string|max:255',
-        'email' => 'required|email',
+        'email' => 'required|email|max:255',
         'contact_number' => 'required|string|max:15',
-        'city' => 'required|string|max:255',
-        'state' => 'required|string|max:255',
-        'commune' => 'required|string|max:255',
-        'address' => 'required|string|max:255',
+        'city' => 'required|string',  // Lưu tên tỉnh
+        'state' => 'required|string', // Lưu tên huyện
+        'commune' => 'required|string', // Lưu tên xã
+        'address' => 'required|string',
     ]);
 
     Address::create([
         'user_id' => auth()->id(),
-        'first_name' => $request->first_name,
-        'last_name' => $request->last_name,
-        'email' => $request->email,
-        'contact_number' => $request->contact_number,
-        'city' => $request->city,
-        'state' => $request->state,
-        'commune' => $request->commune,
-        'address' => $request->address,
+        'first_name' => $validated['first_name'],
+        'last_name' => $validated['last_name'],
+        'email' => $validated['email'],
+        'contact_number' => $validated['contact_number'],
+        'city' => $validated['city'],   // Lưu tên tỉnh
+        'state' => $validated['state'], // Lưu tên huyện
+        'commune' => $validated['commune'], // Lưu tên xã
+        'address' => $validated['address'],
     ]);
 
-    return redirect()->route('profile', ['id' => auth()->user()->id])->with('success', 'Địa chỉ đã được lưu thành công!');
+    return redirect()->back()->with('success', 'Address added successfully!');
 }
 public function updateAddress(Request $request, $id)
 {
