@@ -29,12 +29,37 @@
             /* Màu xám cho giá cũ */
         }
 
-.price-sale {
-    color: red; /* Màu đỏ cho giá khuyến mãi */
-    font-weight: bold; /* In đậm giá khuyến mãi */
-    font-size: 1.2em; /* Kích thước chữ lớn hơn */
-}
+        .price-sale {
+            color: red;
+            /* Màu đỏ cho giá khuyến mãi */
+            font-weight: bold;
+            /* In đậm giá khuyến mãi */
+            font-size: 1.2em;
+            /* Kích thước chữ lớn hơn */
+        }
 
+        .product-variation {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .product-variation:hover {
+            transform: scale(1.1);
+            /* Phóng to nhẹ khi hover */
+        }
+
+        .pd-showcase-img img {
+            max-width: 90%;
+            transition: opacity 0.3s ease;
+        }
+
+        #hover-preview {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 5px;
+            border-radius: 5px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
@@ -51,8 +76,19 @@
                         </div>
                         <div class="sidebar-bottom">
                             <ul class="sidebar-icons">
-                                <li><a href="dashboard"><i class="flaticon-user"></i></a></li>
-                                <li><a href="product.html"><i class="flaticon-heart"></i></a></li>
+                                <li>
+                                    @if (auth()->check())
+                                        <!-- Hiển thị tên người dùng với liên kết đến trang profile -->
+                                        <a href="{{ route('profile', ['id' => auth()->user()->id]) }}">
+                                            <i class="flaticon-user">
+                                        </a></i>
+                                    @else
+                                        <!-- Hiển thị liên kết đăng nhập và đăng ký nếu người dùng chưa đăng nhập -->
+                                        <a style="color: black" href="{{ route('login') }}">Đăng nhập</a>
+                                        <a style="color: black" href="{{ route('register') }}">Đăng ký</a>
+                                    @endif
+                                </li>
+                                <li><a href="{{ route('favorites.index') }}"><i class="flaticon-heart"></i></a></li>
                                 <li class="cart-icon">
                                     <i class="flaticon-shopping-cart"></i>
                                     <div class="cart-count"><span>10</span></div>
@@ -124,7 +160,17 @@
                             <i class="flaticon-envelope"></i>
                             <a href="mail.html"><span class="__cf_email__"
                                     data-cfemail="a7cec9c1c8d4d2d7d7c8d5d3e7c2dfc6cad7cbc289c4c8ca">[email&#160;:
-                                    lanvmph37426@fpt.edu.vn]</span></a>
+                                    @if (auth()->check())
+                                        <!-- Hiển thị email người dùng với liên kết đến trang profile -->
+                                        {{ Auth::user()->email }}
+                                    @else
+                                        <!-- Hiển thị liên kết đăng nhập và đăng ký nếu người dùng chưa đăng nhập -->
+                                        <a style="color: black" href="{{ route('login') }}">Đăng nhập</a> |
+                                        <a style="color: black" href="{{ route('register') }}">Đăng ký</a>
+                                    @endif
+
+                                    ]
+                                </span></a>
                         </div>
                         <div class="topbar-social-icons">
                             <ul class="d-flex align-items-center">

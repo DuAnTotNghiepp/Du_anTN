@@ -290,7 +290,7 @@
                                             </form>
                                         @endif
                                         {{-- Form Thêm vào Giỏ Hàng --}}
-                                        <form action="{{ route('cart.store') }}" method="POST" id="add-to-cart-form">
+                                        {{-- <form action="{{ route('cart.store') }}" method="POST" id="add-to-cart-form">
                                             @csrf
                                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                                             <input type="hidden" name="variant_id" id="variant_id">
@@ -300,7 +300,7 @@
                                             <input type="hidden" name="price" id="selected-price"
                                                 value="{{ $product->price_sale }}">
                                             <button type="submit" class="pd-add-cart">Thêm vào giỏ hàng</button>
-                                        </form>
+                                        </form> --}}
                                         <button class="pd-add-cart"
                                             style="background: none; border: none; background-color: red"
                                             id="favorite-btn" data-product-id="{{ $product->id }}">
@@ -878,4 +878,3 @@
                 });
             });
         </script>
-    @endsection
