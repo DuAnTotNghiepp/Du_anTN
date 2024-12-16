@@ -59,13 +59,11 @@ Route::controller(ProductController::class)
             ->prefix('admin/product_variants/')
             ->group(function () {
                 Route::get('/', 'index')->name('index');
-                Route::post('store', 'store')->name('store');
-                Route::get('{id}/show', 'show')->name('show');
-                Route::get('{id}/edit', 'edit')->name('edit');
-                Route::put('{id}/update', 'update')->name('update');
             });
+            Route::post('/product-variant/update-stock', [Product_VariantController::class, 'updateStock'])->name('product_variant.update_stock');
+            Route::delete('/product-variant/{id}', [Product_VariantController::class, 'destroy'])->name('product_variant.destroy');
+            Route::get('/products/{id}/update-quantity', [ProductController::class, 'updateQuantity']);
     });
-    Route::get('/products/{id}/update-quantity', [ProductController::class, 'updateQuantity']);
 
 Route::controller(VariantsController::class)
     ->name('variant.')

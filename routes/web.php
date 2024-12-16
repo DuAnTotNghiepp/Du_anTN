@@ -46,6 +46,8 @@ Route::get('/', [ClientController::class, 'index'])->name('index');
 Route::get('product/{id}', [ClientController::class, 'show'])->middleware('save.redirect')->name('product.product_detail');
 
 Route::get('/api/variant-stock', [ClientController::class, 'getVariantStock']);
+Route::post('/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
+
 
 //profile
 Route::get('/profile/{id}', [ClientController::class, 'show_profile'])->name('profile');

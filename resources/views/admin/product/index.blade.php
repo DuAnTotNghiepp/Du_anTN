@@ -4,6 +4,72 @@
     Danh Sách Sản Phẩm
 @endsection
 @section('content')
+    <style>
+        /* Tùy chỉnh giao diện phân trang */
+        .pagination-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .pagination {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .pagination li {
+            margin: 0 5px;
+        }
+
+        .pagination a,
+        .pagination span {
+            display: inline-block;
+            padding: 12px 20px;
+            font-size: 18px;
+            /* Tăng kích thước font */
+            color: #fff;
+            background-color: #007bff;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .pagination a:hover,
+        .pagination span:hover {
+            background-color: #0056b3;
+        }
+
+        .pagination .disabled a,
+        .pagination .disabled span {
+            background-color: #ddd;
+            cursor: not-allowed;
+        }
+
+        .pagination .active a,
+        .pagination .active span {
+            background-color: #0056b3;
+            color: white;
+            font-weight: bold;
+        }
+
+        .pagination a {
+            border: 1px solid #ccc;
+        }
+
+        .pagination span {
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+
+        .pagination a:focus,
+        .pagination span:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(38, 143, 255, 0.5);
+        }
+    </style>
     <!-- start page title -->
     <div class="row">
 
@@ -59,23 +125,6 @@
                             <a href="{{ route('product.create') }}" class="btn btn-info add-btn"><i
                                     class="ri-add-fill me-1 align-bottom"></i> Add Product</a>
                         </div>
-                        <div class="flex-shrink-0">
-                            <div class="hstack text-nowrap gap-2">
-                                <button class="btn btn-soft-danger" id="remove-actions" onClick="deleteMultiple()"><i
-                                        class="ri-delete-bin-2-line"></i></button>
-                                <button class="btn btn-danger"><i class="ri-filter-2-line me-1 align-bottom"></i>
-                                    Filters</button>
-                                <button class="btn btn-soft-success">Import</button>
-                                <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown"
-                                    aria-expanded="false" class="btn btn-soft-info"><i class="ri-more-2-fill"></i></button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                                    <li><a class="dropdown-item" href="#">All</a></li>
-                                    <li><a class="dropdown-item" href="#">Last Week</a></li>
-                                    <li><a class="dropdown-item" href="#">Last Month</a></li>
-                                    <li><a class="dropdown-item" href="#">Last Year</a></li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -87,19 +136,9 @@
                     <div class="row g-3">
                         <div class="col-md-4">
                             <div class="search-box">
-                                <input type="text" class="form-control search" id="searchInput" placeholder="Search for contact...">
+                                <input type="text" class="form-control search" id="searchInput"
+                                    placeholder="Search for contact...">
                                 <i class="ri-search-line search-icon"></i>
-                            </div>
-                        </div>
-                        <div class="col-md-auto ms-auto">
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="text-muted">Sort by: </span>
-                                <select class="form-control mb-0" data-choices data-choices-search-false
-                                    id="choices-single-default">
-                                    <option value="Name">Name</option>
-                                    <option value="Company">Company</option>
-                                    <option value="Lead">Lead</option>
-                                </select>
                             </div>
                         </div>
                     </div>
@@ -108,13 +147,13 @@
                     <div>
                         <div class="table-responsive table-card mb-3">
                             <table class="table align-middle table-nowrap mb-0" id="customerTable">
-                                @if(session('success'))
+                                @if (session('success'))
                                     <div class="alert alert-success">
                                         {{ session('success') }}
                                     </div>
                                 @endif
 
-                                @if(session('error'))
+                                @if (session('error'))
                                     <div class="alert alert-danger">
                                         {{ session('error') }}
                                     </div>
@@ -132,7 +171,8 @@
                                         <th class="sort" data-sort="name" scope="col">Tên Sản Phẩm</th>
                                         <th class="sort" data-sort="company_name" scope="col">Giá Thường</th>
                                         <th class="sort" data-sort="email_id" scope="col">Giá Khuyến Mãi</th>
-                                        <th class="sort" data-sort="category_name" scope="col">Danh Mục Sản Phẩm</th>
+                                        <th class="sort" data-sort="category_name" scope="col">Danh Mục Sản Phẩm
+                                        </th>
                                         <th class="sort" data-sort="phone" scope="col">Số Lượng</th>
                                         <th class="sort" data-sort="lead_score" scope="col">Mã Sản Phẩm</th>
                                         <th class="sort" data-sort="tags" scope="col">Trạng Thái</th>
@@ -159,7 +199,7 @@
                                                             khong co hinh anh
                                                         @else
                                                             <img src="{{ Storage::url($pr->img_thumbnail) }}"
-                                                                alt="" class="avatar-xs rounded-circle"  >
+                                                                alt="" class="avatar-xs rounded-circle">
                                                         @endif
                                                     </div>
                                                     <div class="flex-grow-1 ms-2 name">{{ $pr->name }}</div>
@@ -189,17 +229,16 @@
                                                                         href="{{ route('product.edit', ['id' => $pr->id]) }}"><i
                                                                             class="ri-pencil-fill align-bottom me-2 text-muted"></i>
                                                                         Edit</a></li>
-                                                                        <li><a href="{{ url('/products/' . $pr->id . '/update-quantity') }}" class="btn btn-primary">
-                                                                            Cập nhật số lượng
-                                                                        </a>
-                                                                        </li>
+                                                                <li><a href="{{ url('/products/' . $pr->id . '/update-quantity') }}"
+                                                                        class="btn btn-primary">
+                                                                        Cập nhật số lượng
+                                                                    </a>
+                                                                </li>
                                                                 <li>
                                                                     <button class="dropdown-item delete-btn"
                                                                         data-id="{{ $pr->id }}"><i
                                                                             class="ri-delete-bin-2-line"></i> Xóa</button>
                                                                 </li>
-
-
                                                             </ul>
                                                         </div>
                                                     </li>
@@ -209,232 +248,67 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            <div class="noresult" style="display: none">
-                                <div class="text-center">
-                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
-                                        colors="primary:#121331,secondary:#08a88a"
-                                        style="width:75px;height:75px"></lord-icon>
-                                    <h5 class="mt-2">Sorry! No Result Found</h5>
-                                    <p class="text-muted mb-0">We've searched more than 150+ contacts We did not find any
-                                        contacts for you search.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-end mt-3">
-                            <div class="pagination-wrap hstack gap-2">
-                                <a class="page-item pagination-prev disabled" href="#">
-                                    Previous
-                                </a>
-                                <ul class="pagination listjs-pagination mb-0"></ul>
-                                <a class="page-item pagination-next" href="#">
-                                    Next
-                                </a>
+                            <div class="pagination-container">
+                                {{ $listPro->links() }}
                             </div>
                         </div>
                     </div>
-                    <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content border-0">
-                                <div class="modal-header bg-info-subtle p-3">
-                                    <h5 class="modal-title" id="exampleModalLabel"></h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                                        id="close-modal"></button>
-                                </div>
-                                <form class="tablelist-form" autocomplete="off">
-                                    <div class="modal-body">
-                                        <input type="hidden" id="id-field" />
-                                        <div class="row g-3">
-                                            <div class="col-lg-12">
-                                                <div class="text-center">
-                                                    <div class="position-relative d-inline-block">
-                                                        <div class="position-absolute  bottom-0 end-0">
-                                                            <label for="customer-image-input" class="mb-0"
-                                                                data-bs-toggle="tooltip" data-bs-placement="right"
-                                                                title="Select Image">
-                                                                <div class="avatar-xs cursor-pointer">
-                                                                    <div
-                                                                        class="avatar-title bg-light border rounded-circle text-muted">
-                                                                        <i class="ri-image-fill"></i>
-                                                                    </div>
-                                                                </div>
-                                                            </label>
-                                                            <input class="form-control d-none" value=""
-                                                                id="customer-image-input" type="file"
-                                                                accept="image/png, image/gif, image/jpeg">
-                                                        </div>
-                                                        <div class="avatar-lg p-1">
-                                                            <div class="avatar-title bg-light rounded-circle">
-                                                                <img src="assets/images/users/user-dummy-img.jpg"
-                                                                    id="customer-img"
-                                                                    class="avatar-md rounded-circle object-fit-cover" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <label for="name-field" class="form-label">Name</label>
-                                                    <input type="text" id="customername-field" class="form-control"
-                                                        placeholder="Enter name" required />
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div>
-                                                    <label for="company_name-field" class="form-label">Company
-                                                        Name</label>
-                                                    <input type="text" id="company_name-field" class="form-control"
-                                                        placeholder="Enter company name" required />
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div>
-                                                    <label for="designation-field" class="form-label">Designation</label>
-                                                    <input type="text" id="designation-field" class="form-control"
-                                                        placeholder="Enter Designation" required />
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div>
-                                                    <label for="email_id-field" class="form-label">Email ID</label>
-                                                    <input type="text" id="email_id-field" class="form-control"
-                                                        placeholder="Enter email" required />
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div>
-                                                    <label for="phone-field" class="form-label">Phone</label>
-                                                    <input type="text" id="phone-field" class="form-control"
-                                                        placeholder="Enter phone no" required />
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div>
-                                                    <label for="lead_score-field" class="form-label">Lead Score</label>
-                                                    <input type="text" id="lead_score-field" class="form-control"
-                                                        placeholder="Enter value" required />
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div>
-                                                    <label for="taginput-choices"
-                                                        class="form-label font-size-13 text-muted">Tags</label>
-                                                    <select class="form-control" name="taginput-choices"
-                                                        id="taginput-choices" multiple>
-                                                        <option value="Lead">Lead</option>
-                                                        <option value="Partner">Partner</option>
-                                                        <option value="Exiting">Exiting</option>
-                                                        <option value="Long-term">Long-term</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <div class="hstack gap-2 justify-content-end">
-                                            <button type="button" class="btn btn-light"
-                                                data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-success" id="add-btn">Add
-                                                Contact</button>
-                                            <!-- <button type="button" class="btn btn-success" id="edit-btn">Update</button> -->
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!--end add modal-->
-
-                    <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="btn-close" id="deleteRecord-close"
-                                        data-bs-dismiss="modal" aria-label="Close" id="btn-close"></button>
-                                </div>
-                                <div class="modal-body p-5 text-center">
-                                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
-                                        colors="primary:#405189,secondary:#f06548"
-                                        style="width:90px;height:90px"></lord-icon>
-                                    <div class="mt-4 text-center">
-                                        <h4 class="fs-semibold">You are about to delete a contact ?</h4>
-                                        <p class="text-muted fs-14 mb-4 pt-1">Deleting your contact will remove all of your
-                                            information from our database.</p>
-                                        <div class="hstack gap-2 justify-content-center remove">
-                                            <button class="btn btn-link link-success fw-medium text-decoration-none"
-                                                id="deleteRecord-close" data-bs-dismiss="modal"><i
-                                                    class="ri-close-line me-1 align-middle"></i> Close</button>
-                                            <button class="btn btn-danger" id="delete-record">Yes, Delete It!!</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--end delete modal -->
 
                 </div>
             </div>
             <!--end card-->
         </div>
         <!--end col-->
-
-        <!--end col-->
     </div>
     <!-- end main content-->
     <script>
+        document.getElementById('searchInput').addEventListener('input', function() {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll('#customerTable tbody tr');
 
-document.getElementById('searchInput').addEventListener('input', function () {
-    let filter = this.value.toLowerCase();
-    let rows = document.querySelectorAll('#customerTable tbody tr');
-
-    rows.forEach(function (row) {
-        let productName = row.querySelector('.name .flex-grow-1').textContent.toLowerCase();
-        let productPrice = row.querySelector('.company_name').textContent.toLowerCase();
-        let productCate = row.querySelector('.category_name').textContent.toLowerCase();
-        // Kiểm tra nếu tên sản phẩm hoặc giá khớp với giá trị tìm kiếm
-        if (productName.includes(filter) || productPrice.includes(filter) || productCate.includes(filter)) {
-            row.style.display = ''; // Hiển thị nếu tên hoặc giá khớp với kết quả tìm kiếm
-        } else {
-            row.style.display = 'none'; // Ẩn nếu không khớp
-        }
-    });
-});
-
-
+            rows.forEach(function(row) {
+                let productName = row.querySelector('.name .flex-grow-1').textContent.toLowerCase();
+                let productPrice = row.querySelector('.company_name').textContent.toLowerCase();
+                let productCate = row.querySelector('.category_name').textContent.toLowerCase();
+                // Kiểm tra nếu tên sản phẩm hoặc giá khớp với giá trị tìm kiếm
+                if (productName.includes(filter) || productPrice.includes(filter) || productCate.includes(
+                        filter)) {
+                    row.style.display = ''; // Hiển thị nếu tên hoặc giá khớp với kết quả tìm kiếm
+                } else {
+                    row.style.display = 'none'; // Ẩn nếu không khớp
+                }
+            });
+        });
 
         document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            var productId = this.getAttribute('data-id');
-            var deleteModal = new bootstrap.Modal(document.getElementById('deleteRecordModal'));
-            deleteModal.show();
+            button.addEventListener('click', function() {
+                var productId = this.getAttribute('data-id');
+                var deleteModal = new bootstrap.Modal(document.getElementById('deleteRecordModal'));
+                deleteModal.show();
 
-            document.getElementById('confirmDelete').onclick = function() {
-                fetch('/admin/products/' + productId + '/destroy', {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Content-Type': 'application/json',
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert(data.message);
-                            window.location.reload(); // Reload lại trang sau khi xóa
-                        } else {
-                            alert('Lỗi: ' + data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Có lỗi xảy ra:', error);
-                    });
-            };
+                document.getElementById('confirmDelete').onclick = function() {
+                    fetch('/admin/products/' + productId + '/destroy', {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json',
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert(data.message);
+                                window.location.reload(); // Reload lại trang sau khi xóa
+                            } else {
+                                alert('Lỗi: ' + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Có lỗi xảy ra:', error);
+                        });
+                };
+            });
         });
-    });
     </script>
-
-
-
-
     </html>
 @endsection

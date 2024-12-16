@@ -7,6 +7,7 @@ use App\Http\Requests\OrderRequest;
 use App\Models\Order;
 use App\Models\Order_Items;
 use App\Models\Product;
+use App\Models\Product_Variant;
 use Exception;
 
 use Illuminate\Support\Facades\DB;
@@ -27,7 +28,6 @@ class OrderController extends Controller
             'user_note' => 'nullable|string',
             'payment_method' => 'required|in:cash,vnpay',
             'product_id' => 'required|exists:products,id',
-            'total_price' => 'required|numeric',
             'quantity' => 'integer|min:1',
             'size' => 'required|string',
             'color' => 'required|string',
@@ -39,26 +39,42 @@ class OrderController extends Controller
         }
         $validatedData['status'] = $request->payment_method === 'vnpay' ? 'err' : 'pending';
 
-        $product = Product::findOrFail($validatedData['product_id']);
-        $variant = $product->variants()->first();
+        $product = Product::find($validatedData['product_id']);
+        if (!$product) {
+            return redirect()->back()->withErrors(['message' => 'Sản phẩm không tồn tại.']);
+        }
+        $variant = Product_Variant::where('product_id', $product->id)
+        ->whereHas('color', function ($query) use ($validatedData) {
+            $query->where('value', $validatedData['color']);
+        })
+        ->whereHas('size', function ($query) use ($validatedData) {
+            $query->where('value', $validatedData['size']);
+        })
+        ->first();
 
-        $quantity = $validatedData['quantity'];
-        if ($product->quantity < $quantity) {
+        if (!$variant) {
+            return redirect()->back()->withErrors(['message' => 'Không tìm thấy biến thể phù hợp.']);
+        }
+
+        // Kiểm tra tồn kho
+        if ($variant->stock < $validatedData['quantity']) {
             return redirect()->back()->withErrors(['message' => 'Số lượng sản phẩm không đủ trong kho.']);
         }
         $shippingFee = 5000; // Có thể cấu hình linh hoạt
         $validatedData['total_price'] = ($variant->sale_price ?? $product->price_sale) * $validatedData['quantity'] + $shippingFee;
-        $order = Order::create($validatedData);
 
-        $size = $request->input('size');
-        $color = $request->input('color');
+        $variant->stock -= $validatedData['quantity'];
+        $variant->save();
+        $order = Order::create($validatedData);
+        $color = $validatedData['color'];
+        $size = $validatedData['size'];
         Order_Items::create([
             'order_id' => $order->id,
             'user_id' =>auth()->id(),
             'product_id' => $product->id,
             'cart_id' => null,
             'product_variant_id' => $variant ? $variant->id : null,
-            'quantity' => $quantity,
+            'quantity' => $validatedData['quantity'],
             'product_name' => $product->name,
             'product_sku' => $product->sku,
             'product_img_thumbnail' => $product->img_thumbnail,
@@ -68,8 +84,6 @@ class OrderController extends Controller
             'color' => $color,
 
         ]);
-        $product->quantity -= $quantity;
-        $product->save();
         if ($request->payment_method === 'vnpay') {
             return $this->vnpayPayment($order, $request);
         }
@@ -91,7 +105,6 @@ class OrderController extends Controller
             'size' => 'required|array',
             'voucher_code' => 'nullable|string',
         ]);
-
         // Create a new order
         $order = Order::create([
             'user_id' => Auth::id(),
@@ -107,7 +120,7 @@ class OrderController extends Controller
 
         // Save the order items (from the cart)
         foreach ($request->quantity as $key => $quantity) {
-            Order_Items::create([
+            $orderItem = Order_Items::create([
                 'order_id' => $order->id,
                 'user_id' => Auth::id(),
                 'product_id' => $request->product_id[$key],
@@ -121,6 +134,18 @@ class OrderController extends Controller
                 'size' => $request->size[$key],
                 'color' => $request->color[$key],
             ]);
+
+            if ($orderItem->product_variant_id) {
+                $productVariant = Product_Variant::find($orderItem->product_variant_id);
+                if ($productVariant && $productVariant->stock >= $quantity) {
+                    // Reduce stock
+                    $productVariant->stock -= $quantity;
+                    $productVariant->save();
+                } else {
+                    // Handle insufficient stock
+                    return redirect()->back()->with('error', 'Không đủ số lượng sản phẩm trong kho!');
+                }
+            }
         }
 
         // Redirect to order confirmation page

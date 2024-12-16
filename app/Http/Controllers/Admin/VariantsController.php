@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Variants;
 use App\Http\Requests\StoreVariantsRequest;
 use App\Http\Requests\UpdateVariantsRequest;
+use App\Models\Variant;
 
 class VariantsController extends Controller
 {
@@ -15,7 +16,7 @@ class VariantsController extends Controller
     public function index()
     {
         //
-        $listVari = Variants::query()->latest('id')->get();
+        $listVari = Variant::query()->latest('id')->get();
         return view('admin.variant.index', compact('listVari'));
     }
 
@@ -34,7 +35,7 @@ class VariantsController extends Controller
     public function store(StoreVariantsRequest $request)
     {
         // Khởi tạo một instance mới của Variants
-        $variant = new Variants();
+        $variant = new Variant();
 
         // Gán giá trị "thuoctinh" (Color hoặc Size) vào trường "name"
         $variant->name = $request->input('thuoctinh');
@@ -58,35 +59,11 @@ class VariantsController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Variants $variants)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Variants $variants)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateVariantsRequest $request, Variants $variants)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy($id)
     {
-        $variant = Variants::find($id);
+        $variant = Variant::find($id);
 
         if (!$variant) {
             return response()->json(['success' => false, 'message' => 'Biến thể không tồn tại.'], 404);

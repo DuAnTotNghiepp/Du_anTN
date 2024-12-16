@@ -35,6 +35,31 @@
             border: 1px solid #ddd;
             border-radius: 5px;
         }
+
+        /* Đảm bảo mỗi biến thể có một dòng riêng */
+        .card-body .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            /* Khoảng cách giữa các dòng */
+        }
+
+        .card-body .form-group label {
+            display: flex;
+            align-items: center;
+        }
+
+        .card-body .form-group label .ml-2 {
+            margin-left: 10px;
+            /* Khoảng cách giữa màu sắc và kích thước */
+        }
+
+        .card-body .form-group input {
+            margin-left: 10px;
+            /* Khoảng cách giữa label và ô nhập liệu */
+            width: 150px;
+            /* Đặt độ rộng cho ô nhập liệu */
+        }
     </style>
 
     <body>
@@ -97,7 +122,8 @@
                             <div class="mb-3">
                                 <label class="form-label">Ảnh liên Quan</label>
                                 <div class="dropzone">
-                                    <input type="file" id="product-image-input" name="image[]" multiple accept="image/png, image/gif, image/jpeg" class="form-control">
+                                    <input type="file" id="product-image-input" name="image[]" multiple
+                                        accept="image/png, image/gif, image/jpeg" class="form-control">
                                     <div class="preview-gallery" id="galleryPreview"></div>
                                 </div>
                             </div>
@@ -117,7 +143,9 @@
                                     <div class="mb-3 mb-lg-0">
                                         <label for="choices-priority-input" class="form-label">Giá Thường</label>
 
-                                        <input type="number" class="form-control" name="price_regular" id="price_regular" step="0.01" data-provider="flatpickr" data-date-format="d M, Y" value="{{ old('price_regular') }}">
+                                        <input type="number" class="form-control" name="price_regular" id="price_regular"
+                                            step="0.01" data-provider="flatpickr" data-date-format="d M, Y"
+                                            value="{{ old('price_regular') }}">
                                         @error('price_regular')
                                             <span id="price-regular-error" style="color: red">{{ $message }}</span>
                                         @enderror
@@ -128,8 +156,10 @@
                                 <div class="col-lg-4">
                                     <div class="mb-3 mb-lg-0">
                                         <label for="choices-status-input" class="form-label">Giá Khuyến Mãi</label>
-                                        <input type="number" class="form-control" name="price_sale" id="price_sale" value="{{ old('price_sale') }}">
-                                        <span id="priceSaleError" style="color: red; display: none;">Giá khuyến mãi không được lớn hơn giá thường.</span>
+                                        <input type="number" class="form-control" name="price_sale" id="price_sale"
+                                            value="{{ old('price_sale') }}">
+                                        <span id="priceSaleError" style="color: red; display: none;">Giá khuyến mãi không
+                                            được lớn hơn giá thường.</span>
                                         @error('price_sale')
                                             <span id="price-sale-error" style="color: red">{{ $message }}</span>
                                         @enderror
@@ -171,8 +201,7 @@
                             <div class="mb-3">
                                 <div id="ckeditor-classic">
                                     <div class="row gy-3">
-                                        <div class="col-lg-12"
-                                            style="display: flex; justify-content: space-evenly;">
+                                        <div class="col-lg-12" style="display: flex; justify-content: space-evenly;">
                                             <!-- Switches Color -->
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
@@ -222,7 +251,7 @@
                     </div>
                 </div>
                 <!-- end card -->
-                <div class="card">
+                {{-- <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">Chất Liệu</h5>
                     </div>
@@ -235,33 +264,30 @@
                         @enderror
                     </div>
                     <!-- end card body -->
-                </div>
+                </div> --}}
                 <!-- end card -->
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">Thuộc Tính Sản Phẩm</h5>
                     </div>
                     <div class="card-body">
+                        <!-- Thêm số lượng cho từng kết hợp màu sắc và kích thước -->
                         <div class="mb-3">
-                            <label for="choices-categories-input" class="form-label">Màu Sắc</label>
-                            @foreach ($Color as $col)
-                                <input type="checkbox" value="{{$col->id}}" name="id_variant[]">
-                                <div style="width: 20px; height: 20px; background-color: {{$col->value}}; display: inline-block; border: 1px solid #ccc;"></div>
-                            @endforeach
-                        </div>
-                        <div class="mb-3">
-                            <label for="choices-categories-input" class="form-label">Kích Thước</label>
-                            @foreach ($Size as $col)
-                                <input type="checkbox" value="{{$col->id}}" name="id_variant[]">
-                                {{$col->value}}
+                            <label for="stock" class="form-label">Số lượng cho từng biến thể</label>
+                            @foreach ($Color as $color)
+                                @foreach ($Size as $size)
+                                    <div class="form-group">
+                                        <label>
+                                            <input style="width: 20px; height: 20px;" type="checkbox" class="form-check-input" name="selected_variants[{{ $color->id }}][{{ $size->id }}]" value="1">
+                                            <div style="width: 20px; height: 20px; border-radius: 10px; background-color: {{ $color->value }}; display: inline-block; border: 1px solid #ccc;"></div> - {{ $size->value }}
+                                        </label>
+                                        <input type="number" class="form-control stock-input" name="stock[{{ $color->id }}][{{ $size->id }}]" min="0" placeholder="Số lượng sản phẩm" disabled />
+                                    </div>
+                                @endforeach
                             @endforeach
                         </div>
                     </div>
-                    <!-- end card body -->
                 </div>
-                <!-- end card -->
-
-                <!-- end card -->
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">Categories</h5>
@@ -310,6 +336,33 @@
 
 
         <!-- end main content-->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+            // Lấy tất cả các checkbox
+            const checkboxes = document.querySelectorAll('.form-check-input');
+
+            checkboxes.forEach(checkbox => {
+                // Thêm sự kiện change cho từng checkbox
+                checkbox.addEventListener('change', function () {
+                    const parent = this.closest('.form-group'); // Tìm phần tử cha chứa cả checkbox và input
+                    const stockInput = parent.querySelector('.stock-input'); // Lấy input số lượng
+
+                    if (this.checked) {
+                        // Nếu checkbox được chọn, kích hoạt input và focus
+                        stockInput.disabled = false;
+                        stockInput.value = ''; // Đặt giá trị mặc định là rỗng
+                        stockInput.focus();
+                    } else {
+                        // Nếu checkbox bỏ chọn, vô hiệu hóa input và xóa giá trị
+                        stockInput.disabled = true;
+                        stockInput.value = '';
+                    }
+                });
+            });
+        });
+
+        </script>
+
         <script>
             document.getElementById('project-thumbnail-img').addEventListener('change', function(event) {
                 const [file] = event.target.files;
@@ -448,89 +501,89 @@
                 }
             });
         </script>
-<script>
-    var quantityInput = document.getElementById('quantity');
-    var quantityError = document.getElementById('quantity-error');
+        <script>
+            var quantityInput = document.getElementById('quantity');
+            var quantityError = document.getElementById('quantity-error');
 
-    quantityInput.addEventListener('focus', function() {
-        if (quantityError) {
-            quantityError.style.display = 'none';
-        }
-    });
-</script>
- <script>
-    var userManualInput = document.getElementById('user_manual');
-    var userManualError = document.getElementById('user-manual-error');
+            quantityInput.addEventListener('focus', function() {
+                if (quantityError) {
+                    quantityError.style.display = 'none';
+                }
+            });
+        </script>
+        <script>
+            var userManualInput = document.getElementById('user_manual');
+            var userManualError = document.getElementById('user-manual-error');
 
-    userManualInput.addEventListener('focus', function() {
-        if (userManualError) {
-            userManualError.style.display = 'none';
-        }
-    });
+            userManualInput.addEventListener('focus', function() {
+                if (userManualError) {
+                    userManualError.style.display = 'none';
+                }
+            });
 
-    userManualInput.addEventListener('blur', function() {
-        if (userManualInput.value.trim() === '' && userManualError) {
-            userManualError.style.display = 'block';
-        }
-    });
-</script>
-<script>
-    var skuInput = document.getElementById('sku');
-    var skuError = document.getElementById('sku-error');
-    var generateButton = document.getElementById('generateSKU');
+            userManualInput.addEventListener('blur', function() {
+                if (userManualInput.value.trim() === '' && userManualError) {
+                    userManualError.style.display = 'block';
+                }
+            });
+        </script>
+        <script>
+            var skuInput = document.getElementById('sku');
+            var skuError = document.getElementById('sku-error');
+            var generateButton = document.getElementById('generateSKU');
 
-    skuInput.addEventListener('focus', function() {
-        if (skuError) {
-            skuError.style.display = 'none';
-        }
-    });
+            skuInput.addEventListener('focus', function() {
+                if (skuError) {
+                    skuError.style.display = 'none';
+                }
+            });
 
-    skuInput.addEventListener('blur', function() {
-        if (skuInput.value.trim() === '' && skuError) {
-            skuError.style.display = 'block';
-        }
-    });
+            skuInput.addEventListener('blur', function() {
+                if (skuInput.value.trim() === '' && skuError) {
+                    skuError.style.display = 'block';
+                }
+            });
 
-    generateButton.addEventListener('click', function() {
-        if (skuError) {
-            skuError.style.display = 'none';
-        }
-    });
+            generateButton.addEventListener('click', function() {
+                if (skuError) {
+                    skuError.style.display = 'none';
+                }
+            });
 
-    generateButton.addEventListener('focus', function() {
-        if (skuError) {
-            skuError.style.display = 'none';
-        }
-    });
+            generateButton.addEventListener('focus', function() {
+                if (skuError) {
+                    skuError.style.display = 'none';
+                }
+            });
 
-    generateButton.addEventListener('blur', function() {
-        if (skuInput.value.trim() === '' && skuError) {
-            skuError.style.display = 'block';
-        }
-    });
-</script>
-<script>
-    var materialInput = document.getElementById('material');
-    var materialError = document.getElementById('material-error');
+            generateButton.addEventListener('blur', function() {
+                if (skuInput.value.trim() === '' && skuError) {
+                    skuError.style.display = 'block';
+                }
+            });
+        </script>
+        <script>
+            var materialInput = document.getElementById('material');
+            var materialError = document.getElementById('material-error');
 
-    materialInput.addEventListener('focus', function() {
-        if (materialError) {
-            materialError.style.display = 'none';
-        }
-    });
+            materialInput.addEventListener('focus', function() {
+                if (materialError) {
+                    materialError.style.display = 'none';
+                }
+            });
 
-    materialInput.addEventListener('blur', function() {
-        if (materialInput.value.trim() === '' && materialError) {
-            materialError.style.display = 'block';
-        }
-    });
+            materialInput.addEventListener('blur', function() {
+                if (materialInput.value.trim() === '' && materialError) {
+                    materialError.style.display = 'block';
+                }
+            });
 
-    document.addEventListener('click', function(event) {
-        if (event.target.type !== 'text' && materialInput.value.trim() === '' && materialError) {
-            materialError.style.display = 'block';
-        }
-    });
-</script>
+            document.addEventListener('click', function(event) {
+                if (event.target.type !== 'text' && materialInput.value.trim() === '' && materialError) {
+                    materialError.style.display = 'block';
+                }
+            });
+        </script>
     </body>
 
     </html>
