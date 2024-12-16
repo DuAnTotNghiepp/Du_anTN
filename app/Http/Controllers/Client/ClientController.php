@@ -16,6 +16,7 @@ use App\Models\Order;
 use App\Models\User;
 use App\Models\Address;
 use App\Models\Blog;
+use App\Models\Cart;
 use App\Models\Vouchers;
 
 class ClientController extends Controller
@@ -25,7 +26,7 @@ class ClientController extends Controller
     {
         $data = Catalogues::query()->get();
         $products = Product::query()->get();
-
+        $cartItems = Cart::where('user_id', auth()->id())->get();
         $listSp = Product::where('is_active', 1)->get()->map(function ($product) {
             $averageRating = BinhLuan::where('product_id', $product->id)
                 ->avg('rating') ?? 0;
@@ -48,7 +49,7 @@ class ClientController extends Controller
         $blogs = Blog::all();
 
 
-        return view('client.home', compact(['listSp', 'listHot', 'data', 'products','vouchers', 'blogs']));
+        return view('client.home', compact(['listSp', 'listHot', 'data', 'products','vouchers', 'blogs', 'cartItems']));
     }
     public function getProductsByCategory(Request $request)
     {
@@ -120,8 +121,6 @@ class ClientController extends Controller
 }
 
 
-
-
     // public function show($id)
     // {
     //     // Tìm sản phẩm theo ID
@@ -134,21 +133,6 @@ class ClientController extends Controller
     {
         return view('client.checkout');
     }
-
-    // public function show_variants($id)
-    // {
-    //     // Lấy sản phẩm và các biến thể của sản phẩm
-    // $product = Product::with('variants')->findOrFail($id);
-
-    // // Lọc biến thể theo `color` và `size`
-    // $colors = $product->variants->where('name', 'color')->pluck('value')->unique();
-    // $sizes = $product->variants->where('name', 'size')->pluck('value')->unique();
-
-    //    // Kiểm tra dữ liệu
-    //   dd($product, $colors, $sizes);
-    // // Trả về view với dữ liệu
-    // return view('client.product_detail', compact('product', 'colors', 'sizes'));
-    // }
 
     public function show_variants($id)
     {
@@ -165,19 +149,26 @@ class ClientController extends Controller
 
     public function show($id)
     {
-        $product = Product::with('variants')->findOrFail($id);
-        $variants = $product->variants->map(function ($variant) {
+        $product = Product::with(['productVariants.color', 'productVariants.size'])->findOrFail($id);
+        $productVariant = Product_Variant::where('product_id', $product->id)->first();
+        $cartItems = Cart::where('user_id', auth()->id())->get();
+
+        // Lấy danh sách màu sắc và kích thước
+        $colors = $product->productVariants->pluck('color.value')->unique(); // ['#ffdd00', '#000000']
+        $sizes = $product->productVariants->pluck('size.value')->unique();   // ['M', 'L']
+
+        // Tạo dữ liệu số lượng theo kết hợp màu và kích thước
+        $variantQuantities = $product->productVariants->mapWithKeys(function ($variant) {
             return [
-                'id' => $variant->id,
-                'color' => $variant->name === 'Color' ? $variant->value : null,
-                'size' => $variant->name === 'Size' ? $variant->value : null,
-                'quantity' => $variant->pivot->quantity, // Giả sử số lượng lưu trong bảng pivot
+                $variant->color->value . '-' . $variant->size->value => $variant->stock
             ];
         });
+        // dd($colors, $sizes, $variantQuantities);
+
         $comments = BinhLuan::where('product_id', $product->id)->orderBy('created_at', 'desc')->paginate(6); // Hiển thị 6 bình luận mỗi trang
         // Tính toán điểm đánh giá trung bình
         $averageRating = $comments->count() > 0 ? $comments->avg('rating') : 0;
-        return view('client.product_detail', compact('product', 'comments', 'averageRating', 'variants'));
+        return view('client.product_detail', compact('product', 'variantQuantities', 'comments', 'averageRating', 'colors', 'sizes', 'productVariant', 'cartItems'));
     }
     public function getVariantStock(Request $request)
     {
@@ -209,7 +200,27 @@ class ClientController extends Controller
 
 public function show_profile($id)
 {
+    // Lấy sản phẩm kèm các biến thể
+    // $product = Product::with('variants')->findOrFail($id);
+    // $product1 = Product::with('ProductGallerie')->findOrFail($id);
+    // // Kiểm tra nếu có biến thể thì lọc theo `color` và `size`
+    // $colors = $product->variants->where('name', 'color')->pluck('value')->unique();
+    // $sizes = $product->variants->where('name', 'size')->pluck('value')->unique();
+
+    // // Truyền biến `product`, `colors` và `sizes` vào view
+    // return view('client.product_detail', compact('product', 'product1','colors', 'sizes'));
+
+
+    // $product = Product::with(['variants', 'galleries'])->findOrFail($id);
+
+    // // Lọc color và size từ variants
+    // $colors = $product->variants->where('name', 'color')->pluck('value')->unique();
+    // $sizes = $product->variants->where('name', 'size')->pluck('value')->unique();
+
+    // // Truyền dữ liệu vào view
+    // return view('client.product_detail', compact('product', 'colors', 'sizes'));
     // Lấy thông tin người dùng theo id
+   
     $user = User::find($id);
     $addresses = $user->addresses;
 
@@ -232,34 +243,60 @@ public function show_my_order()
     return view('client.my_order', compact('orders'));
 }
 
+// public function show_profile($id)
+// {
+//     // Lấy thông tin người dùng theo id
+//     $user = User::find($id);
+//     $addresses = $user->addresses;
+
+//     // Kiểm tra nếu người dùng không tồn tại
+//     if (!$user) {
+//         return redirect()->back()->with('error', 'Người dùng không tồn tại');
+//     }
+
+//     // Truyền dữ liệu người dùng vào view 'client.profile'
+//     return view('client.my_profile', compact('user','addresses'));
+// }
+// public function show_my_order()
+// {
+//     // Lấy danh sách đơn hàng của người dùng hiện tại
+//     $orders = Order::where('user_id', Auth::id())
+//         ->with(['product', 'user.addresses']) // Lấy thông tin sản phẩm và địa chỉ thông qua user
+//         ->orderBy('created_at', 'desc')
+//         ->get();
+
+//     return view('client.my_order', compact('orders'));
+// }
+
 
 
 public function storeAddress(Request $request)
 {
-    $request->validate([
+    
+    $validated = $request->validate([
         'first_name' => 'required|string|max:255',
         'last_name' => 'required|string|max:255',
-        'email' => 'required|email',
+        'email' => 'required|email|max:255',
         'contact_number' => 'required|string|max:15',
-        'city' => 'required|string|max:255',
-        'state' => 'required|string|max:255',
-        'commune' => 'required|string|max:255',
-        'address' => 'required|string|max:255',
+        'city' => 'required|string',  // Lưu tên tỉnh
+        'state' => 'required|string', // Lưu tên huyện
+        'commune' => 'required|string', // Lưu tên xã
+        'address' => 'required|string',
     ]);
 
     Address::create([
         'user_id' => auth()->id(),
-        'first_name' => $request->first_name,
-        'last_name' => $request->last_name,
-        'email' => $request->email,
-        'contact_number' => $request->contact_number,
-        'city' => $request->city,
-        'state' => $request->state,
-        'commune' => $request->commune,
-        'address' => $request->address,
+        'first_name' => $validated['first_name'],
+        'last_name' => $validated['last_name'],
+        'email' => $validated['email'],
+        'contact_number' => $validated['contact_number'],
+        'city' => $validated['city'],   // Lưu tên tỉnh
+        'state' => $validated['state'], // Lưu tên huyện
+        'commune' => $validated['commune'], // Lưu tên xã
+        'address' => $validated['address'],
     ]);
 
-    return redirect()->route('profile', ['id' => auth()->user()->id])->with('success', 'Địa chỉ đã được lưu thành công!');
+    return redirect()->back()->with('success', 'Address added successfully!');
 }
 public function updateAddress(Request $request, $id)
 {
@@ -300,6 +337,7 @@ public function exportInvoice($id)
             return view('client.warranty', compact('message'));
         }
     }
+
 
 
 

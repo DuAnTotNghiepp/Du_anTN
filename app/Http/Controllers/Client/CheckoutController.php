@@ -10,6 +10,7 @@ use App\Models\Variants;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Variant;
 use App\Models\Vouchers;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -42,15 +43,12 @@ class CheckoutController extends Controller
         if (!$colorId || !$sizeId || !$quantity || !$image || !$productName || !$productPrice) {
             return redirect()->back()->withErrors(['message' => 'Dữ liệu không đầy đủ']);
         }
-        $color = Variants::where('id', $colorId)->first();
-        $size = Variants::where('id', $sizeId)->first();
+        $color = Variant::where('id', $colorId)->first();
+        $size = Variant::where('id', $sizeId)->first();
 
         $product = Product::where('name', $productName)->first();
         if (!$product) {
             return redirect()->back()->withErrors(['message' => 'Sản phẩm không tồn tại']);
-        }
-        if ($product->quantity < $quantity) {
-            return redirect()->back()->withErrors(['message' => 'Sản phẩm không đủ số lượng trong kho']);
         }
         $user = Auth::user();
         $addresses = Address::where('user_id', $user->id)->get();

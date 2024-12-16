@@ -8,6 +8,7 @@ use App\Models\Catalogues;
 use App\Models\Product;
 use App\Models\Product_Variant;
 use App\Models\ProductGallerie;
+use App\Models\Variant;
 use App\Models\Variants;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +29,7 @@ class ProductController extends Controller
 
     public function index()
     {
-        $listPro = Product::query()->latest('id')->get();
+        $listPro = Product::query()->latest('id')->paginate(10);
         return view('admin.product.index', compact('listPro'));
     }
 
@@ -39,8 +40,8 @@ class ProductController extends Controller
     {
 
         $listCate = Catalogues::all();
-        $Color = Variants::where('name','Color')->get();
-        $Size = Variants::where('name','Size')->get();
+        $Color = Variant::where('name','Color')->get();
+        $Size = Variant::where('name','Size')->get();
         return view('admin.product.create', compact('listCate','Color','Size'));
     }
 
@@ -61,17 +62,25 @@ class ProductController extends Controller
             }
         }
         $res = Product::query()->create($params);
-        $res->calculateTotalQuantity();
 
-        if (!empty($request->id_variant) && is_array($request->id_variant)) {
-            foreach ($request->id_variant as $value) {
-                Product_Variant::create([
-                    'product_id' => $res->id,
-                    'variants_id' => $value
-                ]);
+        if ($request->has('selected_variants') && is_array($request->selected_variants)) {
+            foreach ($request->selected_variants as $colorId => $sizes) {
+                foreach ($sizes as $sizeId => $selected) {
+                    // Kiểm tra xem checkbox đã được chọn và có số lượng nhập vào
+                    if ($selected && isset($request->stock[$colorId][$sizeId]) && $request->stock[$colorId][$sizeId] > 0) {
+                        $stock = $request->stock[$colorId][$sizeId];
+
+                        // Lưu thông tin kết hợp color_variant_id và size_variant_id vào bảng product_variants
+                        Product_Variant::create([
+                            'product_id' => $res->id,
+                            'color_variant_id' => $colorId,
+                            'size_variant_id' => $sizeId,
+                            'stock' => $stock,  // Số lượng cho mỗi kết hợp màu và kích thước
+                        ]);
+                    }
+                }
             }
         }
-
         if ($request->hasFile('image')) {
             foreach ($request->file('image') as $image) {
                 $path = $image->store('product_galleries', 'public');
@@ -105,13 +114,8 @@ class ProductController extends Controller
         $listCate = Catalogues::all();
         // Lấy thông tin sản phẩm
         $listPro = Product::find($id);
-
-
         $listImg = ProductGallerie::where('product_id', $id)->get();
-        $Color = Variants::where('name', 'Color')->get();
-        $Size = Variants::where('name', 'Size')->get();
-        $vari_id = DB::table('product__variants')->where('product_id', $id)->pluck('variants_id')->toArray();
-        return view('admin.product.edit', compact('listPro', 'listCate', 'Color', 'Size', 'vari_id','listImg'));
+        return view('admin.product.edit', compact('listPro', 'listCate','listImg'));
     }
 
     /**
@@ -143,34 +147,6 @@ class ProductController extends Controller
             } else {
                 // Không có ảnh mới thì giữ nguyên ảnh cũ
                 $params['img_thumbnail'] = $imageOld;
-            }
-
-            $selectedVariants = $request->input('id_variant', []);
-
-            // Lấy các variants_id hiện tại từ cơ sở dữ liệu
-            $currentVariants = DB::table('product__variants')
-                ->where('product_id', $id)
-                ->pluck('variants_id')
-                ->toArray();
-
-            // Xác định các thuộc tính cần thêm và cần xóa
-            $variantsToAdd = array_diff($selectedVariants, $currentVariants);
-            $variantsToRemove = array_diff($currentVariants, $selectedVariants);
-
-            // Xóa các thuộc tính không còn chọn
-            if (!empty($variantsToRemove)) {
-                DB::table('product__variants')
-                    ->where('product_id', $id)
-                    ->whereIn('variants_id', $variantsToRemove)
-                    ->delete();
-            }
-
-            // Thêm các thuộc tính mới vào bảng product__variants
-            foreach ($variantsToAdd as $variantId) {
-                DB::table('product__variants')->insert([
-                    'product_id' => $id,
-                    'variants_id' => $variantId,
-                ]);
             }
             if ($request->hasFile('image')) {
                 // Xóa các ảnh liên quan cũ
@@ -251,14 +227,15 @@ class ProductController extends Controller
     }
     public function updateQuantity($id)
     {
-        $product = Product::with('variants')->find($id);
+        // Lấy sản phẩm theo ID
+        $product = Product::with('productVariants')->find($id);
 
         if (!$product) {
             return redirect()->route('product.index')->with('error', 'Sản phẩm không tồn tại!');
         }
 
-        // Tính tổng số lượng từ các biến thể
-        $totalQuantity = $product->variants->sum('pivot.quantity');
+        // Tính tổng số lượng từ các biến thể (từ bảng product_variants)
+        $totalQuantity = $product->productVariants->sum('stock'); // Cộng dồn số lượng tồn kho
 
         // Cập nhật số lượng vào bảng product
         $product->quantity = $totalQuantity;

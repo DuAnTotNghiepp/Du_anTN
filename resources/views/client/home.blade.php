@@ -117,42 +117,17 @@
                             <div
                                 class="swiper-slide hero-slider-item slider-item1 d-flex justify-content-center align-items-center position-relative">
                                 <div class="slidear-image-layer">
+
                                 </div>
                                 <div class="slider-content position-relative text-center">
-                                    <h5 class="slider-sub-title">Trending Product</h5>
-                                    <h2 class="slider-main-title">Awesome Collection for
-                                        your Fashion</h2>
+                                    <h5 class="slider-sub-title">Xu hướng thời trang</h5>
+                                    <h2 class="slider-main-title">Bộ sưu tập tuyệt vời dành cho thời trang của bạn</h2>
                                     <div class="banner-btn">
                                         <a href="product.html" class="eg-btn-xl"> View All Collection</a>
                                     </div>
                                 </div>
                             </div>
-                            <div
-                                class="swiper-slide hero-slider-item slider-item2 d-flex justify-content-center align-items-center position-relative">
-                                <div class="slider-image-layer">
-                                </div>
-                                <div class="slider-content position-relative text-center">
-                                    <h5 class="slider-sub-title">Trending Product</h5>
-                                    <h2 class="slider-main-title">Awesome Collection for
-                                        your Fashion</h2>
-                                    <div class="banner-btn">
-                                        <a href="product.html" class="eg-btn-xl-v2"> View All Collection</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div
-                                class="swiper-slide hero-slider-item slider-item3 d-flex justify-content-center align-items-center position-relative">
-                                <div class="slider-image-layer">
-                                </div>
-                                <div class="slider-content position-relative text-center">
-                                    <h5 class="slider-sub-title">Trending Product</h5>
-                                    <h2 class="slider-main-title">Awesome Collection for
-                                        your Fashion</h2>
-                                    <div class="banner-btn">
-                                        <a href="product.html" class="eg-btn-xl-v2"> View All Collection</a>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
 
 
@@ -342,8 +317,8 @@
                 <div class="col-lg-12">
                     <div class="banner-xl-bg d-flex align-items-center position-relative">
                         <div class="banner-shapes">
-                            <img src="assets/images/shapes/b-xl-right.png" alt class="position-absolute top-0 end-0">
-                            <img src="assets/images/shapes/b-xl-left.png" alt class="position-absolute top0 bottom-0">
+                            <img src="" alt class="position-absolute top-0 end-0">
+                            <img src="" alt class="position-absolute top0 bottom-0">
                         </div>
                         <div class="banner-content-wrap">
                             <h5 class="banner-xl-subtitle">Today Top Offer</h5>

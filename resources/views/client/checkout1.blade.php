@@ -44,10 +44,11 @@
                                 <div class="col-lg-12">
                                     <!-- Select Address -->
                                     <div class="eg-input-group">
-                                        <label for="address-selection">Chọn Địa chỉ nhận</label><a
-                                            href="{{ route('profile', ['id' => auth()->user()->id]) }}">
-                                            Thêm Địa Chỉ Khác
-                                        </a>
+                                        <label for="address-selection">Chọn Địa chỉ nhận</label>
+                                        <div class="btn-submit">
+                                            <!-- Nút để hiển thị/ẩn form -->
+                                            <button class="btn float-end" id="add-address-btn">Thêm Địa Chỉ</button>
+                                        </div>
                                         <select id="address-selection" name="user_address" class="form-control" required>
                                             <option value="">-- Chọn Địa chỉ --</option>
                                             @foreach ($addresses as $address)

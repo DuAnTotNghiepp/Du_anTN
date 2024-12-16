@@ -34,7 +34,7 @@
                             <a href="{{ route('profile', ['id' => auth()->user()->id]) }}" ><i
                                     class="flaticon-user"></i> My Profile</a>
                             <a href="{{ route('my_orders',['id' => auth()->user()->id])}}" ><i
-                                 class="flaticon-shopping"></i> My Order</a>
+                                 class="flaticon-shopping-bag"></i> My Order</a>
                             <a href="setting"><i class="flaticon-settings"></i> Account Setting</a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf

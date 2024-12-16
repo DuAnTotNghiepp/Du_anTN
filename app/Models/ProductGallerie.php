@@ -16,7 +16,7 @@ class ProductGallerie extends Model
         'updated_at'
     ];
     public $timestamps = false;
-    public function product()
+    public function ProductGallerie()
     {
         return $this->belongsTo(Product::class, 'product_id');
     }

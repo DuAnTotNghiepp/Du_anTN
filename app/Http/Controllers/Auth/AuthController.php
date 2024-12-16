@@ -79,19 +79,19 @@ class AuthController extends Controller
     }
 
     public function sendResetLinkEmail(Request $request)
-    {
-        $this->validate($request, ['email' => 'required|email']);
+{
+    // Xác thực email
+    $request->validate(['email' => 'required|email']);
 
-        $user = User::whereEmail($request->input('email'))->first();
+    // Gửi link reset
+    $status = Password::sendResetLink(
+        $request->only('email') // Đảm bảo bạn chỉ truyền một mảng chứa email
+    );
 
-        if (!$user) {
-            return back()->withErrors(['email' => 'We cannot find a user with that email address.']);
-        }
-
-        Password::sendResetLink($user);
-
-        return back()->with('status', 'We have sent a password reset link to your email address.');
-    }
+    return $status === Password::RESET_LINK_SENT
+                ? back()->with(['status' => __($status)])
+                : back()->withErrors(['email' => __($status)]);
+}
 
     //reset mk
     public function showResetPasswordForm(Request $request, $token)

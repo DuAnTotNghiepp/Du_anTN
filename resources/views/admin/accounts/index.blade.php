@@ -143,11 +143,11 @@
                                                 <td>{{ $user->created_at }}</td>
                                                 <td>
                                                     <a href="{{ route('accounts.edit', $user->id) }}" class="btn btn-warning">Sửa</a>
-                                                    <form action="{{ route('accounts.destroy', $user->id) }}" method="POST" style="display:inline;">
+                                                    {{-- <form action="{{ route('accounts.destroy', $user->id) }}" method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản này không?')">Xóa</button>
-                                                    </form>
+                                                    </form> --}}
                                                 </td>
                                             </tr>
                                         @endforeach
