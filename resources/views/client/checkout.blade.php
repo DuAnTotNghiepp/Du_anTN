@@ -45,7 +45,7 @@
                                     <!-- Select Address -->
                                     <div class="eg-input-group">
                                         <div class="col-lg-12">
-                                   
+
                                             <!-- Display Selected Address Info -->
                                             <div id="selected-address-info">
                                                 <div class="eg-input-group">
@@ -83,10 +83,8 @@
                                 </div>
 
                                 <div class="eg-input-group mb-0">
-                                    <label for="selected-contact-number">Ghi chú:</label>
                                     <textarea cols="30" rows="7" name="user_note" placeholder="Order Notes (Optional)"></textarea>
                                 </div>
-                                
                             </div>
                         </div>
 
@@ -165,17 +163,12 @@
                                 <!-- Form áp dụng mã giảm giá -->
                                 <div id="applyVoucher">
                                     <div class="input-group">
-                                        <input type="text" name="voucher_code" id="voucher_code" class="form-control"
-                                            placeholder="Nhập mã giảm giá">
-                                        <button type="button" class="pd-add-cart"
-                                            style="height: 45px; border: 1px solid #ced4da" onclick="getVoucherInfo()">Áp
-                                            dụng</button>
 
-                                        </div>
-                                        <span id="errorMessage" class="error-message"></span><br>
+                                        <input type="text" name="voucher_code" id="voucher_code" class="form-control" placeholder="Nhập mã giảm giá">
+                                        <button type="button" class="pd-add-cart" style="height: 45px; border: 1px solid #ced4da" onclick="getVoucherInfo()">Áp dụng</button>
                                     </div>
-
-
+                                    <span id="errorMessage" class="error-message"></span><br>
+                                </div>
                             </div>
 
                         </div>
@@ -205,7 +198,7 @@
                             </div>
                         </div>
                     </div>
-            </div>
+
 
             </form>
         </div>
@@ -403,7 +396,6 @@
             const totalElement = document.getElementById('total');
             const tax = 5000;
 
-
             if (!quantityInput || !subtotalElement || !totalElement) {
                 console.error('Missing elements for calculation.');
                 return;
@@ -460,6 +452,6 @@ function getVoucherInfo() {
                 totalElement.textContent = total.toLocaleString('vi-VN') + ' VND';
             });
         });
-        
+
     </script>
 @endsection

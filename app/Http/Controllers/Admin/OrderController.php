@@ -15,7 +15,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $data = Order::with('address')->latest('id')->get();
+        $data = Order::with('address')->latest('id')->orderBy('created_at', 'desc')->paginate(10);
         return view('admin.order.index', compact('data'));
     }
 

@@ -158,7 +158,7 @@
                                             </div>
                                             <div class="form-check form-switch form-switch-warning">
                                                 <input class="form-check-input" type="checkbox" role="switch" {{ $listPro->is_active ? 'checked' : '' }}
-                                                    name="is_active" id="is_active" checked>
+                                                    name="is_active" id="is_active">
                                                 <label class="form-check-label" for="SwitchCheck4">Trạng thái hoạt
                                                     động</label>
                                             </div>
@@ -227,10 +227,10 @@
                 <!-- end card -->
             </div>
             <!-- end col -->
-
+            </form>
         </div>
         <!-- end main content-->
-        </form><!-- end form -->
+
 
 
 
