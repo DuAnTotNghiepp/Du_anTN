@@ -138,54 +138,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, int $id)
     {
-        // Debug dữ liệu nhận được từ form
-        // Validate input
-        // $validated = $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'img_thumbnail' => 'nullable|image|mimes:jpeg,png,gif,jpg|max:2048',  // img_thumbnail không bắt buộc trong update
-        //     'price_regular' => 'required|numeric|min:0',
-        //     'price_sale' => 'required|numeric|lt:price_regular',
-        //     'quantity' => 'required|integer|min:0',
-        //     'sku' => 'required|max:255|unique:products,sku,' . $id,
-        //     'description' => 'required|string|max:2000',
-        //     'user_manual' => 'required|string|max:2000',
-        //     'content' => 'required|string|max:5000',
-        //     'image' => 'nullable|array',  // ảnh liên quan có thể không có khi update
-        //     'image.*' => 'nullable|image|mimes:jpeg,png,gif,jpg|max:2048',  // ảnh liên quan không bắt buộc trong update
-        // ], [
-        //     'name.required' => 'Tên sản phẩm là trường bắt buộc.',
-        //     'name.string' => 'Tên sản phẩm phải là một chuỗi ký tự.',
-        //     'name.max' => 'Tên sản phẩm không được vượt quá 255 ký tự.',
-        //     'img_thumbnail.image' => 'Ảnh sản phẩm phải là tệp hình ảnh hợp lệ.',
-        //     'img_thumbnail.mimes' => 'Ảnh sản phẩm chỉ hỗ trợ các định dạng: jpeg, png, gif, jpg.',
-        //     'img_thumbnail.max' => 'Ảnh sản phẩm không được vượt quá 2048 KB.',
-        //     'price_regular.required' => 'Giá thường là trường bắt buộc.',
-        //     'price_regular.numeric' => 'Giá thường phải là một số.',
-        //     'price_regular.min' => 'Giá thường phải lớn hơn hoặc bằng 0.',
-        //     'price_sale.required' => 'Giá khuyến mãi là trường bắt buộc.',
-        //     'price_sale.numeric' => 'Giá khuyến mãi phải là một số.',
-        //     'price_sale.lt' => 'Giá khuyến mãi phải nhỏ hơn giá thường.',
-        //     'quantity.required' => 'Số lượng là trường bắt buộc.',
-        //     'quantity.integer' => 'Số lượng phải là một số nguyên.',
-        //     'quantity.min' => 'Số lượng phải lớn hơn hoặc bằng 0.',
-        //     'description.required' => 'Mô tả là trường bắt buộc.',
-        //     'description.max' => 'Mô tả không được vượt quá 2000 ký tự.',
-
-        //     'sku.required' => 'Mã sản phẩm (SKU) là trường bắt buộc.',
-        //     // 'sku.unique' => 'Mã sản phẩm (SKU) phải là duy nhất.',
-        //     'sku.max' => 'Mã sản phẩm (SKU) không được vượt quá 255 ký tự.',
-
-        //     'user_manual.required' => 'Hướng dẫn sử dụng là trường bắt buộc.',
-        //     'user_manual.max' => 'Hướng dẫn sử dụng không được vượt quá 2000 ký tự.',
-        //     'content.required' => 'Nội dung chi tiết là trường bắt buộc.',
-        //     'content.max' => 'Nội dung chi tiết không được vượt quá 5000 ký tự.',
-        //     'image.required' => 'Ảnh liên quan là trường bắt buộc.',
-        //     'image.array' => 'Ảnh liên quan phải là một mảng.',
-        //     'image.*.image' => 'Mỗi tệp trong danh sách ảnh phải là tệp hình ảnh.',
-        //     'image.*.mimes' => 'Mỗi ảnh liên quan chỉ hỗ trợ các định dạng: jpeg, png, gif, jpg.',
-        //     'image.*.max' => 'Mỗi ảnh liên quan không được vượt quá 2048 KB.',
-        // ]);
-
+      
         // Lấy thông tin sản phẩm cần cập nhật
         $product = Product::find($id);
 
