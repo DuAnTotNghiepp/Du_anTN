@@ -125,4 +125,18 @@ class AdminController extends Controller
         return redirect()->route('accounts.index')->with('success', 'Tài khoản đã được xóa.');
 
     }
+
+    public function showUsers()
+    {
+        $users = User::all(); // Lấy tất cả người dùng (hoặc bạn có thể thêm điều kiện lọc theo trạng thái)
+        return view('admin.users.index', compact('users'));
+    }
+
+    public function toggleUserStatus(User $user)
+    {
+        $user->is_active = !$user->is_active; // Đảo ngược trạng thái
+        $user->save();
+
+        return redirect()->route('accounts.index'); // Quay lại trang danh sách người dùng
+    }
 }

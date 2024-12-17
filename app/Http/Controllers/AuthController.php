@@ -21,6 +21,12 @@ class AuthController extends Controller
             'password' => 'required|string'
         ]);
 
+         // Kiểm tra thông tin đăng nhập và trạng thái tài khoản
+         $user = Auth::getProvider()->retrieveByCredentials($request->only('email', 'password'));
+
+         if ($user && !$user->is_active) {
+             return back()->withErrors(['Your account has been deactivated.']);
+         }
         if (Auth::attempt($user)) {
             return redirect()->intended('home');
         }

@@ -335,7 +335,6 @@
                     </div>
                 </div>
             </div>
-
             <script>
                 document.getElementById('add-address-btn').addEventListener('click', function() {
                     const addModal = new bootstrap.Modal(document.getElementById('addAddressModal'));
@@ -360,12 +359,7 @@
                             document.getElementById('editWardName').value = address.commune_name;
                         });
                     });
-
-                // document.getElementById('toggle-form-btn').addEventListener('click', function() {
-                //     const formContainer = document.getElementById('address-form-container');
-                //     formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
-                // });
-            });
+                });
             </script>
         </div>
     </div>

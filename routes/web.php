@@ -50,10 +50,10 @@ Route::get('product/{id}', [ClientController::class, 'show'])->name('product.pro
 Route::get('/profile/{id}', [ClientController::class, 'show_profile'])->name('profile');
 Route::get('/my_orders', [ClientController::class, 'show_my_order'])->name('my_orders');
 Route::post('profile', [ClientController::class, 'updateProfile'])->name('updateProfile');
-// routes/web.php
-Route::post('/profile/address', [ClientController::class, 'storeAddress'])->name('profile.address.store');
-Route::put('/profile/address/update/{id}', [ClientController::class, 'updateAddress'])->name('profile.address.update');
-Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])->name('my_order.invoice');
+// // routes/web.php
+// Route::post('/profile/address', [ClientController::class, 'storeAddress'])->name('profile.address.store');
+// Route::put('/profile/address/update/{id}', [ClientController::class, 'updateAddress'])->name('profile.address.update');
+// Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])->name('my_order.invoice');
 
 
 // Route::group(['prefix'=>'checkout'], function(){
@@ -68,14 +68,16 @@ Route::get('/api/variant-stock', [ClientController::class, 'getVariantStock']);
 Route::post('/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
 
 
-//profile
-Route::get('/profile/{id}', [ClientController::class, 'show_profile'])->name('profile');
-Route::get('/my_orders', [ClientController::class, 'show_my_order'])->name('my_orders');
-Route::post('profile', [ClientController::class, 'updateProfile'])->name('updateProfile');
+// //profile
+// Route::get('/profile/{id}', [ClientController::class, 'show_profile'])->name('profile');
+// Route::get('/my_orders', [ClientController::class, 'show_my_order'])->name('my_orders');
+// Route::post('profile', [ClientController::class, 'updateProfile'])->name('updateProfile');
 // routes/web.php
 Route::post('/profile/address', [ClientController::class, 'storeAddress'])->name('profile.address.store');
 Route::put('/profile/address/update/{id}', [ClientController::class, 'updateAddress'])->name('profile.address.update');
 Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])->name('my_order.invoice');
+Route::get('/user/update-avatar', [ClientController::class, 'showUpdateAvatarForm'])->name('user.updateAvatar');
+Route::post('/user/update-avatar', [ClientController::class, 'updateAvatar']);
 
 
 
@@ -157,7 +159,9 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::get('admin/accounts/{user}/edit', [AdminController::class, 'edit'])->name('admin.accounts.edit');
     Route::put('admin/accounts/{user}', [AdminController::class, 'update'])->name('admin.accounts.update');
     Route::delete('admin/accounts/{user}', [AdminController::class, 'destroy'])->name('admin.accounts.destroy');
-    //thong ke
+    Route::get('/admin/users', [AdminController::class, 'showUsers'])->middleware('auth', 'admin');
+    Route::patch('/admin/users/{user}/toggle', [AdminController::class, 'toggleUserStatus'])->name('admin.users.toggle')->middleware('auth', 'admin');
+
 });
 
 

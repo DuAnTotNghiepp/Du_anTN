@@ -16,26 +16,38 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function login(Request $request) {
-        $user = $request->validate([
+    public function login(Request $request)
+    {
+        // Validate email và password
+        $request->validate([
             'email' => 'required|string|email|max:255',
-            'password' => 'required|string'
+            'password' => 'required|string',
         ]);
-
-        if (Auth::attempt($user)) {
-            // Kiểm tra nếu là admin thì chuyển hướng tới trang admin
-            if (Auth::user()->role === User::ROLE_ADMIN) {
+    
+        // Lấy thông tin người dùng từ cơ sở dữ liệu
+        $credentials = $request->only('email', 'password');
+    
+        // Kiểm tra thông tin đăng nhập
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+    
+            // Kiểm tra xem tài khoản có hoạt động hay không
+            if (!$user->is_active) {
+                Auth::logout(); // Đăng xuất người dùng nếu tài khoản không hoạt động
+                return back()->withErrors(['Tài khoản của bạn đã bị vô hiệu hóa.']);
+            }
+    
+            // Nếu là admin, chuyển hướng tới trang admin
+            if ($user->role === User::ROLE_ADMIN) {
                 return redirect()->intended('/admin');
             }
-            if (Auth::attempt($user)) {
-                // Kiểm tra URL chuyển hướng trong session
-                $redirectUrl = $request->input('redirect_url') ?? session()->pull('redirect_url', '/');
-                return redirect()->intended($redirectUrl);
-            }
-
-            return redirect()->intended('/');
+    
+            // Nếu không phải admin, chuyển hướng tới trang người dùng
+            $redirectUrl = $request->input('redirect_url') ?? session()->pull('redirect_url', '/');
+            return redirect()->intended($redirectUrl);
         }
-
+    
+        // Nếu đăng nhập không thành công, trả về thông báo lỗi
         return redirect()->back()->withErrors([
             'email' => 'Thông tin người dùng không đúng'
         ]);
