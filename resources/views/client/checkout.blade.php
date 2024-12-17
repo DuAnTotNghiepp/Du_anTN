@@ -156,18 +156,6 @@
                                     </div>
                                     <span id="errorMessage" class="error-message"></span><br>
                                 </div>
-
-                                        <input type="text" name="voucher_code" id="voucher_code" class="form-control"
-                                            placeholder="Nhập mã giảm giá">
-                                        <button type="button" class="pd-add-cart"
-                                            style="height: 45px; border: 1px solid #ced4da" onclick="getVoucherInfo()">Áp
-                                            dụng</button>
-
-                                        </div>
-                                        <span id="errorMessage" class="error-message"></span><br>
-                                    </div>
-
-
                             </div>
                         </div>
 

@@ -5,6 +5,72 @@
 @endsection
 @section('content')
     <!-- start page title -->
+    <style>
+        /* Tùy chỉnh giao diện phân trang */
+        .pagination-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .pagination {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .pagination li {
+            margin: 0 5px;
+        }
+
+        .pagination a,
+        .pagination span {
+            display: inline-block;
+            padding: 12px 20px;
+            font-size: 18px;
+            /* Tăng kích thước font */
+            color: #fff;
+            background-color: #007bff;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .pagination a:hover,
+        .pagination span:hover {
+            background-color: #0056b3;
+        }
+
+        .pagination .disabled a,
+        .pagination .disabled span {
+            background-color: #ddd;
+            cursor: not-allowed;
+        }
+
+        .pagination .active a,
+        .pagination .active span {
+            background-color: #0056b3;
+            color: white;
+            font-weight: bold;
+        }
+
+        .pagination a {
+            border: 1px solid #ccc;
+        }
+
+        .pagination span {
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+
+        .pagination a:focus,
+        .pagination span:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(38, 143, 255, 0.5);
+        }
+    </style>
     <div class="row">
 
         <div class="col-12">
@@ -64,17 +130,6 @@
                                 <i class="ri-search-line search-icon"></i>
                             </div>
                         </div>
-                        <div class="col-md-auto ms-auto">
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="text-muted">Sort by: </span>
-                                <select class="form-control mb-0" data-choices data-choices-search-false
-                                    id="choices-single-default">
-                                    <option value="Name">Name</option>
-                                    <option value="Company">Company</option>
-                                    <option value="Lead">Lead</option>
-                                </select>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -83,34 +138,20 @@
                             <table class="table align-middle table-nowrap mb-0" id="customerTable">
                                 <thead class="table-light">
                                     <tr>
-                                        <th scope="col" style="width: 50px;">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="checkAll"
-                                                    value="option">
-                                            </div>
-                                        </th>
-                                        <th class="sort" data-sort="idsanpham" scope="col">ID</th>
-                                        <th class="sort" data-sort="name" scope="col">Tên Khách Hàng</th>
-                                        <th class="sort" data-sort="company_name" scope="col">Email</th>
-                                        <th class="sort" data-sort="email_id" scope="col">Số Điện Thoại</th>
-                                        <th class="sort" data-sort="phone" scope="col">Tổng Giá</th>
-                                        <th class="sort" data-sort="lead_score" scope="col">Ngày Đặt</th>
-                                        <th class="sort" data-sort="" scope="col">Phương Thức Thanh Toán</th>
-                                        <th class="sort" data-sort="tags" scope="col">Trạng Thái</th>
+                                        <th class="" data-sort="" scope="col">ID</th>
+                                        <th class="" data-sort="" scope="col">Tên Khách Hàng</th>
+                                        <th class="" data-sort="" scope="col">Email</th>
+                                        <th class="" data-sort="" scope="col">Số Điện Thoại</th>
+                                        <th class="" data-sort="" scope="col">Tổng Giá</th>
+                                        <th class="" data-sort="" scope="col">Ngày Đặt</th>
+                                        <th class="" data-sort="" scope="col">Phương Thức Thanh Toán</th>
+                                        <th class="" data-sort="tags" scope="col">Trạng Thái</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="list form-check-all">
                                     @foreach ($data as $order)
                                         <tr>
-                                            <th scope="row">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="chk_child"
-                                                        value="option1">
-                                                </div>
-                                            </th>
-                                            <td class="id" style="display:none;"><a href="javascript:void(0);"
-                                                    class="fw-medium link-primary">#VZ001</a></td>
                                             <td>{{ $order->id }}</td>
                                             <td class="name">
                                                 <div class="d-flex align-items-center">
@@ -126,7 +167,7 @@
                                             <td class="company_name">
                                                 @if($order->payment_method === 'cash')
                                                     Thanh toán khi nhận hàng
-                                                @elseif($order->payment_method === 'on')
+                                                @elseif($order->payment_method === 'vnpay')
                                                     Thanh toán online
                                                 @endif
                                             </td>
@@ -173,6 +214,9 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            <div class="pagination-container">
+                                {{ $data->links() }}
+                            </div>
                             <div class="noresult" style="display: none">
                                 <div class="text-center">
                                     <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"

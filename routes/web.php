@@ -60,23 +60,22 @@ Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])
 
 
 
-Route::match(['get', 'post'],'/checkout1', [CheckoutController::class, 'checkout1'])->middleware('auth')->name('checkout1');
-Route::match(['get', 'post'],'/checkout', [CheckoutController::class, 'form'])->middleware('auth')->name('checkout');
-Route::post('/orders/store1', [OrderController::class, 'store1'])->name('orders.store1')->middleware('auth');
-Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
+
+
+
 Route::post('/orders/vnpay_ment', [OrderController::class, 'vnpay_ment'])->name('orders.vnpay_ment');
 
 Route::get('/checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('checkout.applyVoucher');
-
-
-Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
 Route::post('/vnpay_payment', [OrderController::class, 'vnpayPayment'])->name('orders.vnpay_ment');
 Route::get('/vnpay/callback', [OrderController::class, 'vnpayCallback'])->name('vnpay.callback');
 
 
 
 Route::middleware('auth')->group(function () {
+    Route::match(['get', 'post'],'/checkout', [CheckoutController::class, 'form'])->name('checkout');
+    Route::match(['get', 'post'],'/checkout1', [CheckoutController::class, 'checkout1'])->name('checkout1');
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::post('/orders/store1', [OrderController::class, 'store1'])->name('orders.store1');
 });
 
 Route::get('/productcatalogue', [ProductCatalogueController::class, 'index'])->name('productcatalogue');
@@ -104,13 +103,6 @@ Route::get('/admin', function () {
     return view('admin.content');
 })->name('content');
 
-
-
-Route::get('login', [AuthController::class, 'showFormLogin']);
-Route::post('login', [AuthController::class, 'login'])->name('login');
-Route::get('register', [AuthController::class, 'showFormRegister']);
-Route::post('register', [AuthController::class, 'register'])->name('register');
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 
 //client

@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\Variant;
 use App\Models\Vouchers;
 use Carbon\Carbon;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Log;
 
 
@@ -76,34 +77,35 @@ class CheckoutController extends Controller
             return redirect()->back()->with('error', 'Bạn chưa chọn sản phẩm nào.');
         }
         $total = 0;
-        foreach ($cartItems as $item) {
-            $total += $item->product->price_sale * $item->quantity;
-        }
-        $tax = 5000;  // Or calculate dynamically
-        $totalWithTax = $total + $tax;
-        if ($selectedProducts) {
-            $products = [];
-            foreach ($selectedProducts as $item) {
-                // Kiểm tra nếu 'product_id' tồn tại trong item
-                if (isset($item['product_id'])) {
-                    $product = Product::find($item['product_id']);
-                    if ($product) {
-                        $products[] = [
-                            'product' => $product,
-                            'quantity' => $item['quantity'],
-                            'total_price' => $product->price_sale * $item['quantity'],
-                        ];
-                    }
+        foreach ($selectedProducts as $item) {
+            if (isset($item['product_id'])) {
+                $product = Product::find($item['product_id']);
+
+                // Kiểm tra sản phẩm có khả dụng hay không
+                if ($product && $product->is_active) {
+                    $products[] = [
+                        'product' => $product,
+                        'quantity' => $item['quantity'],
+                        'total_price' => $product->price_sale * $item['quantity'],
+                    ];
+                    $total += $product->price_sale * $item['quantity'];
                 } else {
-                    // Xử lý nếu không có product_id
-                    // Có thể thêm thông báo lỗi hoặc bỏ qua sản phẩm đó
+                    // Thêm sản phẩm không khả dụng vào danh sách để xử lý
+                    $inactiveProducts[] = $item['product_id'];
                 }
             }
-            return view('client.checkout1', compact('products','user', 'addresses', 'cartItems', 'tax', 'totalWithTax', 'total'));
+        }
+        if (!empty($inactiveProducts)) {
+            Cart::where('user_id', auth()->id())
+                ->whereIn('product_id', $inactiveProducts)
+                ->delete();
+
+            return redirect()->route('cart.index')->with('error', 'Một số sản phẩm không khả dụng đã bị xóa khỏi giỏ hàng.');
         }
 
-        // Nếu không có sản phẩm nào được chọn
-        return redirect()->route('cart')->with('error', 'Vui lòng chọn ít nhất một sản phẩm.');
+        $tax = 5000;  // Or calculate dynamically
+        $totalWithTax = $total + $tax;
+        return view('client.checkout1', compact('products', 'user', 'addresses', 'cartItems', 'tax', 'totalWithTax', 'total'));
     }
 
 
@@ -144,16 +146,16 @@ class CheckoutController extends Controller
             ]);
         }
 
-    
+
         $discount = ($voucher->type === 'percent')
             ? ($voucher->value / 100) * $orderTotal
             : $voucher->value;
-    
+
         $discount = min($discount, $orderTotal);
-    
+
         // Thay vì lưu vào session, chúng ta chỉ cần không cho phép áp dụng lại
         $appliedVouchers[] = $voucherCode; // Lưu mã đã áp dụng vào mảng
-    
+
 
 
         $discount = ($voucher->type === 'percent')
@@ -177,9 +179,4 @@ class CheckoutController extends Controller
             'message' => 'Mã giảm giá đã được áp dụng thành công!' // Thêm thông báo thành công
         ]);
     }
-
-    
-    
-
-
 }
