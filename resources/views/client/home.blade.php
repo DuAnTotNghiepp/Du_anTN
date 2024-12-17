@@ -5,62 +5,20 @@
 
     <head>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
+       
     </head>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        .voucher-list {
-            display: flex;
-            flex-wrap: wrap;
-            /* Đảm bảo các voucher xuống dòng nếu không đủ chỗ */
-            justify-content: center;
-            /* Canh giữa hàng ngang */
-            gap: 20px;
-            /* Khoảng cách giữa các ô */
-            padding: 20px;
-        }
+        .fixed-image {
+    width: 300px;      
+    height: 200px;     
+    object-fit: cover; 
+    display: block;    
+    margin: 0 auto;   
+}
 
-        .voucher {
-            width: 100%;
-            /* Mỗi ô voucher chiếm 100% chiều rộng của hàng */
-            max-width: 400px;
-            /* Đặt giới hạn chiều rộng */
-            border: 2px dashed #007bff;
-            border-radius: 10px;
-            background-color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            text-align: center;
-            margin: 0 auto;
-        }
-
-        .voucher-header {
-            background-color: #007bff;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .voucher-code {
-            font-size: 18px;
-            font-weight: bold;
-            color: #28a745;
-            letter-spacing: 2px;
-            margin: 15px 0;
-        }
-
-        .voucher-details {
-            font-size: 14px;
-            color: #6c757d;
-            margin-bottom: 15px;
-        }
-
-        .voucher-expiry {
-            color: #dc3545;
-            font-weight: bold;
-        }
         .copy-icon {
-            color: #007bff;
+            color: #070c10;
             cursor: pointer;
             font-size: 18px;
             margin-left: 10px;
@@ -69,57 +27,14 @@
             transition: color 0.3s ease, transform 0.2s ease;
         }
         .copy-icon:hover {
-            color: #0056b3;
+            color: #01070e;
             transform: scale(1.2);
         }
-        .fa-check {
-            color: green;
-
-
-            animation: pop 0.3s ease;
-        }
-        @keyframes pop {
-            0% {
-
-
-                transform: scale(0.8);
-            }
-
-            50% {
-                transform: scale(1.2);
-            }
-
-        }
-        100% {
-
-            transfor transform: scale(1);
-        }
-        .copy-notification {
-            margin-top: 5px;
-
-
-            font-size: 12px;
-            color: green;
-            animation: fadeInOut 2s ease forwards;
-        }
-        @keyframes fadeInOut {
-            0% {
-
-                o opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-        }
-        100% {
-            opacity: 0;
-        }
+        
+       
         .copy-notification {
             font-size: 12px;
-            color: green;
+            color: rgb(16, 1, 1);
             margin-left: 10px;
             animation: fadeInOut 2s ease forwards;
         }
@@ -202,42 +117,17 @@
                             <div
                                 class="swiper-slide hero-slider-item slider-item1 d-flex justify-content-center align-items-center position-relative">
                                 <div class="slidear-image-layer">
+
                                 </div>
                                 <div class="slider-content position-relative text-center">
-                                    <h5 class="slider-sub-title">Trending Product</h5>
-                                    <h2 class="slider-main-title">Awesome Collection for
-                                        your Fashion</h2>
+                                    <h5 class="slider-sub-title">Xu hướng thời trang</h5>
+                                    <h2 class="slider-main-title">Bộ sưu tập tuyệt vời dành cho thời trang của bạn</h2>
                                     <div class="banner-btn">
                                         <a href="product.html" class="eg-btn-xl"> View All Collection</a>
                                     </div>
                                 </div>
                             </div>
-                            <div
-                                class="swiper-slide hero-slider-item slider-item2 d-flex justify-content-center align-items-center position-relative">
-                                <div class="slider-image-layer">
-                                </div>
-                                <div class="slider-content position-relative text-center">
-                                    <h5 class="slider-sub-title">Trending Product</h5>
-                                    <h2 class="slider-main-title">Awesome Collection for
-                                        your Fashion</h2>
-                                    <div class="banner-btn">
-                                        <a href="product.html" class="eg-btn-xl-v2"> View All Collection</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div
-                                class="swiper-slide hero-slider-item slider-item3 d-flex justify-content-center align-items-center position-relative">
-                                <div class="slider-image-layer">
-                                </div>
-                                <div class="slider-content position-relative text-center">
-                                    <h5 class="slider-sub-title">Trending Product</h5>
-                                    <h2 class="slider-main-title">Awesome Collection for
-                                        your Fashion</h2>
-                                    <div class="banner-btn">
-                                        <a href="product.html" class="eg-btn-xl-v2"> View All Collection</a>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
 
 
@@ -261,7 +151,7 @@
                     <div class="col-lg-4 col-md-6">
                         <div class="banner-md banner-md1 position-relative">
                             <div class="banner-img">
-                                <img src="assets/images/banner/banner-md1.png" alt="banner" class="img-fluid">
+                                <img src="assets/images/banner/image.png" alt="banner" class="img-fluid">
                             </div>
                             <div class="banner-md-content position-absolute">
                                 <div class="banner-md-content-wrap">
@@ -427,8 +317,8 @@
                 <div class="col-lg-12">
                     <div class="banner-xl-bg d-flex align-items-center position-relative">
                         <div class="banner-shapes">
-                            <img src="assets/images/shapes/b-xl-right.png" alt class="position-absolute top-0 end-0">
-                            <img src="assets/images/shapes/b-xl-left.png" alt class="position-absolute top0 bottom-0">
+                            <img src="" alt class="position-absolute top-0 end-0">
+                            <img src="" alt class="position-absolute top0 bottom-0">
                         </div>
                         <div class="banner-content-wrap">
                             <h5 class="banner-xl-subtitle">Today Top Offer</h5>
@@ -493,139 +383,46 @@
             <div class="row">
                 <div class="swiper-blog-container overflow-hidden">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="blog-card-m">
-                                <div class="blog-img-m">
-                                    @foreach ($blogs as $blog)
-                                        <a href="{{ route('blog.detail', $blog->id) }}"><img
-                                                src="assets/images/blog/bm-1.png" alt></a>
+                        @foreach ($blogs as $post)
+                            <div class="swiper-slide">
+                                <div class="blog-card-m">
+                                    <div class="blog-img-m">
+                                        <a href="{{ route('blog.detail', $post->id) }}">
+                                            <img src="{{ Storage::url($post->image) }}" alt="{{ $post->title }}" class="fixed-image">
+                                        </a>
                                         <div class="blog-actions">
                                             <a href="#"><i class="flaticon-share"></i></a>
                                         </div>
-                                    @endforeach
-                                </div>
-                                <div class="blog-content-m">
-                                    <ul class="blog-info d-flex">
-                                        <li class="blog-author">
-                                            <img src="assets/images/blog/blog-author1.png" alt class="author-img">
-                                            <a href="#">Alex Avater</a>
-                                        </li>
-                                        <li class="blog-date">
-                                            <i class="flaticon-time"></i>
-                                            4th Jan 2021
-                                        </li>
-                                    </ul>
-                                    <div class="blog-bottom">
-                                        <h4 class="blog-title"><a href="blog-details.html">How can have anything you
-                                                want in life if
-                                                you dress for it.</a></h4>
-                                        <div class="blog-link-btn">
-                                            <a href="blog-details.html">View This Story <i
-                                                    class="flaticon-arrow-pointing-to-right"></i></a>
+                                    </div>
+                                    <div class="blog-content-m">
+                                        <ul class="blog-info d-flex">
+                                            <li class="blog-author">
+                                                <img src="assets/images/blog/blog-author1.png" alt="Author" class="author-img">
+                                                <a href="{{ route('blog.detail', $post->id) }}">Alex Avater</a>
+                                            </li>
+                                           
+                                        </ul>
+                                        <div class="blog-bottom">
+                                            <h4 class="blog-title">
+                                                <a href="{{ route('blog.detail', $post->id) }}">{{ $post->title }}</a>
+                                            </h4>
+                                            <div class="blog-link-btn">
+                                                <a href="{{ route('blog.detail', $post->id) }}">
+                                                    View This Story <i class="flaticon-arrow-pointing-to-right"></i>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="blog-card-m">
-                                <div class="blog-img-m">
-                                    <a href="blog-details.html"><img src="assets/images/blog/bm-2.png" alt></a>
-                                    <div class="blog-actions">
-                                        <a href="#"><i class="flaticon-share"></i></a>
-                                    </div>
-                                </div>
-                                <div class="blog-content-m">
-                                    <ul class="blog-info d-flex">
-                                        <li class="blog-author">
-                                            <img src="assets/images/blog/blog-author1.png" alt class="author-img">
-                                            <a href="#">Alex Avater</a>
-                                        </li>
-                                        <li class="blog-date">
-                                            <i class="flaticon-time"></i>
-                                            4th Jan 2021
-                                        </li>
-                                    </ul>
-                                    <div class="blog-bottom">
-                                        <h4 class="blog-title"><a href="blog-details.html">The Coolest Fashion People to
-                                                Follow in Every Age Group</a></h4>
-                                        <div class="blog-link-btn">
-                                            <a href="blog-details.html">View This Story <i
-                                                    class="flaticon-arrow-pointing-to-right"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="blog-card-m">
-                                <div class="blog-img-m">
-                                    <a href="blog-details.html"><img src="assets/images/blog/bm-3.png" alt></a>
-                                    <div class="blog-actions">
-                                        <a href="#"><i class="flaticon-share"></i></a>
-                                    </div>
-                                </div>
-                                <div class="blog-content-m">
-                                    <ul class="blog-info d-flex">
-                                        <li class="blog-author">
-                                            <img src="assets/images/blog/blog-author1.png" alt class="author-img">
-                                            <a href="#">Alex Avater</a>
-                                        </li>
-                                        <li class="blog-date">
-                                            <i class="flaticon-time"></i>
-                                            4th Jan 2021
-                                        </li>
-                                    </ul>
-                                    <div class="blog-bottom">
-                                        <h4 class="blog-title"><a href="blog-details.html">Let us know your thoughts in
-                                                this
-                                                is comments below</a></h4>
-                                        <div class="blog-link-btn">
-                                            <a href="blog-details.html">View This Story <i
-                                                    class="flaticon-arrow-pointing-to-right"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="blog-card-m">
-                                <div class="blog-img-m">
-                                    <a href="blog-details.html"><img src="assets/images/blog/bm-4.png" alt></a>
-                                    <div class="blog-actions">
-                                        <a href="#"><i class="flaticon-share"></i></a>
-                                    </div>
-                                </div>
-                                <div class="blog-content-m">
-                                    <ul class="blog-info d-flex">
-                                        <li class="blog-author">
-                                            <img src="assets/images/blog/blog-author1.png" alt class="author-img">
-                                            <a href="#">Alex Avater</a>
-                                        </li>
-                                        <li class="blog-date">
-                                            <i class="flaticon-time"></i>
-                                            4th Jan 2021
-                                        </li>
-                                    </ul>
-                                    <div class="blog-bottom">
-                                        <h4 class="blog-title"><a href="blog-details.html">How to come up with a good
-                                                name
-                                                for your fashion blog?</a></h4>
-                                        <div class="blog-link-btn">
-                                            <a href="blog-details.html">View This Story <i
-                                                    class="flaticon-arrow-pointing-to-right"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
-
+            
                     <div class="swiper-button-next"><i class="flaticon-arrow-pointing-to-right"></i></div>
                     <div class="swiper-button-prev"><i class="flaticon-arrow-pointing-to-left"></i></div>
-
                 </div>
             </div>
+            
         </div>
     </div>
     <script>

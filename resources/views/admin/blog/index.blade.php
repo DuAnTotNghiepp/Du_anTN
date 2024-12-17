@@ -135,7 +135,7 @@
                                             </td>
                                             <td>{{ $post->id }}</td>
                                             <td>{{ $post->title }}</td>
-                                            <td>{{ Str::limit($post->content, 50) }} </a></td>
+                                            <td>{{ Str::limit($post->content, 100) }} </a>Xem thêm</td>
                                             <td>
                                                 @if($post->image)
                                                     <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}" style="width: 100px; height: auto;">

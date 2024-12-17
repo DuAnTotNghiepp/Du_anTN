@@ -57,6 +57,8 @@ class OrderController extends Controller
         $orde = Order::with('address')->find($id);
         $address = Address::find($orde->user_address);
         return view('admin.order.edit', compact('orde','address'));
+
+        
     }
 
     /**

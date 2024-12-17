@@ -241,56 +241,12 @@
                     </div>
                     <div class="card-body">
                         <div>
-                            <input type="text" class="form-control" name="material" id="material" required value="{{$listPro->material}}"
+                            <input type="text" class="form-control" name="material" id="material" value="{{$listPro->material}}"
                                 data-provider="flatpickr" data-date-format="d M, Y">
                         </div>
                     </div>
                     <!-- end card body -->
                 </div> --}}
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Chất Liệu</h5>
-                    </div>
-                    <div class="card-body">
-                        <div>
-                            <label for="material" class="form-label">Chọn Chất Liệu</label>
-                            <select name="material_id" id="material" class="form-control">
-                                {{-- <option value="">Chọn chất liệu</option> --}}
-                                @foreach ($materials as $material)
-                                <option value="{{ $material->id }}" @if ($material->id == $listPro->material_id) selected @endif>
-                                    {{ $material->name }}
-                                </option>
-                            @endforeach
-                            </select>
-                        </div>
-
-                    </div>
-                    <!-- end card body -->
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Thuộc Tính Sản Phẩm</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <label for="choices-categories-input" class="form-label">Màu Sắc</label>
-                            @foreach ($Color as $col)
-                                <input type="checkbox" value="{{$col->id}}" name="id_variant[]" {{in_array($col->id,$vari_id)?'checked':''}}>
-                                <div style="width: 20px; height: 20px; background-color: {{$col->value}}; display: inline-block; border: 1px solid #ccc;"></div>
-                            @endforeach
-                        </div>
-                        <div class="mb-3">
-                            <label for="choices-categories-input" class="form-label">Kích Thước</label>
-                            @foreach ($Size as $col)
-                                <input type="checkbox" value="{{$col->id}}" name="id_variant[]" {{in_array($col->id,$vari_id)?'checked':''}}>
-                                {{$col->value}}
-                            @endforeach
-                        </div>
-                    </div>
-                    <!-- end card body -->
-                </div>
-                <!-- end card -->
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">Tags</h5>
@@ -329,6 +285,25 @@
 
         <!-- end main content-->
         <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const checkboxes = document.querySelectorAll('.variant-checkbox');
+
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.addEventListener('change', function() {
+                        const stockInput = document.querySelector(
+                            `input[name="stock[${this.dataset.color}][${this.dataset.size}]"]`
+                        );
+
+                        if (this.checked) {
+                            stockInput.disabled = false;  // Kích hoạt ô nhập số lượng
+                        } else {
+                            stockInput.disabled = true;   // Vô hiệu hóa ô nhập số lượng
+                            stockInput.value = '';        // Xóa giá trị đã nhập
+                        }
+                    });
+                });
+            });
+
             document.getElementById('project-thumbnail-img').addEventListener('change', function(event) {
                 const [file] = event.target.files;
                 if (file) {

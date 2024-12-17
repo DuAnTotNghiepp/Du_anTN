@@ -38,7 +38,7 @@ class BlogController extends Controller
 
             // Xác thực dữ liệu đầu vào
             $request->validate([
-                'title' => 'required|string|max:255|unique:title',
+                'title' => 'required|string|max:255',
                 'content' => 'required|string',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Kiểm tra định dạng và kích thước file
             ]);
@@ -98,12 +98,5 @@ class BlogController extends Controller
 
         return redirect()->route('blog.index')->with('success', 'Voucher deleted successfully!');
     }
-    public function show($id)
-    {
-        // Lấy bài viết từ cơ sở dữ liệu
-        $blog = Blog::findOrFail($id);
 
-        // Trả về view kèm dữ liệu
-        return view('client.blog', compact('blog'));
-    }
 }

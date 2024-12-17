@@ -27,6 +27,7 @@ return new class extends Migration
             $table->unsignedBigInteger('view')->default(0);
             $table->boolean('is_hot_deal')->default(false);
             $table->timestamps();
+
         });
     }
 

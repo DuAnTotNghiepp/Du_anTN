@@ -81,7 +81,7 @@
                                         </th>
                                         <th class="sort" data-sort="id" scope="col">ID</th>
                                         <th class="sort" data-sort="name" scope="col">Name</th>
-                                        <th class="sort" data-sort="cover" scope="col">Cover</th>
+
                                         <th class="sort" data-sort="create_at" scope="col">Create at</th>
                                         <th class="sort" data-sort="is_active" scope="col">Is Active</th>
 
@@ -90,6 +90,7 @@
                                 </thead>
                                 <tbody class="list form-check-all">
                                     @foreach ($data as $item)
+
                                         <tr>
                                             <th scope="row">
                                                 <div class="form-check">
@@ -102,7 +103,6 @@
                                             </td>
                                             <td class="id">{{ $item->id }}</td>
                                             <td class="name">{{ $item->name }}</td>
-                                            <td class="cover">{{ $item->cover }}</td>
                                             <td class="created_at">{{ $item->created_at }}</td>
                                             <td>{!! $item->is_active
                                                 ? '<span class="badge bg-primary ">Yes</span>'

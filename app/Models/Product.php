@@ -40,7 +40,8 @@ class Product extends Model
 
     public function variants()
     {
-        return $this->belongsToMany(Variants::class, 'product__variants','product_id', 'variants_id')->withPivot('quantity');
+        return $this->belongsToMany(Variant::class, 'product_variants', 'product_id', 'color_variant_id')
+                    ->withPivot('color_variant_id', 'size_variant_id', 'stock');
     }
     public function productVariants()
     {
@@ -63,8 +64,14 @@ class Product extends Model
     {
         return $this->belongsToMany(Product::class, 'product_favorites', 'user_id', 'product_id');
     }
+
     public function materials()
     {
         return $this->hasMany(Material::class);  // Một sản phẩm có thể có nhiều vật liệu
     }
+    public function galleries()
+    {
+        return $this->hasMany(ProductGallerie::class);
+    }
 }
+

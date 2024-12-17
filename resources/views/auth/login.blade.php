@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,19 +16,19 @@
 
     <style>
         .background-radial-gradient {
-          height: 800px;
-          background-color: hsl(218, 41%, 15%);
+          height: 100%;
+          background-color: hsl(220, 20%, 42%);
           background-image: radial-gradient(650px circle at 0% 0%,
-              hsl(218, 41%, 35%) 15%,
+              hsl(219, 12%, 49%) 15%,
               hsl(218, 41%, 30%) 35%,
-              hsl(218, 41%, 20%) 75%,
+              hsl(218, 26%, 29%) 75%,
               hsl(218, 41%, 19%) 80%,
               transparent 100%),
             radial-gradient(1250px circle at 100% 100%,
-              hsl(218, 41%, 45%) 15%,
+              hsl(218, 24%, 55%) 15%,
               hsl(218, 41%, 30%) 35%,
-              hsl(218, 41%, 20%) 75%,
-              hsl(218, 41%, 19%) 80%,
+              hsl(219, 17%, 50%) 75%,
+              hsl(219, 20%, 57%) 80%,
               transparent 100%);
         }
 
@@ -94,8 +95,7 @@
             <div class="row gx-lg-5 align-items-center mb-5">
                 <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
                     <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
-                        The best offer <br />
-                        <span style="color: hsl(218, 81%, 75%)">for your business</span>
+                        <img src="{{ Storage::url('logo.png') }}">
                     </h1>
                     <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
                         "Tinh Tế & Đẳng Cấp: Lựa Chọn Hoàn Hảo Cho Phong Cách Cuộc Sống"
@@ -106,34 +106,14 @@
                     <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
 
                     <div class="card bg-glass">
+                        <div class="card-hearder text-center mt-5">
+                            <h1>LOGIN</h1>
+                        </div>
                         <div class="card-body px-4 py-5 px-md-5">
-                            @if($errors->any())
-                                <div class="custom-error-alert">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li><i class="fas fa-times-circle"></i> {{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
+                            
                             <form action="{{ route('login') }}" method="POST" >
                                 @csrf
-
-                                {{-- <div class="row">
-                                    <div class="col-md-6 mb-4">
-                                        <div data-mdb-input-init class="form-outline">
-                                            <input type="text" id="form3Example1" class="form-control" />
-                                            <label class="form-label" for="form3Example1">First name</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <div data-mdb-input-init class="form-outline">
-                                            <input type="text" id="form3Example2" class="form-control" />
-                                            <label class="form-label" for="form3Example2">Last name</label>
-                                        </div>
-                                    </div>
-                                </div> --}}
-
+  
                                 <!-- Email input -->
                                 <div class="form-outline mb-4">
                                     <input type="email" name="email" id="form3Example3" class="form-control" />
@@ -149,12 +129,13 @@
                                 <div class="row mb-3">
                                     <div class="radius">
                                         <div class="form-check m-2">
-                                            <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
-                                            <label class="form-check-label" for="remember">
-                                                {{ __('Remember Me') }}
+                                            <label class="form-check-label">
+                                                <a href="{{route('password.forgot')}}">Forgot password</a>
+
                                             </label>
                                             <a class="float-end me-3" href="/register">Register</a>
+                                            
                                         </div>
                                     </div>
                                 </div>

@@ -91,7 +91,6 @@
                                 <li><a href="{{ route('favorites.index') }}"><i class="flaticon-heart"></i></a></li>
                                 <li class="cart-icon">
                                     <i class="flaticon-shopping-cart"></i>
-                                    <div class="cart-count"><span>10</span></div>
                                 </li>
                             </ul>
                         </div>
@@ -110,44 +109,54 @@
                     <i class="flaticon-letter-x"></i>
                 </div>
                 <ul class="cart-product-grid">
-                    <li class="single-cart-product">
-                        <div class="cart-product-info d-flex align-items-center">
-                            <div class="product-img"><img src="{{ asset('assets/images/product/cart-p1.png') }}" alt
-                                    class="img-fluid">
+                    @php
+                        $totalPrice = 0; // Khởi tạo biến tính tổng giá
+                    @endphp
+
+                    @foreach($cartItems->take(5) as $item)
+                        @php
+                            $totalPrice += $item->quantity * ($item->product->price_sale ?? 0); // Cộng dồn giá của từng sản phẩm
+                        @endphp
+                        <li class="single-cart-product">
+                            <div class="cart-product-info d-flex align-items-center">
+                                <div class="product-img">
+                                    <img src="{{ asset('storage/' . $item->product->img_thumbnail) }}" alt="{{ $item->product->name }}" class="img-fluid">
+                                </div>
+                                <div class="product-info">
+                                        <h5 class="product-title">{{ $item->product->name }}</h5>
+                                    </a>
+                                    <ul class="product-rating d-flex">
+                                        @for($i = 0; $i < 5; $i++)
+                                            <li><i class="bi bi-star{{ $i < ($item->product->rating ?? 0) ? '-fill' : '' }}"></i></li>
+                                        @endfor
+                                    </ul>
+                                    <p class="product-price">
+                                        <span>{{ $item->quantity }}</span>x
+                                        <span class="p-price">{{ number_format($item->product->price_sale ?? 0, 2) }} VND</span>
+                                    </p>
+                                </div>
                             </div>
-                            <div class="product-info">
-                                <a href="product-details.html">
-                                    <h5 class="product-title">Men Casual Summer Sale</h5>
-                                </a>
-                                <ul class="product-rating d-flex">
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star"></i></li>
-                                </ul>
-                                <p class="product-price"><span>1</span>x <span class="p-price">$10.32</span>
-                                </p>
+                            <div class="cart-product-delete-btn">
+                                <form action="{{ route('cart.destroy', $item->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger"><i class="flaticon-letter-x"></i></button>
+                                </form>
                             </div>
-                        </div>
-                        <div class="cart-product-delete-btn">
-                            <a href="javascript:void(0)"><i class="flaticon-letter-x"></i></a>
-                        </div>
-                    </li>
+                        </li>
+                    @endforeach
                 </ul>
+
+
             </div>
             <div class="cart-bottom">
                 <div class="cart-total d-flex justify-content-between">
-                    <label>Subtotal :</label>
-                    <span>$64.08</span>
+                    <label>Tổng Giá :</label>
+                    <span>{{ number_format($totalPrice, 2) }} VND</span>
                 </div>
                 <div class="cart-btns">
-                    <a href="checkout.html" class="cart-btn checkout">CHECKOUT</a>
                     <a href="{{ route('cart.index') }}" class="cart-btn cart">VIEW CART</a>
                 </div>
-                <p class="cart-shipping-text"><strong>SHIPPING:</strong> Continue shopping up to $64.08 and receive
-                    free
-                    shipping. stay with EG </p>
             </div>
         </div>
     </div>
@@ -283,7 +292,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="newslatter-wrap text-center">
-                        <h5>Connect To Mai Lan</h5>
+                        <h5>Connect To  Nguyên</h5>
                         <h2 class="newslatter-title">Join Our Newsletter</h2>
                         <p>Hey you, sign up it only, Get this limited-edition T-shirt Free!</p>
                         <form action="#" method="POST">

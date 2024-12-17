@@ -10,6 +10,7 @@ use App\Models\Variants;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Variant;
 use App\Models\Vouchers;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -42,15 +43,12 @@ class CheckoutController extends Controller
         if (!$colorId || !$sizeId || !$quantity || !$image || !$productName || !$productPrice) {
             return redirect()->back()->withErrors(['message' => 'Dữ liệu không đầy đủ']);
         }
-        $color = Variants::where('id', $colorId)->first();
-        $size = Variants::where('id', $sizeId)->first();
+        $color = Variant::where('id', $colorId)->first();
+        $size = Variant::where('id', $sizeId)->first();
 
         $product = Product::where('name', $productName)->first();
         if (!$product) {
             return redirect()->back()->withErrors(['message' => 'Sản phẩm không tồn tại']);
-        }
-        if ($product->quantity < $quantity) {
-            return redirect()->back()->withErrors(['message' => 'Sản phẩm không đủ số lượng trong kho']);
         }
         $user = Auth::user();
         $addresses = Address::where('user_id', $user->id)->get();
@@ -74,6 +72,8 @@ class CheckoutController extends Controller
         // Lấy dữ liệu các sản phẩm đã chọn
         $cartItems = Cart::where('user_id', auth()->id())->get();
         $selectedProducts = json_decode($request->input('selected_products'), true);
+       
+
         if (!$selectedProducts || count($selectedProducts) == 0) {
             return redirect()->back()->with('error', 'Bạn chưa chọn sản phẩm nào.');
         }
@@ -116,6 +116,8 @@ class CheckoutController extends Controller
         $voucherCode = $request->voucher_code;
         $appliedVouchers = []; // Tạo một mảng để lưu trữ mã giảm giá đã áp dụng tạm thời trong hàm
 
+
+
         // Kiểm tra nếu mã đã được áp dụng
         if (in_array($voucherCode, $appliedVouchers)) {
             return response([
@@ -123,7 +125,6 @@ class CheckoutController extends Controller
                 'message' => 'Mã giảm giá đã được áp dụng!'
             ]);
         }
-
         $now = Carbon::now('Asia/Ho_Chi_Minh');
         $voucher = Vouchers::where('code', $voucherCode)
             ->where('start_date', '<=', $now)
@@ -145,6 +146,18 @@ class CheckoutController extends Controller
             ]);
         }
 
+    
+        $discount = ($voucher->type === 'percent')
+            ? ($voucher->value / 100) * $orderTotal
+            : $voucher->value;
+    
+        $discount = min($discount, $orderTotal);
+    
+        // Thay vì lưu vào session, chúng ta chỉ cần không cho phép áp dụng lại
+        $appliedVouchers[] = $voucherCode; // Lưu mã đã áp dụng vào mảng
+    
+
+
         $discount = ($voucher->type === 'percent')
             ? ($voucher->value / 100) * $orderTotal
             : $voucher->value;
@@ -159,10 +172,16 @@ class CheckoutController extends Controller
             'final_total' => $orderTotal - $discount,
         ];
 
+
         return response([
             'result' => true,
             'data' => $data,
             'message' => 'Mã giảm giá đã được áp dụng thành công!' // Thêm thông báo thành công
         ]);
     }
+
+    
+    
+
+
 }
