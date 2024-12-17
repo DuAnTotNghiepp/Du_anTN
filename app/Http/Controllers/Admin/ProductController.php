@@ -138,7 +138,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, int $id)
     {
-      
+    
         // Lấy thông tin sản phẩm cần cập nhật
         $product = Product::find($id);
 
