@@ -56,7 +56,7 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center flex-wrap gap-2">
                         <div class="flex-grow-1">
-                            <a href="{{ route('vouchers.create') }}" class="btn btn-info add-btn"><i
+                            <a href="{{ route('blog.create') }}" class="btn btn-info add-btn"><i
                                     class="ri-add-fill me-1 align-bottom"></i> Add Blog</a>
                         </div>
                         <div class="flex-shrink-0">

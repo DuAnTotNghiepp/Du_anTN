@@ -66,7 +66,9 @@ class CheckoutController extends Controller
         return view('client.checkout', compact('quantity',  'productPrice', 'product', 'checkoutData', 'addresses', 'user', 'orderTotal'));
     }
     public function checkout1(Request $request)
+    
     {
+       
         $user = Auth::user();
         $addresses = Address::where('user_id', $user->id)->get();
         // Lấy dữ liệu các sản phẩm đã chọn
