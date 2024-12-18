@@ -12,6 +12,7 @@ use App\Http\Controllers\BinhLuanController;
 use App\Http\Controllers\Client\Checkout1Controller;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ClientController;
+use App\Http\Controllers\Client\Order1Controller;
 use App\Http\Controllers\Client\ProductCatalogueController;
 use App\Http\Controllers\Client\ProductFavoriteController;
 use App\Http\Controllers\Client\VoucherController as ClientVoucherController;
@@ -31,10 +32,7 @@ use Illuminate\Support\Facades\Password;
 |
 */
 
-// Public Routes
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 // Authentication Routes
 Route::get('login', [AuthController::class, 'showFormLogin']);
@@ -66,7 +64,7 @@ Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')-
 Route::get('product/{id}', [ClientController::class, 'show'])->middleware('save.redirect')->name('product.product_detail');
 
 Route::get('/api/variant-stock', [ClientController::class, 'getVariantStock']);
-Route::post('/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
+// Route::post('/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
 
 
 //profile
@@ -84,7 +82,6 @@ Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])
 
 
 Route::post('/orders/vnpay_ment', [OrderController::class, 'vnpay_ment'])->name('orders.vnpay_ment');
-
 Route::get('/checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('checkout.applyVoucher');
 
 
@@ -97,13 +94,18 @@ Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')-
 Route::post('/vnpay_payment', [OrderController::class, 'vnpayPayment'])->name('orders.vnpay_ment');
 Route::get('/vnpay/callback', [OrderController::class, 'vnpayCallback'])->name('vnpay.callback');
 
+Route::post('/orders/vnpay_ment', [Order1Controller::class, 'vnpay_ment'])->name('orders.vnpay_ment');
+Route::get('/checkout/apply-voucher', [Checkout1Controller::class, 'applyVoucher'])->name('checkout.applyVoucher');
+Route::post('/vnpay_payment', [Order1Controller::class, 'vnpayPayment'])->name('orders.vnpay_ment');
+Route::get('/vnpay/callback', [Order1Controller::class, 'vnpayCallback'])->name('vnpay.callback');
+
 
 
 Route::middleware('auth')->group(function () {
-    Route::match(['get', 'post'],'/checkout', [CheckoutController::class, 'form'])->name('checkout');
-    Route::match(['get', 'post'],'/checkout1', [CheckoutController::class, 'checkout1'])->name('checkout1');
+    Route::get('/checkout', [CheckoutController::class, 'form'])->name('checkout');
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
-    Route::post('/orders/store1', [OrderController::class, 'store1'])->name('orders.store1');
+    Route::get('/checkout1', [Checkout1Controller::class, 'checkout1'])->name('checkout1');
+    Route::post('/orders/store1', [Order1Controller::class, 'store1'])->name('orders.store1');
 });
 
 Route::get('/productcatalogue', [ProductCatalogueController::class, 'index'])->name('productcatalogue');
@@ -147,7 +149,7 @@ Route::get('searchWarranty',[ClientController::class,'searchWarranty'])->name('s
 
 Route::post('/search', [ClientController::class, 'search'])->name('product.search');
 // Group routes under admin middleware
-Route::middleware('auth', 'admin')->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('admin/accounts', [AdminController::class, 'index'])->name('admin.accounts');
     Route::get('admin/accounts/create', [AdminController::class, 'create'])->name('admin.accounts.create');
     Route::post('admin/accounts', [AdminController::class, 'store'])->name('admin.accounts.store');

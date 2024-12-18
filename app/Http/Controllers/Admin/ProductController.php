@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SanPhamRequest;
+use App\Http\Requests\StoreProductRequest;
 use App\Models\BinhLuan;
 use App\Models\Catalogues;
 use App\Models\Product;
@@ -48,7 +50,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SanPhamRequest $request)
     {
         if ($request->isMethod('post')) {
             $params = $request->except('_token');

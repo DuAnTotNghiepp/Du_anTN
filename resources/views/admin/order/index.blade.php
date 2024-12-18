@@ -180,6 +180,8 @@
                                                     Đang Giao Hàng
                                                 @elseif($order->status == 'delivered')
                                                     Giao Hàng Thành Công
+                                                @elseif($order->status == 'hoanthanh')
+                                                    Đã Nhận
                                                 @elseif($order->status == 'canceled')
                                                     Đã hủy
                                                 @endif

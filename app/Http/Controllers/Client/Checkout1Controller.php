@@ -6,18 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Address;
 use App\Models\Cart;
 use App\Models\Product;
-use App\Models\Variants;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use App\Models\Variant;
 use App\Models\Vouchers;
 use Carbon\Carbon;
-use Illuminate\Routing\Route;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-
-class CheckoutController extends Controller
+class Checkout1Controller extends Controller
 {
     public function show($id)
     {
@@ -27,49 +21,47 @@ class CheckoutController extends Controller
 
         return view('client.checkout', compact('product', 'addresses', 'user'));
     }
-
-    public function form(Request $request)
+    public function checkout1(Request $request)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login')->withErrors(['message' => 'Bạn cần đăng nhập để tiếp tục']);
-        }
-        $colorId = $request->query('color');
-        $sizeId = $request->query('size');
-        $quantity = $request->query('quantity');
-        $image = $request->query('image');
-        $productName = $request->query('name');
-        $productPrice = $request->query('price');
-        $orderTotal = session('order_total', 0);
-        // Kiểm tra nếu thiếu bất kỳ dữ liệu nào
-        if (!$colorId || !$sizeId || !$quantity || !$image || !$productName || !$productPrice) {
-            return redirect()->back()->withErrors(['message' => 'Dữ liệu không đầy đủ']);
-        }
-        $color = Variant::where('id', $colorId)->first();
-        $size = Variant::where('id', $sizeId)->first();
-
-        $product = Product::where('name', $productName)->first();
-        if (!$product) {
-            return redirect()->back()->withErrors(['message' => 'Sản phẩm không tồn tại']);
-        }
         $user = Auth::user();
         $addresses = Address::where('user_id', $user->id)->get();
-        $checkoutData = [
-            'color' => $colorId,  // Lưu giá trị màu sắc từ URL
-            'size' => $sizeId,    // Lưu giá trị kích thước từ URL
-            'quantity' => $quantity,
-            'image' => $image,
-            'productName' => $productName,
-            'productPrice' => $productPrice,
-            'productId' => $product->id,
-        ];
-        session()->put('productcheckout', $checkoutData);
+        // Lấy dữ liệu các sản phẩm đã chọn
+        $cartItems = Cart::where('user_id', auth()->id())->get();
+        $selectedProducts = json_decode($request->input('selected_products'), true);
+        if (!$selectedProducts || count($selectedProducts) == 0) {
+            return redirect()->back()->with('error', 'Bạn chưa chọn sản phẩm nào.');
+        }
+        $total = 0;
+        foreach ($selectedProducts as $item) {
+            if (isset($item['product_id'])) {
+                $product = Product::find($item['product_id']);
 
-        return view('client.checkout', compact('quantity',  'productPrice', 'product', 'checkoutData', 'addresses', 'user', 'orderTotal'));
+                // Kiểm tra sản phẩm có khả dụng hay không
+                if ($product && $product->is_active) {
+                    $products[] = [
+                        'product' => $product,
+                        'quantity' => $item['quantity'],
+                        'total_price' => $product->price_sale * $item['quantity'],
+                    ];
+                    $total += $product->price_sale * $item['quantity'];
+                } else {
+                    // Thêm sản phẩm không khả dụng vào danh sách để xử lý
+                    $inactiveProducts[] = $item['product_id'];
+                }
+            }
+        }
+        if (!empty($inactiveProducts)) {
+            Cart::where('user_id', auth()->id())
+                ->whereIn('product_id', $inactiveProducts)
+                ->delete();
+
+            return redirect()->route('cart.index')->with('error', 'Một số sản phẩm không khả dụng đã bị xóa khỏi giỏ hàng.');
+        }
+
+        $tax = 5000;  // Or calculate dynamically
+        $totalWithTax = $total + $tax;
+        return view('client.checkout1', compact('products', 'user', 'addresses', 'cartItems', 'tax', 'totalWithTax', 'total'));
     }
-
-
-
-
     public function applyVoucher(Request $request)
     {
         $orderTotal = $request->total_price;

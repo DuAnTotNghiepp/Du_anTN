@@ -60,6 +60,27 @@
             width: 150px;
             /* Đặt độ rộng cho ô nhập liệu */
         }
+        .variants-scroll {
+            display: flex;
+            flex-direction: column; /* Đặt các phần tử theo chiều dọc */
+            max-height: 300px; /* Giới hạn chiều cao của phần cuộn */
+            overflow-y: auto; /* Cho phép cuộn dọc */
+            padding: 10px 0;
+        }
+
+        .variants-scroll .form-group {
+            margin-bottom: 10px; /* Khoảng cách giữa các biến thể */
+        }
+
+        .variants-scroll label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+        }
+
+        .variants-scroll input[type="checkbox"] {
+            margin-right: 5px;
+        }
     </style>
 
     <body>
@@ -103,21 +124,19 @@
                                 <label class="form-label" for="project-title-input">Tên Sản phẩm</label>
                                 <input type="text" class="form-control" id="project-title-input" name="name"
                                     placeholder="Nhập Tên Sản phẩm" value="{{ old('name') }}">
-                                @error('name')
-                                    <span style="color: red">{{ $message }}</span>
-                                @enderror
                             </div>
-
-
+                            @error('name')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                             <div class="mb-3">
                                 <label class="form-label" for="project-thumbnail-img">Ảnh Sản Phẩm</label>
                                 <input class="form-control" id="project-thumbnail-img" name="img_thumbnail" type="file"
                                     accept="image/png, image/gif, image/jpeg">
                                 <img id="imgPreview" src="" style="width: 100px; margin-top: 10px;">
-                                @error('img_thumbnail')
-                                    <span style="color: red">{{ $message }}</span>
-                                @enderror
                             </div>
+                            @error('img_thumbnail')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
 
                             <div class="mb-3">
                                 <label class="form-label">Ảnh liên Quan</label>
@@ -127,31 +146,29 @@
                                     <div class="preview-gallery" id="galleryPreview"></div>
                                 </div>
                             </div>
-
+                            @error('image')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                             <div class="mb-3">
                                 <label class="form-label">Mô Tả Sản Phẩm</label>
                                 <div id="ckeditor-classic">
                                     <textarea class="form-control" placeholder="Enter Description" name="description" id="description" rows="3">{{ old('description') }}</textarea>
                                 </div>
-                                @error('description')
-                                    <span id="description-error" style="color: red">{{ $message }}</span>
-                                @enderror
                             </div>
-
+                            @error('description')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="mb-3 mb-lg-0">
                                         <label for="choices-priority-input" class="form-label">Giá Thường</label>
-
                                         <input type="number" class="form-control" name="price_regular" id="price_regular"
                                             step="0.01" data-provider="flatpickr" data-date-format="d M, Y"
                                             value="{{ old('price_regular') }}">
-                                        @error('price_regular')
-                                            <span id="price-regular-error" style="color: red">{{ $message }}</span>
-                                        @enderror
-
-
                                     </div>
+                                    @error('price_regular')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="mb-3 mb-lg-0">
@@ -160,33 +177,19 @@
                                             value="{{ old('price_sale') }}">
                                         <span id="priceSaleError" style="color: red; display: none;">Giá khuyến mãi không
                                             được lớn hơn giá thường.</span>
-                                        @error('price_sale')
-                                            <span id="price-sale-error" style="color: red">{{ $message }}</span>
-                                        @enderror
                                     </div>
+                                    @error('price_sale')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                {{-- <div class="col-lg-4">
-                                    <div>
-                                        <label for="datepicker-deadline-input" class="form-label">Số Lượng</label>
-
-                                        <input type="number" class="form-control" name="quantity" id="quantity" data-provider="flatpickr" data-date-format="d M, Y" value="{{ old('quantity') }}">
-                                        @error('quantity')
-                                            <span id="quantity-error" style="color: red">{{ $message }}</span>
-                                        @enderror
-
-
-
-                                    </div>
-                                </div> --}}
-                            </div> <br>
-
+                            </div><br>
                             <div class="mb-3">
                                 <label class="form-label">Hướng Dẫn Sử Dụng</label>
                                 <div id="ckeditor-classic">
                                     <textarea class="form-control" placeholder="Enter User_manual" name="user_manual" id="user_manual" rows="3">{{ old('user_manual') }}</textarea>
                                 </div>
                                 @error('user_manual')
-                                    <span id="user-manual-error" style="color: red">{{ $message }}</span>
+                                    <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="mb-3">
@@ -195,7 +198,7 @@
                                     <textarea name="content" id="content" rows="10" cols="80">{{ old('content') }}</textarea>
                                 </div>
                                 @error('content')
-                                    <span id="content-error" style="color: red">{{ $message }}</span>
+                                    <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
                             </div><br>
                             <div class="mb-3">
@@ -241,11 +244,11 @@
                         <div>
                             <label class="form-label mb-0">Mã sản phẩm (SKU)</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="sku" id="sku">
+                                <input type="text" class="form-control" name="sku" value="{{ old('sku') }}" id="sku">
                                 <button type="button" class="btn btn-outline-secondary" id="generateSKU">Random</button>
                             </div>
                             @error('sku')
-                                <span id="sku-error" style="color: red">{{ $message }}</span>
+                                <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
@@ -274,17 +277,19 @@
                         <!-- Thêm số lượng cho từng kết hợp màu sắc và kích thước -->
                         <div class="mb-3">
                             <label for="stock" class="form-label">Số lượng cho từng biến thể</label>
-                            @foreach ($Color as $color)
-                                @foreach ($Size as $size)
-                                    <div class="form-group">
-                                        <label>
-                                            <input style="width: 20px; height: 20px;" type="checkbox" class="form-check-input" name="selected_variants[{{ $color->id }}][{{ $size->id }}]" value="1">
-                                            <div style="width: 20px; height: 20px; border-radius: 10px; background-color: {{ $color->value }}; display: inline-block; border: 1px solid #ccc;"></div> - {{ $size->value }}
-                                        </label>
-                                        <input type="number" class="form-control stock-input" name="stock[{{ $color->id }}][{{ $size->id }}]" min="0" placeholder="Số lượng sản phẩm" disabled />
-                                    </div>
+                            <div class="variants-scroll">
+                                @foreach ($Color as $color)
+                                    @foreach ($Size as $size)
+                                        <div class="form-group">
+                                            <label>
+                                                <input style="width: 20px; height: 20px;" type="checkbox" class="form-check-input" name="selected_variants[{{ $color->id }}][{{ $size->id }}]" value="1">
+                                                <div style="width: 20px; height: 20px; border-radius: 10px; background-color: {{ $color->value }}; display: inline-block; border: 1px solid #ccc;"></div> - {{ $size->value }}
+                                            </label>
+                                            <input type="number" class="form-control stock-input" name="stock[{{ $color->id }}][{{ $size->id }}]" min="0" placeholder="Số lượng sản phẩm" disabled />
+                                        </div>
+                                    @endforeach
                                 @endforeach
-                            @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -303,6 +308,9 @@
                                     </option>
                                 @endforeach
                             </select>
+                            @error('catalogues_id')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <!-- end card body -->
