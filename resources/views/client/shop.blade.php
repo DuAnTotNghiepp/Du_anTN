@@ -124,33 +124,40 @@
 
                     <div class="row">
                         @foreach ($products as $lsp)
-                            <div class="col-xxl-3 col-xl-4 col-lg-4 col-sm-4">
-                                <div class="product-card-l">
-                                    <div class="product-img">
-                                        {{--  <a href="product-details.html">
-                                    <img src="assets/images/product/p-dbl1.png" alt>
-                                    <img src="assets/images/product/p-dbl2.png" alt class="hover-img">
-                                </a>  --}}
-                                        <a href="{{ route('product.product_detail', $lsp->id) }}"><img
-                                                src="{{ Storage::url($lsp->img_thumbnail) }} " alt class="img-fluid"
-                                                style="max-height: 200px;"></a>
-                                        <div class="product-lavels">
-                                        </div>
-                                        <div class="product-actions">
-                                            <a href="{{ route('product.product_detail', $lsp->id) }}"><i
-                                                    class="flaticon-search"></i></a>
-                                        </div>
+                        <div class="col-xxl-3 col-xl-4 col-lg-4 col-sm-4">
+                            <div class="product-card-l">
+                                <div class="product-img">
+                                    {{--  <a href="product-details.html">
+                                        <img src="assets/images/product/p-dbl1.png" alt>
+                                        <img src="assets/images/product/p-dbl2.png" alt class="hover-img">
+                                    </a>  --}}
+                                    <a href="{{route('product.product_detail',$lsp->id)}}"><img
+                                        src="{{ Storage::url($lsp->img_thumbnail) }} "  alt
+                                        class="img-fluid" style="max-height: 200px;"></a>
+                                    <div class="product-lavels">
                                     </div>
-                                    <div class="product-body">
-                                        <h3 class="product-title"><a href="product-details.html">{{ $lsp->name }}</a>
-                                        </h3>
-                                        <div class="product-price">
-                                            <del class="old-price">{{ $lsp->price_sale }}</del><ins
-                                                class="new-price">{{ $lsp->price_regular }}</ins>
-                                        </div>
+                                    <div class="product-actions">
+                                        <a href="#"><i class="flaticon-heart"></i></a>
+                                        <a href="{{route('product.product_detail',$lsp->id)}}"><i class="flaticon-search"></i></a>
+                                        <a href="#"><i class="flaticon-shopping-cart"></i></a>
+                                    </div>
+                                </div>
+                                <div class="product-body">
+                                    <ul class="d-flex product-rating">
+                                        <li><i class="bi bi-star-fill"></i></li>
+                                        <li><i class="bi bi-star-fill"></i></li>
+                                        <li><i class="bi bi-star-fill"></i></li>
+                                        <li><i class="bi bi-star-fill"></i></li>
+                                        <li><i class="bi bi-star"></i></li>
+                                        <li>(<span>8</span> Review)</li>
+                                    </ul>
+                                    <h3 class="product-title"><a href="product-details.html">{{ $lsp->name }}</a></h3>
+                                    <div class="product-price">
+                                        <del class="old-price">{{ $lsp->price_regular}}</del><ins class="new-price">{{ $lsp->price_sale}}</ins>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         @endforeach
                     </div>
                 </div>
