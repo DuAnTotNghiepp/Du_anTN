@@ -150,10 +150,7 @@ style="max-width: 100px; border-radius: 5px;">
                                 <li>Tổng Đơn Hàng (Bao gồm thuế)
                                     <span id="total">{{ number_format($totalWithTax) }} VND</span>
                                 </li>
-{{--                                 
-                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <input type="hidden" name="total_price" id="total_price"
-                                    value="{{ $quantity * $productPrice + 5000 }}"> --}}
+
                             </ul>
 
                             <!-- Các trường ẩn -->

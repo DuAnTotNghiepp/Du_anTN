@@ -143,19 +143,19 @@
                                     </li>
                                 
                                     <!-- Hiển thị Giảm Giá -->
-                                    <li>Giảm giá: <strong>- <span id="voucher_value">{{ number_format($voucherValue ?? 0) }}</span> VNĐ</strong></li>
+                                    <li>Giảm giá: <strong>- <span id="voucher_value">0</span> VNĐ</strong></li>
                                 
                                     <!-- Hiển thị Tổng Đơn Hàng (Bao gồm thuế và giảm giá) -->
                                     <li>Tổng Đơn Hàng (Bao gồm cả thuế và giảm giá)
                                         <span id="total">
-                                            {{ number_format(($quantity * $productPrice + 5000) - ($voucherValue ?? 0)) }}
+                                            {{ number_format(($quantity * $productPrice + 5000) ) }}
                                         </span> VND
                                     </li>
                                 
                                     <!-- Các trường ẩn -->
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    <input type="hidden" name="total_price" id="total_price"
-                                        value="{{ ($quantity * $productPrice + 5000) - ($voucherValue ?? 0) }}">
+                                    <input type="hidden" name="total_price" id="total_price" 
+                                        value="{{ ($quantity * $productPrice + 5000) }}">
                                 </ul>
                                 
 
