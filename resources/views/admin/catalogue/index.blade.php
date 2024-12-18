@@ -45,17 +45,17 @@
                                 <i class="ri-search-line search-icon"></i>
                             </div>
                         </div>
-                        <div class="col-md-auto ms-auto">
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="text-muted">Sort by: </span>
-                                <select class="form-control mb-0" data-choices data-choices-search-false
-                                    id="choices-single-default">
-                                    <option value="Name">Name</option>
-                                    <option value="Company">Company</option>
-                                    <option value="Lead">Lead</option>
-                                </select>
-                            </div>
-                        </div>
+{{--                        <div class="col-md-auto ms-auto">--}}
+{{--                            <div class="d-flex align-items-center gap-2">--}}
+{{--                                <span class="text-muted">Sort by: </span>--}}
+{{--                                <select class="form-control mb-0" data-choices data-choices-search-false--}}
+{{--                                    id="choices-single-default">--}}
+{{--                                    <option value="Name">Name</option>--}}
+{{--                                    <option value="Company">Company</option>--}}
+{{--                                    <option value="Lead">Lead</option>--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     </div>
                 </div>
                 <div class="card-body">
@@ -71,10 +71,10 @@
                                             </div>
                                         </th>
                                         <th class="sort" data-sort="id" scope="col">ID</th>
-                                        <th class="sort" data-sort="name" scope="col">Name</th>
+                                        <th class="sort" data-sort="name" scope="col">Tên</th>
 
-                                        <th class="sort" data-sort="create_at" scope="col">Create at</th>
-                                        <th class="sort" data-sort="is_active" scope="col">Is Active</th>
+                                        <th class="sort" data-sort="create_at" scope="col">Ngày tạo</th>
+                                        <th class="sort" data-sort="is_active" scope="col">Trạng thái</th>
 
                                         <th scope="col">Action</th>
                                     </tr>
