@@ -136,31 +136,28 @@
                                     <li class="subtotal">Tổng Giá
                                         <span id="subtotal">{{ number_format($quantity * $productPrice) }} VND</span>
                                     </li>
-
+                                
                                     <!-- Hiển thị Thuế -->
                                     <li>Thuế
                                         <span id="tax">5000 VND</span>
                                     </li>
-                                    <li>Giảm giá: <strong>- <span id="voucher_value">0<span> VNĐ</strong></li>
-                                    {{-- <!-- Hiển thị Giá trị Giảm Giá -->
-                                    @if (session('voucher'))
-                                        <li class="discount">Giảm Giá ({{ session('voucher')->code }})
-                                            <span id="discount">-{{ number_format(session('voucher_discount')) }} VND</span>
-                                        </li>
-                                    @endif --}}
-
+                                
+                                    <!-- Hiển thị Giảm Giá -->
+                                    <li>Giảm giá: <strong>- <span id="voucher_value">{{ number_format($voucherValue ?? 0) }}</span> VNĐ</strong></li>
+                                
                                     <!-- Hiển thị Tổng Đơn Hàng (Bao gồm thuế và giảm giá) -->
-                                    <li>Tổng Đơn Hàng (Bao gồm cả thuế)
+                                    <li>Tổng Đơn Hàng (Bao gồm cả thuế và giảm giá)
                                         <span id="total">
-                                            {{ number_format($quantity * $productPrice + 5000) }}
-                                        </span>VND
+                                            {{ number_format(($quantity * $productPrice + 5000) - ($voucherValue ?? 0)) }}
+                                        </span> VND
                                     </li>
-
+                                
                                     <!-- Các trường ẩn -->
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                     <input type="hidden" name="total_price" id="total_price"
-                                        value="{{ $quantity * $productPrice + 5000 }}">
+                                        value="{{ ($quantity * $productPrice + 5000) - ($voucherValue ?? 0) }}">
                                 </ul>
+                                
 
                                 <!-- Form áp dụng mã giảm giá -->
                                 <div id="applyVoucher">
