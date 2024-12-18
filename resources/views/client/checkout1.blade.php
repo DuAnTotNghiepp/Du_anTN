@@ -46,14 +46,14 @@
                                     <div class="eg-input-group">
                                         <label for="address-selection">Chọn Địa chỉ nhận</label>
                                         <div class="btn-submit">
-                                            <!-- Nút để hiển thị/ẩn form -->
-                                            <button class="btn float-end" id="add-address-btn">Thêm Địa Chỉ</button>
+                                             <!-- Nút để hiển thị/ẩn form -->
+                                             <button class="btn float-end" id="add-address-btn">Thêm Địa Chỉ</button>
                                         </div>
                                         <select id="address-selection" name="user_address" class="form-control" required>
                                             <option value="">-- Chọn Địa chỉ --</option>
                                             @foreach ($addresses as $address)
                                                 <option value="{{ $address->id }}">
-                                                    {{ $address->address }}, {{ $address->commune }}, {{ $address->city }},
+{{ $address->address }}, {{ $address->commune }}, {{ $address->city }},
                                                     {{ $address->state }}
                                                 </option>
                                             @endforeach
@@ -97,7 +97,7 @@
                                             <div class="product-img">
                                                 <img src="{{ asset('storage/' . $item->product->img_thumbnail) }}"
                                                     alt="{{ $item->product->name }}"
-                                                    style="max-width: 100px; border-radius: 5px;">
+style="max-width: 100px; border-radius: 5px;">
                                             </div>
                                             <div class="product-info">
                                                 <h5 class="product-title">{{ $item->product->name }}</h5>
@@ -125,7 +125,7 @@
                                                     <input type="hidden" name="color[]" value="{{ $item->color }}"><span class="color-box" style="display: inline-block; width: 20px; height: 20px; background-color: {{ $item->color }}; border: 1px solid #ddd; border-radius: 10px;"></span>
                                                 </p>
                                                 <p><strong>Cỡ: </strong>{{ $item->size }}</p>
-                                                <input type="hidden" name="size[]" value="{{ $item->size }}">
+<input type="hidden" name="size[]" value="{{ $item->size }}">
                                             </div>
                                         </li>
                                     @endforeach
@@ -145,7 +145,7 @@
                                 <li>Thuế
                                     <span id="tax">5000 VND</span>
                                 </li>
-
+                                <li>Giảm giá: <strong>- <span id="voucher_value">0<span> VNĐ</strong></li>
                                 <!-- Hiển thị Tổng Đơn Hàng -->
                                 <li>Tổng Đơn Hàng (Bao gồm thuế)
                                     <span id="total">{{ number_format($totalWithTax) }} VND</span>
@@ -171,6 +171,7 @@
                                     </div>
                                     <span id="errorMessage" class="error-message"></span><br>
                                 </div>
+                            </div>
 
                         </div>
                         <div class="payment-form">
@@ -179,7 +180,7 @@
                                     <label for="payment_method">Payment Method</label>
                                     <select name="payment_method" id="payment_method" class="form-control" required>
                                         <option value="cash">Thanh Toán Khi Nhận Hàng</option>
-                                        <option value="vnpay">Thanh Toán VNPay</option>
+<option value="vnpay">Thanh Toán VNPay</option>
                                     </select>
                                 </div>
 
@@ -196,15 +197,168 @@
                                 <button type="submit">Place Order</button>
                             </div>
                         </div>
-                    </div>
+
                 </form>
             </div>
+            <!-- Form thêm địa chỉ -->
+            <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="{{ route('profile.address.store') }}" method="POST">
+                            @csrf
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addAddressLabel">Thêm Địa Chỉ</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Form các trường thêm địa chỉ -->
+                                <div class="mb-3">
+                                    <label for="addFirstName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="addFirstName" name="first_name"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="addLastName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="addLastName" name="last_name"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="addEmail" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="addEmail" name="email" required>
+                                </div>
+                                <div class="mb-3">
+<label for="addContactNumber" class="form-label">Contact Number</label>
+                                    <input type="tel" class="form-control" id="addContactNumber"
+                                        name="contact_number" required>
+                                </div>
+                                <div>
+                                    <label class="form-label">City</label>
+                                    <select class="form-select form-select-sm mb-3" id="city" name="city">
+                                        <option value="" selected>Select province</option>
+                                    </select>
+                                    <label class="form-label">District</label>
+                                    <select class="form-select form-select-sm mb-3" id="district" name="state">
+                                        <option value="" selected>Select district</option>
+                                    </select>
+                                    <label class="form-label">Ward</label>
+                                    <select class="form-select form-select-sm" id="ward" name="commune">
+                                        <option value="" selected>Select ward</option>
+                                    </select>
+                                    <!-- Input ẩn để lưu tên tỉnh, huyện, xã -->
+                                    <input type="hidden" id="city_name" name="city">
+                                    <input type="hidden" id="district_name" name="state">
+                                    <input type="hidden" id="ward_name" name="commune">
+
+                                </div>
+                                <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+                                <script>
+                                    var citis = document.getElementById("city");
+                                    var districts = document.getElementById("district");
+                                    var wards = document.getElementById("ward");
+                                    var Parameter = {
+                                        url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+                                        method: "GET",
+                                        responseType: "application/json",
+                                    };
+
+                                    axios(Parameter)
+                                        .then(function(result) {
+                                            console.log("Dữ liệu JSON tải thành công:", result.data); // Kiểm tra dữ liệu tải về
+                                            renderCity(result.data);
+                                        })
+                                        .catch(function(error) {
+console.error("Không thể tải dữ liệu:", error);
+                                        });
+
+                                    function renderCity(data) {
+                                        for (const x of data) {
+                                            citis.options[citis.options.length] = new Option(x.Name, x.Id);
+                                        }
+                                        citis.onchange = function() {
+                                            districts.length = 1;
+                                            wards.length = 1;
+                                            if (this.value != "") {
+                                                const result = data.filter(n => n.Id === this.value);
+                                                for (const k of result[0].Districts) {
+                                                    districts.options[districts.options.length] = new Option(k.Name, k.Id);
+                                                }
+                                            }
+                                        };
+                                        document.getElementById("city").addEventListener("change", function() {
+                                            const cityName = this.options[this.selectedIndex].text; // Lấy tên tỉnh/thành
+                                            document.getElementById("city_name").value = cityName; // Gán vào input ẩn
+                                        });
+
+                                        document.getElementById("district").addEventListener("change", function() {
+                                            const districtName = this.options[this.selectedIndex].text; // Lấy tên quận/huyện
+                                            document.getElementById("district_name").value = districtName; // Gán vào input ẩn
+                                        });
+
+                                        document.getElementById("ward").addEventListener("change", function() {
+                                            const wardName = this.options[this.selectedIndex].text; // Lấy tên xã/phường
+                                            document.getElementById("ward_name").value = wardName; // Gán vào input ẩn
+                                        });
+
+                                        districts.onchange = function() {
+                                            wards.length = 1;
+                                            const dataCity = data.filter((n) => n.Id === citis.value);
+                                            if (this.value != "") {
+                                                const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
+                                                for (const w of dataWards) {
+wards.options[wards.options.length] = new Option(w.Name, w.Id);
+                                                }
+                                            }
+                                        };
+                                    }
+                                </script>
+                                <div class="mb-3">
+                                    <label for="addAddress" class="form-label">Address</label>
+                                    <input type="text" class="form-control" id="addAddress" name="address" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                <button type="submit" class="btn btn-dark">Thêm Địa Chỉ</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <script>
+                document.getElementById('add-address-btn').addEventListener('click', function() {
+                    const addModal = new bootstrap.Modal(document.getElementById('addAddressModal'));
+                    addModal.show();
+                });
+                document.querySelectorAll('.edit-button').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const addressId = this.getAttribute('data-id');
+
+                        // Giả sử bạn có API trả về thông tin địa chỉ
+                        axios.get(`/api/addresses/${addressId}`).then(response => {
+                            const address = response.data;
+                            document.getElementById('editFirstName').value = address.first_name;
+                            document.getElementById('editLastName').value = address.last_name;
+                            document.getElementById('editEmail').value = address.email;
+                            document.getElementById('editContactNumber').value = address.contact_number;
+                            document.getElementById('editAddress').value = address.address;
+
+                            // Tải dữ liệu tỉnh, quận, xã nếu cần
+                            document.getElementById('editCityName').value = address.city_name;
+                            document.getElementById('editDistrictName').value = address.state_name;
+                            document.getElementById('editWardName').value = address.commune_name;
+                        });
+                    });
+                });
+            </script>
         </div>
+
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const addressSelect = document.getElementById('address-selection');
-            const addresses = @json($addresses); // Dữ liệu địa chỉ từ backend
+const addresses = @json($addresses); // Dữ liệu địa chỉ từ backend
             const firstNameInput = document.getElementById('selected-first-name');
             const emailInput = document.getElementById('selected-email');
             const phoneInput = document.getElementById('selected-contact-number');
@@ -268,15 +422,14 @@ function getVoucherInfo() {
         errorMessage.style.color = "red";
         return;
     }
-
-    // Kiểm tra nếu mã đã được áp dụng
+// Kiểm tra nếu mã đã được áp dụng
     if (appliedVouchers.includes(voucherCode)) {
         errorMessage.textContent = "Mã giảm giá đã được áp dụng!";
         errorMessage.style.color = "red";
         return;
     }
 
-    fetch(`http://127.0.0.1:8000/checkout1/apply-voucher?voucher_code=${voucherCode}&total_price=${totalPrice}`)
+    fetch(`http://127.0.0.1:8000/checkout/apply-voucher?voucher_code=${voucherCode}&total_price=${totalPrice}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -303,7 +456,7 @@ function getVoucherInfo() {
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.log('Error:', error);
             errorMessage.textContent = "Đã xảy ra lỗi khi lấy thông tin mã giảm giá";
             errorMessage.style.color = "red";
         });

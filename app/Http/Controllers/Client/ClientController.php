@@ -18,6 +18,7 @@ use App\Models\Blog;
 use App\Models\Cart;
 use App\Models\ProductFavorite;
 use App\Models\Vouchers;
+use Carbon\Carbon;
 
 class ClientController extends Controller
 {
@@ -135,14 +136,18 @@ class ClientController extends Controller
 }
 
 
-    // public function show($id)
-    // {
-    //     // Tìm sản phẩm theo ID
-    //     $product = Product::findOrFail($id);
+public function blog($id)
+{
+    // Lấy bài viết từ cơ sở dữ liệu
+    $blog = Blog::findOrFail($id);
+    $blogs = Blog::where('id', '!=', $id) // Loại bỏ bài viết hiện tại
+    ->select('id', 'title', 'image') 
+    ->orderBy('created_at', 'desc') 
+    ->get();
 
-    //     // Trả về view chi tiết sản phẩm cùng với dữ liệu của sản phẩm
-    //     return view('client.product_detail', compact('product'));
-    // }
+    // Trả về view kèm dữ liệu
+    return view('client.blog', compact('blog', 'blogs'));
+}
     public function checkout()
     {
         return view('client.checkout');
@@ -352,7 +357,7 @@ public function exportInvoice($id)
         }
     }
 
-
+   
 
 
 }

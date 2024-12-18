@@ -14,7 +14,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Quản Lý Blog</a></li>
-                        <li class="breadcrumb-item active">Danh Sách Blog</li>
+                        <li class="breadcrumb-item active ">Thêm Blog</li>
                     </ol>
                 </div>
 
@@ -56,7 +56,7 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center flex-wrap gap-2">
                         <div class="flex-grow-1">
-                            <a href="{{ route('blog.create') }}" class="btn btn-info add-btn"><i
+                            <a href="{{ route('vouchers.create') }}" class="btn btn-info add-btn"><i
                                     class="ri-add-fill me-1 align-bottom"></i> Add Blog</a>
                         </div>
                         <div class="flex-shrink-0">
@@ -107,58 +107,43 @@
                 <div class="card-body m-3">
                     <div>
                         <div class="table-responsive table-card mb-3">
-                            <table class="table align-middle table-nowrap mb-0" id="customerTable">
-                                <h1>Quản lý Blog</h1>
-                                {{-- <a href="{{ route('accounts.create') }}" class="btn btn-primary m-2">Thêm tài khoản mới</a> --}}
-                                <thead class="table-light">
-                                    <tr>
-                                        <th scope="col" style="width: 50px;">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="checkAll"
-                                                       value="option">
+                            <table class="table align-middle table-nowrap mb-0 " id="customerTable">
+                                <h1 class="text-center ">Thêm Blog</h1>
+
+                                <form action="{{route('blog.update', ['id'=>$listBl->id])}}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="container mt-5">
+                                        <div class="row">
+                                            
+                                            <div class="col-md-6 mb-3">
+                                                <label for="code" class="form-label">Tiêu Đề</label>
+                                                <input type="text" name="title" id="code" class="form-control" value="{{$listBl->title}}">
                                             </div>
-                                        </th>
-                                        <th scope="col" data-sort="id">ID</th>
-                                        <th scope="col" data-sort="code">Tiêu Đề</th>
-                                        <th scope="col" data-sort="type">Nội dung</th>
-                                        <th scope="col" data-sort="type">Ảnh</th>
-                                        <th scope="col">Hành động</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody class="list form-check-all">
-                                        @forelse($posts as $post)
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="{{ $post->id }}">
-                                                </div>
-                                            </td>
-                                            <td>{{ $post->id }}</td>
-                                            <td>{{ $post->title }}</td>
-                                            <td>{{ Str::limit($post->content, 50) }} </a>Xem thêm</td>
-                                            <td>
-                                                @if($post->image)
-                                                    <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}" style="width: 100px; height: auto;">
-                                                @else
-                                                    Không có hình ảnh
-                                                @endif
-                                            </td>
-                                            <td>
-                                               
-                                                <a href="{{ route('blog.edit', $post->id) }}" class="btn btn-sm btn-warning">Sửa</a>
-                                                <form action="{{ route('blog.destroy', $post->id) }}" method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        @empty
-                                        <tr>
-                                            <td colspan="12" class="text-center">Không có blog nào!</td>
-                                        </tr>
-                                        @endforelse
-                                    </tbody>
+                                
+                                            
+                                            <div class="col-md-6 mb-3">
+                                                <label for="type" class="form-label">Nội dung</label>
+                                                <textarea id="content" name="content" rows="5" cols="30" class="form-control">{{$listBl->content}}</textarea>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="image" class="form-label">Ảnh </label>
+                                                <input type="file" name="image" id="image" class="form-control" accept="image/*">
+                                                <img id="image" src="{{Storage::url($listBl->image)}}" style="width: 100px;">
+                                            </div>
+                                
+                                           
+                                            <!-- Button Actions -->
+                                            <div class="col-12 d-flex justify-content-between">
+                                                <button type="submit" class="btn btn-primary">
+                                                    {{ isset($blog) ? 'Cập nhật' : 'Tạo mới' }}
+                                                </button>
+                                                <a href="{{ route('blog.index') }}" class="btn btn-secondary">Quay lại</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                
                             </table>
                             <div class="noresult" style="display: none">
                                 <div class="text-center">
@@ -331,7 +316,38 @@
 
         <!--end col-->
     </div>
+
     <!-- end main content-->
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script>
+        // Tích hợp CKEditor với trường 'content'
+        CKEDITOR.replace('content');
+    </script>
+    <script>
+        function generateSlug(str) {
+            // Convert to lowercase
+            str = str.toLowerCase();
+
+            // Remove accents (dấu tiếng Việt)
+            str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+            // Replace spaces with hyphens
+            str = str.replace(/\s+/g, '-');
+
+            // Remove all non-alphanumeric characters except hyphens
+            str = str.replace(/[^\w\-]+/g, '');
+
+            // Remove multiple hyphens
+            str = str.replace(/\-\-+/g, '-');
+
+            // Trim hyphens from the start and end of the string
+            str = str.replace(/^-+/, '').replace(/-+$/, '');
+
+            return str;
+        }
+
+        
+    </script>
     <script>
 
 document.getElementById('searchInput').addEventListener('input', function () {
@@ -389,4 +405,5 @@ document.getElementById('searchInput').addEventListener('input', function () {
 
     </html>
 @endsection
+
 

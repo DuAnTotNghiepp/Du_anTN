@@ -363,7 +363,7 @@
         </div>
     </div>
     <script>
-            document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const addressSelect = document.getElementById('address-selection');
             const addresses = @json($addresses); // Dữ liệu địa chỉ từ backend
             const firstNameInput = document.getElementById('selected-first-name');
@@ -371,7 +371,7 @@
             const phoneInput = document.getElementById('selected-contact-number');
 
             // Lắng nghe sự kiện thay đổi địa chỉ
-            addressSelect.addEventListener('change', function () {
+            addressSelect.addEventListener('change', function() {
                 const selectedId = this.value;
 
                 // Tìm địa chỉ tương ứng
@@ -436,22 +436,39 @@ function getVoucherInfo() {
         errorMessage.style.color = "red";
         return;
     }
-            if (!quantityInput || !subtotalElement || !totalElement) {
-                console.error('Missing elements for calculation.');
-                return;
+
+    fetch(`http://127.0.0.1:8000/checkout/apply-voucher?voucher_code=${voucherCode}&total_price=${totalPrice}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
+            return response.json();
+        })
+        .then(data => {
+            // Xử lý dữ liệu trả về từ API
+            if (data.result === true) {
+                voucher_value.textContent = data.data.voucher_discount;
+                final_total.textContent = data.data.final_total;
+                let hiddenInput = document.getElementById('total_price');
+                hiddenInput.value = data.data.final_total;
 
-            quantityInput.addEventListener('input', function() {
-                const quantity = parseInt(quantityInput.value);
-                const productPrice = parseFloat(quantityInput.dataset
-                    .price); // Lấy giá từ thuộc tính data-price
-                const subtotal = quantity * productPrice;
-                const total = subtotal + tax;
+                // Lưu mã giảm giá đã áp dụng vào mảng
+                appliedVouchers.push(voucherCode);
 
-                subtotalElement.textContent = subtotal.toLocaleString('vi-VN') + ' VND';
-                totalElement.textContent = total.toLocaleString('vi-VN') + ' VND';
-            });
+                // Hiển thị thông báo áp dụng thành công
+                errorMessage.textContent = "Mã giảm giá đã được áp dụng thành công!";
+                errorMessage.style.color = "green";
+            } else {
+                errorMessage.textContent = data.message;
+                errorMessage.style.color = "red";
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            errorMessage.textContent = "Đã xảy ra lỗi khi lấy thông tin mã giảm giá";
+            errorMessage.style.color = "red";
         });
+}
 
     </script>
 @endsection
