@@ -37,6 +37,22 @@ class Product extends Model
     {
         return $this->belongsTo(Catalogues::class, 'catalogues_id');
     }
+    protected static function booted()
+    {
+        static::created(function ($product) {
+            $catalogue = $product->catalogue;
+            if ($catalogue) {
+                $catalogue->increment('total_product');
+            }
+        });
+
+        static::deleted(function ($product) {
+            $catalogue = $product->catalogue;
+            if ($catalogue) {
+                $catalogue->decrement('total_product');
+            }
+        });
+    }
 
     public function variants()
     {
@@ -73,5 +89,6 @@ class Product extends Model
     {
         return $this->hasMany(ProductGallerie::class);
     }
+
 }
 

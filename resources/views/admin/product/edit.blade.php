@@ -253,17 +253,22 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label for="choices-categories-input" class="form-label">Categories</label>
+                            <label for="choices-categories-input" class="form-label">Danh mục</label>
                             <select name="catalogues_id" class="form-select" data-choices data-choices-search-false
-                                id="choices-categories-input">
+                                    id="choices-categories-input">
                                 @foreach ($listCate as $category)
-                                    <option value="{{ $category->id }}" @if ($category->id == $listPro->catalogues_id) selected @endif>
+                                    <option value="{{ $category->id }}"
+                                            @if ($category->id == old('catalogues_id')) selected @endif>
                                         {{ $category->name }}
                                     </option>
                                 @endforeach
                             </select>
+                            @error('catalogues_id')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
+
                     <!-- end card body -->
                 </div>
                 <!-- end card -->

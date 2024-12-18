@@ -12,17 +12,15 @@ use Illuminate\Support\Facades\Route;
 
 
 
-
 Route::prefix('admin')
     ->as('admin.')
     ->group(function () {
         Route::get('/list', [CataloguesController::class, 'index'])->name('index');
-        Route::get('create', [CataloguesController::class, 'create'])->name('create');
-        Route::post('store', [CataloguesController::class, 'store'])->name('store');
-        Route::get('/edit/{id}', [CataloguesController::class, 'edit'])->name('edit');
+        Route::post('/store', [CataloguesController::class, 'store'])->name('store');
         Route::put('/update/{id}', [CataloguesController::class, 'update'])->name('update');
         Route::get('/{id}/destroy', [CataloguesController::class, 'destroy'])->name('destroy');
     });
+
 
 Route::controller(ProductController::class)
     ->name('product.')

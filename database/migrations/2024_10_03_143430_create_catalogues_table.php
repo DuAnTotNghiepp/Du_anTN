@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->boolean('is_active')->default(true);
+            $table->unsignedInteger('total_product')->default(0)->after('is_active');
+            $table->softDeletes(); // Thêm cột deleted_at
+
             $table->timestamps();
         });
     }

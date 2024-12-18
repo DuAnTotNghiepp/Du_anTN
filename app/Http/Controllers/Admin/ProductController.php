@@ -42,16 +42,14 @@ class ProductController extends Controller
     public function create()
     {
 
-        $listCate = Catalogues::all();
+        $listCate = Catalogues::where('is_active', true)->get();
 
         $materials = \App\Models\Material::all();
         $Color = Variant::where('name', 'Color')->get();
         $Size = Variant::where('name', 'Size')->get();
         return view('admin.product.create', compact('listCate', 'Color', 'Size', 'materials'));
 
-        $Color = Variant::where('name','Color')->get();
-        $Size = Variant::where('name','Size')->get();
-        return view('admin.product.create', compact('listCate','Color','Size'));
+
     }
 
     /**
@@ -63,49 +61,56 @@ class ProductController extends Controller
             $params = $request->except('_token');
             $params['is_active'] = $request->has('is_active') ? 1 : 0;
             $params['is_hot_deal'] = $request->has('is_hot_deal') ? 1 : 0;
+
+            // Kiểm tra danh mục hoạt động
+            $catalogue = Catalogues::find($params['catalogues_id']);
+            if (!$catalogue || !$catalogue->is_active) {
+                return redirect()->back()->with('error', 'Không thể thêm sản phẩm vào danh mục không hoạt động.');
+            }
+
             if ($request->hasFile('img_thumbnail')) {
-                $flag = true;
                 $params['img_thumbnail'] = $request->file('img_thumbnail')->store('products', 'public');
             } else {
                 $params['img_thumbnail'] = null;
             }
-        }
-        $res = Product::query()->create($params);
 
-        if ($request->has('selected_variants') && is_array($request->selected_variants)) {
-            foreach ($request->selected_variants as $colorId => $sizes) {
-                foreach ($sizes as $sizeId => $selected) {
-                    // Kiểm tra xem checkbox đã được chọn và có số lượng nhập vào
-                    if ($selected && isset($request->stock[$colorId][$sizeId]) && $request->stock[$colorId][$sizeId] > 0) {
-                        $stock = $request->stock[$colorId][$sizeId];
+            $res = Product::query()->create($params);
 
-                        // Lưu thông tin kết hợp color_variant_id và size_variant_id vào bảng product_variants
-                        Product_Variant::create([
-                            'product_id' => $res->id,
-                            'color_variant_id' => $colorId,
-                            'size_variant_id' => $sizeId,
-                            'stock' => $stock,  // Số lượng cho mỗi kết hợp màu và kích thước
-                        ]);
+            if ($request->has('selected_variants') && is_array($request->selected_variants)) {
+                foreach ($request->selected_variants as $colorId => $sizes) {
+                    foreach ($sizes as $sizeId => $selected) {
+                        // Kiểm tra checkbox và số lượng nhập vào
+                        if ($selected && isset($request->stock[$colorId][$sizeId]) && $request->stock[$colorId][$sizeId] > 0) {
+                            $stock = $request->stock[$colorId][$sizeId];
+
+                            // Lưu thông tin variant
+                            Product_Variant::create([
+                                'product_id' => $res->id,
+                                'color_variant_id' => $colorId,
+                                'size_variant_id' => $sizeId,
+                                'stock' => $stock,
+                            ]);
+                        }
                     }
                 }
             }
-        }
-        if ($request->hasFile('image')) {
-            foreach ($request->file('image') as $image) {
-                $path = $image->store('product_galleries', 'public');
-                ProductGallerie::create([
-                    'product_id' => $res->id,
-                    'image' => $path
-                ]);
+
+            if ($request->hasFile('image')) {
+                foreach ($request->file('image') as $image) {
+                    $path = $image->store('product_galleries', 'public');
+                    ProductGallerie::create([
+                        'product_id' => $res->id,
+                        'image' => $path
+                    ]);
+                }
+            }
+
+            if ($res) {
+                return redirect()->back()->with('success', 'Sản phẩm đã được thêm mới thành công');
+            } else {
+                return redirect()->back()->with('error', 'Sản phẩm đã được thêm mới không thành công');
             }
         }
-
-        if ($res) {
-            return redirect()->back()->with('success', 'Sản phẩm đã được thêm mới thành công');
-        } else {
-            return redirect()->back()->with('error', 'Sản phẩm đã được thêm mới không thành công');
-        }
-
     }
 
 
@@ -116,7 +121,7 @@ class ProductController extends Controller
     public function edit(int $id)
     {
 
-        $listCate = Catalogues::all();
+        $listCate = Catalogues::where('is_active', true)->get();;
         // Lấy thông tin sản phẩm
         $listPro = Product::find($id);
 
@@ -130,8 +135,6 @@ class ProductController extends Controller
         $vari_id = DB::table('product__variants')->where('product_id', $id)->pluck('variants_id')->toArray();
         return view('admin.product.edit', compact('listPro', 'listCate', 'Color', 'Size', 'vari_id', 'listImg', 'materials'));
 
-        $listImg = ProductGallerie::where('product_id', $id)->get();
-        return view('admin.product.edit', compact('listPro', 'listCate','listImg'));
 
     }
 
@@ -140,7 +143,6 @@ class ProductController extends Controller
      */
     public function update(Request $request, int $id)
     {
-
         // Lấy thông tin sản phẩm cần cập nhật
         $product = Product::find($id);
 
@@ -153,6 +155,12 @@ class ProductController extends Controller
             // Cập nhật trạng thái các trường khác
             $params['is_active'] = $request->has('is_active') ? 1 : 0;
             $params['is_hot_deal'] = $request->has('is_hot_deal') ? 1 : 0;
+
+            // Kiểm tra xem danh mục có hoạt động không
+            $catalogue = Catalogues::find($params['catalogues_id']);
+            if (!$catalogue || !$catalogue->is_active) {
+                return redirect()->back()->with('error', 'Danh mục được chọn không hoạt động. Vui lòng chọn danh mục khác.');
+            }
 
             // Kiểm tra xem có ảnh mới được tải lên không
             if ($request->hasFile('img_thumbnail') && $request->file('img_thumbnail')->isValid()) {
@@ -167,7 +175,6 @@ class ProductController extends Controller
                 // Không có ảnh mới thì giữ nguyên ảnh cũ
                 $params['img_thumbnail'] = $imageOld;
             }
-
 
             $selectedVariants = $request->input('id_variant', []);
 
@@ -198,7 +205,6 @@ class ProductController extends Controller
             }
 
             // Kiểm tra ảnh liên quan và xử lý
-
             if ($request->hasFile('image')) {
                 // Xóa các ảnh liên quan cũ
                 $oldImages = ProductGallerie::where('product_id', $id)->get();
@@ -232,6 +238,7 @@ class ProductController extends Controller
             return redirect()->back()->with('error', 'ID sản phẩm không phù hợp');
         }
     }
+
 
 
     /**
