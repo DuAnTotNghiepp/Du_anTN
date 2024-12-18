@@ -34,6 +34,11 @@
                     @endforeach
                 </div>
             @endif
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
             <div class="row justify-content-center">
                 <div class="col-xxl-12 col-xl-12 col-md-12 col-sm-8">
                     @if($cartItems->count() > 0)
@@ -52,40 +57,48 @@
                             </thead>
                             <tbody>
                                 @foreach($cartItems as $item)
+                                    @if($item->product && $item->product->is_active)
+                                        <tr data-product-id="{{ $item->product->id }}">
+                                            <td>
+                                                <img src="{{ asset('storage/' . $item->product->img_thumbnail) }}" alt="{{ $item->product->name }}" width="100">
+                                            </td>
+                                            <td>{{ $item->product->name }}</td>
+                                            <td>{{ number_format($item->product->price_sale) }} VND</td>
+                                            <td>
+                                                @if($item->color)
+                                                    <span style="display:inline-block; width: 30px; height: 30px; border-radius: 20px; background-color: {{ $item->color }}; border: 1px solid #ddd;"></span>
+                                                @else
+                                                    Không có màu
+                                                @endif
+                                            </td>
 
-                                    <tr data-product-id="{{ $item->product->id }}">
-                                        <td>
-                                            <img src="{{ asset('storage/' . $item->product->img_thumbnail) }}" alt="{{ $item->product->name }}" width="100">
-                                        </td>
-                                        <td>{{ $item->product->name }}</td>
-                                        <td>{{ number_format($item->product->price_sale) }} VND</td>
-                                        <td>
-                                            @if($item->color)
-                                                <span style="display:inline-block; width: 30px; height: 30px; border-radius: 20px; background-color: {{ $item->color }}; border: 1px solid #ddd;"></span>
-                                            @else
-                                                Không có màu
-                                            @endif
-                                        </td>
-
-                                        <td>
-                                            {{ $item->size ?? 'Không có kích thước' }}
-                                        </td>
-                                        <td>
-                                            <form action="{{ route('cart.updateQuantity', $item->id) }}" method="POST">
-                                                @csrf
-                                                <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" class="form-control" style="width: 80px;">
-                                                <button type="submit" class="btn btn-primary btn-sm mt-2">Cập nhật</button>
-                                            </form>
-                                        </td>
-                                        <td>{{ number_format($item->total_price) }} VND</td>
-                                        <td>
-                                            <form action="{{ route('cart.destroy', $item->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
-                                            </form>
-                                        </td>
-                                    </tr>
+                                            <td>
+                                                {{ $item->size ?? 'Không có kích thước' }}
+                                            </td>
+                                            <td>
+                                                <form action="{{ route('cart.update', $item->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <input type="number" name="quantity" value="{{ $item->quantity }}" min="" class="form-control quantity-input" style="width: 80px;">
+                                                    <button type="submit" class="btn btn-primary btn-sm mt-2">Cập nhật</button>
+                                                </form>
+                                            </td>
+                                            <td>{{ number_format($item->total_price) }} VND</td>
+                                            <td>
+                                                <form action="{{ route('cart.destroy', $item->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td colspan="8" class="text-center text-danger">
+                                                Sản phẩm "{{ $item->product->name ?? 'N/A' }}" đã ngừng hoạt động và không còn khả dụng.
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
 
@@ -109,7 +122,7 @@
                         </tbody>
                     </table>
                     <div class="cart-proceed-btns">
-                        <form method="POST" id="checkout-form" action="{{ route('checkout1') }}">
+                        <form id="checkout-form" action="{{ route('checkout1') }}" method="GET">
                             @csrf
                             <input type="hidden" name="selected_products" id="selected_products" value="{{ json_encode($cartItems) }}">
                             <button type="submit" class="btn btn-primary cart-proceed">Mua ngay</button>
@@ -174,27 +187,38 @@
     });
 
 
+    </script>
+    <script>
+        // Lắng nghe sự kiện thay đổi số lượng sản phẩm trong giỏ hàng
+        document.querySelectorAll('.quantity-input').forEach(function(input) {
+            input.addEventListener('change', function() {
+                let productId = this.getAttribute('data-id');
+                let quantity = this.value;
 
-        function updateTotal() {
+                // Lấy giá sản phẩm từ bảng
+                let price = parseFloat(this.closest('tr').querySelector('td:nth-child(3)').textContent.replace(' VND', '').replace(',', ''));
+
+                // Tính lại tổng giá sản phẩm
+                let totalPrice = price * quantity;
+
+                // Cập nhật lại tổng giá sản phẩm trong bảng
+                this.closest('tr').querySelector('.total-price').textContent = totalPrice.toLocaleString() + ' VND';
+
+                // Tính lại tổng giỏ hàng
+                updateCartTotal();
+            });
+        });
+
+        // Hàm tính lại tổng giỏ hàng
+        function updateCartTotal() {
             let total = 0;
-            const checkboxes = document.querySelectorAll('.product-checkbox:checked');
-
-            checkboxes.forEach(checkbox => {
-                total += parseFloat(checkbox.dataset.price);
+            document.querySelectorAll('.total-price').forEach(function(price) {
+                total += parseFloat(price.textContent.replace(' VND', '').replace(',', ''));
             });
 
-            // Cập nhật giá vào phần tổng giá
-            document.getElementById('total-price').innerText = total.toLocaleString() + ' VND';
-            document.getElementById('final-price').innerText = total.toLocaleString() + ' VND';
+            // Cập nhật tổng giỏ hàng
+            document.getElementById('total-price').textContent = total.toLocaleString() + ' VND';
         }
-
-        function toggleSelectAll(selectAllCheckbox) {
-            const checkboxes = document.querySelectorAll('.product-checkbox');
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
-            updateTotal(); // Cập nhật tổng giá khi chọn hoặc bỏ chọn tất cả
-        }
-        </script>
+    </script>
 
 @endsection

@@ -65,12 +65,9 @@ class CataloguesController extends Controller
     public function update(Request $request, string $id)
     {
         $item = Catalogues::findOrFail($id);
-        $data = $request->except('cover');
+
         $data['is_active'] ??= 0;
 
-        if ($request->hasFile('cover')) {
-            $data['cover'] = Storage::put(self::PATH_UPLOAD, $request->file('cover'));
-        }
         $currentCover = $item->cover;
         $item->update($data);
 
@@ -88,9 +85,6 @@ class CataloguesController extends Controller
     {
         $model = Catalogues::query()->findOrFail($id);
         $model->delete();
-        if ($model->cover && Storage::exists($model->cover)) {
-            Storage::delete($model->cover);
-        }
         return back();
     }
 }
