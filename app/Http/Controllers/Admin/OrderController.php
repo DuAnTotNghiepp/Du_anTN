@@ -110,6 +110,26 @@ class OrderController extends Controller
 
         return redirect()->route('order.edit', $id)->with('success', 'Cập nhật trạng thái thành công.');
     }
+    public function updateStatus(Request $request, $id)
+    {
+        $order = Order::find($id);
 
+        if (!$order) {
+            return response()->json(['success' => false, 'message' => 'Đơn hàng không tồn tại.'], 404);
+        }
+
+        // Cập nhật trạng thái đơn hàng
+        $order->status = $request->status;
+        $order->save();
+
+        return response()->json(['success' => true, 'message' => 'Trạng thái đơn hàng đã được cập nhật.']);
+    }
+    public function getPendingOrders()
+    {
+        $pendingOrders = Order::where('status', 'pending')->get(['id', 'created_at', 'status']);
+        session(['pendingOrders' => $pendingOrders]);
+
+        return response()->json(['orders' => $pendingOrders]);
+    }
 
 }

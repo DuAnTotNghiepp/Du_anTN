@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
@@ -38,37 +39,48 @@ class AdminController extends Controller
         $timeRange = $request->get('time', '1Y');
 
         $monthsInVietnamese = [
-            'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
-            'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+            'Tháng 1',
+            'Tháng 2',
+            'Tháng 3',
+            'Tháng 4',
+            'Tháng 5',
+            'Tháng 6',
+            'Tháng 7',
+            'Tháng 8',
+            'Tháng 9',
+            'Tháng 10',
+            'Tháng 11',
+            'Tháng 12'
         ];
 
         $months = [];
         $revenueData = [];
-        $orderCount = 0;
+        $orderData = [];
         $totalRevenue = 0;
 
         for ($i = 0; $i < 12; $i++) {
             $currentMonth = date('n', strtotime("-$i month"));
             $months[] = $monthsInVietnamese[$currentMonth - 1];
 
-            $monthlyRevenue = Order::whereYear('created_at', date('Y', strtotime("-$i month")))
-                                   ->whereMonth('created_at', date('m', strtotime("-$i month")))
-                                   ->sum('total_price');
+            $monthlyRevenue = Order::where('status', 'hoanthanh')
+                ->whereYear('created_at', date('Y', strtotime("-$i month")))
+                ->whereMonth('created_at', date('m', strtotime("-$i month")))
+                ->sum('total_price');
             $revenueData[] = $monthlyRevenue;
-
             $totalRevenue += $monthlyRevenue;
 
-            $monthlyOrderCount = Order::whereYear('created_at', date('Y', strtotime("-$i month")))
-                                      ->whereMonth('created_at', date('m', strtotime("-$i month")))
-                                      ->count();
-            $orderCount += $monthlyOrderCount;
+            $monthlyOrderCount = Order::where('status', 'hoanthanh')
+                ->whereYear('created_at', date('Y', strtotime("-$i month")))
+                ->whereMonth('created_at', date('m', strtotime("-$i month")))
+                ->count();
+            $orderData[] = $monthlyOrderCount;
         }
 
         return response()->json([
             'months' => array_reverse($months),
             'revenueData' => array_reverse($revenueData),
+            'orderData' => array_reverse($orderData),
             'totalRevenue' => $totalRevenue,
-            'orderCount' => $orderCount,
         ]);
     }
 
@@ -99,6 +111,70 @@ class AdminController extends Controller
     {
         return view('admin.accounts.edit', compact('user'));  // Hiển thị form chỉnh sửa tài khoản
     }
+    public function conversionRate(Request $request)
+    {
+        $convertedUsers = DB::table('users')
+            ->join('orders', 'users.id', '=', 'orders.user_id')
+            ->where('orders.status', 'paid')
+            ->when($request->input('start_date'), function ($query, $startDate) {
+                return $query->whereDate('orders.created_at', '>=', $startDate);
+            })
+            ->when($request->input('end_date'), function ($query, $endDate) {
+                return $query->whereDate('orders.created_at', '<=', $endDate);
+            })
+            ->count();
+
+        $totalUsers = DB::table('users')
+            ->when($request->input('start_date'), function ($query, $startDate) {
+                return $query->whereDate('created_at', '>=', $startDate);
+            })
+            ->when($request->input('end_date'), function ($query, $endDate) {
+                return $query->whereDate('created_at', '<=', $endDate);
+            })
+            ->count();
+
+        $conversionRate = $totalUsers ? ($convertedUsers / $totalUsers) * 100 : 0;
+
+        return view('admin.statistical.account_conversion', compact('totalUsers', 'convertedUsers', 'conversionRate'));
+    }
+
+    public function orderRates(Request $request)
+    {
+        $completedOrders = DB::table('orders')
+        ->where('status', 'hoanthanh')
+        ->when($request->input('start_date'), function ($query, $startDate) {
+            return $query->whereDate('created_at', '>=', $startDate);
+        })
+        ->when($request->input('end_date'), function ($query, $endDate) {
+            return $query->whereDate('created_at', '<=', $endDate);
+        })
+        ->count();
+
+    $canceledOrders = DB::table('orders')
+        ->where('status', 'canceled')
+        ->when($request->input('start_date'), function ($query, $startDate) {
+            return $query->whereDate('created_at', '>=', $startDate);
+        })
+        ->when($request->input('end_date'), function ($query, $endDate) {
+            return $query->whereDate('created_at', '<=', $endDate);
+        })
+        ->count();
+
+    $totalOrders = DB::table('orders')
+        ->when($request->input('start_date'), function ($query, $startDate) {
+            return $query->whereDate('created_at', '>=', $startDate);
+        })
+        ->when($request->input('end_date'), function ($query, $endDate) {
+            return $query->whereDate('created_at', '<=', $endDate);
+        })
+        ->count();
+
+    $completionRate = $totalOrders ? ($completedOrders / $totalOrders) * 100 : 0;
+    $cancellationRate = $totalOrders ? ($canceledOrders / $totalOrders) * 100 : 0;
+
+    $totalCompleted = $completedOrders;
+        return view('admin.statistical.statisticalcancel', compact('totalOrders', 'completedOrders', 'canceledOrders', 'completionRate', 'cancellationRate','totalCompleted'));
+    }
 
     public function update(Request $request, User $user)
     {
@@ -115,7 +191,6 @@ class AdminController extends Controller
         ]);
 
         return redirect()->route('accounts.index')->with('success', 'Tài khoản đã được cập nhật.');
-
     }
 
     public function destroy(User $user)
@@ -123,6 +198,5 @@ class AdminController extends Controller
         $user->delete();
 
         return redirect()->route('accounts.index')->with('success', 'Tài khoản đã được xóa.');
-
     }
 }

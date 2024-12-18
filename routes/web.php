@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\VoucherController;
@@ -142,7 +143,12 @@ Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComme
 //thong ke
 Route::get('/admin/dashboard-stats', [AdminController::class, 'getDashboardStats']);
 Route::get('/admin/revenue-stats', [AdminController::class, 'getRevenueStats']);
-
+Route::prefix('admin')->group(function () {
+    Route::get('/statistical/bestSellingProducts', [ProductController::class, 'bestSellingProducts'])->name('products.best-selling');
+    Route::get('/statistics/account-conversion', [AdminController::class, 'conversionRate'])->name('conversionRate.best-selling');
+    Route::get('/statistics/orderRates', [AdminController::class, 'orderRates'])->name('orderRates.best-selling');
+});
+Route::get('/get-pending-orders', [AdminOrderController::class, 'getPendingOrders']);
 
 
 
