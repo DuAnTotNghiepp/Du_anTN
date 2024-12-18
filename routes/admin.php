@@ -22,6 +22,8 @@ Route::prefix('admin')
     });
 
 
+
+Route::post('/api/orders/{id}/update-status', [OrderController::class, 'updateStatus']);
 Route::controller(ProductController::class)
     ->name('product.')
     ->prefix('admin/products/')
@@ -50,7 +52,9 @@ Route::controller(ProductController::class)
                 Route::get('{id}/edit', 'edit')->name('edit');
                 Route::put('{id}/update', 'update')->name('update');
             });
+
     });
+
     Route::middleware(['auth', 'admin'])->group(function () {
         Route::controller(Product_VariantController::class)
             ->name('product_variant.')

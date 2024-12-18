@@ -221,8 +221,6 @@
                                         <button class="favorite-btn" style="background: none; border: none" data-product-id="{{ $item->id }}">
                                             <i class="flaticon-heart"></i>
                                         </button>
-                                        <a href="product-details.html"><i class="flaticon-search"></i></a>
-                                        <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
                                     </div>
                                 </div>
                                 <div class="product-content-xl text-center">
@@ -280,17 +278,17 @@
                                                 data-product-id="{{ $item->id }}">
                                                 <i class="flaticon-heart"></i>
                                             </button>
-                                            <a href="product-details.html"><i class="flaticon-search"></i></a>
-                                            <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
                                         </div>
                                     </div>
                                     <div class="product-content-xl text-center">
                                         <ul class="d-flex product-rating-xl">
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star"></i></li>
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                @if ($i <= round($item->average_rating))
+                                                    <li><i class="bi bi-star-fill" style="color: gold;"></i></li>
+                                                @else
+                                                    <li><i class="bi bi-star"></i></li>
+                                                @endif
+                                            @endfor
                                         </ul>
                                         <a href="product-details.html" class="product-title">{{ $item->name }}</a>
                                         <div class="product-price">
@@ -343,7 +341,7 @@
             <div class="row">
                 <div class="col-lg-12 mb-25">
                     <div class="section-head">
-                        <h2 class="section-title">Recently Stock</h2>
+                        <h2 class="section-title">Các Bộ Sưu Tập Bạn Có Thể Thích</h2>
                     </div>
                 </div>
             </div>
@@ -477,8 +475,6 @@
                                                     <span class="new">New</span>
                                                 </div>
                                                 <div class="product-actions">
-                                                    <a href="product-details.html"><i class="flaticon-search"></i></a>
-                                                    <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
                                                 </div>
                                             </div>
                                             <div class="product-body">
