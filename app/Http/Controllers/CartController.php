@@ -15,11 +15,13 @@ class CartController extends Controller
     public function index()
     {
         $cartItems = Cart::where('user_id', auth()->id())->get();
+        foreach ($cartItems as $item) {
+            // Cập nhật giá trị tổng cho từng sản phẩm trong giỏ hàng
+            $item->total_price = $item->quantity * $item->product->price_sale;
+        }
         $selectedProducts = []; // Mảng các sản phẩm được chọn
 
-        $total = $cartItems->sum(function ($item) {
-            return $item->price * $item->quantity;
-        });
+        $total = $cartItems->sum('total_price');
 
         return view('client.cart', compact('cartItems', 'selectedProducts', 'total'));
     }
@@ -86,7 +88,7 @@ class CartController extends Controller
     }
 
 
-    public function updateQuantity(Request $request, $id)
+    public function update(Request $request, $id)
     {
         // Lấy dữ liệu từ request
         $validatedData = $request->validate([
@@ -95,7 +97,12 @@ class CartController extends Controller
 
         // Lấy cart item từ database
         $cartItem = Cart::findOrFail($id);
+        $product = Product::findOrFail($cartItem->product_id);
+        $price = $product->price_sale;
 
+        // Cập nhật lại giá sản phẩm trong giỏ hàng nếu giá thay đổi
+        $cartItem->total_price = $price * $cartItem->quantity;
+        $cartItem->save();
         // Tìm variant theo màu sắc và kích thước
         $colorVariant = Variant::colors()->where('value', $cartItem->color)->first();
         $sizeVariant = Variant::sizes()->where('value', $cartItem->size)->first();

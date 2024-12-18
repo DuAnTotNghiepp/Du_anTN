@@ -35,6 +35,7 @@
             border: 1px solid #ddd;
             border-radius: 5px;
         }
+
     </style>
 
     <body>
@@ -110,14 +111,13 @@
                             </div>
                             <div class="mb-3">
                                 <label>Trạng Thái Đơn Hàng</label>
-                                <select name="status" class="form-control">
-                                    <option value="pending" {{ $orde->status == 'pending' ? 'selected' : '' }}>Chờ Xác Nhận
-                                    </option>
+                                <select name="status" class="form-control" id="status-select">
+                                    <option value="pending" {{ $orde->status == 'pending' ? 'selected' : '' }}>Chờ Xác Nhận</option>
                                     <option value="completed" {{ $orde->status == 'completed' ? 'selected' : '' }}>Đã Xác Nhận</option>
-                                    <option value="delivery" {{ $orde->status == 'delivery' ? 'selected' : '' }}>Đang Giao
-                                    <option value="delivered" {{ $orde->status == 'delivered' ? 'selected' : '' }}>Đã Giao
-                                    <option value="canceled" {{ $orde->status == 'canceled' ? 'selected' : '' }}>Đã Hủy
-                                    </option>
+                                    <option value="delivery" {{ $orde->status == 'delivery' ? 'selected' : '' }}>Đang Giao</option>
+                                    <option value="delivered" {{ $orde->status == 'delivered' ? 'selected' : '' }}>Đã Giao</option>
+                                    <option value="hoanthanh" {{ $orde->status == 'hoanthanh' ? 'selected' : '' }}>Đã Nhận</option>
+                                    <option value="canceled" {{ $orde->status == 'canceled' ? 'selected' : '' }}>Đã Hủy</option>
                                 </select>
                                 @error('status')
                                     <div class="alert alert-danger">{{ $message }}</div>
@@ -140,6 +140,33 @@
         <!-- end form -->
 
     </body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const select = document.getElementById('status-select');
+            const currentStatus = select.value;
 
+            // Define allowed transitions based on the current status
+            const allowedTransitions = {
+                pending: ['completed', 'canceled'], // From "Chờ Xác Nhận" to "Đã Xác Nhận"
+                completed: ['delivery'], // From "Đã Xác Nhận" to "Đang Giao"
+                delivery: ['delivered'], // From "Đang Giao" to "Đã Giao"
+                delivered: ['hoanthanh'], // From "Đã Giao" to "Đã Nhận"
+                hoanthanh: [], // "Đã Nhận" cannot transition to any other state
+                canceled: [] // "Đã Hủy" cannot transition to any other state
+            };
+
+            // Disable options that are not allowed
+            Array.from(select.options).forEach(option => {
+                if (
+                    option.value !== currentStatus && // Not the current status
+                    !allowedTransitions[currentStatus].includes(option.value) // Not in the allowed transitions
+                ) {
+                    option.disabled = true;
+                } else {
+                    option.disabled = false;
+                }
+            });
+        });
+    </script>
     </html>
 @endsection
