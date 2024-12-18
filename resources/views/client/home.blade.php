@@ -22,8 +22,8 @@
             color: #01070e;
             transform: scale(1.2);
         }
-        
-       
+
+
         .copy-notification {
             font-size: 12px;
             color: rgb(16, 1, 1);
@@ -238,8 +238,6 @@
                                         <button class="favorite-btn" style="background: none; border: none" data-product-id="{{ $item->id }}">
                                             <i class="flaticon-heart"></i>
                                         </button>
-                                        <a href="product-details.html"><i class="flaticon-search"></i></a>
-                                        <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
                                     </div>
                                 </div>
                                 <div class="product-content-xl text-center">
@@ -297,17 +295,17 @@
                                                 data-product-id="{{ $item->id }}">
                                                 <i class="flaticon-heart"></i>
                                             </button>
-                                            <a href="product-details.html"><i class="flaticon-search"></i></a>
-                                            <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
                                         </div>
                                     </div>
                                     <div class="product-content-xl text-center">
                                         <ul class="d-flex product-rating-xl">
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star"></i></li>
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                @if ($i <= round($item->average_rating))
+                                                    <li><i class="bi bi-star-fill" style="color: gold;"></i></li>
+                                                @else
+                                                    <li><i class="bi bi-star"></i></li>
+                                                @endif
+                                            @endfor
                                         </ul>
                                         <a href="product-details.html" class="product-title">{{ $item->name }}</a>
                                         <div class="product-price">
@@ -360,7 +358,7 @@
             <div class="row">
                 <div class="col-lg-12 mb-25">
                     <div class="section-head">
-                        <h2 class="section-title">Recently Stock</h2>
+                        <h2 class="section-title">Các Bộ Sưu Tập Bạn Có Thể Thích</h2>
                     </div>
                 </div>
             </div>
@@ -368,11 +366,11 @@
                 <div class="col-xxl-3 col-xl-3 col-lg-4">
                     <div class="nav flex-column category-tabs">
                         <button class="nav-link active category-tab" data-category="all">Tất Cả Bộ Sưu Tập</button>
-                        <button class="nav-link category-tab" data-category="winter">Mùa Đông</button>
-                        <button class="nav-link category-tab" data-category="summer">Mùa Hè</button>
-                        <button class="nav-link category-tab" data-category="autumn">Mùa Thu</button>
-                        <button class="nav-link category-tab" data-category="new-male">Bộ Sưu Tập Cho Nam</button>
-                        <button class="nav-link category-tab" data-category="new-female">Bộ Sưu Tập Cho Nữ</button>
+                        <button class="nav-link category-tab" data-category="Mùa đông">Mùa Đông</button>
+                        <button class="nav-link category-tab" data-category="Mùa hè">Mùa Hè</button>
+                        <button class="nav-link category-tab" data-category="Mùa thu">Mùa Thu</button>
+                        <button class="nav-link category-tab" data-category="Bộ sưu tập Nam mới">Bộ Sưu Tập Cho Nam</button>
+                        <button class="nav-link category-tab" data-category="Bộ sưu tập Nữ mới">Bộ Sưu Tập Cho Nữ</button>
                     </div>
 
                 </div>
@@ -587,8 +585,6 @@
                                                     <span class="new">New</span>
                                                 </div>
                                                 <div class="product-actions">
-                                                    <a href="product-details.html"><i class="flaticon-search"></i></a>
-                                                    <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
                                                 </div>
                                             </div>
                                             <div class="product-body">

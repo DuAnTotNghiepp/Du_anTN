@@ -62,6 +62,8 @@
         }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.1/nouislider.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.1/nouislider.min.js"></script>
 
 </head>
 
@@ -183,22 +185,12 @@
                         </div>
                         <div class="topbar-social-icons">
                             <ul class="d-flex align-items-center">
-                                <li class="text">Follow Us</li>
-                                <li><a href="#"><i class="flaticon-facebook"></i></a></li>
-                                <li><a href="#"><i class="flaticon-twitter"></i></a></li>
-                                <li><a href="#"><i class="flaticon-pinterest"></i></a></li>
-                                <li><a href="#"><i class="flaticon-instagram-1"></i></a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="topbar-sittings d-flex justify-content-center">
-                        <ul class="d-flex">
-                            <li><a href="#"><i class="flaticon-translate"></i> Language</a></li>
-                            <li><a href="#"><i class="flaticon-exchange"></i> Currency</a></li>
-                            <li><a href="#"><i class="flaticon-placeholder"></i> Track Order</a></li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -258,27 +250,11 @@
                                 </div>
                                 <div class="inner-tel">
                                     <i class="flaticon-support"></i>
-                                    <a href="tel:+008-12124354">+008-12124354</a>
                                 </div>
                             </div>
                         </nav>
                     </div>
-                    <div class="col-xl-2 col-2 d-none d-xl-flex p-0 justify-content-end">
-                        <div class="nav-contact-no">
-                            <div class="contact-icon">
-                                <i class="flaticon-phone-call"></i>
-                            </div>
-                            <div class="contact-info">
-                                <p>Hot Line Number</p>
-                                <a href="tel:+8801761111456">+880 176 1111 456</a>
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-xl-2 col-2 d-none d-xl-flex p-0  align-items-center justify-content-center">
-                        <div class="nav-right text-center">
-                            <p class="text-uppercase">BLACK FRIDAY</p>
-                            <h5>All Item up to 20% Off!</h5>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -292,15 +268,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="newslatter-wrap text-center">
-                        <h5>Connect To Mai Lan</h5>
-                        <h2 class="newslatter-title">Join Our Newsletter</h2>
-                        <p>Hey you, sign up it only, Get this limited-edition T-shirt Free!</p>
-                        <form action="#" method="POST">
-                            <div class="newslatter-form">
-                                <input type="text" placeholder="Type Your Email">
-                                <button type="submit">Send <i class="bi bi-envelope-fill"></i></button>
-                            </div>
-                        </form>
+                        <h5>Website Bán Quần Áo Man Style</h5>
+                        <h2 class="newslatter-title">Cam Kết Chỉ Bán Sản Phẩm Chất Liệu Cho Người Tiêu Dùng</h2>
+                        <p>Sẽ Có Nhiều Ưu Đãi Khi Sử Dụng Website của Chúng Tôi</p>
                     </div>
                 </div>
             </div>
@@ -314,15 +284,11 @@
                 <div class="col-lg-3">
                     <div class="footer-widget footer-about">
 
-                        <h5 class="footer-widget-title">About EG Store</h5>
-                        <p class="about-company">EG STORE - We sell over 200+ branded products on our
-                            web-site. </p>
+                        <h5 class="footer-widget-title">Các App Liên Kết Với Web</h5>
+                        <p class="about-company"></p>
                         <div class="footer-contact-actions">
-                            <div class="footer-action"><a href="#">168/170, Avenue 01, Mirpur DOHS,
-                                    Bangladesh</a></div>
-                            <div class="footer-action"><span>Email : </span><a href="#"> <span
-                                        class="__cf_email__"
-                                        data-cfemail="563f38303916332e373b263a337835393b">[email&#160;protected]</span></a>
+                            <div class="footer-action"><a href="#"></a></div>
+                            <div class="footer-action"><span></span><a href="#"></a>
                             </div>
                         </div>
                         <ul class="footer-social-links d-flex">
@@ -338,53 +304,52 @@
 
                         <div class="col-lg-3 col-md-6 col-sm-6">
                             <div class="footer-widget">
-                                <h5 class="footer-widget-title">Company</h5>
+                                <h5 class="footer-widget-title">Về Chúng Tôi</h5>
                                 <ul class="footer-links">
-                                    <li><a href="#">Privacy Policy</a></li>
-                                    <li><a href="#">Returns </a></li>
-                                    <li><a href="#">Terms & Conditions</a></li>
-                                    <li><a href="#">Our Support</a></li>
-                                    <li><a href="#">Terms & Service</a></li>
+                                    <li><a href="#">Giới thiệu</a></li>
+                                    <li><a href="#">Tuyển Dụng</a></li>
+                                    <li><a href="#">Tin Tức</a></li>
+                                    <li><a href="#">Hệ Thống Cửa Hàng</a></li>
+                                    <li><a href="#">Địa chỉ liên hệ</a></li>
                                 </ul>
                             </div>
                         </div>
 
                         <div class="col-lg-3 col-md-6 col-sm-6">
                             <div class="footer-widget">
-                                <h5 class="footer-widget-title">Quick Links</h5>
+                                <h5 class="footer-widget-title">Quy tắc ứng xử của ManStyle</h5>
                                 <ul class="footer-links">
-                                    <li><a href="about.html">About EG STORE</a></li>
-                                    <li><a href="product.html">New Collection</a></li>
-                                    <li><a href="product.html">Woman Dress</a></li>
-                                    <li><a href="product.html">Man Dress</a></li>
-                                    <li><a href="blog-grid.html">Our Latest News</a></li>
+                                    <li><a href="">Cam kết bền vững</a></li>
+                                    <li><a href="">Care & Share</a></li>
+                                    <li><a href="">Nhà máy</a></li>
+                                    <li><a href="">Câu chuyện về Coolmate</a></li>
+                                    <li><a href="">DVKH xuất sắc</a></li>
                                 </ul>
                             </div>
                         </div>
 
                         <div class="col-lg-3 col-md-6 col-sm-6">
                             <div class="footer-widget">
-                                <h5 class="footer-widget-title">Our Brands</h5>
+                                <h5 class="footer-widget-title">Các thương hiệu hợp tác</h5>
                                 <ul class="footer-links">
-                                    <li><a href="#">Louis Vuitton</a></li>
-                                    <li><a href="#">Polo Ralph Lauren</a></li>
-                                    <li><a href="#">Dresses Tranding CO</a></li>
-                                    <li><a href="#">Aeropostale </a></li>
-                                    <li><a href="#">Consistent Manner Collective</a></li>
-                                    <li><a href="#">Fashionable Houses</a></li>
+                                    <li><a href="#">Canifa</a></li>
+                                    <li><a href="#">Coolmate</a></li>
+                                    <li><a href="#">YODY</a></li>
+                                    <li><a href="#">Routine</a></li>
+                                    <li><a href="#">An Phước</a></li>
                                 </ul>
                             </div>
                         </div>
 
                         <div class="col-lg-3 col-md-6 col-sm-6">
                             <div class="footer-widget">
-                                <h5 class="footer-widget-title">Our Stores</h5>
+                                <h5 class="footer-widget-title">Cửa Hàng Chúng Tôi</h5>
                                 <ul class="footer-links">
-                                    <li><a href="#">las Vegas</a></li>
-                                    <li><a href="#">Returns New London N</a></li>
-                                    <li><a href="#">USA, Wall Street</a></li>
-                                    <li><a href="#">Mirpur, Bangladesh </a></li>
-                                    <li><a href="#">los Angeles</a></li>
+                                    <li><a href="#">Công ty Manstyte T.M.G</a></li>
+                                    <li><a href="#">Mã Số Thuế: 0302966294</a></li>
+                                    <li><a href="#">Email: cskh@viet-styles.com</a></li>
+                                    <li><a href="#">Hotline: 0914 516 446 - 0906 954 368</a></li>
+                                    <li><a href="#">Địa Chỉ: 172 Nguyễn Trãi, Quận Thanh Xuân,  Thành Phố Hà Nội</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -395,13 +360,13 @@
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-md-5">
                         <div class="footer-copyright">
-                            <p>Copyright 2021 EG Shop Fashion | Design By Egens Lab</p>
+                            <p>Cam Kết Chuyên Bán Sản Phẩm Chất Liệu Tốt Cho Người Tiêu Dùng</p>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-7">
                         <div
                             class="footer-bottom-paymant-option d-flex align-items-center justify-content-end flex-wrap">
-                            <p>We Using Safe Payment For:</p>
+                            <p>Đã Hợp Tác Với Chúng Tôi:</p>
                             <ul class="payment-options d-flex">
                                 <li><img src="{{ asset('assets/images/payment/payment-1.png') }}" alt></li>
                                 <li><img src="{{ asset('assets/images/payment/payment-2.png') }}" alt></li>

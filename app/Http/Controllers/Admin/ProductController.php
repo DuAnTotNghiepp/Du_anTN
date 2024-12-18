@@ -246,6 +246,54 @@ class ProductController extends Controller
         return redirect()->route('product.index')->with('success', 'Số lượng sản phẩm đã được cập nhật!');
     }
 
+    public function bestSellingProducts(Request $request)
+    {
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        $products = DB::table('order_items')
+            ->select(
+                'products.id as product_id',
+                'products.name as product_name',
+                'products.sku as product_sku',
+                'products.img_thumbnail as product_img_thumbnail',
+                'products.price_regular as product_price',
+                DB::raw('SUM(order_items.quantity) as total_orders')
+            )
+            ->join('products', 'order_items.product_id', '=', 'products.id')
+            ->join('orders', 'order_items.order_id', '=', 'orders.id')
+            ->where('orders.status', 'hoanthanh')
+            ->when($startDate, function ($query, $startDate) {
+                return $query->whereDate('orders.created_at', '>=', $startDate);
+            })
+            ->when($endDate, function ($query, $endDate) {
+                return $query->whereDate('orders.created_at', '<=', $endDate);
+            })
+            ->groupBy('products.id')
+            ->orderBy('total_orders', 'DESC')
+            ->limit(5)
+            ->get();
+
+        $users = DB::table('orders')
+            ->select(
+                'user_email',
+                DB::raw('SUM(total_price) as total_price'),
+                DB::raw('COUNT(id) as total_orders')
+            )
+            ->where('status', 'hoanthanh')
+            ->when($startDate, function ($query, $startDate) {
+                return $query->whereDate('created_at', '>=', $startDate);
+            })
+            ->when($endDate, function ($query, $endDate) {
+                return $query->whereDate('created_at', '<=', $endDate);
+            })
+            ->groupBy('user_email')
+            ->orderBy('total_price', 'DESC')
+            ->limit(5)
+            ->get();
+
+        return view('admin.statistical.index', compact('products', 'users'));
+    }
 
 
 }

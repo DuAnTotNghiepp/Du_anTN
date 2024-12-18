@@ -133,6 +133,78 @@
             -moz-appearance: textfield;
             appearance: none;
         }
+
+        /* Phong cách chung cho alert */
+        .alert {
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Thành công */
+        .custom-alert-success {
+            background-color: #e6f7e9;
+            border: 1px solid #28a745;
+            color: #155724;
+        }
+
+        .custom-alert-success i {
+            color: #28a745;
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        /* Lỗi */
+        .custom-alert-error {
+            background-color: #fcebea;
+            border: 1px solid #dc3545;
+            color: #721c24;
+        }
+
+        .custom-alert-error i {
+            color: #dc3545;
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        /* Lỗi từ validation */
+        .custom-alert-validation {
+            background-color: #fff3cd;
+            border: 1px solid #ffcc00;
+            color: #856404;
+        }
+
+        .custom-alert-validation i {
+            color: #ffcc00;
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        /* Kiểu danh sách lỗi */
+        .custom-alert-validation ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .custom-alert-validation li {
+            list-style: disc;
+        }
+
+        .custom-alert-validation ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #721c24;
+            font-size: 16px;
+        }
+
+        .custom-alert-validation li {
+            list-style: disc;
+        }
     </style>
 
 
@@ -140,20 +212,7 @@
         <div class="container">
             <div class="product-details-wrapper">
                 <div class="row">
-                    @if (session('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
-                    @endif
 
-                    @if (session('error'))
-                        <div class="alert alert-danger">{{ session('error') }}</div>
-                    @endif
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            @foreach ($errors->all() as $error)
-                                <p>{{ $error }}</p>
-                            @endforeach
-                        </div>
-                    @endif
                     <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-8">
                         <div class="product-switcher-wrap">
                             <div class="nav product-tab" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -228,8 +287,7 @@
                                 </ul>
                                 <span>(Trung bình: {{ $averageRating }} sao)</span>
                                 <h1>{{ $product->name }}</h1>
-                                <p><strong>Giá cũ:</strong> <span
-                                        class="price-regular">{{ $product->price_regular }}</span>
+                                <p><strong>Giá cũ:</strong> <span class="price-regular">{{ $product->price_regular }}</span>
                                 </p>
                                 <p><strong>Giá khuyến mãi:</strong> <span
                                         class="price-sale">{{ $product->price_sale }}</span></p>
@@ -238,6 +296,26 @@
 
                             <div class="pd-quick-discription">
                                 <ul>
+                                    @if (session('success'))
+                                        <div class="alert alert-success custom-alert-success">
+                                            <i class="bi bi-check-circle-fill"></i> {{ session('success') }}
+                                        </div>
+                                    @endif
+
+                                    @if (session('error'))
+                                        <div class="alert alert-danger custom-alert-error">
+                                            <i class="bi bi-exclamation-triangle-fill"></i> {{ session('error') }}
+                                        </div>
+                                    @endif
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger custom-alert-validation">
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
                                     <li class="d-flex align-items-center">
                                         <span>Color :</span>
                                         <div class="color-option d-flex align-items-center">
@@ -246,7 +324,8 @@
                                                     <div class="color-options">
                                                         <input type="radio" id="color-{{ $color }}"
                                                             name="color" value="{{ $color }}"
-                                                            data-color="{{ $color }}" class="color-radio color-option-input">
+                                                            data-color="{{ $color }}"
+                                                            class="color-radio color-option-input">
                                                         <label for="color-{{ $color }}"
                                                             style="background-color: {{ $color }}; width: 20px; height: 20px; display: inline-block; cursor: pointer;"></label>
                                                     </div>
@@ -262,7 +341,8 @@
                                                     <div class="size-options">
                                                         <input type="radio" id="size-{{ $size }}"
                                                             name="size" value="{{ $size }}"
-                                                            data-size="{{ $size }}" class="size-radio size-option-input">
+                                                            data-size="{{ $size }}"
+                                                            class="size-radio size-option-input">
                                                         <label for="size-{{ $size }}"
                                                             style="cursor: pointer;">{{ $size }}</label>
                                                     </div>
@@ -274,8 +354,9 @@
                                     <li class="d-flex align-items-center pd-cart-btns">
                                         <div class="quantity1">
                                             <button type="button" id="decrease-btn">-</button>
-                                            <input name="quantity" type="number" min="1" max="{{ $productVariant->stock }}"
-                                                step="1" value="1" id="quantity-input">
+                                            <input name="quantity" type="number" min="1"
+                                                max="{{ $productVariant->stock }}" step="1" value="1"
+                                                id="quantity-input">
                                             <button type="button" id="increase-btn">+</button>
                                         </div>
                                         @if (Auth::check())
@@ -619,19 +700,19 @@
                     document.getElementById('selected-size').value = selectedSize;
                 });
             });
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 const quantityInput = document.getElementById('quantity-input');
                 const hiddenQuantity = document.getElementById('quantity');
                 const decreaseBtn = document.getElementById('decrease-btn');
                 const increaseBtn = document.getElementById('increase-btn');
 
                 // Đồng bộ giá trị khi số lượng thay đổi
-                quantityInput.addEventListener('input', function () {
+                quantityInput.addEventListener('input', function() {
                     hiddenQuantity.value = quantityInput.value;
                 });
 
                 // Giảm số lượng
-                decreaseBtn.addEventListener('click', function () {
+                decreaseBtn.addEventListener('click', function() {
                     let currentValue = parseInt(quantityInput.value);
                     if (currentValue > parseInt(quantityInput.min)) {
                         quantityInput.value = currentValue - 0;
@@ -640,7 +721,7 @@
                 });
 
                 // Tăng số lượng
-                increaseBtn.addEventListener('click', function () {
+                increaseBtn.addEventListener('click', function() {
                     let currentValue = parseInt(quantityInput.value);
                     if (currentValue < parseInt(quantityInput.max)) {
                         quantityInput.value = currentValue + 0;
@@ -650,11 +731,10 @@
 
                 // Đồng bộ giá trị trước khi form được gửi
                 const addToCartForm = document.getElementById('add-to-cart-form');
-                addToCartForm.addEventListener('submit', function () {
+                addToCartForm.addEventListener('submit', function() {
                     hiddenQuantity.value = quantityInput.value;
                 });
             });
-
         </script>
         <script>
             document.getElementById('decrease-btn').addEventListener('click', function() {
