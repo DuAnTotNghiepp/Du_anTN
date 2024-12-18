@@ -22,13 +22,12 @@ class OrderController extends Controller
     }
 
     public function getPendingOrders()
-{
-    $pendingOrders = Order::where('status', 'pending')->get(['id', 'created_at', 'status']);
-    session(['pendingOrders' => $pendingOrders]); 
-
-    return response()->json(['orders' => $pendingOrders]);
-}
-
+    {
+        $pendingOrders = Order::where('status', 'pending')->get(['id', 'created_at', 'status']);
+        session(['pendingOrders' => $pendingOrders]); // Lưu vào session
+    
+        return response()->json(['orders' => $pendingOrders]);
+    }
     /**
      * Show the form for creating a new resource.
      */

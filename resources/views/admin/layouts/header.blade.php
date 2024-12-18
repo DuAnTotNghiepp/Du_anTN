@@ -449,7 +449,10 @@
                         </div>
                     </div>
                 </div>
-                
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+                <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
 
                 <script>
                     $(document).ready(function() {
@@ -458,10 +461,11 @@
                                 url: '/get-pending-orders',
                                 method: 'GET',
                                 success: function(response) {
-                                    $('#pendingOrderCount').text(response.orders.length); 
+                                    $('#pendingOrderCount').text(response.orders.length); // Cập nhật số lượng
                                     $('#newOrderCount').text(response.orders.length + ' New');
-                                    $('#notificationItems').empty(); 
+                                    $('#notificationItems').empty(); // Xóa hết các item cũ
                     
+                                    // Loop và thêm thông tin các order vào
                                     response.orders.forEach(order => {
                                         $('#notificationItems').append(`
                                             <div class="dropdown-item">
@@ -478,8 +482,11 @@
                             });
                         }
                     
-                        setInterval(updatePendingOrderCount, 1000); 
+                        // Gọi hàm này sau mỗi 10 giây hoặc bạn có thể điều chỉnh thời gian phù hợp
+                        setInterval(updatePendingOrderCount, 4000); // Cập nhật lại sau mỗi 10 giây
                     });
+                    
+                    
                     
                 </script>
                 
