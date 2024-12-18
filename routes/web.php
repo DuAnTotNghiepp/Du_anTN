@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Auth\FacebookController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Admin\ProductController;
@@ -180,7 +181,15 @@ Route::get('/admin/revenue-stats', [AdminController::class, 'getRevenueStats']);
 
 // Group routes under admin middleware
 Route::get('blog/{id}', [BlogController::class, 'show'])->name('blog.detail');
-
 Route::prefix('admin')->group(function () {
-    Route::get('/statistical/bestSellingProducts', [ProductController::class, 'bestSellingProducts'])->name('products.best-selling');;
+    Route::get('/statistical/bestSellingProducts', [ProductController::class, 'bestSellingProducts'])->name('products.best-selling');
+
+    Route::get('/statistics/account-conversion', [AdminController::class, 'conversionRate'])->name('conversionRate.best-selling');
+    Route::get('/statistics/orderRates', [AdminController::class, 'orderRates'])->name('orderRates.best-selling');
+
 });
+Route::get('/get-pending-orders', [AdminOrderController::class, 'getPendingOrders']);
+
+
+
+

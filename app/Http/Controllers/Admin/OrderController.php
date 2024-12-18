@@ -7,6 +7,8 @@ use App\Models\Address;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+
 
 class OrderController extends Controller
 {
@@ -19,6 +21,13 @@ class OrderController extends Controller
         return view('admin.order.index', compact('data'));
     }
 
+    public function getPendingOrders()
+{
+    $pendingOrders = Order::where('status', 'pending')->get(['id', 'created_at', 'status']);
+    session(['pendingOrders' => $pendingOrders]); 
+
+    return response()->json(['orders' => $pendingOrders]);
+}
 
     /**
      * Show the form for creating a new resource.

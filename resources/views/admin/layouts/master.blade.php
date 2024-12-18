@@ -18,6 +18,7 @@
 
     <!-- Layout config Js -->
     <script src="assets/js/layout.js"></script>
+    
     <!-- Bootstrap Css -->
     <link href="{{ asset('theme/admin/assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
@@ -36,6 +37,7 @@
 
 
     @yield('style')
+    
 </head>
 
 <body>
@@ -135,6 +137,7 @@ z
 <script src="{{ asset('theme/admin/https://unpkg.com/gridjs/plugins/selection/dist/selection.umd.js') }}"></script>
 <!-- ecommerce product list -->
 <script src="{{ asset('theme/admin/assets/js/pages/ecommerce-product-list.init.js') }}"></script>
+
 
 </body>
 

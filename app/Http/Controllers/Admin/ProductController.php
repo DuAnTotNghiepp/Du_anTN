@@ -147,6 +147,8 @@ class ProductController extends Controller
 
     return view('admin.statistical.index', compact('products', 'users'));
 }
+
+
     public function show(Product $product)
     {
         //

@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -45,14 +46,13 @@ class AdminController extends Controller
 
     $months = [];
     $revenueData = [];
-    $orderData = [];  // Mảng lưu trữ số lượng đơn hàng thanh toán
+    $orderData = [];  
     $totalRevenue = 0;
 
     for ($i = 0; $i < 12; $i++) {
         $currentMonth = date('n', strtotime("-$i month"));
         $months[] = $monthsInVietnamese[$currentMonth - 1];
 
-        // Tính doanh thu
         $monthlyRevenue = Order::where('status', 'paid')
             ->whereYear('created_at', date('Y', strtotime("-$i month")))
             ->whereMonth('created_at', date('m', strtotime("-$i month")))
@@ -60,7 +60,6 @@ class AdminController extends Controller
         $revenueData[] = $monthlyRevenue;
         $totalRevenue += $monthlyRevenue;
 
-        // Tính số lượng đơn hàng thanh toán
         $monthlyOrderCount = Order::where('status', 'paid')
             ->whereYear('created_at', date('Y', strtotime("-$i month")))
             ->whereMonth('created_at', date('m', strtotime("-$i month")))
@@ -71,16 +70,78 @@ class AdminController extends Controller
     return response()->json([
         'months' => array_reverse($months),
         'revenueData' => array_reverse($revenueData),
-        'orderData' => array_reverse($orderData), // Trả về số đơn hàng thanh toán
+        'orderData' => array_reverse($orderData), 
         'totalRevenue' => $totalRevenue,
     ]);
 }
+public function conversionRate(Request $request)
+    {
+        $convertedUsers = DB::table('users')
+            ->join('orders', 'users.id', '=', 'orders.user_id')
+            ->where('orders.status', 'paid')
+            ->when($request->input('start_date'), function ($query, $startDate) {
+                return $query->whereDate('orders.created_at', '>=', $startDate);
+            })
+            ->when($request->input('end_date'), function ($query, $endDate) {
+                return $query->whereDate('orders.created_at', '<=', $endDate);
+            })
+            ->count();
 
+        $totalUsers = DB::table('users')
+            ->when($request->input('start_date'), function ($query, $startDate) {
+                return $query->whereDate('created_at', '>=', $startDate);
+            })
+            ->when($request->input('end_date'), function ($query, $endDate) {
+                return $query->whereDate('created_at', '<=', $endDate);
+            })
+            ->count();
 
+        $conversionRate = $totalUsers ? ($convertedUsers / $totalUsers) * 100 : 0;
+
+        return view('admin.statistical.account_conversion', compact('totalUsers', 'convertedUsers', 'conversionRate'));
+    }
+    public function orderRates(Request $request)
+    {
+        $completedOrders = DB::table('orders')
+        ->where('status', 'hoanthanh')
+        ->when($request->input('start_date'), function ($query, $startDate) {
+            return $query->whereDate('created_at', '>=', $startDate);
+        })
+        ->when($request->input('end_date'), function ($query, $endDate) {
+            return $query->whereDate('created_at', '<=', $endDate);
+        })
+        ->count();
+
+    $canceledOrders = DB::table('orders')
+        ->where('status', 'canceled')
+        ->when($request->input('start_date'), function ($query, $startDate) {
+            return $query->whereDate('created_at', '>=', $startDate);
+        })
+        ->when($request->input('end_date'), function ($query, $endDate) {
+            return $query->whereDate('created_at', '<=', $endDate);
+        })
+        ->count();
+
+    $totalOrders = DB::table('orders')
+        ->when($request->input('start_date'), function ($query, $startDate) {
+            return $query->whereDate('created_at', '>=', $startDate);
+        })
+        ->when($request->input('end_date'), function ($query, $endDate) {
+            return $query->whereDate('created_at', '<=', $endDate);
+        })
+        ->count();
+
+    $completionRate = $totalOrders ? ($completedOrders / $totalOrders) * 100 : 0;
+    $cancellationRate = $totalOrders ? ($canceledOrders / $totalOrders) * 100 : 0;
+
+    $totalCompleted = $completedOrders; 
+        return view('admin.statistical.statisticalcancel', compact('totalOrders', 'completedOrders', 'canceledOrders', 'completionRate', 'cancellationRate','totalCompleted'));
+    }
+   
 
     public function create()
     {
-        return view('admin.accounts.create');  // Hiển thị form tạo tài khoản mới
+        return view('admin.accounts.create');  
     }
 
     public function store(Request $request)
