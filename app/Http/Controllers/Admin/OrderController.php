@@ -15,7 +15,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $data = Order::with('address')->latest('id')->get();
+        $data = Order::with('address')->latest('id')->orderBy('created_at', 'desc')->paginate(10);
         return view('admin.order.index', compact('data'));
     }
 
@@ -57,6 +57,8 @@ class OrderController extends Controller
         $orde = Order::with('address')->find($id);
         $address = Address::find($orde->user_address);
         return view('admin.order.edit', compact('orde','address'));
+
+        
     }
 
     /**
@@ -75,7 +77,7 @@ class OrderController extends Controller
         }
 
         $validatedData = $request->validate([
-            'status' => 'required|in:pending,completed,canceled,delivery,delivered,confirmed',  // Thêm 'confirmed' nếu trạng thái của bạn là 'đã xác nhận'
+            'status' => 'required|in:pending,completed,canceled,delivery,delivered,confirmed,hoanthanh',  // Thêm 'confirmed' nếu trạng thái của bạn là 'đã xác nhận'
             'user_note' => 'nullable|string',
         ]);
 
@@ -84,7 +86,8 @@ class OrderController extends Controller
             'pending' => ['completed', 'canceled'],
             'completed' => ['delivery'],
             'delivery' => ['delivered'],
-            'delivered' => [],
+            'delivered' => ['hoanthanh'],
+            'hoanthanh' => [],
             'canceled' => [],
         ];
 

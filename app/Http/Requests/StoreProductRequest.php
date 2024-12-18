@@ -6,33 +6,25 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreProductRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
+    public function authorize()
     {
+        // Chỉ cần trả về true nếu bạn muốn cho phép mọi người sử dụng request này
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
-    public function rules(): array
+    public function rules()
     {
         return [
-                'name' => 'required|string|max:50|min:3',
-                'sku' => 'required|string|max:255|unique:products,sku',
-                'img_thumbnail' => 'nullable|image|max:2048',
-                'price_regular' => 'required|numeric|min:0',
-                'price_sale' => 'required|numeric|min:0|lte:price_regular',
-                'material' => 'required|string|max:255',
-                'description' => 'required|string|max:255',
-                'content' => 'required|string',
-                'user_manual' => 'required|string|max:255',
-                'slug' => 'required|string|max:255',
+
         ];
     }
+
+    public function messages()
+    {
+        return [
+
+        ];
+    }
+
 }
 

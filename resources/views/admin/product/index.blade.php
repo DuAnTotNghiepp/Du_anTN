@@ -71,6 +71,15 @@
         }
     </style>
     <!-- start page title -->
+    {{-- @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif --}}
     <div class="row">
 
         <div class="col-12">
@@ -161,18 +170,11 @@
 
                                 <thead class="table-light">
                                     <tr>
-                                        <th scope="col" style="width: 50px;">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="checkAll"
-                                                    value="option">
-                                            </div>
-                                        </th>
                                         <th class="sort" data-sort="idsanpham" scope="col">ID</th>
                                         <th class="sort" data-sort="name" scope="col">Tên Sản Phẩm</th>
                                         <th class="sort" data-sort="company_name" scope="col">Giá Thường</th>
                                         <th class="sort" data-sort="email_id" scope="col">Giá Khuyến Mãi</th>
-                                        <th class="sort" data-sort="category_name" scope="col">Danh Mục Sản Phẩm
-                                        </th>
+                                        <th class="sort" data-sort="category_name" scope="col">Danh Mục Sản Phẩm </th>
                                         <th class="sort" data-sort="phone" scope="col">Số Lượng</th>
                                         <th class="sort" data-sort="lead_score" scope="col">Mã Sản Phẩm</th>
                                         <th class="sort" data-sort="tags" scope="col">Trạng Thái</th>
@@ -183,14 +185,6 @@
                                 <tbody class="list form-check-all">
                                     @foreach ($listPro as $pr)
                                         <tr>
-                                            <th scope="row">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="chk_child"
-                                                        value="option1">
-                                                </div>
-                                            </th>
-                                            <td class="id" style="display:none;"><a href="javascript:void(0);"
-                                                    class="fw-medium link-primary">#VZ001</a></td>
                                             <td>{{ $pr->id }}</td>
                                             <td class="name">
                                                 <div class="d-flex align-items-center">

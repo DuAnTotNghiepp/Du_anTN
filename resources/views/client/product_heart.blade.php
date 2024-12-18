@@ -37,47 +37,59 @@
     <div class="product-area ml-110 mt-100">
         <div class="container-fluid">
             <div class="row">
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
                 <div class="col-xxl-12 col-xl-8 col-lg-8">
                     <div class="row">
-
-                        @foreach ($favorites as $favorite)
-                        <div class="col-xxl-3 col-xl-4 col-lg-4 col-sm-4">
-                            <div class="product-card-l">
-                                <div class="product-img">
-                                    <a href="{{ route('product.product_detail', $favorite->product->id) }}">
-                                        <img
-                                            src="{{ Storage::url($favorite->product->img_thumbnail) }}"
-                                            alt="{{ $favorite->product->name }}"
-                                            class="img-fluid"
-                                            width="375.15px" height="332.87px">
-                                    </a>
-                                    <div class="product-lavels"></div>
-                                    <div class="product-actions">
-                                        <a href="{{ route('product.product_detail', $favorite->product->id) }}"><i class="flaticon-search"></i></a>
-                                        <a href="#"><i class="flaticon-shopping-cart"></i></a>
-                                    </div>
-                                </div>
-                                <div class="product-body">
-                                    <ul class="d-flex product-rating">
-                                        <li><i class="bi bi-star-fill"></i></li>
-                                        <li><i class="bi bi-star-fill"></i></li>
-                                        <li><i class="bi bi-star-fill"></i></li>
-                                        <li><i class="bi bi-star-fill"></i></li>
-                                        <li><i class="bi bi-star"></i></li>
-                                        <li>(<span>8</span> Review)</li>
-                                    </ul>
-                                    <h3 class="product-title">
+                    @foreach ($favorites as $favorite)
+                        @if($favorite->product && $favorite->product->is_active)
+                            <div class="col-xxl-3 col-xl-4 col-lg-4 col-sm-4">
+                                <div class="product-card-l">
+                                    <div class="product-img">
                                         <a href="{{ route('product.product_detail', $favorite->product->id) }}">
-                                            {{ $favorite->product->name }}
+                                            <img
+                                                src="{{ Storage::url($favorite->product->img_thumbnail) }}"
+                                                alt="{{ $favorite->product->name }}"
+                                                class="img-fluid"
+                                                width="375.15px" height="332.87px">
                                         </a>
-                                    </h3>
-                                    <div class="product-price">
-                                        <del class="old-price">{{ number_format($favorite->product->price_regular, 0, ',', '.') }} VND</del>
-                                        <ins class="new-price">{{ number_format($favorite->product->price_sale, 0, ',', '.') }} VND</ins>
+                                        <div class="product-lavels"></div>
+                                        <div class="product-actions">
+                                            <a href="{{ route('product.product_detail', $favorite->product->id) }}"><i class="flaticon-search"></i></a>
+                                            <a href="#"><i class="flaticon-shopping-cart"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-body">
+                                        <ul class="d-flex product-rating">
+                                            <li><i class="bi bi-star-fill"></i></li>
+                                            <li><i class="bi bi-star-fill"></i></li>
+                                            <li><i class="bi bi-star-fill"></i></li>
+                                            <li><i class="bi bi-star-fill"></i></li>
+                                            <li><i class="bi bi-star"></i></li>
+                                            <li>(<span>8</span> Review)</li>
+                                        </ul>
+                                        <h3 class="product-title">
+                                            <a href="{{ route('product.product_detail', $favorite->product->id) }}">
+                                                {{ $favorite->product->name }}
+                                            </a>
+                                        </h3>
+                                        <div class="product-price">
+                                            <del class="old-price">{{ number_format($favorite->product->price_regular, 0, ',', '.') }} VND</del>
+                                            <ins class="new-price">{{ number_format($favorite->product->price_sale, 0, ',', '.') }} VND</ins>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @else
+                            <tr>
+                                <td colspan="8" class="text-center text-danger">
+                                    Sản phẩm "{{ $favorite->product->name ?? 'N/A' }}" đã ngừng hoạt động và không còn khả dụng.
+                                </td>
+                            </tr>
+                        @endif
                     @endforeach
 
                     </div>

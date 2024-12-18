@@ -44,11 +44,10 @@
                                 <div class="col-lg-12">
                                     <!-- Select Address -->
                                     <div class="eg-input-group">
-                                        <label for="address-selection">Chọn Địa chỉ nhận</label>
-                                        <div class="btn-submit">
-                                            <!-- Nút để hiển thị/ẩn form -->
-                                            <button class="btn float-end" id="add-address-btn">Thêm Địa Chỉ</button>
-                                        </div>
+                                        <label for="address-selection">Chọn Địa chỉ nhận</label><a
+                                            href="{{ route('profile', ['id' => auth()->user()->id]) }}">
+                                            Thêm Địa Chỉ Khác
+                                        </a>
                                         <select id="address-selection" name="user_address" class="form-control" required>
                                             <option value="">-- Chọn Địa chỉ --</option>
                                             @foreach ($addresses as $address)
@@ -118,8 +117,6 @@
                                                     <input type="hidden" name="product_img_thumbnail[]" value="{{ $item->product->img_thumbnail }}">
                                                     <input type="hidden" name="product_price_regular[]" value="{{ $item->product->price_regular }}">
                                                     <input type="hidden" name="product_price_sale[]" value="{{ $item->product->price_sale }}">
-                                                    <input type="hidden" name="size[]" value="{{ $item->size }}">
-                                                    <input type="hidden" name="color[]" value="{{ $item->color }}">
                                                 </div>
                                                 <p><strong>Màu: </strong>
                                                     <input type="hidden" name="color[]" value="{{ $item->color }}"><span class="color-box" style="display: inline-block; width: 20px; height: 20px; background-color: {{ $item->color }}; border: 1px solid #ddd; border-radius: 10px;"></span>
@@ -145,15 +142,12 @@
                                 <li>Thuế
                                     <span id="tax">5000 VND</span>
                                 </li>
+                                <li>Giảm giá: <strong>- <span id="voucher_value">0<span> VNĐ</strong></li>
 
                                 <!-- Hiển thị Tổng Đơn Hàng -->
                                 <li>Tổng Đơn Hàng (Bao gồm thuế)
                                     <span id="total">{{ number_format($totalWithTax) }} VND</span>
                                 </li>
-{{--                                 
-                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <input type="hidden" name="total_price" id="total_price"
-                                    value="{{ $quantity * $productPrice + 5000 }}"> --}}
                             </ul>
 
                             <!-- Các trường ẩn -->
@@ -167,11 +161,9 @@
                                     <button type="button" class="pd-add-cart"
                                         style="height: 45px; border: 1px solid #ced4da" onclick="getVoucherInfo()">Áp
                                         dụng</button>
-
-                                    </div>
-                                    <span id="errorMessage" class="error-message"></span><br>
                                 </div>
-
+                                <span id="errorMessage" class="error-message"></span><br>
+                            </div>
                         </div>
                         <div class="payment-form">
                             <div class="payment-methods">
@@ -193,7 +185,7 @@
                             </div>
 
                             <div class="place-order-btn">
-                                <button type="submit">Place Order</button>
+                                <button type="submit">Đặt Hàng</button>
                             </div>
                         </div>
                     </div>
@@ -229,6 +221,9 @@
             });
         });
 
+    </script>
+    <script>
+
         document.addEventListener('DOMContentLoaded', function() {
             const quantityInput = document.querySelector('.quantity-input');
             const subtotalElement = document.getElementById('subtotal');
@@ -253,60 +248,60 @@
         });
         let appliedVouchers = []; // Mảng để lưu trữ các mã đã áp dụng
 
-function getVoucherInfo() {
-    const errorMessage = document.getElementById('errorMessage');
-    const voucherCode = document.getElementById('voucher_code').value;
+        function getVoucherInfo() {
+            const errorMessage = document.getElementById('errorMessage');
+            const voucherCode = document.getElementById('voucher_code').value;
 
-    const voucher_value = document.getElementById('voucher_value');
-    const final_total = document.getElementById('total');
+            const voucher_value = document.getElementById('voucher_value');
+            const final_total = document.getElementById('total');
 
-    const totalPrice = document.getElementById('total_price').value;
+            const totalPrice = document.getElementById('total_price').value;
 
-    // Gửi yêu cầu GET đến API để lấy thông tin mã giảm giá
-    if (!voucherCode) {
-        errorMessage.textContent = "Vui lòng nhập mã giảm giá";
-        errorMessage.style.color = "red";
-        return;
-    }
-
-    // Kiểm tra nếu mã đã được áp dụng
-    if (appliedVouchers.includes(voucherCode)) {
-        errorMessage.textContent = "Mã giảm giá đã được áp dụng!";
-        errorMessage.style.color = "red";
-        return;
-    }
-    
-    fetch(`http://127.0.0.1:8000/checkout1/apply-voucher?voucher_code=${voucherCode}&total_price=${totalPrice}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Xử lý dữ liệu trả về từ API
-            if (data.result === true) {
-                voucher_value.textContent = data.data.voucher_discount;
-                final_total.textContent = data.data.final_total;
-                let hiddenInput = document.getElementById('total_price');
-                hiddenInput.value = data.data.final_total;
-
-                // Lưu mã giảm giá đã áp dụng vào mảng
-                appliedVouchers.push(voucherCode);
-
-                // Hiển thị thông báo áp dụng thành công
-                errorMessage.textContent = "Mã giảm giá đã được áp dụng thành công!";
-                errorMessage.style.color = "green";
-            } else {
-                errorMessage.textContent = data.message;
+            // Gửi yêu cầu GET đến API để lấy thông tin mã giảm giá
+            if (!voucherCode) {
+                errorMessage.textContent = "Vui lòng nhập mã giảm giá";
                 errorMessage.style.color = "red";
+                return;
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            errorMessage.textContent = "Đã xảy ra lỗi khi lấy thông tin mã giảm giá";
-            errorMessage.style.color = "red";
-        });
-}
+
+            // Kiểm tra nếu mã đã được áp dụng
+            if (appliedVouchers.includes(voucherCode)) {
+                errorMessage.textContent = "Mã giảm giá đã được áp dụng!";
+                errorMessage.style.color = "red";
+                return;
+            }
+
+            fetch(`http://127.0.0.1:8000/checkout/apply-voucher?voucher_code=${voucherCode}&total_price=${totalPrice}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Xử lý dữ liệu trả về từ API
+                    if (data.result === true) {
+                        voucher_value.textContent = data.data.voucher_discount;
+                        final_total.textContent = data.data.final_total;
+                        let hiddenInput = document.getElementById('total_price');
+                        hiddenInput.value = data.data.final_total;
+
+                        // Lưu mã giảm giá đã áp dụng vào mảng
+                        appliedVouchers.push(voucherCode);
+
+                        // Hiển thị thông báo áp dụng thành công
+                        errorMessage.textContent = "Mã giảm giá đã được áp dụng thành công!";
+                        errorMessage.style.color = "green";
+                    } else {
+                        errorMessage.textContent = data.message;
+                        errorMessage.style.color = "red";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    errorMessage.textContent = "Đã xảy ra lỗi khi lấy thông tin mã giảm giá";
+                    errorMessage.style.color = "red";
+                });
+            }
     </script>
 @endsection
