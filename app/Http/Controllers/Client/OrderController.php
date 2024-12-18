@@ -211,49 +211,50 @@ class OrderController extends Controller
     }
 
     public function vnpayCallback(Request $request)
-    {
-        $vnp_HashSecret = "3W5U0M95R09Y84G2TXKGZZEI32AJLF2Z";
-        $inputData = [];
-        foreach ($request->all() as $key => $value) {
-            if (substr($key, 0, 4) == "vnp_") {
-                $inputData[$key] = $value;
-            }
-        }
-
-        $vnp_SecureHash = $inputData['vnp_SecureHash'];
-        unset($inputData['vnp_SecureHash']);
-        ksort($inputData);
-        $hashData = "";
-        foreach ($inputData as $key => $value) {
-            $hashData .= urlencode($key) . '=' . urlencode($value) . '&';
-        }
-        $hashData = rtrim($hashData, '&');
-        $secureHash = hash_hmac('sha512', $hashData, $vnp_HashSecret);
-
-        if ($secureHash === $vnp_SecureHash) {
-            if ($inputData['vnp_ResponseCode'] == '00') {
-                try {
-                    DB::beginTransaction();
-
-                    $order = Order::find($inputData['vnp_TxnRef']);
-
-                    if ($order && $order->status === 'err') {
-                        $order->status = 'completed';
-                        $order->save();
-                    }
-
-                    DB::commit();
-                    return redirect()->route('index')->with('success', 'Đặt Hàng Thành Công. Thanh Toán Thành Công.');
-                } catch (Exception $e) {
-                    DB::rollBack();
-                    return redirect()->route('index')->with('error', 'Error processing payment: ' . $e->getMessage());
-                }
-            } else {
-                return redirect()->route('index')->with('error', 'Transaction failed.');
-            }
-        } else {
-            return redirect()->route('index')->with('error', 'Invalid signature.');
+{
+    $vnp_HashSecret = "3W5U0M95R09Y84G2TXKGZZEI32AJLF2Z";
+    $inputData = [];
+    foreach ($request->all() as $key => $value) {
+        if (substr($key, 0, 4) == "vnp_") {
+            $inputData[$key] = $value;
         }
     }
+
+    $vnp_SecureHash = $inputData['vnp_SecureHash'];
+    unset($inputData['vnp_SecureHash']);
+    ksort($inputData);
+    $hashData = "";
+    foreach ($inputData as $key => $value) {
+        $hashData .= urlencode($key) . '=' . urlencode($value) . '&';
+    }
+    $hashData = rtrim($hashData, '&');
+    $secureHash = hash_hmac('sha512', $hashData, $vnp_HashSecret);
+
+    if ($secureHash === $vnp_SecureHash) {
+        if ($inputData['vnp_ResponseCode'] == '00') {
+            try {
+                DB::beginTransaction();
+
+                $order = Order::find($inputData['vnp_TxnRef']);
+
+                if ($order && $order->status === 'err') {
+                    $order->status = 'completed'; 
+                    $order->save();
+                }
+
+                DB::commit();
+                return redirect()->route('index')->with('success', 'Đặt Hàng Thành Công. Thanh Toán Thành Công.');
+            } catch (Exception $e) {
+                DB::rollBack();
+                return redirect()->route('index')->with('error', 'Error processing payment: ' . $e->getMessage());
+            }
+        } else {
+            // Payment failed or canceled
+            return redirect()->route('index')->with('error', 'Giao dịch thất bại hoặc đã bị hủy.');
+        }
+    } else {
+        return redirect()->route('index')->with('error', 'Chữ ký không hợp lệ.');
+    }
+}
 
 }

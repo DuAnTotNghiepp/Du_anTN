@@ -104,17 +104,17 @@ class ProductController extends Controller
     $startDate = $request->input('start_date');
     $endDate = $request->input('end_date');
 
-    $products = DB::table('order__items')
+    $products = DB::table('order_items')
         ->select(
             'products.id as product_id',
             'products.name as product_name',
             'products.sku as product_sku',
             'products.img_thumbnail as product_img_thumbnail',
             'products.price_regular as product_price',
-            DB::raw('SUM(order__items.quantity) as total_orders')
+            DB::raw('SUM(order_items.quantity) as total_orders')
         )
-        ->join('products', 'order__items.product_id', '=', 'products.id')
-        ->join('orders', 'order__items.order_id', '=', 'orders.id')
+        ->join('products', 'order_items.product_id', '=', 'products.id')
+        ->join('orders', 'order_items.order_id', '=', 'orders.id')
         ->where('orders.status', 'paid')
         ->when($startDate, function ($query, $startDate) {
             return $query->whereDate('orders.created_at', '>=', $startDate);
