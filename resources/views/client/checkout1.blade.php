@@ -44,35 +44,41 @@
                                 <div class="col-lg-12">
                                     <!-- Select Address -->
                                     <div class="eg-input-group">
-                                        <label for="address-selection">Chọn Địa chỉ nhận</label>
-                                        <div class="btn-submit">
-                                            <!-- Nút để hiển thị/ẩn form -->
-                                            <button class="btn float-end" id="add-address-btn">Thêm Địa Chỉ</button>
+                                        <div class="col-lg-12">
+
+                                            
+                                            <!-- Select Address -->
+                                            <div class="eg-input-group">
+                                                <label for="address-selection">Chọn Địa chỉ nhận:</label>
+                                                <!-- Nút để hiển thị/ẩn form -->
+                                                <button class="btn float-end" id="add-address-btn">Thêm Địa Chỉ</button>
+                                                <select id="address-selection" name="user_address" class="form-control"
+                                                    required>
+                                                    <option value="">-- Chọn Địa chỉ --</option>
+                                                    @foreach ($addresses as $address)
+                                                        <option value="{{ $address->id }}">
+                                                            {{ $address->address }}, {{ $address->commune }},
+                                                            {{ $address->city }}, {{ $address->state }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
-                                        <select id="address-selection" name="user_address" class="form-control" required>
-                                            <option value="">-- Chọn Địa chỉ --</option>
-                                            @foreach ($addresses as $address)
-                                                <option value="{{ $address->id }}">
-                                                    {{ $address->address }}, {{ $address->commune }}, {{ $address->city }},
-                                                    {{ $address->state }}
-                                                </option>
-                                            @endforeach
-                                        </select>
                                     </div>
                                     <!-- Display Selected Address Info -->
                                     <div id="selected-address-info">
                                         <div class="eg-input-group">
-                                            <label for="selected-first-name">Tên</label>
-                                            <input type="text" id="selected-first-name" name="user_name" value=""
-                                                readonly placeholder="Your first name">
+                                            <label for="selected-first-name">Họ & Tên:</label>
+                                            <input type="text" id="selected-first-name" name="user_name"
+                                                value="" readonly placeholder="Your first name">
                                         </div>
                                         <div class="eg-input-group">
-                                            <label for="selected-email">Email</label>
+                                            <label for="selected-email">Email:</label>
                                             <input type="email" id="selected-email" name="user_email" value=""
                                                 readonly placeholder="Your Email">
                                         </div>
                                         <div class="eg-input-group">
-                                            <label for="selected-contact-number">Số Điện Thoại</label>
+                                            <label for="selected-contact-number">Số Điện Thoại:</label>
                                             <input type="text" id="selected-contact-number" name="user_phone"
                                                 value="" readonly placeholder="Your Phone">
                                         </div>
@@ -153,13 +159,13 @@
                                 </li>
 
                                 <!-- Hiển thị Thuế -->
-                                <li>Thuế
+                                {{-- <li>Thuế
                                     <span id="tax">5000 VND</span>
-                                </li>
+                                </li> --}}
 
                                 <!-- Hiển thị Tổng Đơn Hàng -->
-                                <li>Tổng Đơn Hàng (Bao gồm thuế)
-                                    <span id="total">{{ number_format($totalWithTax) }} VND</span>
+                                <li>Tổng Đơn Hàng: 
+                                    <span id="total">{{ number_format($total) }} VND</span>
                                 </li>
                                 {{--                                 
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
@@ -168,7 +174,7 @@
                             </ul>
 
                             <!-- Các trường ẩn -->
-                            <input type="hidden" name="total_price" id="total_price" value="{{ $total + 5000 }}">
+                            <input type="hidden" name="total_price" id="total_price" value="{{ $total}}">
 
                             <!-- Form áp dụng mã giảm giá -->
                             <div id="applyVoucher">
@@ -215,7 +221,7 @@
                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form action="{{ route('profile.address.store') }}" method="POST">
+                        <form action="{{ route('profile.address.store') }}"  method="POST">
                             @csrf
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addAddressLabel">Thêm Địa Chỉ</h5>
@@ -224,109 +230,115 @@
                             </div>
                             <div class="modal-body">
                                 <!-- Form các trường thêm địa chỉ -->
-                                <div class="mb-3">
-                                    <label for="addFirstName" class="form-label">First Name</label>
-                                    <input type="text" class="form-control" id="addFirstName" name="first_name"
-                                        required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="addLastName" class="form-label">Last Name</label>
-                                    <input type="text" class="form-control" id="addLastName" name="last_name"
-                                        required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="addEmail" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="addEmail" name="email" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="addContactNumber" class="form-label">Contact Number</label>
-                                    <input type="tel" class="form-control" id="addContactNumber"
-                                        name="contact_number" required>
-                                </div>
-                                <div>
-                                    <label class="form-label">City</label>
-                                    <select class="form-select form-select-sm mb-3" id="city" name="city">
-                                        <option value="" selected>Select province</option>
-                                    </select>
-                                    <label class="form-label">District</label>
-                                    <select class="form-select form-select-sm mb-3" id="district" name="state">
-                                        <option value="" selected>Select district</option>
-                                    </select>
-                                    <label class="form-label">Ward</label>
-                                    <select class="form-select form-select-sm" id="ward" name="commune">
-                                        <option value="" selected>Select ward</option>
-                                    </select>
-                                    <!-- Input ẩn để lưu tên tỉnh, huyện, xã -->
-                                    <input type="hidden" id="city_name" name="city">
-                                    <input type="hidden" id="district_name" name="state">
-                                    <input type="hidden" id="ward_name" name="commune">
-
-                                </div>
-                                <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-                                <script>
-                                    var citis = document.getElementById("city");
-                                    var districts = document.getElementById("district");
-                                    var wards = document.getElementById("ward");
-                                    var Parameter = {
-                                        url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
-                                        method: "GET",
-                                        responseType: "application/json",
-                                    };
-
-                                    axios(Parameter)
-                                        .then(function(result) {
-                                            console.log("Dữ liệu JSON tải thành công:", result.data); // Kiểm tra dữ liệu tải về
-                                            renderCity(result.data);
-                                        })
-                                        .catch(function(error) {
-                                            console.error("Không thể tải dữ liệu:", error);
-                                        });
-
-                                    function renderCity(data) {
-                                        for (const x of data) {
-                                            citis.options[citis.options.length] = new Option(x.Name, x.Id);
+                               <div class="row">
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label for="addFirstName" class="form-label">First Name</label>
+                                        <input type="text" class="form-control" id="addFirstName" name="first_name"
+                                            required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="addLastName" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" id="addLastName" name="last_name"
+                                            required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="addEmail" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="addEmail" name="email" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="addContactNumber" class="form-label">Contact Number</label>
+                                        <input type="tel" class="form-control" id="addContactNumber"
+                                            name="contact_number" required>
+                                    </div>
+                                   </div>
+                                  <div class="col-6">
+                                    <div>
+                                        <label class="form-label">City</label>
+                                        <select class="form-select form-select-sm mb-3" id="city" name="city">
+                                            <option value="" selected>Select province</option>
+                                        </select>
+                                        <label class="form-label">District</label>
+                                        <select class="form-select form-select-sm mb-3" id="district" name="state">
+                                            <option value="" selected>Select district</option>
+                                        </select>
+                                        <label class="form-label">Ward</label>
+                                        <select class="form-select form-select-sm" id="ward" name="commune">
+                                            <option value="" selected>Select ward</option>
+                                        </select>
+                                        <!-- Input ẩn để lưu tên tỉnh, huyện, xã -->
+                                        <input type="hidden" id="city_name" name="city">
+                                        <input type="hidden" id="district_name" name="state">
+                                        <input type="hidden" id="ward_name" name="commune">
+    
+                                    </div>
+                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+                                    <script>
+                                        var citis = document.getElementById("city");
+                                        var districts = document.getElementById("district");
+                                        var wards = document.getElementById("ward");
+                                        var Parameter = {
+                                            url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+                                            method: "GET",
+                                            responseType: "application/json",
+                                        };
+    
+                                        axios(Parameter)
+                                            .then(function(result) {
+                                                console.log("Dữ liệu JSON tải thành công:", result.data); // Kiểm tra dữ liệu tải về
+                                                renderCity(result.data);
+                                            })
+                                            .catch(function(error) {
+                                                console.error("Không thể tải dữ liệu:", error);
+                                            });
+    
+                                        function renderCity(data) {
+                                            for (const x of data) {
+                                                citis.options[citis.options.length] = new Option(x.Name, x.Id);
+                                            }
+                                            citis.onchange = function() {
+                                                districts.length = 1;
+                                                wards.length = 1;
+                                                if (this.value != "") {
+                                                    const result = data.filter(n => n.Id === this.value);
+                                                    for (const k of result[0].Districts) {
+                                                        districts.options[districts.options.length] = new Option(k.Name, k.Id);
+                                                    }
+                                                }
+                                            };
+                                            document.getElementById("city").addEventListener("change", function() {
+                                                const cityName = this.options[this.selectedIndex].text; // Lấy tên tỉnh/thành
+                                                document.getElementById("city_name").value = cityName; // Gán vào input ẩn
+                                            });
+    
+                                            document.getElementById("district").addEventListener("change", function() {
+                                                const districtName = this.options[this.selectedIndex].text; // Lấy tên quận/huyện
+                                                document.getElementById("district_name").value = districtName; // Gán vào input ẩn
+                                            });
+    
+                                            document.getElementById("ward").addEventListener("change", function() {
+                                                const wardName = this.options[this.selectedIndex].text; // Lấy tên xã/phường
+                                                document.getElementById("ward_name").value = wardName; // Gán vào input ẩn
+                                            });
+    
+                                            districts.onchange = function() {
+                                                wards.length = 1;
+                                                const dataCity = data.filter((n) => n.Id === citis.value);
+                                                if (this.value != "") {
+                                                    const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
+                                                    for (const w of dataWards) {
+                                                        wards.options[wards.options.length] = new Option(w.Name, w.Id);
+                                                    }
+                                                }
+                                            };
                                         }
-                                        citis.onchange = function() {
-                                            districts.length = 1;
-                                            wards.length = 1;
-                                            if (this.value != "") {
-                                                const result = data.filter(n => n.Id === this.value);
-                                                for (const k of result[0].Districts) {
-                                                    districts.options[districts.options.length] = new Option(k.Name, k.Id);
-                                                }
-                                            }
-                                        };
-                                        document.getElementById("city").addEventListener("change", function() {
-                                            const cityName = this.options[this.selectedIndex].text; // Lấy tên tỉnh/thành
-                                            document.getElementById("city_name").value = cityName; // Gán vào input ẩn
-                                        });
-
-                                        document.getElementById("district").addEventListener("change", function() {
-                                            const districtName = this.options[this.selectedIndex].text; // Lấy tên quận/huyện
-                                            document.getElementById("district_name").value = districtName; // Gán vào input ẩn
-                                        });
-
-                                        document.getElementById("ward").addEventListener("change", function() {
-                                            const wardName = this.options[this.selectedIndex].text; // Lấy tên xã/phường
-                                            document.getElementById("ward_name").value = wardName; // Gán vào input ẩn
-                                        });
-
-                                        districts.onchange = function() {
-                                            wards.length = 1;
-                                            const dataCity = data.filter((n) => n.Id === citis.value);
-                                            if (this.value != "") {
-                                                const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
-                                                for (const w of dataWards) {
-                                                    wards.options[wards.options.length] = new Option(w.Name, w.Id);
-                                                }
-                                            }
-                                        };
-                                    }
-                                </script>
-                                <div class="mb-3">
-                                    <label for="addAddress" class="form-label">Address</label>
-                                    <input type="text" class="form-control" id="addAddress" name="address" required>
-                                </div>
+                                    </script>
+                                    <div class="mt-3">
+                                        <label for="addAddress" class="form-label">Address</label>
+                                        <input type="text" class="form-control" id="addAddress" name="address" required>
+                                    </div>
+                                  </div>
+                               </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -360,6 +372,11 @@
                             document.getElementById('editWardName').value = address.commune_name;
                         });
                     });
+
+                    // document.getElementById('toggle-form-btn').addEventListener('click', function() {
+                    //     const formContainer = document.getElementById('address-form-container');
+                    //     formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
+                    // });
                 });
             </script>
         </div>

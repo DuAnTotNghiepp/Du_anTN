@@ -75,6 +75,7 @@ Route::post('/cart/update/{id}', [CartController::class, 'updateQuantity'])->nam
 // routes/web.php
 Route::post('/profile/address', [ClientController::class, 'storeAddress'])->name('profile.address.store');
 Route::put('/profile/address/update/{id}', [ClientController::class, 'updateAddress'])->name('profile.address.update');
+Route::delete('/address/{id}', [ClientController::class, 'destroy'])->name('address.destroy');
 Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])->name('my_order.invoice');
 Route::get('/user/update-avatar', [ClientController::class, 'showUpdateAvatarForm'])->name('user.updateAvatar');
 Route::post('/user/update-avatar', [ClientController::class, 'updateAvatar']);
@@ -89,7 +90,9 @@ Route::post('/orders/vnpay_ment', [OrderController::class, 'vnpay_ment'])->name(
 
 Route::get('/checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('checkout.applyVoucher');
 Route::get('/checkout1/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('checkout.applyVoucher');
-
+//status
+Route::post('/orders/cancel/{id}', [OrderController::class, 'cancelOrder']);
+Route::post('/orders/{order}/mark-received', [OrderController::class, 'markOrderAsReceived']);
 
 
 

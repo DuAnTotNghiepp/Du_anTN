@@ -122,15 +122,6 @@ class ClientController extends Controller
         return view('client.shop', compact('products'));
     }
 
-
-    // public function show($id)
-    // {
-    //     // Tìm sản phẩm theo ID
-    //     $product = Product::findOrFail($id);
-
-    //     // Trả về view chi tiết sản phẩm cùng với dữ liệu của sản phẩm
-    //     return view('client.product_detail', compact('product'));
-    // }
     public function checkout()
     {
         return view('client.checkout');
@@ -267,6 +258,18 @@ class ClientController extends Controller
         // Redirect hoặc trả về thông báo
         return redirect()->back()->with('success', 'Địa chỉ đã được cập nhật.');
     }
+
+
+    public function destroy($id)
+    {
+        // Tìm địa chỉ theo ID và xóa
+        $address = Address::findOrFail($id);
+        $address->delete();
+
+        // Redirect về trang trước đó với thông báo
+        return redirect()->back()->with('success', 'Địa chỉ đã được xóa thành công!');
+    }
+
 
     public function exportInvoice($id)
     {

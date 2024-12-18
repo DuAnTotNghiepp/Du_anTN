@@ -150,7 +150,7 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('accounts.edit', $user->id) }}" class="btn btn-warning">Sửa</a>
+                                                    {{-- <a href="{{ route('accounts.edit', $user->id) }}" class="btn btn-warning">Sửa</a> --}}
                                                     {{-- <form action="{{ route('accounts.destroy', $user->id) }}" method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')

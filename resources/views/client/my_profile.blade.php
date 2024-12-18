@@ -1,5 +1,12 @@
 @extends('client.profile')
 @section('content_profile')
+<style>
+    .card-body {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+</style>
     <div class="col-xxl-8 col-xl-8 col-lg-8">
         <div class="profile-form-wrapper">
 
@@ -83,7 +90,6 @@
                                     <h5>Địa chỉ</h5>
                                 </div>
                                 <div class="card-body">
-
                                     <table>
                                         <tr>
                                             <th>Information</th>
@@ -95,9 +101,7 @@
                                                     <td>
                                                         <span id="user-address">
                                                             <p>Số điện thoại: {{ $address->contact_number }}</p>
-                                                            <p>Địa chỉ: {{ $address->first_name }}
-                                                                {{ $address->last_name }},
-
+                                                            <p>Địa chỉ:
                                                                 {{ $address->commune }},
                                                                 {{ $address->state }}, {{ $address->city }},
                                                                 {{ $address->address }}
@@ -123,7 +127,11 @@
                                                         </button>
                                                     </td>
                                                     <td>
-                                                        <button class="btn">Xóa</button>
+                                                        <form action="{{ route('address.destroy', $address->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa địa chỉ này?');">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn">Xóa</button>
+                                                        </form>                                                        
                                                     </td>
                                                 </tr>
                                             @else

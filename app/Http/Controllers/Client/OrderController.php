@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Events\OrderUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
 use App\Models\Order;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -255,5 +257,49 @@ class OrderController extends Controller
             return redirect()->route('index')->with('error', 'Invalid signature.');
         }
     }
+
+
+     // Hủy đơn hàng
+     public function cancelOrder(Request $request, $orderId)
+     {
+         try {
+             // Tìm đơn hàng
+             $order = Order::findOrFail($orderId);
+     
+             // Kiểm tra trạng thái đơn hàng
+             if ($order->status !== 'pending') {
+                 return response()->json(['error' => 'Chỉ có thể hủy đơn hàng đang chờ xử lý.'], 400);
+             }
+     
+             // Cập nhật trạng thái đơn hàng
+             $order->status = 'canceled';
+             $order->save();
+     
+             // Phát sự kiện nếu cần
+             event(new OrderUpdated($order));
+     
+             return response()->json(['success' => 'Đơn hàng đã được hủy thành công.']);
+         } catch (Exception $e) {
+             Log::error('Lỗi khi hủy đơn hàng: ' . $e->getMessage());
+             return response()->json(['error' => 'Có lỗi xảy ra khi hủy đơn hàng.'], 500);
+         }
+     }  
+     // Đánh dấu đơn hàng là đã nhận
+     public function markOrderAsReceived(Request $request, Order $order)
+     {
+         if ($order->status !== 'shipped') {
+             return response()->json(['message' => 'Chỉ có thể đánh dấu là đã nhận khi đơn hàng đã được giao'], 400);
+         }
+ 
+         $order->status = 'completed';
+         $order->save();
+ 
+         // Đồng bộ trạng thái đến admin (tuỳ vào cơ chế thông báo hoặc lưu log)
+         // event(new OrderUpdated($order)); // Nếu bạn sử dụng Events
+           // Phát sự kiện OrderUpdated
+        event(new OrderUpdated($order));
+ 
+         return response()->json(['message' => 'Đơn hàng đã được đánh dấu là đã nhận', 'order' => $order]);
+     }
 
 }

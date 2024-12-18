@@ -87,20 +87,30 @@
                                     <td>{{ $order->status }}</td>
                                 </tr>
                                 <tr>
-                                    <th colspan="5">
+                                    <td colspan="3">
+                                        @if ($order->status === 'pending')
+                                            <button class="btn btn-primary" onclick="cancelOrder({{ $order->id }})">Hủy
+                                                đơn hàng</button>
+                                        @elseif ($order->status === 'delivered')
+                                            <button onclick="markOrderAsReceived({{ $order->id }})">Đã nhận hàng</button>
+                                        @endif
+                                    </td>
+                                    <td colspan="2">
                                         @php
                                             // Tính tổng tiền của từng sản phẩm
                                             $totalAmount = 0;
                                             $subTotal = $order->product->quantity * $order->product->price_sale;
                                             $totalAmount += $subTotal;
                                         @endphp
+
                                         <p class="text-end">Thành tiền:
                                             <span style="color: rgb(255, 115, 0)">{{ number_format($totalAmount) }}
                                                 VND</span>
                                         </p>
                                         <a href="javascript:void(0);" class="float-end show-details"
                                             data-order-id="{{ $order->id }}">Xem chi tiết</a>
-                                    </th>
+                                    </td>
+
                                 </tr>
                                 <!-- Khu vực hiển thị chi tiết đơn hàng -->
                                 <tr id="details-{{ $order->id }}" class="order-details" style="display: none;">
@@ -177,7 +187,8 @@
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="3" class="invoice-summary"><strong>Thuế
-                                                                        (0%):</strong></td>
+                                                                        (0%)
+                                                                        :</strong></td>
                                                                 <td>0đ</td>
                                                             </tr>
                                                             <tr>
@@ -219,7 +230,34 @@
                                 </tr>
                             @endforeach
                         </table>
+                        <script>
+                         function cancelOrder(orderId) {
+    if (confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?')) {
+        fetch(`/orders/cancel/${orderId}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.success);
+                location.reload(); // Tải lại trang
+            } else {
+                alert(data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Lỗi:', error);
+            alert('Có lỗi xảy ra khi gửi yêu cầu.');
+        });
+    }
+}
 
+                        </script>
                     </div>
 
                 </div>
@@ -235,7 +273,7 @@
                 link.addEventListener('click', function() {
                     const orderId = this.getAttribute('data-order-id'); // Lấy ID đơn hàng
                     const detailRow = document.getElementById('details-' +
-                    orderId); // Dòng chứa chi tiết
+                        orderId); // Dòng chứa chi tiết
                     // Ẩn/Hiện chi tiết
                     if (detailRow.style.display === 'none') {
                         detailRow.style.display = 'table-row'; // Hiển thị chi tiết
