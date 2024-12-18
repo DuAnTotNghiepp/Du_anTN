@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
+use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Order_Items;
 use App\Models\Product;
@@ -93,12 +94,12 @@ class OrderController extends Controller
     public function store1(Request $request)
     {
         // Validate input
-        $request->validate([
+        $validatedData = $request->validate([
             'user_address' => 'required|exists:addresses,id',
             'user_name' => 'required|string|max:255',
             'user_email' => 'required|email|max:255',
             'user_phone' => 'required|string|max:20',
-            'payment_method' => 'required|string',
+            'payment_method' => 'required|in:cash,vnpay',
             'total_price' => 'required|numeric',
             'quantity' => 'required|array',
             'color' => 'required|array',
@@ -117,40 +118,57 @@ class OrderController extends Controller
             'status' => 'pending', // Set default status as pending
             'total_price' => $request->total_price,
         ]);
-
-        // Save the order items (from the cart)
         foreach ($request->quantity as $key => $quantity) {
-            $orderItem = Order_Items::create([
+            // Tìm sản phẩm và biến thể tương ứng
+            $product = Product::find($request->product_id[$key]);
+            $variant = Product_Variant::where('product_id', $product->id)
+                ->whereHas('color', function ($query) use ($request, $key) {
+                    $query->where('value', $request->color[$key]);
+                })
+                ->whereHas('size', function ($query) use ($request, $key) {
+                    $query->where('value', $request->size[$key]);
+                })
+                ->first();
+
+            if (!$variant) {
+                return redirect()->back()->withErrors(['message' => 'Không tìm thấy biến thể phù hợp cho sản phẩm: ' . $product->name]);
+            }
+
+            // Kiểm tra tồn kho
+            if ($variant->stock < $quantity) {
+                return redirect()->back()->withErrors(['message' => 'Số lượng sản phẩm không đủ trong kho cho sản phẩm: ' . $product->name]);
+            }
+            Order_Items::create([
                 'order_id' => $order->id,
                 'user_id' => Auth::id(),
-                'product_id' => $request->product_id[$key],
-                'product_variant_id' => $request->variant_id[$key] ?? null, // Assuming you may have variant ID
+                'product_id' => $product->id,
+                'product_variant_id' => $variant->id, // Đảm bảo truyền đúng variant ID
                 'quantity' => $quantity,
-                'product_name' => $request->product_name[$key],
-                'product_sku' => $request->product_sku[$key],
-                'product_img_thumbnail' => $request->product_img_thumbnail[$key],
-                'product_price_regular' => $request->product_price_regular[$key],
-                'product_price_sale' => $request->product_price_sale[$key],
+                'product_name' => $product->name,
+                'product_sku' => $product->sku,
+                'product_img_thumbnail' => $product->img_thumbnail,
+                'product_price_regular' => $product->price_regular,
+                'product_price_sale' => $product->price_sale,
                 'size' => $request->size[$key],
                 'color' => $request->color[$key],
             ]);
-
-            if ($orderItem->product_variant_id) {
-                $productVariant = Product_Variant::find($orderItem->product_variant_id);
-                if ($productVariant && $productVariant->stock >= $quantity) {
-                    // Reduce stock
-                    $productVariant->stock -= $quantity;
-                    $productVariant->save();
-                } else {
-                    // Handle insufficient stock
-                    return redirect()->back()->with('error', 'Không đủ số lượng sản phẩm trong kho!');
-                }
-            }
+            // Cập nhật tồn kho sau khi đặt hàng
+            $variant->stock -= $quantity;
+            $variant->save();
         }
+            // Delete the items from the cart after creating order
+            Cart::where('user_id', Auth::id())->delete();
+
+            $validatedData['status'] = $request->payment_method === 'vnpay' ? 'err' : 'pending';
+            if ($request->payment_method === 'vnpay') {
+                return $this->vnpayPayment($order, $request);
+            }
+
 
         // Redirect to order confirmation page
         return redirect()->route('index')->with('success', 'Cảm Ơn Bạn Đã Đặt Hàng Của Chúng Tôi!');
     }
+
 
 
 

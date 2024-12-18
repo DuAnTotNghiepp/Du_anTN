@@ -34,6 +34,11 @@
                     @endforeach
                 </div>
             @endif
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
             <div class="row justify-content-center">
                 <div class="col-xxl-12 col-xl-12 col-md-12 col-sm-8">
                     @if($cartItems->count() > 0)
@@ -52,40 +57,47 @@
                             </thead>
                             <tbody>
                                 @foreach($cartItems as $item)
+                                    @if($item->product && $item->product->is_active)
+                                        <tr data-product-id="{{ $item->product->id }}">
+                                            <td>
+                                                <img src="{{ asset('storage/' . $item->product->img_thumbnail) }}" alt="{{ $item->product->name }}" width="100">
+                                            </td>
+                                            <td>{{ $item->product->name }}</td>
+                                            <td>{{ number_format($item->product->price_sale) }} VND</td>
+                                            <td>
+                                                @if($item->color)
+                                                    <span style="display:inline-block; width: 30px; height: 30px; border-radius: 20px; background-color: {{ $item->color }}; border: 1px solid #ddd;"></span>
+                                                @else
+                                                    Không có màu
+                                                @endif
+                                            </td>
 
-                                    <tr data-product-id="{{ $item->product->id }}">
-                                        <td>
-                                            <img src="{{ asset('storage/' . $item->product->img_thumbnail) }}" alt="{{ $item->product->name }}" width="100">
-                                        </td>
-                                        <td>{{ $item->product->name }}</td>
-                                        <td>{{ number_format($item->product->price_sale) }} VND</td>
-                                        <td>
-                                            @if($item->color)
-                                                <span style="display:inline-block; width: 30px; height: 30px; border-radius: 20px; background-color: {{ $item->color }}; border: 1px solid #ddd;"></span>
-                                            @else
-                                                Không có màu
-                                            @endif
-                                        </td>
-
-                                        <td>
-                                            {{ $item->size ?? 'Không có kích thước' }}
-                                        </td>
-                                        <td>
-                                            <form action="{{ route('cart.updateQuantity', $item->id) }}" method="POST">
-                                                @csrf
-                                                <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" class="form-control" style="width: 80px;">
-                                                <button type="submit" class="btn btn-primary btn-sm mt-2">Cập nhật</button>
-                                            </form>
-                                        </td>
-                                        <td>{{ number_format($item->total_price) }} VND</td>
-                                        <td>
-                                            <form action="{{ route('cart.destroy', $item->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
-                                            </form>
-                                        </td>
-                                    </tr>
+                                            <td>
+                                                {{ $item->size ?? 'Không có kích thước' }}
+                                            </td>
+                                            <td>
+                                                <form action="{{ route('cart.updateQuantity', $item->id) }}" method="POST">
+                                                    @csrf
+                                                    <input type="number" name="quantity" value="{{ $item->quantity }}" min="" class="form-control" style="width: 80px;">
+                                                    <button type="submit" class="btn btn-primary btn-sm mt-2">Cập nhật</button>
+                                                </form>
+                                            </td>
+                                            <td>{{ number_format($item->total_price) }} VND</td>
+                                            <td>
+                                                <form action="{{ route('cart.destroy', $item->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td colspan="8" class="text-center text-danger">
+                                                Sản phẩm "{{ $item->product->name ?? 'N/A' }}" đã ngừng hoạt động và không còn khả dụng.
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
 

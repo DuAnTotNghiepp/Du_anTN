@@ -150,7 +150,7 @@
                                 <li>Tổng Đơn Hàng (Bao gồm thuế)
                                     <span id="total">{{ number_format($totalWithTax) }} VND</span>
                                 </li>
-{{--                                 
+{{--
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                 <input type="hidden" name="total_price" id="total_price"
                                     value="{{ $quantity * $productPrice + 5000 }}"> --}}
@@ -275,7 +275,7 @@ function getVoucherInfo() {
         errorMessage.style.color = "red";
         return;
     }
-    
+
     fetch(`http://127.0.0.1:8000/checkout1/apply-voucher?voucher_code=${voucherCode}&total_price=${totalPrice}`)
         .then(response => {
             if (!response.ok) {
@@ -308,5 +308,6 @@ function getVoucherInfo() {
             errorMessage.style.color = "red";
         });
 }
+
     </script>
 @endsection
