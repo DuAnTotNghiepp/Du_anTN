@@ -76,9 +76,10 @@
                                                 {{ $item->size ?? 'Không có kích thước' }}
                                             </td>
                                             <td>
-                                                <form action="{{ route('cart.updateQuantity', $item->id) }}" method="POST">
+                                                <form action="{{ route('cart.update', $item->id) }}" method="POST">
                                                     @csrf
-                                                    <input type="number" name="quantity" value="{{ $item->quantity }}" min="" class="form-control" style="width: 80px;">
+                                                    @method('PUT')
+                                                    <input type="number" name="quantity" value="{{ $item->quantity }}" min="" class="form-control quantity-input" style="width: 80px;">
                                                     <button type="submit" class="btn btn-primary btn-sm mt-2">Cập nhật</button>
                                                 </form>
                                             </td>
@@ -121,7 +122,7 @@
                         </tbody>
                     </table>
                     <div class="cart-proceed-btns">
-                        <form method="POST" id="checkout-form" action="{{ route('checkout1') }}">
+                        <form id="checkout-form" action="{{ route('checkout1') }}" method="GET">
                             @csrf
                             <input type="hidden" name="selected_products" id="selected_products" value="{{ json_encode($cartItems) }}">
                             <button type="submit" class="btn btn-primary cart-proceed">Mua ngay</button>
@@ -187,4 +188,37 @@
 
 
     </script>
+    <script>
+        // Lắng nghe sự kiện thay đổi số lượng sản phẩm trong giỏ hàng
+        document.querySelectorAll('.quantity-input').forEach(function(input) {
+            input.addEventListener('change', function() {
+                let productId = this.getAttribute('data-id');
+                let quantity = this.value;
+
+                // Lấy giá sản phẩm từ bảng
+                let price = parseFloat(this.closest('tr').querySelector('td:nth-child(3)').textContent.replace(' VND', '').replace(',', ''));
+
+                // Tính lại tổng giá sản phẩm
+                let totalPrice = price * quantity;
+
+                // Cập nhật lại tổng giá sản phẩm trong bảng
+                this.closest('tr').querySelector('.total-price').textContent = totalPrice.toLocaleString() + ' VND';
+
+                // Tính lại tổng giỏ hàng
+                updateCartTotal();
+            });
+        });
+
+        // Hàm tính lại tổng giỏ hàng
+        function updateCartTotal() {
+            let total = 0;
+            document.querySelectorAll('.total-price').forEach(function(price) {
+                total += parseFloat(price.textContent.replace(' VND', '').replace(',', ''));
+            });
+
+            // Cập nhật tổng giỏ hàng
+            document.getElementById('total-price').textContent = total.toLocaleString() + ' VND';
+        }
+    </script>
+
 @endsection

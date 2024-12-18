@@ -75,7 +75,7 @@ class OrderController extends Controller
         }
 
         $validatedData = $request->validate([
-            'status' => 'required|in:pending,completed,canceled,delivery,delivered,confirmed',  // Thêm 'confirmed' nếu trạng thái của bạn là 'đã xác nhận'
+            'status' => 'required|in:pending,completed,canceled,delivery,delivered,confirmed,hoanthanh',  // Thêm 'confirmed' nếu trạng thái của bạn là 'đã xác nhận'
             'user_note' => 'nullable|string',
         ]);
 
@@ -84,7 +84,8 @@ class OrderController extends Controller
             'pending' => ['completed', 'canceled'],
             'completed' => ['delivery'],
             'delivery' => ['delivered'],
-            'delivered' => [],
+            'delivered' => ['hoanthanh'],
+            'hoanthanh' => [],
             'canceled' => [],
         ];
 
