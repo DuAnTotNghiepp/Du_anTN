@@ -238,7 +238,7 @@ class OrderController extends Controller
                 $order = Order::find($inputData['vnp_TxnRef']);
 
                 if ($order && $order->status === 'err') {
-                    $order->status = 'completed'; 
+                    $order->status = 'completed';
                     $order->save();
                 }
 
@@ -249,7 +249,10 @@ class OrderController extends Controller
                 return redirect()->route('index')->with('error', 'Error processing payment: ' . $e->getMessage());
             }
         } else {
-            // Payment failed or canceled
+            $order = Order::find($inputData['vnp_TxnRef']);
+            if ($order && $order->status === 'err') {
+                $order->delete(); 
+            }
             return redirect()->route('index')->with('error', 'Giao dịch thất bại hoặc đã bị hủy.');
         }
     } else {
