@@ -5,16 +5,16 @@
 
     <head>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-       
+
     </head>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .fixed-image {
-    width: 300px;      
-    height: 200px;     
-    object-fit: cover; 
-    display: block;    
-    margin: 0 auto;   
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
 }
 
         .copy-icon {
@@ -30,8 +30,8 @@
             color: #01070e;
             transform: scale(1.2);
         }
-        
-       
+
+
         .copy-notification {
             font-size: 12px;
             color: rgb(16, 1, 1);
@@ -351,11 +351,11 @@
                 <div class="col-xxl-3 col-xl-3 col-lg-4">
                     <div class="nav flex-column category-tabs">
                         <button class="nav-link active category-tab" data-category="all">Tất Cả Bộ Sưu Tập</button>
-                        <button class="nav-link category-tab" data-category="winter">Mùa Đông</button>
-                        <button class="nav-link category-tab" data-category="summer">Mùa Hè</button>
-                        <button class="nav-link category-tab" data-category="autumn">Mùa Thu</button>
-                        <button class="nav-link category-tab" data-category="new-male">Bộ Sưu Tập Cho Nam</button>
-                        <button class="nav-link category-tab" data-category="new-female">Bộ Sưu Tập Cho Nữ</button>
+                        <button class="nav-link category-tab" data-category="Mùa đông">Mùa Đông</button>
+                        <button class="nav-link category-tab" data-category="Mùa hè">Mùa Hè</button>
+                        <button class="nav-link category-tab" data-category="Mùa thu">Mùa Thu</button>
+                        <button class="nav-link category-tab" data-category="Bộ sưu tập Nam mới">Bộ Sưu Tập Cho Nam</button>
+                        <button class="nav-link category-tab" data-category="Bộ sưu tập Nữ mới">Bộ Sưu Tập Cho Nữ</button>
                     </div>
 
                 </div>
@@ -400,7 +400,7 @@
                                                 <img src="assets/images/blog/blog-author1.png" alt="Author" class="author-img">
                                                 <a href="{{ route('blog.detail', $post->id) }}">Alex Avater</a>
                                             </li>
-                                           
+
                                         </ul>
                                         <div class="blog-bottom">
                                             <h4 class="blog-title">
@@ -417,12 +417,12 @@
                             </div>
                         @endforeach
                     </div>
-            
+
                     <div class="swiper-button-next"><i class="flaticon-arrow-pointing-to-right"></i></div>
                     <div class="swiper-button-prev"><i class="flaticon-arrow-pointing-to-left"></i></div>
                 </div>
             </div>
-            
+
         </div>
     </div>
     <script>

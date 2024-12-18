@@ -3,17 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreBlogRequest;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
-   
+
     public function index()
     {
-        $posts = Blog::all(); 
-        return view('admin.blog.index', compact('posts')); 
+        $posts = Blog::all();
+        return view('admin.blog.index', compact('posts'));
     }
 
     public function create()
@@ -60,34 +61,34 @@ class BlogController extends Controller
         };
     }
 
-  
+
     public function edit(string $id)
     {
         $listBl = Blog::find($id);
         return view('admin.blog.edit', compact('listBl'));
     }
 
-  
+
     public function update(Request $request, int $id)
     {
         // Tìm bài viết theo ID
         $blogPost = Blog::findOrFail($id);
-    
+
         // Xác thực dữ liệu đầu vào
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // File ảnh không bắt buộc
         ]);
-    
+
         // Lấy tất cả dữ liệu từ request ngoại trừ token
         $params = $request->except('_token');
-    
+
         // Kiểm tra và xử lý hình ảnh
         if ($request->hasFile('image')) {
             // Lưu file hình ảnh mới vào thư mục public/images
             $params['image'] = $request->file('image')->store('images', 'public');
-    
+
             // Xóa file hình ảnh cũ nếu tồn tại
             if ($blogPost->image && Storage::disk('public')->exists($blogPost->image)) {
                 Storage::disk('public')->delete($blogPost->image);
@@ -96,14 +97,14 @@ class BlogController extends Controller
             // Giữ nguyên hình ảnh cũ nếu không tải lên ảnh mới
             $params['image'] = $blogPost->image;
         }
-    
+
         // Cập nhật dữ liệu bài viết
         $res = $blogPost->update([
             'title' => $params['title'],
             'content' => $params['content'],
             'image' => $params['image'],
         ]);
-    
+
         // Kiểm tra kết quả cập nhật
         if ($res) {
             return redirect()->route('blog.index')->with('success', 'Bài viết đã được cập nhật thành công');
@@ -111,11 +112,11 @@ class BlogController extends Controller
             return redirect()->back()->with('error', 'Bài viết không thể được cập nhật');
         }
     }
-    
 
-    
 
-   
+
+
+
     public function destroy(string $id)
     {
         $post = Blog::findOrFail($id);
@@ -123,5 +124,6 @@ class BlogController extends Controller
 
         return redirect()->route('blog.index')->with('success', 'Voucher deleted successfully!');
     }
-    
+
+
 }

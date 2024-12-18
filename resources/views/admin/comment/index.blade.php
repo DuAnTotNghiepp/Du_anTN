@@ -16,7 +16,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Quản Lý Bình Luận</a></li>
-                        <li class="breadcrumb-item active">Danh Sách Sản Phẩm</li>
+                        <li class="breadcrumb-item active">Danh Sách Bình Luận</li>
                     </ol>
                 </div>
 
@@ -107,7 +107,7 @@
                                                         </button>
                                                         <ul class="dropdown-menu dropdown-menu-end">
                                                             <li> <a href="{{ route('product.comments', $pr->id) }}" class="btn btn-primary">Xem Bình Luận</a></li>
-                                                           
+
 
 
                                                         </ul>
@@ -120,5 +120,5 @@
                             </tbody>
                         </table>
 
-   
+
 @endsection
