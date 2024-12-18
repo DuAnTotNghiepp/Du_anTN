@@ -20,7 +20,7 @@ class StoreCataloguesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:50|min:3|regex:/^[a-zA-Z0-9\s]+$/u|unique:catalogues,name',
+            'name' => 'required|string|max:50|min:3|unique:catalogues,name',
             'is_active' => 'nullable|boolean',
         ];
     }
@@ -38,7 +38,6 @@ class StoreCataloguesRequest extends FormRequest
             'name.string' => 'Tên danh mục phải là chuỗi ký tự.',
             'name.max' => 'Tên danh mục không được vượt quá 50 ký tự.',
             'name.min' => 'Tên danh mục phải có ít nhất 3 ký tự.',
-            'name.regex' => 'Tên danh mục chỉ được chứa chữ cái, số và khoảng trắng.',
 
 
             // Validate cho trường `cover`
