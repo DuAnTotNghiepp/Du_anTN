@@ -23,7 +23,7 @@ class SanPhamRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255', 'unique:products,name'],
-            'img_thumbnail' => ['image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'img_thumbnail' => [ 'mimes:jpg,jpeg,png', 'max:2048'],
             'image' => ['image', 'mimes:jpg,jpeg,png', 'max:2048'],
             'description' => ['max:4000'],
             'price_regular' => ['required', 'integer', 'min:1'],
@@ -31,6 +31,7 @@ class SanPhamRequest extends FormRequest
             'user_manual' => ['required', 'string', 'max:2000'],
             'content' => ['max:2048'],
             'sku' => ['required', 'string', 'max:10', 'unique:products,sku'],
+            'selected_variants' => ['required'],
             'catalogues_id' => ['required', 'exists:catalogues,id']
         ];
     }
@@ -42,7 +43,10 @@ class SanPhamRequest extends FormRequest
             'name.max'=>'Trường Tên Sản Phẩm Không Vược Quá 255 ký tự',
             'name.unique' => 'Tên Sản Phẩm Đã Tồn Tại',
 
-            'img_thumbnail.image'=>'Trường Ảnh Phải Bắt Buộc Là Ảnh',
+
+            'selected_variants' => 'Không được để trống biến thể',
+
+
             'img_thumbnail.mimes'=>'Tường Ảnh Bắt Buộc Phải Là Dường Dẫn .igf, png, jpeg',
             'img_thumbnail.max'=>'Tường Ảnh Không Quá 2048kb',
 

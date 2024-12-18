@@ -6,7 +6,6 @@
 @section('content')
     <!DOCTYPE html>
     <html lang="en">
-
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,7 +38,6 @@
     <body>
         <!-- start page title -->
         <div class="row">
-
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                     <h4 class="mb-sm-0">Quản Lý Sản Phẩm</h4>
@@ -76,36 +74,51 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="mb-3">
-                                <label class="form-label" for="project-title-input">Tên Sản Phẩm</label>
-                                <input type="text" class="form-control" id="project-title-input" name="name" value="{{$listPro->name}}"
-                                    placeholder="Enter Tên Sản Phẩm">
+                                <label class="form-label" for="project-title-input">Tên Sản phẩm</label>
+                                <input type="text" class="form-control" id="project-title-input" name="name"
+                                    placeholder="Nhập Tên Sản phẩm" value="{{$listPro->name}}">
+                                @error('name')
+                                    <span style="color: red">{{ $message }}</span>
+                                @enderror
                             </div>
+
 
                             <div class="mb-3">
                                 <label class="form-label" for="project-thumbnail-img">Ảnh Sản Phẩm</label>
                                 <input class="form-control" id="project-thumbnail-img" name="img_thumbnail" type="file"
                                     accept="image/png, image/gif, image/jpeg">
                                     <img id="imgPreview" src="{{Storage::url($listPro->img_thumbnail)}}" style="width: 100px;">
+                                @error('img_thumbnail')
+                                    <span style="color: red">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Ảnh Liên Quan</label>
+                                <label class="form-label">Ảnh liên Quan</label>
                                 <div class="dropzone">
-                                    <input type="file" id="product-image-input" name="image[]" multiple accept="image/png, image/gif, image/jpeg" class="form-control">
-                                    <div class="preview-gallery" id="galleryPreview">
-                                        @foreach($listImg as $image)
-                                            <img src="{{ Storage::url($image->image) }}" style="width: 100px; margin-right: 10px;">
-                                        @endforeach
-                                    </div>
+                                    <input type="file" id="product-image-input" name="image[]" multiple
+                                        accept="image/png, image/gif, image/jpeg" class="form-control">
+                                        <div class="preview-gallery" id="galleryPreview">
+                                            @foreach($listImg as $image)
+                                                <img src="{{ Storage::url($image->image) }}" style="width: 100px; margin-right: 10px;">
+                                            @endforeach
+                                        </div>
+
                                 </div>
+                                @error('image')
+                                    <span style="color: red">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Mô Tả Sản Phẩm</label>
                                 <div id="ckeditor-classic">
                                     <textarea class="form-control" placeholder="Enter Description" name="description" id="description" rows="3"
-                                        required>{{$listPro->description}}</textarea>
+                                        >{{$listPro->description}}</textarea>
                                 </div>
+                                @error('description')
+                                    <span id="description-error" style="color: red">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <div class="row">
@@ -113,43 +126,67 @@
                                     <div class="mb-3 mb-lg-0">
                                         <label for="choices-priority-input" class="form-label">Giá Thường</label>
                                         <input type="number" class="form-control" name="price_regular" id="price_regular" value="{{$listPro->price_regular}}"
-                                            step="0.01" required data-provider="flatpickr" data-date-format="d M, Y">
+                                            step="0.01"  data-provider="flatpickr" data-date-format="d M, Y">
                                     </div>
+
+
+                                    @error('price_regular')
+                                    <span id="price_regular-error" style="color: red">{{ $message }}</span>
+                                @enderror
+
+
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="mb-3 mb-lg-0">
                                         <label for="choices-status-input" class="form-label">Giá Khuyến Mãi</label>
                                         <input type="number" class="form-control" name="price_sale" id="price_sale" value="{{$listPro->price_sale}}"
-                                            step="0.01" required data-provider="flatpickr" data-date-format="d M, Y">
+                                            step="0.01"  data-provider="flatpickr" data-date-format="d M, Y">
                                     </div>
+                                    @error('price_sale')
+                                    <span id="price_sale-error" style="color: red">{{ $message }}</span>
+                                @enderror
+
                                 </div>
-                                <div class="col-lg-4">
-                                    {{-- <div>
+                                {{-- <div class="col-lg-4">
+                                    <div>
                                         <label for="datepicker-deadline-input" class="form-label">Số Lượng</label>
-                                        <input type="number" class="form-control" name="quantity" id="quantity" required value="{{$listPro->quantity}}"
-                                            data-provider="flatpickr" data-date-format="d M, Y">
-                                    </div> --}}
-                                </div>
-                            </div><br>
+
+                                        <input type="number" class="form-control" name="quantity" id="quantity"
+                                            data-provider="flatpickr" data-date-format="d M, Y"
+                                            value="{{ old('quantity') }}">
+                                        @error('quantity')
+                                            <span id="quantity-error" style="color: red">{{ $message }}</span>
+                                        @enderror
+
+
+
+                                    </div>
+                                </div> --}}
+                            </div> <br>
 
                             <div class="mb-3">
                                 <label class="form-label">Hướng Dẫn Sử Dụng</label>
                                 <div id="ckeditor-classic">
                                     <textarea class="form-control" placeholder="Enter User_manual" name="user_manual" id="user_manual" rows="3"
-                                        required>{{$listPro->user_manual}}</textarea>
+                                        >{{$listPro->user_manual}}</textarea>
                                 </div>
+                                @error('user_manual')
+                                    <span id="user-manual-error" style="color: red">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Nội Dung Chi Tiết</label>
                                 <div id="ckeditor-classic">
                                     <textarea name="content" id="content" rows="10" cols="80">{{$listPro->content}}</textarea>
                                 </div>
+                                @error('content')
+                                    <span id="content-error" style="color: red">{{ $message }}</span>
+                                @enderror
                             </div><br>
                             <div class="mb-3">
                                 <div id="ckeditor-classic">
                                     <div class="row gy-3">
-                                        <div class="col-lg-12"
-                                            style="display: flex; justify-content: space-evenly;">
+                                        <div class="col-lg-12" style="display: flex; justify-content: space-evenly;">
                                             <!-- Switches Color -->
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch" {{ $listPro->is_hot_deal ? 'checked' : '' }}
@@ -162,6 +199,7 @@
                                                 <label class="form-check-label" for="SwitchCheck4">Trạng thái hoạt
                                                     động</label>
                                             </div>
+
                                         </div>
                                         <!-- end col -->
                                     </div>
@@ -171,6 +209,7 @@
                         <!-- end card body -->
                     </div>
                     <!-- end card -->
+
                     <div class="text-end mb-4">
                         <button class="btn btn-success w-sm" type="submit">Sửa sản phẩm</button>
                         <a class="btn btn-secondary w-sm" href="{{ route('product.index') }}">Quay lại danh sách</a>
@@ -186,9 +225,12 @@
                         <div>
                             <label class="form-label mb-0">Mã sản phẩm (SKU)</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="sku" id="sku" value="{{$listPro->sku}}" required>
+                                <input type="text" class="form-control" name="sku" id="sku" value="{{$listPro->sku}}" >
                                 <button type="button" class="btn btn-outline-secondary" id="generateSKU">Random</button>
                             </div>
+                            @error('sku')
+                            <span id="sku-error" style="color: red">{{ $message }}</span>
+                        @enderror
                         </div>
                     </div>
                 </div>
@@ -225,6 +267,13 @@
                     <!-- end card body -->
                 </div>
                 <!-- end card -->
+
+                <!-- end card -->
+
+
+                <!-- end card -->
+
+
             </div>
             <!-- end col -->
             </form>

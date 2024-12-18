@@ -24,7 +24,7 @@ class Product extends Model
         'price_sale',
         'description',
         'content',
-        'material',
+        'material_id',
         'user_manual',
         'is_active',
         'view',
@@ -64,8 +64,14 @@ class Product extends Model
     {
         return $this->belongsToMany(Product::class, 'product_favorites', 'user_id', 'product_id');
     }
+
+    public function materials()
+    {
+        return $this->hasMany(Material::class);  // Một sản phẩm có thể có nhiều vật liệu
+    }
     public function galleries()
     {
         return $this->hasMany(ProductGallerie::class);
     }
 }
+

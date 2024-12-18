@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SanPhamRequest;
-use App\Http\Requests\StoreProductRequest;
 use App\Models\BinhLuan;
 use App\Models\Catalogues;
 use App\Models\Product;
@@ -12,10 +11,12 @@ use App\Models\Product_Variant;
 use App\Models\ProductGallerie;
 use App\Models\Variant;
 use App\Models\Variants;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
 {
@@ -42,6 +43,12 @@ class ProductController extends Controller
     {
 
         $listCate = Catalogues::all();
+
+        $materials = \App\Models\Material::all();
+        $Color = Variant::where('name', 'Color')->get();
+        $Size = Variant::where('name', 'Size')->get();
+        return view('admin.product.create', compact('listCate', 'Color', 'Size', 'materials'));
+
         $Color = Variant::where('name','Color')->get();
         $Size = Variant::where('name','Size')->get();
         return view('admin.product.create', compact('listCate','Color','Size'));
@@ -102,10 +109,6 @@ class ProductController extends Controller
     }
 
 
-    public function show(Product $product)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -116,8 +119,20 @@ class ProductController extends Controller
         $listCate = Catalogues::all();
         // Lấy thông tin sản phẩm
         $listPro = Product::find($id);
+
+        $materials = \App\Models\Material::all();
+        // dd($listPro->material_id);
+
+
+        $listImg = ProductGallerie::where('product_id', $id)->get();
+        $Color = Variant::where('name', 'Color')->get();
+        $Size = Variant::where('name', 'Size')->get();
+        $vari_id = DB::table('product__variants')->where('product_id', $id)->pluck('variants_id')->toArray();
+        return view('admin.product.edit', compact('listPro', 'listCate', 'Color', 'Size', 'vari_id', 'listImg', 'materials'));
+
         $listImg = ProductGallerie::where('product_id', $id)->get();
         return view('admin.product.edit', compact('listPro', 'listCate','listImg'));
+
     }
 
     /**
@@ -125,7 +140,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, int $id)
     {
-        //
+
         // Lấy thông tin sản phẩm cần cập nhật
         $product = Product::find($id);
 
@@ -134,6 +149,8 @@ class ProductController extends Controller
 
             // Lấy dữ liệu từ request
             $params = $request->except('_token');
+
+            // Cập nhật trạng thái các trường khác
             $params['is_active'] = $request->has('is_active') ? 1 : 0;
             $params['is_hot_deal'] = $request->has('is_hot_deal') ? 1 : 0;
 
@@ -150,6 +167,38 @@ class ProductController extends Controller
                 // Không có ảnh mới thì giữ nguyên ảnh cũ
                 $params['img_thumbnail'] = $imageOld;
             }
+
+
+            $selectedVariants = $request->input('id_variant', []);
+
+            // Lấy các variants_id hiện tại từ cơ sở dữ liệu
+            $currentVariants = DB::table('product__variants')
+                ->where('product_id', $id)
+                ->pluck('variants_id')
+                ->toArray();
+
+            // Xác định các thuộc tính cần thêm và cần xóa
+            $variantsToAdd = array_diff($selectedVariants, $currentVariants);
+            $variantsToRemove = array_diff($currentVariants, $selectedVariants);
+
+            // Xóa các thuộc tính không còn chọn
+            if (!empty($variantsToRemove)) {
+                DB::table('product__variants')
+                    ->where('product_id', $id)
+                    ->whereIn('variants_id', $variantsToRemove)
+                    ->delete();
+            }
+
+            // Thêm các thuộc tính mới vào bảng product__variants
+            foreach ($variantsToAdd as $variantId) {
+                DB::table('product__variants')->insert([
+                    'product_id' => $id,
+                    'variants_id' => $variantId,
+                ]);
+            }
+
+            // Kiểm tra ảnh liên quan và xử lý
+
             if ($request->hasFile('image')) {
                 // Xóa các ảnh liên quan cũ
                 $oldImages = ProductGallerie::where('product_id', $id)->get();
@@ -169,6 +218,7 @@ class ProductController extends Controller
                     ]);
                 }
             }
+
             // Cập nhật dữ liệu sản phẩm
             $res = $product->update($params);
 
@@ -179,10 +229,10 @@ class ProductController extends Controller
                 return redirect()->back()->with('error', 'Sản phẩm đã được chỉnh sửa không thành công');
             }
         } else {
-            // Không tìm thấy sản phẩm
             return redirect()->back()->with('error', 'ID sản phẩm không phù hợp');
         }
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -195,15 +245,13 @@ class ProductController extends Controller
         if ($product) {
             if ($totalQuantity <= 5) {
                 return response()->json(['success' => false, 'message' => 'Sản phẩm không được dưới 5']);
-            }else{
+            } else {
                 $product->delete();
                 return response()->json(['success' => true, 'message' => 'Sản phẩm đã được xóa thành công']);
             }
-
         } else {
 
             return response()->json(['success' => false, 'message' => 'Sản phẩm không tồn tại']);
-
         }
     }
 
@@ -245,6 +293,5 @@ class ProductController extends Controller
 
         return redirect()->route('product.index')->with('success', 'Số lượng sản phẩm đã được cập nhật!');
     }
+    }
 
-
-}

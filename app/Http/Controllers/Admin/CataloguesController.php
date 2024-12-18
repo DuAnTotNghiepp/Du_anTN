@@ -63,10 +63,19 @@ class CataloguesController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        $item = Catalogues::findOrFail($id);
+{
+    // Validate dữ liệu đầu vào
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'is_active' => 'nullable|boolean',
+        'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Giới hạn file ảnh
+    ]);
 
-        $data['is_active'] ??= 0;
+    $item = Catalogues::findOrFail($id);
+
+    // Lấy dữ liệu từ request ngoại trừ file
+    $data = $request->except('cover');
+    $data['is_active'] ??= 0;
 
         $currentCover = $item->cover;
         $item->update($data);

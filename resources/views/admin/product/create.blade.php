@@ -145,10 +145,11 @@
                                         accept="image/png, image/gif, image/jpeg" class="form-control">
                                     <div class="preview-gallery" id="galleryPreview"></div>
                                 </div>
+                                @error('image')
+                                    <span style="color: red">{{ $message }}</span>
+                                @enderror
                             </div>
-                            @error('image')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
+
                             <div class="mb-3">
                                 <label class="form-label">Mô Tả Sản Phẩm</label>
                                 <div id="ckeditor-classic">
@@ -278,17 +279,23 @@
                         <div class="mb-3">
                             <label for="stock" class="form-label">Số lượng cho từng biến thể</label>
                             <div class="variants-scroll">
+                                @error('selected_variants')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                                 @foreach ($Color as $color)
                                     @foreach ($Size as $size)
                                         <div class="form-group">
                                             <label>
-                                                <input style="width: 20px; height: 20px;" type="checkbox" class="form-check-input" name="selected_variants[{{ $color->id }}][{{ $size->id }}]" value="1">
+                                                <input style="width: 20px; height: 20px;" type="checkbox" class="form-check-input" name="selected_variants[{{ $color->id }}][{{ $size->id }}]" value="{{ old('selected_variants') }}">
                                                 <div style="width: 20px; height: 20px; border-radius: 10px; background-color: {{ $color->value }}; display: inline-block; border: 1px solid #ccc;"></div> - {{ $size->value }}
                                             </label>
-                                            <input type="number" class="form-control stock-input" name="stock[{{ $color->id }}][{{ $size->id }}]" min="0" placeholder="Số lượng sản phẩm" disabled />
+                                            <input type="number" class="form-control stock-input" name="stock[{{ $color->id }}][{{ $size->id }}]" min="1" placeholder="Số lượng sản phẩm" disabled />
                                         </div>
+
                                     @endforeach
+
                                 @endforeach
+
                             </div>
                         </div>
                     </div>
