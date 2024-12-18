@@ -131,7 +131,7 @@
 
                                             <!-- Giá trị -->
                                             <div class="col-md-6 mb-3">
-                                                <label for="value" class="form-label">Giá trị</label>
+                                                <label for="value" class="form-label">Giá trị mã giảm giá</label>
                                                 <input type="number" name="value" id="value" class="form-control" required>
                                             </div>
 
@@ -150,13 +150,26 @@
                                             <!-- Ngày bắt đầu -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="start_date" class="form-label">Ngày bắt đầu</label>
-                                                <input type="datetime-local" name="start_date" id="start_date" class="form-control" required>
+                                                <input 
+                                                    type="datetime-local" 
+                                                    name="start_date" 
+                                                    id="start_date" 
+                                                    class="form-control" 
+                                                    min="{{ now()->format('Y-m-d\TH:i') }}" 
+                                                    required
+                                                    onchange="updateEndDateMin()">
                                             </div>
 
                                             <!-- Ngày kết thúc -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="end_date" class="form-label">Ngày kết thúc</label>
-                                                <input type="datetime-local" name="end_date" id="end_date" class="form-control" required>
+                                                <input 
+                                                    type="datetime-local" 
+                                                    name="end_date" 
+                                                    id="end_date" 
+                                                    class="form-control" 
+                                                    min="{{ now()->format('Y-m-d\TH:i') }}" 
+                                                    required>
                                             </div>
                                             <!-- Trạng thái -->
                                                 <div class="col-md-6 mb-3">
@@ -403,7 +416,15 @@ document.getElementById('searchInput').addEventListener('input', function () {
     });
     </script>
 
-
+    <script>
+         function updateEndDateMin() {
+        const startDate = document.getElementById('start_date').value;
+        const endDate = document.getElementById('end_date');
+        if (startDate) {
+            endDate.min = startDate;
+        }
+    }
+    </script>
 
 
     </html>
