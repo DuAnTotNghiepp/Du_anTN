@@ -44,9 +44,7 @@
                                 <div class="col-lg-12">
                                     <!-- Select Address -->
                                     <div class="eg-input-group">
-                                        <div class="col-lg-12">
-
-                                            
+                                        <div class="col-lg-12">                                         
                                             <!-- Select Address -->
                                             <div class="eg-input-group">
                                                 <label for="address-selection">Chọn Địa chỉ nhận:</label>
@@ -135,6 +133,13 @@
                                                         value="{{ $item->product->price_sale }}">
                                                     <input type="hidden" name="size[]" value="{{ $item->size }}">
                                                     <input type="hidden" name="color[]" value="{{ $item->color }}">
+                                                    <input type="hidden" name="product_id[]" value="{{ $item->product->id }}">
+                                                    <input type="hidden" name="variant_id[]" value="{{ $item->variant_id ?? '' }}">
+                                                    <input type="hidden" name="product_name[]" value="{{ $item->product->name }}">
+                                                    <input type="hidden" name="product_sku[]" value="{{ $item->product->sku }}">
+                                                    <input type="hidden" name="product_img_thumbnail[]" value="{{ $item->product->img_thumbnail }}">
+                                                    <input type="hidden" name="product_price_regular[]" value="{{ $item->product->price_regular }}">
+                                                    <input type="hidden" name="product_price_sale[]" value="{{ $item->product->price_sale }}">
                                                 </div>
                                                 <p><strong>Màu: </strong>
                                                     <input type="hidden" name="color[]"
@@ -162,15 +167,13 @@
                                 {{-- <li>Thuế
                                     <span id="tax">5000 VND</span>
                                 </li> --}}
+                                </li>
+                                <li>Giảm giá: <strong>- <span id="voucher_value">0<span> VNĐ</strong></li>
 
                                 <!-- Hiển thị Tổng Đơn Hàng -->
                                 <li>Tổng Đơn Hàng: 
                                     <span id="total">{{ number_format($total) }} VND</span>
                                 </li>
-                                {{--                                 
-                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <input type="hidden" name="total_price" id="total_price"
-                                    value="{{ $quantity * $productPrice + 5000 }}"> --}}
                             </ul>
 
                             <!-- Các trường ẩn -->
@@ -184,11 +187,9 @@
                                     <button type="button" class="pd-add-cart"
                                         style="height: 45px; border: 1px solid #ced4da" onclick="getVoucherInfo()">Áp
                                         dụng</button>
-
                                 </div>
                                 <span id="errorMessage" class="error-message"></span><br>
                             </div>
-
                         </div>
                         <div class="payment-form">
                             <div class="payment-methods">
@@ -210,7 +211,7 @@
                             </div>
 
                             <div class="place-order-btn">
-                                <button type="submit">Place Order</button>
+                                <button type="submit">Đặt Hàng</button>
                             </div>
                         </div>
                     </div>
@@ -410,6 +411,9 @@
             });
         });
 
+    </script>
+    <script>
+
         document.addEventListener('DOMContentLoaded', function() {
             const quantityInput = document.querySelector('.quantity-input');
             const subtotalElement = document.getElementById('subtotal');
@@ -457,7 +461,7 @@
                 return;
             }
 
-            fetch(`http://127.0.0.1:8000/checkout1/apply-voucher?voucher_code=${voucherCode}&total_price=${totalPrice}`)
+            fetch(`http://127.0.0.1:8000/checkout/apply-voucher?voucher_code=${voucherCode}&total_price=${totalPrice}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -488,6 +492,6 @@
                     errorMessage.textContent = "Đã xảy ra lỗi khi lấy thông tin mã giảm giá";
                     errorMessage.style.color = "red";
                 });
-        }
+            }
     </script>
 @endsection

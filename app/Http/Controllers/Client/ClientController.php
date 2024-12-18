@@ -9,7 +9,6 @@ use App\Models\Product_Variant;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
 use App\Models\Product;
-use App\Models\Variants;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
@@ -17,7 +16,9 @@ use App\Models\User;
 use App\Models\Address;
 use App\Models\Blog;
 use App\Models\Cart;
+use App\Models\ProductFavorite;
 use App\Models\Vouchers;
+use Carbon\Carbon;
 
 class ClientController extends Controller
 {
@@ -26,8 +27,20 @@ class ClientController extends Controller
     {
         $data = Catalogues::query()->get();
         $products = Product::query()->get();
-        $cartItems = Cart::where('user_id', auth()->id())->get();
-        $listSp = Product::where('is_active', 1)->get()->map(function ($product) {
+        // Giỏ hàng chỉ hiển thị sản phẩm đang hoạt động
+        $cartItems = Cart::where('user_id', auth()->id())
+        ->whereHas('product', function ($query) {
+            $query->where('is_active', 1);
+        })->get();
+
+        // Danh sách sản phẩm yêu thích chỉ hiển thị sản phẩm đang hoạt động
+        $favouriteItems = ProductFavorite::where('user_id', auth()->id())
+        ->whereHas('product', function ($query) {
+            $query->where('is_active', 1);
+        })->get();
+        $listSp = Product::where('is_active', 1)
+        ->get()
+        ->map(function ($product) {
             $averageRating = BinhLuan::where('product_id', $product->id)
                 ->avg('rating') ?? 0;
             $product->average_rating = round($averageRating, 1);
@@ -35,7 +48,9 @@ class ClientController extends Controller
         });
 
         // Lấy sản phẩm hot
-        $listHot = Product::where('is_hot_deal', 1)->get();
+        $listHot = Product::where('is_hot_deal', 1)
+        ->where('is_active', 1) // Kiểm tra sản phẩm còn hoạt động
+        ->get();
 
         $vouchers = Vouchers::where('is_visible', 1) // Hiển thị các voucher đang được bật
             ->where('status', 1) // Chỉ lấy voucher hoạt động
@@ -121,6 +136,20 @@ class ClientController extends Controller
 
         return view('client.shop', compact('products'));
     }
+
+
+public function blog($id)
+{
+    // Lấy bài viết từ cơ sở dữ liệu
+    $blog = Blog::findOrFail($id);
+    $blogs = Blog::where('id', '!=', $id) // Loại bỏ bài viết hiện tại
+    ->select('id', 'title', 'image') 
+    ->orderBy('created_at', 'desc') 
+    ->get();
+
+    // Trả về view kèm dữ liệu
+    return view('client.blog', compact('blog', 'blogs'));
+}
 
     public function checkout()
     {
@@ -298,7 +327,6 @@ class ClientController extends Controller
             return view('client.warranty', compact('message'));
         }
     }
-
 
     public function showUpdateAvatarForm()
     {

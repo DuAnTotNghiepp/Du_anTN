@@ -249,7 +249,6 @@
                             document.getElementById('editDistrict').value = district;
                             document.getElementById('editWard').value = ward;
                             document.getElementById('editAddress').value = address;
-
                             // Cập nhật action của form
                             editForm.action =
                                 `{{ route('profile.address.update' ,'.', ['id' => $address->id ?? '']) }}`

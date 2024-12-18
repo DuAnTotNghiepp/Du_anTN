@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProductRequest extends FormRequest
+class SanPhamRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,12 +25,12 @@ class StoreProductRequest extends FormRequest
             'name' => ['required', 'string', 'max:255', 'unique:products,name'],
             'img_thumbnail' => ['image', 'mimes:jpg,jpeg,png', 'max:2048'],
             'image' => ['image', 'mimes:jpg,jpeg,png', 'max:2048'],
-            'description' => ['string', 'max:4000'],
+            'description' => ['max:4000'],
             'price_regular' => ['required', 'integer', 'min:1'],
             'price_sale' => ['required', 'integer', 'min:1'],
             'user_manual' => ['required', 'string', 'max:2000'],
-            'content' => ['string', 'max:2048'],
-            'sku' => ['required', 'string', 'max:10'],
+            'content' => ['max:2048'],
+            'sku' => ['required', 'string', 'max:10', 'unique:products,sku'],
             'catalogues_id' => ['required', 'exists:catalogues,id']
         ];
     }
@@ -50,7 +50,6 @@ class StoreProductRequest extends FormRequest
             'image.mimes'=>'Tường Ảnh Bắt Buộc Phải Là Dường Dẫn .igf, png, jpeg',
             'image.max'=>'Tường Ảnh Không Quá 2048kb',
 
-            'description.string'=>'Trường Mô tả Ngắn Sản Phẩm Phải Là Chuỗi Ký Tự',
             'description.max'=>'Trường Mô tả Ngắn Sản Phẩm Không Vược Quá 4000 ký tự',
 
             'price_regular.required'=>'Trường Giá Sản Phẩm Không Được Bỏ Trống',
@@ -61,16 +60,16 @@ class StoreProductRequest extends FormRequest
             'price_sale.integer'=>'Trường Giá Sản Phẩm Phải Là Số Nguyên',
             'price_sale.min'=>'Trường Giá Sản Phẩm Không Được < 1',
 
-            'user_manual.required'=>'Trường Mô tả Ngắn Sản Phẩm Phải Là Chuỗi Ký Tự',
-            'user_manual.string'=>'Trường Mô tả Ngắn Sản Phẩm Phải Là Chuỗi Ký Tự',
-            'user_manual.max'=>'Trường Mô tả Ngắn Sản Phẩm Không Vược Quá 2000 ký tự',
+            'user_manual.required'=>'Trường Hướng Dẫn Sử Dụng Sản Phẩm Không Được Bỏ Trống',
+            'user_manual.string'=>'Trường Hướng Dẫn Sử Dụng Sản Phẩm Phải Là Chuỗi Ký Tự',
+            'user_manual.max'=>'Trường Hướng Dẫn Sử Dụng Sản Phẩm Không Vược Quá 2000 ký tự',
 
-            'content.string'=>'Trường Mô tả Ngắn Sản Phẩm Phải Là Chuỗi Ký Tự',
-            'content.max'=>'Trường Mô tả Ngắn Sản Phẩm Không Vược Quá 4000 ký tự',
+            'content.max'=>'Trường Mô tả Dài Sản Phẩm Không Vược Quá 4000 ký tự',
 
             'sku.required'=>'Trường MÃ Sản Phẩm Không Được Bỏ Trống',
             'sku.string'=>'Trường MÃ Sản Phẩm Phải Là Chuỗi',
             'sku.max'=>'Trường MÃ Sản Phẩm Không Được > 10 Ký Tự ',
+            'sku.unique' => 'Mã Sản Phẩm Đã Tồn Tại',
 
             'catalogues_id.required'=>'Trường Danh Mục Không Được Bỏ Trống',
             'catalogues_id.exists'=>'Trường Danh Mục Phải Chọn',
@@ -85,4 +84,3 @@ class StoreProductRequest extends FormRequest
         });
     }
 }
-

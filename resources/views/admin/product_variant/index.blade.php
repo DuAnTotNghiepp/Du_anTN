@@ -158,7 +158,7 @@
                                         <th class="sort" data-sort="company_name" scope="col">Màu Sắc</th>
                                         <th class="sort" data-sort="email_id" scope="col">Kích Thước</th>
                                         <th class="sort" data-sort="email_id" scope="col">Số Lượng</th>
-                                        <th scope="col">Action</th>
+                                        {{-- <th scope="col">Action</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody class="list form-check-all">
@@ -198,11 +198,11 @@
                                             class="form-control stock-input" data-id="{{ $pr->id }}"
                                             value="{{ $pr->stock }}">
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         <button class="btn btn-danger btn-sm delete-btn" data-id="{{ $pr->id }}">
                                             Xóa
                                         </button>
-                                    </td>
+                                    </td> --}}
                                     </tr>
                                     @endforeach
                                 </tbody>
