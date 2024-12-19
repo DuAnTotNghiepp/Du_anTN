@@ -3,94 +3,69 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreCataloguesRequest;
 use App\Models\Catalogues;
+
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class CataloguesController extends Controller
 {
-    const PATH_UPLOAD = 'catalogues.';
 
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        $data = Catalogues::query()->latest('id')->get();
-        return view('admin.catalogue.index', compact('data'));
+        $categories = Catalogues::withCount('products')->orderBy('id', 'desc')->get();
+
+        return view('admin.catalogue.index', compact('categories'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // Store new category
+    public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
 
+        Catalogues::create([
+            'name' => $request->name,
+            'is_active' => $request->is_active ? true : false,
+        ]);
+
+        return redirect()->route('admin.index')->with('success', 'Danh mục được thêm thành công!');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreCataloguesRequest $request)
+    public function update(Request $request, $id)
     {
-        $data = $request->except('cover'); // lays tat ca du lieu tru cover
-        $data['is_active'] ??= 0;
+        $catalogue = Catalogues::findOrFail($id);
 
-
-        Catalogues::query()->create($data);
-        return redirect()->route('admin.index');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        $item = Catalogues::findOrFail($id);
-        return view('admin.catalogue.edit', compact('item'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $item = Catalogues::findOrFail($id);
-        $data = $request->except('cover');
-        $data['is_active'] ??= 0;
-
-        if ($request->hasFile('cover')) {
-            $data['cover'] = Storage::put(self::PATH_UPLOAD, $request->file('cover'));
-        }
-        $currentCover = $item->cover;
-        $item->update($data);
-
-        if ($currentCover && Storage::exists($currentCover)) {
-            Storage::delete($currentCover);
+        // Nếu trạng thái muốn chuyển sang "không hoạt động"
+        if (!$request->is_active && $catalogue->hasProducts()) {
+            return redirect()->back()->withErrors(['message' => 'Không thể tắt hoạt động danh mục khi còn sản phẩm liên kết.']);
         }
 
-        return redirect()->route('admin.index')->with('model', $item); // Nếu cần truyền về view khác
+        // Cập nhật thông tin danh mục
+        $catalogue->update([
+            'name' => $request->name,
+            'is_active' => $request->is_active,
+        ]);
+
+        return redirect()->route('admin.index')->with('success', 'Danh mục đã được cập nhật.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+
+        public function destroy($id)
     {
-        $model = Catalogues::query()->findOrFail($id);
-        $model->delete();
-        if ($model->cover && Storage::exists($model->cover)) {
-            Storage::delete($model->cover);
+        $catalogue = Catalogues::findOrFail($id);
+
+        // Kiểm tra xem danh mục có sản phẩm liên kết không
+        if ($catalogue->products()->count() > 0) {
+            return redirect()->route('admin.index')->withErrors('Danh mục này đang có sản phẩm liên kết và không thể xóa.');
         }
-        return back();
+
+        // Thực hiện xóa mềm
+        $catalogue->delete();
+
+        return redirect()->route('admin.index')->with('success', 'Danh mục đã được xóa.');
     }
 }
+

@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Variants;
 use App\Http\Requests\StoreVariantsRequest;
 use App\Http\Requests\UpdateVariantsRequest;
+use Illuminate\Http\Request;
+
 use App\Models\Variant;
+
 
 class VariantsController extends Controller
 {
@@ -34,6 +37,9 @@ class VariantsController extends Controller
      */
     public function store(StoreVariantsRequest $request)
     {
+        // $validateData = $request->validated([
+
+        // ])
         // Khởi tạo một instance mới của Variants
         $variant = new Variant();
 
@@ -73,4 +79,5 @@ class VariantsController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Biến thể đã được xóa thành công.']);
     }
+
 }

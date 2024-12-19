@@ -181,8 +181,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="editLastName" class="form-label">Last Name</label>
-                                    <input type="text" class="form-control" id="editLastName" name="last_name"
-                                        required>
+                                    <input type="text" class="form-control" id="editLastName" name="last_name" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="editEmail" class="form-label">Email</label>
@@ -213,7 +212,6 @@
                                     <input type="hidden" id="editDistrictName" name="state_name">
                                     <input type="hidden" id="editWardName" name="commune_name">
                                 </div>
-
                                 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
                                 <script>
                                     const citis = document.getElementById("editCity");
@@ -289,7 +287,6 @@
                                         };
                                     }
                                 </script>
-
                                 <div class="mb-3">
                                     <label for="editAddress" class="form-label">Address</label>
                                     <input type="text" class="form-control" id="editAddress" name="address" required>

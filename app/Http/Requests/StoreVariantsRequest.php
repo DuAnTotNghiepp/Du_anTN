@@ -26,11 +26,15 @@ class StoreVariantsRequest extends FormRequest
    
         ];
     }
-
     public function messages(): array
     {
         return [
-            'value.unique' => 'Tên biến thể đã Tồn Tại',
+
+            // 'size_value.required' => 'Trường Size là bắt buộc.',
+            // 'size_value.unique' => 'Giá trị Size đã tồn tại.',
+            // 'size_value.string' => 'Giá trị Size phải là một chuỗi.',
+            // 'size_value.alpha' => 'Giá trị Size chỉ được phép chứa các chữ cái.',
+            // 'size_value.max' => 'Giá trị Size không được vượt quá 255 ký tự.',
         ];
     }
 }

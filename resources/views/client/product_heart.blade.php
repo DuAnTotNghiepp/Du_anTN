@@ -59,18 +59,9 @@
                                         <div class="product-lavels"></div>
                                         <div class="product-actions">
                                             <a href="{{ route('product.product_detail', $favorite->product->id) }}"><i class="flaticon-search"></i></a>
-                                            <a href="#"><i class="flaticon-shopping-cart"></i></a>
                                         </div>
                                     </div>
                                     <div class="product-body">
-                                        <ul class="d-flex product-rating">
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star"></i></li>
-                                            <li>(<span>8</span> Review)</li>
-                                        </ul>
                                         <h3 class="product-title">
                                             <a href="{{ route('product.product_detail', $favorite->product->id) }}">
                                                 {{ $favorite->product->name }}

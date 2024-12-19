@@ -31,6 +31,7 @@ class Order1Controller extends Controller
             'size' => 'required|array',
             'voucher_code' => 'nullable|string',
         ]);
+        $validatedData['status'] = $request->payment_method === 'vnpay' ? 'err' : 'pending';
         // dd($request->all());
         // Create a new order
         $order = Order::create([
@@ -41,7 +42,7 @@ class Order1Controller extends Controller
             'user_address' => $request->user_address,
             'user_note' => $request->user_note ?? '',
             'payment_method' => $request->payment_method,
-            'status' => 'pending', // Set default status as pending
+            'status' => $validatedData['status'],
             'total_price' => $request->total_price,
         ]);
         $orderItems = [];
@@ -87,7 +88,7 @@ class Order1Controller extends Controller
             // Delete the items from the cart after creating order
             Cart::where('user_id', Auth::id())->delete();
 
-            $validatedData['status'] = $request->payment_method === 'vnpay' ? 'err' : 'pending';
+
             if ($request->payment_method === 'vnpay') {
                 return $this->vnpayPayment($order, $request);
             }
@@ -191,10 +192,14 @@ class Order1Controller extends Controller
                     return redirect()->route('index')->with('error', 'Error processing payment: ' . $e->getMessage());
                 }
             } else {
-                return redirect()->route('index')->with('error', 'Transaction failed.');
+                $order = Order::find($inputData['vnp_TxnRef']);
+                if ($order && $order->status === 'err') {
+                    $order->delete();
+                }
+                return redirect()->route('index')->with('error', 'Giao dịch thất bại hoặc đã bị hủy.');
             }
         } else {
-            return redirect()->route('index')->with('error', 'Invalid signature.');
+            return redirect()->route('index')->with('error', 'Chữ ký không hợp lệ.');
         }
     }
 }

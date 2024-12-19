@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreVoucherRequest;
+use App\Http\Requests\UpdateVoucherRequest;
 use App\Models\Voucher;
+
 use App\Models\Vouchers;
 use Illuminate\Http\Request;
 
 class VoucherController extends Controller
 {
-  
+
     public function index()
     {
         Vouchers::where('end_date', '<', now())
@@ -24,27 +27,26 @@ class VoucherController extends Controller
         return view('admin.vouchers.index', compact('vouchers')); // Gửi dữ liệu đến view
     }
 
-    
+
     public function create()
     {
         return view('admin.vouchers.create');
     }
 
-   
-    public function store(Request $request)
+
+    public function store(StoreVoucherRequest $request)
     {
         // Validate dữ liệu
-        $validated = $request->validate([
-            'code' => 'required|string|unique:vouchers',
-            'type' => 'required|in:fixed,percent',
-            'value' => 'required|numeric|min:0',
-            'minimum_order_value' => 'nullable|numeric|min:0',
-            'usage_limit' => 'nullable|integer|min:0',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'status' => 'required|in:active,expired,disabled',
-        ]);
-
+    $validated = $request->validate([
+        'code' => 'required|string|unique:vouchers',
+        'type' => 'required|in:fixed,percent',
+        'value' => 'required|numeric|min:0',
+        'minimum_order_value' => 'nullable|numeric|min:0',
+        'usage_limit' => 'nullable|integer|min:0',
+        'start_date' => 'required|date|after_or_equal:today',
+        'end_date' => 'required|date|after_or_equal:start_date',
+        'status' => 'required|in:active,expired,disabled',
+    ]);
         // Tạo voucher
         Vouchers::create($validated);
 
@@ -55,7 +57,7 @@ class VoucherController extends Controller
     $voucher = Vouchers::findOrFail($id);
 
     // Đổi trạng thái hiển thị
-    $voucher->is_visible = !$voucher->is_visible; 
+    $voucher->is_visible = !$voucher->is_visible;
     $voucher->save();
 
     return redirect()->route('vouchers.index')->with('success', 'Cập nhật trạng thái hiển thị thành công!');
@@ -79,12 +81,15 @@ class VoucherController extends Controller
      *
 
      */
-    public function update(Request $request, $id)
+    public function update(UpdateVoucherRequest $request, $id)
     {
         $voucher = Vouchers::findOrFail($id);
-    
+
+
+        // Xác thực dữ liệu
         $validated = $request->validate([
-            'code' => 'required|string|unique:vouchers,code,' . $voucher->id,
+            // Loại bỏ check unique cho 'code' khi cập nhật
+            'code' => 'required|string',  // Không cần kiểm tra tính duy nhất của 'code'
             'type' => 'required|in:fixed,percent',
             'value' => 'required|numeric|min:0',
             'minimum_order_value' => 'nullable|numeric|min:0',
@@ -101,12 +106,19 @@ class VoucherController extends Controller
     } else {
         $validated['status'] = 'expired'; // Đảm bảo trạng thái là hết hạn nếu ngày kết thúc đã qua
     }
-    
+
         $voucher->update($validated);
-    
+
+
+        // Trả về trang danh sách voucher với thông báo thành công
+        return redirect()->route('vouchers.index')->with('success', 'Voucher cập nhật thành công!');
+
+
         return redirect()->route('vouchers.index')->with('success', 'Voucher updated successfully!');
+
     }
-    
+
+
 
     public function destroy($id)
     {
@@ -115,5 +127,5 @@ class VoucherController extends Controller
 
         return redirect()->route('vouchers.index')->with('success', 'Voucher deleted successfully!');
     }
-    
+
 }
