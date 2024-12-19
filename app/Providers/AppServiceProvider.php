@@ -21,24 +21,24 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-   public function boot(): void
-   {
-       //
-       $data = Catalogues::all(); // Lấy danh sách danh mục
-       view()->share('data', $data);
-       if (auth()->check()) {
-        $cartItems = Cart::where('user_id', auth()->id())->get();
-        } else {
-            $cartItems = collect(); // Nếu chưa đăng nhập, trả về collection rỗng
-        }
-        view()->share('cartItems', $cartItems);
-       Paginator::useBootstrap();
-       View::composer('*', function ($view) {
-           $cartCount = 0;
-           if (auth()->check()) {
-               $cartCount = \App\Models\Cart::where('user_id', auth()->id())->sum('quantity');
-           }
-           $view->with('cartCount', $cartCount);
-       });
-   }
+//   public function boot(): void
+//   {
+//       //
+//       $data = Catalogues::all(); // Lấy danh sách danh mục
+//       view()->share('data', $data);
+//       if (auth()->check()) {
+//        $cartItems = Cart::where('user_id', auth()->id())->get();
+//        } else {
+//            $cartItems = collect(); // Nếu chưa đăng nhập, trả về collection rỗng
+//        }
+//        view()->share('cartItems', $cartItems);
+//       Paginator::useBootstrap();
+//       View::composer('*', function ($view) {
+//           $cartCount = 0;
+//           if (auth()->check()) {
+//               $cartCount = \App\Models\Cart::where('user_id', auth()->id())->sum('quantity');
+//           }
+//           $view->with('cartCount', $cartCount);
+//       });
+//   }
 }
