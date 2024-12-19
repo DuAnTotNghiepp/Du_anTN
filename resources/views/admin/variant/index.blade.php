@@ -64,17 +64,6 @@
                             <div class="hstack text-nowrap gap-2">
                                 <button class="btn btn-soft-danger" id="remove-actions" onClick="deleteMultiple()"><i
                                         class="ri-delete-bin-2-line"></i></button>
-                                <button class="btn btn-danger"><i class="ri-filter-2-line me-1 align-bottom"></i>
-                                    Filters</button>
-                                <button class="btn btn-soft-success">Import</button>
-                                <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown"
-                                    aria-expanded="false" class="btn btn-soft-info"><i class="ri-more-2-fill"></i></button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                                    <li><a class="dropdown-item" href="#">All</a></li>
-                                    <li><a class="dropdown-item" href="#">Last Week</a></li>
-                                    <li><a class="dropdown-item" href="#">Last Month</a></li>
-                                    <li><a class="dropdown-item" href="#">Last Year</a></li>
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -85,26 +74,6 @@
         <div class="col-xxl-12">
             <div class="card" id="contactList">
                 <div class="card-header">
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <div class="search-box">
-                                <input type="text" class="form-control search" id="searchInput"
-                                    placeholder="Search for contact...">
-                                <i class="ri-search-line search-icon"></i>
-                            </div>
-                        </div>
-                        <div class="col-md-auto ms-auto">
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="text-muted">Sort by: </span>
-                                <select class="form-control mb-0" data-choices data-choices-search-false
-                                    id="choices-single-default">
-                                    <option value="Name">Name</option>
-                                    <option value="Company">Company</option>
-                                    <option value="Lead">Lead</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="card-body">
                     <div>

@@ -2208,7 +2208,7 @@
             <div class="row">
                 <div class="col-lg-12 mb-25">
                     <div class="section-head">
-                        <h2 class="section-title">Recently Stock</h2>
+                        <h2 class="section-title">Bộ sưu tập</h2>
                     </div>
                 </div>
             </div>

@@ -14,17 +14,22 @@ class CartController extends Controller
 {
     public function index()
     {
-        $cartItems = Cart::where('user_id', auth()->id())->get();
+        $cartItems = Cart::where('user_id', auth()->id())->with('product')->get();
+
         foreach ($cartItems as $item) {
             // Cập nhật giá trị tổng cho từng sản phẩm trong giỏ hàng
             $item->total_price = $item->quantity * $item->product->price_sale;
         }
-        $selectedProducts = []; // Mảng các sản phẩm được chọn
 
+        // Tính tổng số lượng sản phẩm trong giỏ hàng
+        $cartCount = $cartItems->sum('quantity');
+
+        $selectedProducts = [];
         $total = $cartItems->sum('total_price');
 
-        return view('client.cart', compact('cartItems', 'selectedProducts', 'total'));
+        return view('client.cart', compact('cartItems', 'selectedProducts', 'total', 'cartCount'));
     }
+
 
 
 
@@ -38,7 +43,7 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
         ]);
-        // dd($validatedData);
+
         $validatedData['user_id'] = Auth::id(); // Lấy user_id từ session
 
         // Lấy sản phẩm và kiểm tra sự tồn tại
@@ -67,6 +72,8 @@ class CartController extends Controller
             ->where('user_id', $validatedData['user_id'])
             ->first();
 
+        $isNewProduct = false; // Biến xác định nếu sản phẩm là mới
+
         if ($cartItem) {
             // Cập nhật số lượng và tổng giá
             $cartItem->quantity += $validatedData['quantity'];
@@ -82,8 +89,16 @@ class CartController extends Controller
             // Thêm mới sản phẩm vào giỏ hàng
             $validatedData['total_price'] = $validatedData['quantity'] * $productVariant->price;
             Cart::create($validatedData);
+            $isNewProduct = true; // Đánh dấu đây là sản phẩm mới
         }
 
+        // Cập nhật số lượng trong giỏ hàng (span) bằng session hoặc giá trị
+        if ($isNewProduct) {
+            $cartCount = session('cart_count', 0);
+            session(['cart_count' => $cartCount + 1]);
+        }
+        $cartCount = Cart::where('user_id', Auth::id())->count();
+        session(['cart_count' => $cartCount]);
         return redirect()->back()->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
     }
 
@@ -148,9 +163,26 @@ class CartController extends Controller
         $cartItem = Cart::findOrFail($cartId);
         $cartItem->delete();
 
-        return redirect()->route('cart.index')
-            ->with('success', 'Đã xóa sản phẩm khỏi giỏ hàng');
+        // Đếm lại số lượng sản phẩm trong giỏ hàng
+        $cartCount = Cart::where('user_id', Auth::id())->count();
+        session(['cart_count' => $cartCount]);
+
+        if (request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Sản phẩm đã được xóa khỏi giỏ hàng!',
+                'cart_count' => $cartCount,
+            ]);
+        }
+
+        return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được xóa khỏi giỏ hàng!');
     }
+
+
+
+
+
+
     public function calculateTotal(Request $request)
     {
         $request->validate([
