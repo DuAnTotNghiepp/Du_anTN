@@ -144,12 +144,13 @@
                                                 @error('value')
                                                 <span style="color: red">{{ $message }}</span>
                                             @enderror
+                                                <label for="value" class="form-label">Giá trị mã giảm giá</label>
+                                                <input type="number" name="value" id="value" class="form-control" value="{{ $voucher->value }}" required>
                                             </div>
 
                                             <!-- Giá trị đơn hàng tối thiểu -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="minimum_order_value" class="form-label">Giá trị đơn hàng tối thiểu</label>
-
                                                 <input type="number" name="minimum_order_value" id="minimum_order_value" class="form-control" value="{{ $voucher->minimum_order_value }}" >
                                                 @error('minimum_order_value')
                                                 <span style="color: red">{{ $message }}</span>
@@ -178,8 +179,17 @@
                                                     <span style="color: red">{{ $message }}</span>
                                                 @enderror
 
+                                                <input 
+                                                    type="datetime-local" 
+                                                    name="start_date" 
+                                                    id="start_date" 
+                                                    class="form-control" 
+                                                    min="{{ now()->format('Y-m-d\TH:i') }}" 
+                                                    value="{{ isset($voucher) ? date('Y-m-d\TH:i', strtotime($voucher->start_date)) : '' }}" 
+                                                    required
+                                                    onchange="updateEndDateMin()">
                                             </div>
-
+                                            
                                             <!-- Ngày kết thúc -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="end_date" class="form-label">Ngày kết thúc</label>
@@ -191,7 +201,14 @@
                                                 @enderror
 
                                                        {{-- <value="{{ date('Y-m-d\TH:i', strtotime($voucher->end_date)) }}" required> --}}
-
+                                                <input 
+                                                    type="datetime-local" 
+                                                    name="end_date" 
+                                                    id="end_date" 
+                                                    class="form-control"
+                                                    min="{{ isset($voucher) ? date('Y-m-d\TH:i', strtotime($voucher->start_date)) : now()->format('Y-m-d\TH:i') }}" 
+                                                    value="{{ isset($voucher) ? date('Y-m-d\TH:i', strtotime($voucher->end_date)) : '' }}" 
+                                                    required>
                                             </div>
 
                                             <!-- Trạng thái -->
@@ -450,6 +467,15 @@ document.getElementById('searchInput').addEventListener('input', function () {
     </script>
 
 
+<script>
+    function updateEndDateMin() {
+        const startDate = document.getElementById('start_date').value;
+        const endDate = document.getElementById('end_date');
+        if (startDate) {
+            endDate.min = startDate;
+        }
+    }
+</script>
 
 
     </html>

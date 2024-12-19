@@ -37,17 +37,16 @@ class VoucherController extends Controller
     public function store(StoreVoucherRequest $request)
     {
         // Validate dữ liệu
-        $validated = $request->validate([
-            'code' => 'required|string|unique:vouchers',
-            'type' => 'required|in:fixed,percent',
-            'value' => 'required|numeric|min:0',
-            'minimum_order_value' => 'nullable|numeric|min:0',
-            'usage_limit' => 'nullable|integer|min:0',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'status' => 'required|in:active,expired,disabled',
-        ]);
-
+    $validated = $request->validate([
+        'code' => 'required|string|unique:vouchers',
+        'type' => 'required|in:fixed,percent',
+        'value' => 'required|numeric|min:0',
+        'minimum_order_value' => 'nullable|numeric|min:0',
+        'usage_limit' => 'nullable|integer|min:0',
+        'start_date' => 'required|date|after_or_equal:today',
+        'end_date' => 'required|date|after_or_equal:start_date',
+        'status' => 'required|in:active,expired,disabled',
+    ]);
         // Tạo voucher
         Vouchers::create($validated);
 
