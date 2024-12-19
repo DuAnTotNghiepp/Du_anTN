@@ -71,11 +71,11 @@
                     <div class="card-body">
                         <table style="width: 100%;">
                             <tr class="text-center">
-                                <th>IMAGE</th>
-                                <th>NAME</th>
-                                <th>PRICE</th>
+                                <th>Ảnh</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Giá sản phẩm</th>
                                 <th>TT - SL </th>
-                                <th>STATUS</th>
+                                <th>Trạng thái</th>
                             </tr>
                             @foreach ($orders as $order)
                             @foreach ($order->order_items as $item)
@@ -155,8 +155,8 @@
                                                     <strong>Khách hàng:</strong> {{ $order->user->name }}<br>
                                                     <p><strong>Email:</strong> {{ $order->user->email }}</p>
                                                     @php
-                                                        $address = $order->user->addresses->first(); // Lấy địa chỉ đầu tiên của người dùng
-                                                    @endphp
+                                                    $address = $order->address; // Lấy địa chỉ từ đơn hàng
+                                                @endphp
                                                     @if ($address)
                                                         <p><strong>Địa chỉ: </strong>{{ $address->address ?? '' }},
                                                             {{ $address->commune ?? '' }}, {{ $address->state ?? '' }},

@@ -194,21 +194,100 @@
                                 </div>
                                 <div>
                                     <label class="form-label">City</label>
-                                    <select class="form-select form-select-sm mb-3" id="editCity" name="city" required>
+                                    <select class="form-select form-select-sm mb-3" id="editCity" name="city">
+                                        <option value="{{ $address->city }}">{{ $address->city }}</option>
                                         <option value="" selected>Select province</option>
                                     </select>
                                     <label class="form-label">District</label>
                                     <select class="form-select form-select-sm mb-3" id="editDistrict" name="state">
+                                        <option value="{{ $address->state }}">{{ $address->state }}</option>
                                         <option value="" selected>Select district</option>
                                     </select>
                                     <label class="form-label">Ward</label>
-                                    <select class="form-select form-select-sm" id="editWard" name="commune" required>
+                                    <select class="form-select form-select-sm" id="editWard" name="commune">
+                                        <option value="{{ $address->commune }}">{{ $address->commune }}</option>
                                         <option value="" selected>Select ward</option>
                                     </select>
                                     <input type="hidden" id="editCityName" name="city_name">
                                     <input type="hidden" id="editDistrictName" name="state_name">
                                     <input type="hidden" id="editWardName" name="commune_name">
                                 </div>
+                                
+                                <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+                                <script>
+                                    const citis = document.getElementById("editCity");
+                                    const districts = document.getElementById("editDistrict");
+                                    const wards = document.getElementById("editWard");
+                                
+                                    const cityNameInput = document.getElementById("editCityName");
+                                    const districtNameInput = document.getElementById("editDistrictName");
+                                    const wardNameInput = document.getElementById("editWardName");
+                                
+                                    const Parameter = {
+                                        url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+                                        method: "GET",
+                                        responseType: "application/json",
+                                    };
+                                
+                                    axios(Parameter)
+                                        .then(function (result) {
+                                            console.log("Dữ liệu JSON tải thành công:", result.data);
+                                            renderCity(result.data);
+                                        })
+                                        .catch(function (error) {
+                                            console.error("Không thể tải dữ liệu:", error);
+                                        });
+                                
+                                    function renderCity(data) {
+                                        for (const x of data) {
+                                            citis.options[citis.options.length] = new Option(x.Name, x.Id);
+                                        }
+                                
+                                        // Sự kiện khi chọn tỉnh/thành
+                                        citis.onchange = function () {
+                                            districts.length = 1; // Reset danh sách quận/huyện
+                                            wards.length = 1; // Reset danh sách xã/phường
+                                
+                                            if (this.value != "") {
+                                                const selectedCity = data.find((n) => n.Id === this.value);
+                                
+                                                // Hiển thị danh sách quận/huyện
+                                                for (const k of selectedCity.Districts) {
+                                                    districts.options[districts.options.length] = new Option(k.Name, k.Id);
+                                                }
+                                
+                                                // Gán tên tỉnh/thành vào input ẩn
+                                                cityNameInput.value = this.options[this.selectedIndex].text;
+                                            }
+                                        };
+                                
+                                        // Sự kiện khi chọn quận/huyện
+                                        districts.onchange = function () {
+                                            wards.length = 1; // Reset danh sách xã/phường
+                                
+                                            if (this.value != "") {
+                                                const selectedCity = data.find((n) => n.Id === citis.value);
+                                                const selectedDistrict = selectedCity.Districts.find((n) => n.Id === this.value);
+                                
+                                                // Hiển thị danh sách xã/phường
+                                                for (const w of selectedDistrict.Wards) {
+                                                    wards.options[wards.options.length] = new Option(w.Name, w.Id);
+                                                }
+                                
+                                                // Gán tên quận/huyện vào input ẩn
+                                                districtNameInput.value = this.options[this.selectedIndex].text;
+                                            }
+                                        };
+                                
+                                        // Sự kiện khi chọn xã/phường
+                                        wards.onchange = function () {
+                                            if (this.value != "") {
+                                                // Gán tên xã/phường vào input ẩn
+                                                wardNameInput.value = this.options[this.selectedIndex].text;
+                                            }
+                                        };
+                                    }
+                                </script>
                                 
                                 <div class="mb-3">
                                     <label for="editAddress" class="form-label">Address</label>
