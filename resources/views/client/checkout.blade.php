@@ -79,7 +79,7 @@
                                 </div>
 
                                 <div class="eg-input-group mb-0">
-                                    <textarea cols="30" rows="7" name="user_note" placeholder="Order Notes (Optional)"></textarea>
+                                    <textarea cols="30" rows="7" name="user_note" required placeholder="Order Notes (Optional)"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -139,13 +139,13 @@
                                     <!-- Hiển thị Tổng Đơn Hàng -->
                                     <li>Tổng Đơn Hàng (Bao gồm cả thuế)
                                         <span id="total">
-                                            {{ number_format(($checkoutData['quantity'] ?? 0) * ($checkoutData['productPrice'] ?? 0) + 5000) }}
+                                            {{ number_format(($checkoutData['quantity'] ?? 0) * ($checkoutData['productPrice'] ?? 0) + 0) }}
                                         </span>VND
                                     </li>
 
                                     <!-- Các trường ẩn -->
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    <input type="hidden" name="total_price" id="total_price" value="{{ ($checkoutData['quantity'] * $checkoutData['productPrice'] ?? 0) + 5000 }}">
+                                    <input type="hidden" name="total_price" id="total_price" value="{{ ($checkoutData['quantity'] * $checkoutData['productPrice'] ?? 0) + 0 }}">
                                 </ul>
 
                                 <!-- Form áp dụng mã giảm giá -->
@@ -158,6 +158,8 @@
                                     <span id="errorMessage" class="error-message"></span><br>
                                 </div>
                             </div>
+
+
                         </div>
 
                         <div class="payment-form">

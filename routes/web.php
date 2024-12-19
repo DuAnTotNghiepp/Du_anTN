@@ -1,25 +1,25 @@
 <?php
 
 use App\Http\Controllers\Admin\BlogController;
-use App\Http\Controllers\Auth\FacebookController;
-use App\Http\Controllers\Client\OrderController;
+use App\Http\Controllers\Admin\MaterialController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\VoucherController;
+use App\Http\Controllers\Client\OrderController;
+
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\CartController;
+use App\Http\Controllers\Auth\FacebookController;
 use App\Http\Controllers\BinhLuanController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\Client\Checkout1Controller;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\Client\Order1Controller;
+
 use App\Http\Controllers\Client\ProductCatalogueController;
 use App\Http\Controllers\Client\ProductFavoriteController;
 use App\Http\Controllers\Client\VoucherController as ClientVoucherController;
-use App\Http\Controllers\ProductController as ControllersProductController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\CheckRoleAdminMiddleware;
-use Illuminate\Support\Facades\Password;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +43,12 @@ Route::post('register', [AuthController::class, 'register'])->name('register');
 
 // Client Routes
 Route::get('/', [ClientController::class, 'index'])->name('index');
+
+
+Route::get('product/{id}', [ClientController::class, 'show'])->name('product.product_detail');
+Route::put('product/{id}/update', [BlogController::class, 'update'])->name('product.update');
+
+
 Route::get('product/{id}', [ClientController::class, 'show'])->name('product.product_detail');
 
 //profile
@@ -61,10 +67,12 @@ Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])
 // });
 Route::get('/checkout', [CheckoutController::class, 'form'])->name('checkout');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
+
 Route::get('product/{id}', [ClientController::class, 'show'])->middleware('save.redirect')->name('product.product_detail');
 
 Route::get('/api/variant-stock', [ClientController::class, 'getVariantStock']);
 // Route::post('/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
+
 
 
 //profile
@@ -158,13 +166,17 @@ Route::middleware('auth')->group(function () {
     Route::delete('admin/accounts/{user}', [AdminController::class, 'destroy'])->name('admin.accounts.destroy');
     //thong ke
 });
+Route::resource('materials', MaterialController::class);
+Route::get('/admin/materials/create', [MaterialController::class, 'create'])->name('materials.create');  // Hiển thị form tạo mới
+Route::post('/admin/materials', [MaterialController::class, 'store'])->name('materials.store');
+Route::delete('/admin/materials/{id}/destroy', [MaterialController::class, 'destroy'])->name('materials.destroy');
 
 
 Route::resource('cart', CartController::class);
 
 //chi tiet test
 Route::post('product/comment/{id}', [BinhLuanController::class, 'store'])->name('comment.store');
-Route::get('admin/comment/index', [ProductController::class, 'indexWithComments'])->name('comment.index');
+Route::get('admin/comment/index', [\App\Http\Controllers\Admin\ProductController::class, 'indexWithComments'])->name('comment.index');
 Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComments'])->name('product.comments');
 
 
@@ -172,7 +184,12 @@ Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComme
 //thong ke
 Route::get('/admin/dashboard-stats', [AdminController::class, 'getDashboardStats']);
 Route::get('/admin/revenue-stats', [AdminController::class, 'getRevenueStats']);
-
+Route::prefix('admin')->group(function () {
+    Route::get('/statistical/bestSellingProducts', [ProductController::class, 'bestSellingProducts'])->name('products.best-selling');
+    Route::get('/statistics/account-conversion', [AdminController::class, 'conversionRate'])->name('conversionRate.best-selling');
+    Route::get('/statistics/orderRates', [AdminController::class, 'orderRates'])->name('orderRates.best-selling');
+});
+Route::get('/get-pending-orders', [AdminOrderController::class, 'getPendingOrders']);
 
 
 
