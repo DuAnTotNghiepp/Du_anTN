@@ -31,6 +31,7 @@ class OrderController extends Controller
             'user_note' => 'nullable|string',
             'payment_method' => 'required|in:cash,vnpay',
             'product_id' => 'required|exists:products,id',
+            'total_price' => 'required|numeric|min:0',
             'quantity' => 'integer|min:1',
             'size' => 'required|string',
             'color' => 'required|string',
@@ -63,8 +64,6 @@ class OrderController extends Controller
         if ($variant->stock < $validatedData['quantity']) {
             return redirect()->back()->withErrors(['message' => 'Số lượng sản phẩm không đủ trong kho.']);
         }
-        $shippingFee = 0; // Có thể cấu hình linh hoạt
-        $validatedData['total_price'] = ($variant->sale_price ?? $product->price_sale) * $validatedData['quantity'] + $shippingFee;
 
         $variant->stock -= $validatedData['quantity'];
         $variant->save();
@@ -166,7 +165,7 @@ class OrderController extends Controller
         return redirect($vnp_Url);
     }
 
-    public function vnpayCallback(Request $request)
+   public function vnpayCallback(Request $request)
     {
         $vnp_HashSecret = "3W5U0M95R09Y84G2TXKGZZEI32AJLF2Z";
         $inputData = [];
@@ -205,10 +204,14 @@ class OrderController extends Controller
                     return redirect()->route('index')->with('error', 'Error processing payment: ' . $e->getMessage());
                 }
             } else {
-                return redirect()->route('index')->with('error', 'Transaction failed.');
+                $order = Order::find($inputData['vnp_TxnRef']);
+                if ($order && $order->status === 'err') {
+                    $order->delete();
+                }
+                return redirect()->route('index')->with('error', 'Giao dịch thất bại hoặc đã bị hủy.');
             }
         } else {
-            return redirect()->route('index')->with('error', 'Invalid signature.');
+            return redirect()->route('index')->with('error', 'Chữ ký không hợp lệ.');
         }
     }
 
@@ -255,5 +258,4 @@ class OrderController extends Controller
  
          return response()->json(['message' => 'Đơn hàng đã được đánh dấu là đã nhận', 'order' => $order]);
      }
-
 }

@@ -24,7 +24,7 @@ class Product extends Model
         'price_sale',
         'description',
         'content',
-        'material',
+        'material_id',
         'user_manual',
         'is_active',
         'view',
@@ -36,6 +36,22 @@ class Product extends Model
     public function catelogues()
     {
         return $this->belongsTo(Catalogues::class, 'catalogues_id');
+    }
+    protected static function booted()
+    {
+        static::created(function ($product) {
+            $catalogue = $product->catalogue;
+            if ($catalogue) {
+                $catalogue->increment('total_product');
+            }
+        });
+
+        static::deleted(function ($product) {
+            $catalogue = $product->catalogue;
+            if ($catalogue) {
+                $catalogue->decrement('total_product');
+            }
+        });
     }
 
     public function variants()
@@ -64,8 +80,15 @@ class Product extends Model
     {
         return $this->belongsToMany(Product::class, 'product_favorites', 'user_id', 'product_id');
     }
+
+    public function materials()
+    {
+        return $this->hasMany(Material::class);  // Một sản phẩm có thể có nhiều vật liệu
+    }
     public function galleries()
     {
         return $this->hasMany(ProductGallerie::class);
     }
+
 }
+

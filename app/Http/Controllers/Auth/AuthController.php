@@ -36,11 +36,19 @@ class AuthController extends Controller
                 Auth::logout(); // Đăng xuất người dùng nếu tài khoản không hoạt động
                 return back()->withErrors(['Tài khoản của bạn đã bị vô hiệu hóa.']);
             }
+
+
+            if (Auth::attempt($user)) {
+                // Kiểm tra URL chuyển hướng trong session
+                $redirectUrl = $request->input('redirect_url') ?? session()->pull('redirect_url', '/');
+                return redirect()->intended($redirectUrl);
+
     
-            // Nếu là admin, chuyển hướng tới trang admin
-            if ($user->role === User::ROLE_ADMIN) {
-                return redirect()->intended('/admin');
-            }
+//             // Nếu là admin, chuyển hướng tới trang admin
+//             if ($user->role === User::ROLE_ADMIN) {
+//                 return redirect()->intended('/admin');
+
+//             }
     
             // Nếu không phải admin, chuyển hướng tới trang người dùng
             $redirectUrl = $request->input('redirect_url') ?? session()->pull('redirect_url', '/');

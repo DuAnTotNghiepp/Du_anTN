@@ -5,16 +5,16 @@
 
     <head>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-       
+
     </head>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .fixed-image {
-    width: 300px;      
-    height: 200px;     
-    object-fit: cover; 
-    display: block;    
-    margin: 0 auto;   
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
 }
 
         .copy-icon {
@@ -30,8 +30,8 @@
             color: #01070e;
             transform: scale(1.2);
         }
-        
-       
+
+
         .copy-notification {
             font-size: 12px;
             color: rgb(16, 1, 1);
@@ -221,8 +221,7 @@
                                         <button class="favorite-btn" style="background: none; border: none" data-product-id="{{ $item->id }}">
                                             <i class="flaticon-heart"></i>
                                         </button>
-                                        <a href="product-details.html"><i class="flaticon-search"></i></a>
-                                        <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
+
                                     </div>
                                 </div>
                                 <div class="product-content-xl text-center">
@@ -280,17 +279,18 @@
                                                 data-product-id="{{ $item->id }}">
                                                 <i class="flaticon-heart"></i>
                                             </button>
-                                            <a href="product-details.html"><i class="flaticon-search"></i></a>
-                                            <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
+
                                         </div>
                                     </div>
                                     <div class="product-content-xl text-center">
                                         <ul class="d-flex product-rating-xl">
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star"></i></li>
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                @if ($i <= round($item->average_rating))
+                                                    <li><i class="bi bi-star-fill" style="color: gold;"></i></li>
+                                                @else
+                                                    <li><i class="bi bi-star"></i></li>
+                                                @endif
+                                            @endfor
                                         </ul>
                                         <a href="product-details.html" class="product-title">{{ $item->name }}</a>
                                         <div class="product-price">
@@ -311,31 +311,31 @@
     </div>
 
 
-    <div class="banner-xl-area ml-110 mt-100">
-        <div class="container-fluid p-0">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="banner-xl-bg d-flex align-items-center position-relative">
-                        <div class="banner-shapes">
-                            <img src="" alt class="position-absolute top-0 end-0">
-                            <img src="" alt class="position-absolute top0 bottom-0">
-                        </div>
-                        <div class="banner-content-wrap">
-                            <h5 class="banner-xl-subtitle">Today Top Offer</h5>
-                            <h2 class="banner-xl-title">Lining Casual Winter Sale Only 250$</h2>
-                            <p>Lorem ipsum dolor sit amet consectetur adipiscing elitsed do eiusmod tempor incididunt
-                                utlabore et dolore magna aliqua. Utenim ad minim veniam quis nostrud exercitation
-                                ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                            <div class="banner-xl-btns">
-                                <a href="product.html" class="eg-btn-md">Shop Now</a>
-                                <a href="product-details.html" class="eg-btn-md v2">About Product</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+{{--    <div class="banner-xl-area ml-110 mt-100">--}}
+{{--        <div class="container-fluid p-0">--}}
+{{--            <div class="row">--}}
+{{--                <div class="col-lg-12">--}}
+{{--                    <div class="banner-xl-bg d-flex align-items-center position-relative">--}}
+{{--                        <div class="banner-shapes">--}}
+{{--                            <img src="" alt class="position-absolute top-0 end-0">--}}
+{{--                            <img src="" alt class="position-absolute top0 bottom-0">--}}
+{{--                        </div>--}}
+{{--                        <div class="banner-content-wrap">--}}
+{{--                            <h5 class="banner-xl-subtitle">Today Top Offer</h5>--}}
+{{--                            <h2 class="banner-xl-title">Lining Casual Winter Sale Only 250$</h2>--}}
+{{--                            <p>Lorem ipsum dolor sit amet consectetur adipiscing elitsed do eiusmod tempor incididunt--}}
+{{--                                utlabore et dolore magna aliqua. Utenim ad minim veniam quis nostrud exercitation--}}
+{{--                                ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>--}}
+{{--                            <div class="banner-xl-btns">--}}
+{{--                                <a href="product.html" class="eg-btn-md">Shop Now</a>--}}
+{{--                                <a href="product-details.html" class="eg-btn-md v2">About Product</a>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 
 
     <div class="recent-product-wrapper ml-110 mt-100">
@@ -343,7 +343,7 @@
             <div class="row">
                 <div class="col-lg-12 mb-25">
                     <div class="section-head">
-                        <h2 class="section-title">Recently Stock</h2>
+                        <h2 class="section-title">Bộ sưu tập</h2>
                     </div>
                 </div>
             </div>
@@ -351,11 +351,11 @@
                 <div class="col-xxl-3 col-xl-3 col-lg-4">
                     <div class="nav flex-column category-tabs">
                         <button class="nav-link active category-tab" data-category="all">Tất Cả Bộ Sưu Tập</button>
-                        <button class="nav-link category-tab" data-category="winter">Mùa Đông</button>
-                        <button class="nav-link category-tab" data-category="summer">Mùa Hè</button>
-                        <button class="nav-link category-tab" data-category="autumn">Mùa Thu</button>
-                        <button class="nav-link category-tab" data-category="new-male">Bộ Sưu Tập Cho Nam</button>
-                        <button class="nav-link category-tab" data-category="new-female">Bộ Sưu Tập Cho Nữ</button>
+                        <button class="nav-link category-tab" data-category="Mùa đông">Mùa Đông</button>
+                        <button class="nav-link category-tab" data-category="Mùa hè">Mùa Hè</button>
+                        <button class="nav-link category-tab" data-category="Mùa thu">Mùa Thu</button>
+                        <button class="nav-link category-tab" data-category="Bộ sưu tập Nam mới">Bộ Sưu Tập Cho Nam</button>
+                        <button class="nav-link category-tab" data-category="Bộ sưu tập Nữ mới">Bộ Sưu Tập Cho Nữ</button>
                     </div>
 
                 </div>
@@ -400,7 +400,7 @@
                                                 <img src="assets/images/blog/blog-author1.png" alt="Author" class="author-img">
                                                 <a href="{{ route('blog.detail', $post->id) }}">Alex Avater</a>
                                             </li>
-                                           
+
                                         </ul>
                                         <div class="blog-bottom">
                                             <h4 class="blog-title">
@@ -417,12 +417,12 @@
                             </div>
                         @endforeach
                     </div>
-            
+
                     <div class="swiper-button-next"><i class="flaticon-arrow-pointing-to-right"></i></div>
                     <div class="swiper-button-prev"><i class="flaticon-arrow-pointing-to-left"></i></div>
                 </div>
             </div>
-            
+
         </div>
     </div>
     <script>
@@ -477,8 +477,6 @@
                                                     <span class="new">New</span>
                                                 </div>
                                                 <div class="product-actions">
-                                                    <a href="product-details.html"><i class="flaticon-search"></i></a>
-                                                    <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
                                                 </div>
                                             </div>
                                             <div class="product-body">
