@@ -4,7 +4,7 @@ use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\MaterialController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Client\OrderController;
-use App\Http\Controllers\Admin\ProductController;
+
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\FacebookController;
@@ -45,7 +45,7 @@ Route::get('/', [ClientController::class, 'index'])->name('index');
 
 
 Route::get('product/{id}', [ClientController::class, 'show'])->name('product.product_detail');
-Route::put('product/{id}/update', [ProductController::class, 'update'])->name('product.update');
+Route::put('product/{id}/update', [BlogController::class, 'update'])->name('product.update');
 
 
 Route::get('product/{id}', [ClientController::class, 'show'])->name('product.product_detail');
@@ -175,7 +175,7 @@ Route::resource('cart', CartController::class);
 
 //chi tiet test
 Route::post('product/comment/{id}', [BinhLuanController::class, 'store'])->name('comment.store');
-Route::get('admin/comment/index', [ProductController::class, 'indexWithComments'])->name('comment.index');
+Route::get('admin/comment/index', [BlogController::class, 'indexWithComments'])->name('comment.index');
 Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComments'])->name('product.comments');
 
 
@@ -184,7 +184,7 @@ Route::get('admin/product/{id}/comments', [BinhLuanController::class, 'showComme
 Route::get('/admin/dashboard-stats', [AdminController::class, 'getDashboardStats']);
 Route::get('/admin/revenue-stats', [AdminController::class, 'getRevenueStats']);
 Route::prefix('admin')->group(function () {
-    Route::get('/statistical/bestSellingProducts', [ProductController::class, 'bestSellingProducts'])->name('products.best-selling');
+    Route::get('/statistical/bestSellingProducts', [BlogController::class, 'bestSellingProducts'])->name('products.best-selling');
     Route::get('/statistics/account-conversion', [AdminController::class, 'conversionRate'])->name('conversionRate.best-selling');
     Route::get('/statistics/orderRates', [AdminController::class, 'orderRates'])->name('orderRates.best-selling');
 });

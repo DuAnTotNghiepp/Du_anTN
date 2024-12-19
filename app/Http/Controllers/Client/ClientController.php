@@ -22,22 +22,21 @@ use Carbon\Carbon;
 
 class ClientController extends Controller
 {
-    //
     public function index(Request $request)
     {
         $data = Catalogues::query()->get();
         $products = Product::query()->get();
-        // Giỏ hàng chỉ hiển thị sản phẩm đang hoạt động
+
         $cartItems = Cart::where('user_id', auth()->id())
             ->whereHas('product', function ($query) {
                 $query->where('is_active', 1);
             })->get();
 
-        // Danh sách sản phẩm yêu thích chỉ hiển thị sản phẩm đang hoạt động
         $favouriteItems = ProductFavorite::where('user_id', auth()->id())
             ->whereHas('product', function ($query) {
                 $query->where('is_active', 1);
             })->get();
+
         $listSp = Product::where('is_active', 1)
             ->get()
             ->map(function ($product) {
@@ -47,32 +46,26 @@ class ClientController extends Controller
                 return $product;
             });
 
-        // Lấy sản phẩm hot
         $listHot = Product::where('is_hot_deal', 1)
-            ->where('is_active', 1) // Kiểm tra sản phẩm còn hoạt động
+            ->where('is_active', 1)
             ->get();
 
-        $vouchers = Vouchers::where('is_visible', 1) // Hiển thị các voucher đang được bật
-            ->where('status', 1) // Chỉ lấy voucher hoạt động
+        $vouchers = Vouchers::where('is_visible', 1)
+            ->where('status', 1)
             ->get([
-                'id',
-                'code',
-                'value',
-                'minimum_order_value',
-                'end_date',
-                'status'
-
+                'id', 'code', 'value', 'minimum_order_value', 'end_date', 'status'
             ]);
+
         $blogs = Blog::all();
 
-
-        return view('client.home', compact(['listSp', 'listHot', 'data', 'products', 'vouchers', 'blogs', 'cartItems']));
+        return view('client.home', compact('listSp', 'listHot', 'data', 'products', 'vouchers', 'blogs', 'cartItems'));
     }
+
     public function getProductsByCategory(Request $request)
     {
-        $category = $request->input('category'); // Lấy danh mục từ request
+        $category = $request->input('category');
 
-        Log::info('Category được gửi:', ['category' => $category]);
+        Log::info('Category received:', ['category' => $category]);
 
         if ($category === 'all') {
             $products = Product::where('is_active', 1)->get();
@@ -81,35 +74,26 @@ class ClientController extends Controller
 
             if ($catalogue) {
                 $products = $catalogue->products()->where('is_active', 1)->get();
-                Log::info('Sản phẩm trong danh mục:', $products->toArray());
+                Log::info('Products in category:', $products->toArray());
             } else {
                 $products = collect();
-                Log::warning('Không tìm thấy danh mục:', ['category' => $category]);
+                Log::warning('Category not found:', ['category' => $category]);
             }
         }
 
         return response()->json(['products' => $products]);
     }
 
-
-
-
-
     public function shop(Request $request)
     {
         $data = Catalogues::query()->get();
-
-        // Lấy tất cả sản phẩm
-        $listSp = Product::where('is_active', 1)->get(); // Hiển thị tất cả sản phẩm
-
-        // Lấy sản phẩm hot
+        $listSp = Product::where('is_active', 1)->get();
         $listHot = Product::where('is_hot_deal', 1)->get();
-        //list sp moi
         $products = Product::orderBy('created_at', 'desc')->paginate(12);
 
-        return view('client.shop', compact(['listSp', 'listHot', 'data', 'products']));
+        return view('client.shop', compact('listSp', 'listHot', 'data', 'products'));
     }
-    //tim kiem
+
     public function search(Request $request)
     {
         $searchTerm = $request->input('sidebar-search-input');
@@ -146,19 +130,17 @@ class ClientController extends Controller
         return view('client.shop', compact('products'));
     }
 
+    public function blog($id)
+    {
+        $blog = Blog::findOrFail($id);
+        $blogs = Blog::where('id', '!=', $id)
+            ->select('id', 'title', 'image')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-public function blog($id)
-{
-    // Lấy bài viết từ cơ sở dữ liệu
-    $blog = Blog::findOrFail($id);
-    $blogs = Blog::where('id', '!=', $id) // Loại bỏ bài viết hiện tại
-    ->select('id', 'title', 'image') 
-    ->orderBy('created_at', 'desc') 
-    ->get();
+        return view('client.blog', compact('blog', 'blogs'));
+    }
 
-    // Trả về view kèm dữ liệu
-    return view('client.blog', compact('blog', 'blogs'));
-}
     public function checkout()
     {
         return view('client.checkout');
@@ -166,14 +148,10 @@ public function blog($id)
 
     public function show_variants($id)
     {
-        // Lấy sản phẩm kèm các biến thể
         $product = Product::with('variants')->findOrFail($id);
-
-        // Kiểm tra nếu có biến thể thì lọc theo `color` và `size`
         $colors = $product->variants->where('name', 'color')->pluck('value')->unique();
         $sizes = $product->variants->where('name', 'size')->pluck('value')->unique();
 
-        // Truyền biến `product`, `colors` và `sizes` vào view
         return view('client.product_detail', compact('product', 'colors', 'sizes'));
     }
 
@@ -183,40 +161,34 @@ public function blog($id)
         $productVariant = Product_Variant::where('product_id', $product->id)->first();
         $cartItems = Cart::where('user_id', auth()->id())->get();
 
-        // Lấy danh sách màu sắc và kích thước
-        $colors = $product->productVariants->pluck('color.value')->unique(); // ['#ffdd00', '#000000']
-        $sizes = $product->productVariants->pluck('size.value')->unique();   // ['M', 'L']
+        $colors = $product->productVariants->pluck('color.value')->unique();
+        $sizes = $product->productVariants->pluck('size.value')->unique();
 
-        // Tạo dữ liệu số lượng theo kết hợp màu và kích thước
         $variantQuantities = $product->productVariants->mapWithKeys(function ($variant) {
             return [
                 $variant->color->value . '-' . $variant->size->value => $variant->stock
             ];
         });
-        // dd($colors, $sizes, $variantQuantities);
 
-        $comments = BinhLuan::where('product_id', $product->id)->orderBy('created_at', 'desc')->paginate(6); // Hiển thị 6 bình luận mỗi trang
-        // Tính toán điểm đánh giá trung bình
+        $comments = BinhLuan::where('product_id', $product->id)->orderBy('created_at', 'desc')->paginate(6);
         $averageRating = $comments->count() > 0 ? $comments->avg('rating') : 0;
+
         return view('client.product_detail', compact('product', 'variantQuantities', 'comments', 'averageRating', 'colors', 'sizes', 'productVariant', 'cartItems'));
     }
+
     public function getVariantStock(Request $request)
     {
         $productId = $request->input('product_id');
         $variantId = $request->input('variant_id');
 
-        // Lấy số lượng tồn kho từ bảng product__variants
         $productVariant = Product_Variant::where('product_id', $productId)
             ->where('variants_id', $variantId)
             ->first();
 
-        // Trả về số lượng tồn kho dưới dạng JSON
         return response()->json([
             'quantity' => $productVariant->quantity ?? 0
         ]);
     }
-
-
 
     public function warranty()
     {
@@ -228,181 +200,82 @@ public function blog($id)
         return view('client.buying_guide');
     }
 
-public function show_profile($id)
-{
-    // Lấy sản phẩm kèm các biến thể
-    // $product = Product::with('variants')->findOrFail($id);
-    // $product1 = Product::with('ProductGallerie')->findOrFail($id);
-    // // Kiểm tra nếu có biến thể thì lọc theo `color` và `size`
-    // $colors = $product->variants->where('name', 'color')->pluck('value')->unique();
-    // $sizes = $product->variants->where('name', 'size')->pluck('value')->unique();
-
-    // // Truyền biến `product`, `colors` và `sizes` vào view
-    // return view('client.product_detail', compact('product', 'product1','colors', 'sizes'));
-
-
-    // $product = Product::with(['variants', 'galleries'])->findOrFail($id);
-
-    // // Lọc color và size từ variants
-    // $colors = $product->variants->where('name', 'color')->pluck('value')->unique();
-    // $sizes = $product->variants->where('name', 'size')->pluck('value')->unique();
-
-    // // Truyền dữ liệu vào view
-    // return view('client.product_detail', compact('product', 'colors', 'sizes'));
-    // Lấy thông tin người dùng theo id
-   
-    $user = User::find($id);
-    $addresses = $user->addresses;
     public function show_profile($id)
     {
-        // Lấy thông tin người dùng theo id
         $user = User::find($id);
         $addresses = $user->addresses;
 
-        // Kiểm tra nếu người dùng không tồn tại
         if (!$user) {
             return redirect()->back()->with('error', 'Người dùng không tồn tại');
         }
 
-        // Truyền dữ liệu người dùng vào view 'client.profile'
         return view('client.my_profile', compact('user', 'addresses'));
     }
+
     public function show_my_order()
     {
-        // Lấy danh sách đơn hàng của người dùng hiện tại
         $orders = Order::where('user_id', Auth::id())
-            ->with(['product', 'user.addresses']) // Lấy thông tin sản phẩm và địa chỉ thông qua user
+            ->with(['product', 'user.addresses'])
             ->orderBy('created_at', 'desc')
             ->get();
 
         return view('client.my_order', compact('orders'));
     }
 
-
-
-// public function show_profile($id)
-// {
-//     // Lấy thông tin người dùng theo id
-//     $user = User::find($id);
-//     $addresses = $user->addresses;
-
-//     // Kiểm tra nếu người dùng không tồn tại
-//     if (!$user) {
-//         return redirect()->back()->with('error', 'Người dùng không tồn tại');
-//     }
-
-//     // Truyền dữ liệu người dùng vào view 'client.profile'
-//     return view('client.my_profile', compact('user','addresses'));
-// }
-// public function show_my_order()
-// {
-//     // Lấy danh sách đơn hàng của người dùng hiện tại
-//     $orders = Order::where('user_id', Auth::id())
-//         ->with(['product', 'user.addresses']) // Lấy thông tin sản phẩm và địa chỉ thông qua user
-//         ->orderBy('created_at', 'desc')
-//         ->get();
-
-//     return view('client.my_order', compact('orders'));
-// }
-
     public function storeAddress(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|email',
+            'email' => 'required|email|max:255',
             'contact_number' => 'required|string|max:15',
-            'city' => 'required|string|max:255',
-            'state' => 'required|string|max:255',
-            'commune' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
+            'city' => 'required|string',
+            'state' => 'required|string',
+            'commune' => 'required|string',
+            'address' => 'required|string',
         ]);
 
         Address::create([
             'user_id' => auth()->id(),
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'contact_number' => $request->contact_number,
-            'city' => $request->city,
-            'state' => $request->state,
-            'commune' => $request->commune,
-            'address' => $request->address,
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
+            'email' => $validated['email'],
+            'contact_number' => $validated['contact_number'],
+            'city' => $validated['city'],
+            'state' => $validated['state'],
+            'commune' => $validated['commune'],
+            'address' => $validated['address'],
         ]);
 
-public function storeAddress(Request $request)
-{
-    
-    $validated = $request->validate([
-        'first_name' => 'required|string|max:255',
-        'last_name' => 'required|string|max:255',
-        'email' => 'required|email|max:255',
-        'contact_number' => 'required|string|max:15',
-        'city' => 'required|string',  // Lưu tên tỉnh
-        'state' => 'required|string', // Lưu tên huyện
-        'commune' => 'required|string', // Lưu tên xã
-        'address' => 'required|string',
-    ]);
-
-    Address::create([
-        'user_id' => auth()->id(),
-        'first_name' => $validated['first_name'],
-        'last_name' => $validated['last_name'],
-        'email' => $validated['email'],
-        'contact_number' => $validated['contact_number'],
-        'city' => $validated['city'],   // Lưu tên tỉnh
-        'state' => $validated['state'], // Lưu tên huyện
-        'commune' => $validated['commune'], // Lưu tên xã
-        'address' => $validated['address'],
-    ]);
-
-    return redirect()->back()->with('success', 'Address added successfully!');
-}
-public function updateAddress(Request $request, $id)
-{
-    // Lấy địa chỉ từ ID
-    $address = Address::findOrFail($id);
-        return redirect()->route('profile', ['id' => auth()->user()->id])->with('success', 'Địa chỉ đã được lưu thành công!');
+        return redirect()->back()->with('success', 'Address added successfully!');
     }
+
     public function updateAddress(Request $request, $id)
     {
-        // Lấy địa chỉ từ ID
         $address = Address::findOrFail($id);
-
-        // Cập nhật thông tin địa chỉ
         $address->update($request->all());
 
-        // Redirect hoặc trả về thông báo
         return redirect()->back()->with('success', 'Địa chỉ đã được cập nhật.');
     }
 
     public function exportInvoice($id)
     {
-        // Lấy thông tin chi tiết đơn hàng
         $order = Order::with('product')->findOrFail($id);
-
-        // Sử dụng Facade PDF để render view và tạo file PDF
         $pdf = Pdf::loadView('client.invoice', compact('order'));
 
-        // Trả file PDF về cho người dùng tải xuống
         return $pdf->download('invoice-' . $order->id . '.pdf');
     }
+
     public function searchWarranty(Request $request)
     {
         $sku = $request->input('sku');
-
         $product = Product::where('sku', $sku)->with(['orders'])->first();
-        // dd($product);
 
         if ($product) {
-            // Nếu tìm thấy sản phẩm, trả về view với thông tin sản phẩm
             return view('client.warranty', compact('product'));
         } else {
-            // Nếu không tìm thấy sản phẩm, trả về view với thông báo lỗi
             $message = 'Không tìm thấy sản phẩm với mã SKU này.';
             return view('client.warranty', compact('message'));
         }
     }
-
-   
 }

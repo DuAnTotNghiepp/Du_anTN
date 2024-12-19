@@ -12,9 +12,8 @@
                     <div class="col-12">
                         <div class="d-flex align-items-lg-center flex-lg-row flex-column">
                             <div class="flex-grow-1">
-                                <h4 class="fs-16 mb-1">Good Morning, AMIN!</h4>
-                                <p class="text-muted mb-0">Here's what's happening with your store
-                                    today.</p>
+                                <h4 class="fs-16 mb-1">Xin chào, AMIN!</h4>
+                                <p class="text-muted mb-0">Bạn muốn làm gì hôm nau</p>
                             </div>
                             <div class="mt-3 mt-lg-0">
                                 <form action="javascript:void(0);">
@@ -39,12 +38,12 @@
 
 
                                         <!--end col-->
-                                        <div class="col-auto">
-                                            <button type="button" class="btn btn-soft-success"><i
-                                                    class="ri-add-circle-line align-middle me-1"></i> Add
-                                                Product
-                                            </button>
-                                        </div>
+{{--                                        <div class="col-auto">--}}
+{{--                                            <button type="button" class="btn btn-soft-success"><i--}}
+{{--                                                    class="ri-add-circle-line align-middle me-1"></i> Add--}}
+{{--                                                Product--}}
+{{--                                            </button>--}}
+{{--                                        </div>--}}
                                         <!--end col-->
                                         <div class="col-auto">
                                             <button type="button"

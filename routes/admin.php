@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Route;
 
 
 
-
 Route::prefix('admin')
     ->as('admin.')
     ->group(function () {
@@ -22,6 +21,9 @@ Route::prefix('admin')
         Route::get('/{id}/destroy', [CataloguesController::class, 'destroy'])->name('destroy');
     });
 
+
+
+Route::post('/api/orders/{id}/update-status', [OrderController::class, 'updateStatus']);
 Route::controller(ProductController::class)
     ->name('product.')
     ->prefix('admin/products/')
@@ -39,31 +41,31 @@ Route::controller(ProductController::class)
         Route::delete('{id}/destroy', 'destroy')
             ->name('destroy');
     });
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::controller(OrderController::class)
-        ->name('order.')
-        ->prefix('admin/orders/')
-        ->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::post('store', 'store')->name('store');
-            Route::get('{id}/show', 'show')->name('show');
-            Route::get('{id}/edit', 'edit')->name('edit');
-            Route::put('{id}/update', 'update')->name('update');
-        });
-});
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::controller(Product_VariantController::class)
-        ->name('product_variant.')
-        ->prefix('admin/product_variants/')
-        ->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::post('store', 'store')->name('store');
-            Route::get('{id}/show', 'show')->name('show');
-            Route::get('{id}/edit', 'edit')->name('edit');
-            Route::put('{id}/update', 'update')->name('update');
-        });
-});
-Route::get('/products/{id}/update-quantity', [ProductController::class, 'updateQuantity']);
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::controller(OrderController::class)
+            ->name('order.')
+            ->prefix('admin/orders/')
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::post('store', 'store')->name('store');
+                Route::get('{id}/show', 'show')->name('show');
+                Route::get('{id}/edit', 'edit')->name('edit');
+                Route::put('{id}/update', 'update')->name('update');
+            });
+
+    });
+
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::controller(Product_VariantController::class)
+            ->name('product_variant.')
+            ->prefix('admin/product_variants/')
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+            });
+            Route::post('/product-variant/update-stock', [Product_VariantController::class, 'updateStock'])->name('product_variant.update_stock');
+            Route::delete('/product-variant/{id}', [Product_VariantController::class, 'destroy'])->name('product_variant.destroy');
+            Route::get('/products/{id}/update-quantity', [ProductController::class, 'updateQuantity']);
+    });
 
 Route::controller(VariantsController::class)
     ->name('variant.')
@@ -102,7 +104,7 @@ Route::controller(VoucherController::class)
     ->group(function () {
 
         Route::get('/', 'index')
-            ->name('index');
+        ->name('index');
         Route::get('create', 'create')
             ->name('create');
         Route::post('store', 'store')
@@ -115,7 +117,7 @@ Route::controller(VoucherController::class)
             ->name('toggleVisibility');
         Route::delete('{id}/destroy', 'destroy')
             ->name('destroy');
-    });
+});
 
 Route::controller(BlogController::class)
     ->name('blog.')
@@ -123,7 +125,7 @@ Route::controller(BlogController::class)
     ->group(function () {
 
         Route::get('/', 'index')
-            ->name('index');
+        ->name('index');
         Route::get('create', 'create')
             ->name('create');
         Route::post('store', 'store')
@@ -134,4 +136,4 @@ Route::controller(BlogController::class)
             ->name('update');
         Route::delete('{id}/destroy', 'destroy')
             ->name('destroy');
-    });
+});
