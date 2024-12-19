@@ -62,4 +62,9 @@ class User extends Authenticatable
         return $this->is_active; // Trả về true nếu tài khoản đang hoạt động, ngược lại là false
     }
 
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

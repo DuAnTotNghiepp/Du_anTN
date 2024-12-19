@@ -237,12 +237,13 @@ public function blog($id)
     
     public function show_my_order()
     {
-        // Lấy danh sách đơn hàng của người dùng hiện tại
-        $orders = Order::where('user_id', Auth::id())
-            ->with(['product', 'user.addresses']) // Lấy thông tin sản phẩm và địa chỉ thông qua user
-            ->orderBy('created_at', 'desc')
-            ->get();
+        // Lấy user hiện tại
+        $user = Auth::user();
 
+        // Lấy tất cả đơn hàng của user kèm thông tin chi tiết sản phẩm
+        $orders = Order::with('order_items')->where('user_id', $user->id)->get();
+
+        // Trả về view với danh sách đơn hàng
         return view('client.my_order', compact('orders'));
     }
 

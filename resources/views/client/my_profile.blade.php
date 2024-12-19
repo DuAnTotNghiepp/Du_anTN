@@ -125,7 +125,9 @@
                                                             data-ward-name="{{ $address->commune_name }}">
                                                             Sửa
                                                         </button>
+
                                                     </td>
+                                                    
                                                     <td>
                                                         <form action="{{ route('address.destroy', $address->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa địa chỉ này?');">
                                                             @csrf
@@ -207,6 +209,7 @@
                                     <input type="hidden" id="editDistrictName" name="state_name">
                                     <input type="hidden" id="editWardName" name="commune_name">
                                 </div>
+                                
                                 <div class="mb-3">
                                     <label for="editAddress" class="form-label">Address</label>
                                     <input type="text" class="form-control" id="editAddress" name="address" required>
@@ -221,6 +224,10 @@
                 </div>
             </div>
             <script>
+                document.getElementById('editCity').addEventListener('change', function() {
+    console.log(this.innerHTML); // Kiểm tra danh sách các option
+});
+
                 document.addEventListener('DOMContentLoaded', function() {
                     // Chọn tất cả nút chỉnh sửa
                     const editButtons = document.querySelectorAll('.edit-address-btn');

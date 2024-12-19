@@ -74,18 +74,35 @@
                                 <th>IMAGE</th>
                                 <th>NAME</th>
                                 <th>PRICE</th>
-                                <th>QUANTITY</th>
+                                <th>TT - SL </th>
                                 <th>STATUS</th>
                             </tr>
                             @foreach ($orders as $order)
-                                <tr class="text-center">
-                                    <td><img src="{{ Storage::url($order->product->img_thumbnail ?? 'users/dd.jpg') }}"
-                                            style="width: 70px; height: 70px" class="rounded-circle img-thumbnail"></td>
-                                    <td>{{ $order->product->name }}</td>
-                                    <td>{{ number_format($order->product->price_sale) }} VND</td>
-                                    <td>{{ $order->product->quantity }}</td>
-                                    <td>{{ $order->status }}</td>
-                                </tr>
+                            @foreach ($order->order_items as $item)
+                            <tr class="text-center">
+                                <td><img src="{{ Storage::url($order->product->img_thumbnail ?? 'users/dd.jpg') }}" 
+                                    style="width: 70px; height: 70px" class="rounded-circle img-thumbnail"></td>
+                               
+                                <td>
+                                    <ul>
+                                            <li>
+                                                <strong>{{ $item->product_name }}</strong> 
+                                            </li>
+                                      
+                                    </ul>
+                                </td>
+                                <td>
+                                    {{ number_format($item->product_price_sale) }} VND
+                                </td>
+                                <td> <div class="row " style="text-align: center;" >
+                                    ( {{$item->size}} /  
+                                        <div class="rounded-circle" style="width: 7px; height: 20px; background-color: {{$item->color}}; border: 1px solid #000; margin-left: 5px;"></div> )
+                                        - {{ $item->quantity }}
+                                    </div></td>
+                                @endforeach
+                                <td>{{ $order->status }}</td>
+                            </tr>
+                         
                                 <tr>
                                     <td colspan="3">
                                         @if ($order->status === 'pending')
@@ -99,12 +116,12 @@
                                         @php
                                             // Tính tổng tiền của từng sản phẩm
                                             $totalAmount = 0;
-                                            $subTotal = $order->product->quantity * $order->product->price_sale;
+                                            $subTotal = $item->quantity * $item->product_price_sale;
                                             $totalAmount += $subTotal;
                                         @endphp
 
                                         <p class="text-end">Thành tiền:
-                                            <span style="color: rgb(255, 115, 0)">{{ number_format($totalAmount) }}
+                                            <span style="color: rgb(255, 115, 0)">{{ number_format($order->order_items->sum(fn($item) => $item->product_price_sale * $item->quantity)) }}
                                                 VND</span>
                                         </p>
                                         <a href="javascript:void(0);" class="float-end show-details"
@@ -166,18 +183,23 @@
                                                             @php
                                                                 $totalAmount = 0;
                                                                 $subTotal =
-                                                                    $order->product->quantity *
-                                                                    $order->product->price_sale;
+                                                                    $item->quantity *
+                                                                    $item->product_price_sale;
                                                                 $totalAmount += $subTotal;
                                                             @endphp
+                                                    
                                                             <tr>
-                                                                <td>{{ $order->product->name }}</td>
-                                                                <td>{{ $order->product->quantity }}</td>
-                                                                <td>{{ number_format($order->product->price_sale) }} VND
+                                                                <td> <strong>{{ $item->product_name }}</strong></td>
+                                                                <td> <div class="row " style="text-align: center;" >
+                                                                    ( {{$item->size}} /  
+                                                                        <div class="rounded-circle" style="width: 7px; height: 20px; background-color: {{$item->color}}; border: 1px solid #000; margin-left: 5px;"></div> )
+                                                                        - {{ $item->quantity }}
+                                                                    </div></td>
+                                                                <td>{{ number_format($item->product_price_sale) }} VND
                                                                 </td>
                                                                 <td>{{ number_format($subTotal) }} VND</td>
                                                             </tr>
-
+                                                          
                                                         </tbody>
                                                         <tfoot>
                                                             <tr>
@@ -231,32 +253,31 @@
                             @endforeach
                         </table>
                         <script>
-                         function cancelOrder(orderId) {
-    if (confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?')) {
-        fetch(`/orders/cancel/${orderId}`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({})
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert(data.success);
-                location.reload(); // Tải lại trang
-            } else {
-                alert(data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Lỗi:', error);
-            alert('Có lỗi xảy ra khi gửi yêu cầu.');
-        });
-    }
-}
-
+                            function cancelOrder(orderId) {
+                                if (confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?')) {
+                                    fetch(`/orders/cancel/${orderId}`, {
+                                            method: 'POST',
+                                            headers: {
+                                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                                'Content-Type': 'application/json',
+                                            },
+                                            body: JSON.stringify({})
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.success) {
+                                                alert(data.success);
+                                                location.reload(); // Tải lại trang
+                                            } else {
+                                                alert(data.error);
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error('Lỗi:', error);
+                                            alert('Có lỗi xảy ra khi gửi yêu cầu.');
+                                        });
+                                }
+                            }
                         </script>
                     </div>
 
