@@ -53,12 +53,12 @@ Route::get('product/{id}', [ClientController::class, 'show'])->name('product.pro
 
 //profile
 Route::get('/profile/{id}', [ClientController::class, 'show_profile'])->name('profile');
-Route::get('/my_orders', [ClientController::class, 'show_my_order'])->name('my_orders');
+Route::get('/my_orders/{id}', [ClientController::class, 'show_my_order'])->name('my_orders');
 Route::post('profile', [ClientController::class, 'updateProfile'])->name('updateProfile');
-// routes/web.php
-Route::post('/profile/address', [ClientController::class, 'storeAddress'])->name('profile.address.store');
-Route::put('/profile/address/update/{id}', [ClientController::class, 'updateAddress'])->name('profile.address.update');
-Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])->name('my_order.invoice');
+// // routes/web.php
+// Route::post('/profile/address', [ClientController::class, 'storeAddress'])->name('profile.address.store');
+// Route::put('/profile/address/update/{id}', [ClientController::class, 'updateAddress'])->name('profile.address.update');
+// Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])->name('my_order.invoice');
 
 
 // Route::group(['prefix'=>'checkout'], function(){
@@ -67,12 +67,10 @@ Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])
 // });
 Route::get('/checkout', [CheckoutController::class, 'form'])->name('checkout');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
-
+Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
 Route::get('product/{id}', [ClientController::class, 'show'])->middleware('save.redirect')->name('product.product_detail');
-
 Route::get('/api/variant-stock', [ClientController::class, 'getVariantStock']);
 // Route::post('/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
-
 
 
 //profile
@@ -82,7 +80,10 @@ Route::post('profile', [ClientController::class, 'updateProfile'])->name('update
 // routes/web.php
 Route::post('/profile/address', [ClientController::class, 'storeAddress'])->name('profile.address.store');
 Route::put('/profile/address/update/{id}', [ClientController::class, 'updateAddress'])->name('profile.address.update');
+Route::delete('/address/{id}', [ClientController::class, 'destroy'])->name('address.destroy');
 Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])->name('my_order.invoice');
+Route::get('/user/update-avatar', [ClientController::class, 'showUpdateAvatarForm'])->name('user.updateAvatar');
+Route::post('/user/update-avatar', [ClientController::class, 'updateAvatar']);
 
 
 
@@ -91,9 +92,10 @@ Route::get('/my_order/{id}/invoice', [ClientController::class, 'exportInvoice'])
 
 Route::post('/orders/vnpay_ment', [OrderController::class, 'vnpay_ment'])->name('orders.vnpay_ment');
 Route::get('/checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('checkout.applyVoucher');
-
-
-
+Route::get('/checkout1/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('checkout.applyVoucher');
+//status
+Route::post('/orders/cancel/{id}', [OrderController::class, 'cancelOrder']);
+Route::post('/orders/{order}/mark-received', [OrderController::class, 'markOrderAsReceived']);
 
 
 
@@ -164,7 +166,9 @@ Route::middleware('auth')->group(function () {
     Route::get('admin/accounts/{user}/edit', [AdminController::class, 'edit'])->name('admin.accounts.edit');
     Route::put('admin/accounts/{user}', [AdminController::class, 'update'])->name('admin.accounts.update');
     Route::delete('admin/accounts/{user}', [AdminController::class, 'destroy'])->name('admin.accounts.destroy');
-    //thong ke
+    Route::get('/admin/users', [AdminController::class, 'showUsers'])->middleware('auth', 'admin');
+    Route::patch('/admin/users/{user}/toggle', [AdminController::class, 'toggleUserStatus'])->name('admin.users.toggle')->middleware('auth', 'admin');
+
 });
 Route::resource('materials', MaterialController::class);
 Route::get('/admin/materials/create', [MaterialController::class, 'create'])->name('materials.create');  // Hiển thị form tạo mới

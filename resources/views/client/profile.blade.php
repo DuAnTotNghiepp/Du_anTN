@@ -30,12 +30,12 @@
                 <div class="row">
                     <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12">
                         <div class="dashbord-switcher">
-                            <a href="dashboard"><i class="flaticon-dashboard"></i> Dashboard</a>
+                            {{-- <a href="dashboard"><i class="flaticon-dashboard"></i> Dashboard</a> --}}
                             <a href="{{ route('profile', ['id' => auth()->user()->id]) }}" ><i
                                     class="flaticon-user"></i> My Profile</a>
-                            <a href="{{ route('my_orders',['id' => auth()->user()->id])}}" ><i
-                                 class="flaticon-shopping-bag"></i> My Order</a>
-                            <a href="setting"><i class="flaticon-settings"></i> Account Setting</a>
+                            <a href="{{ route('my_orders', ['id' => auth()->user()->id])}}" ><i
+                                    class="flaticon-shopping-bag"></i> My Order</a>
+                            {{-- <a href="#"><i class="flaticon-settings"></i> Account Setting</a> --}}
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
@@ -50,7 +50,7 @@
                 </div>
             </div>
         </div>
-        <script>
+        {{-- <script>
             window.history.pushState(null, "", window.location.href);
             window.onpopstate = function() {
                 window.history.pushState(null, "", window.location.href);
@@ -131,5 +131,5 @@
                     }
                 });
             });
-        </script>
+        </script> --}}
     @endsection

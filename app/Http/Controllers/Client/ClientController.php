@@ -49,7 +49,6 @@ class ClientController extends Controller
         $listHot = Product::where('is_hot_deal', 1)
             ->where('is_active', 1)
             ->get();
-
         $vouchers = Vouchers::where('is_visible', 1)
             ->where('status', 1)
             ->get([
@@ -141,6 +140,19 @@ class ClientController extends Controller
         return view('client.blog', compact('blog', 'blogs'));
     }
 
+public function blog($id)
+{
+    // Lấy bài viết từ cơ sở dữ liệu
+    $blog = Blog::findOrFail($id);
+    $blogs = Blog::where('id', '!=', $id) // Loại bỏ bài viết hiện tại
+    ->select('id', 'title', 'image') 
+    ->orderBy('created_at', 'desc') 
+    ->get();
+
+    // Trả về view kèm dữ liệu
+    return view('client.blog', compact('blog', 'blogs'));
+}
+
     public function checkout()
     {
         return view('client.checkout');
@@ -202,38 +214,72 @@ class ClientController extends Controller
 
     public function show_profile($id)
     {
+   
         $user = User::find($id);
         $addresses = $user->addresses;
 
+        // Kiểm tra nếu người dùng không tồn tại
         if (!$user) {
             return redirect()->back()->with('error', 'Người dùng không tồn tại');
         }
 
+        // Truyền dữ liệu người dùng vào view 'client.profile'
         return view('client.my_profile', compact('user', 'addresses'));
     }
-
+    
     public function show_my_order()
     {
-        $orders = Order::where('user_id', Auth::id())
-            ->with(['product', 'user.addresses'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        // Lấy user hiện tại
+        $user = Auth::user();
 
+        // Lấy tất cả đơn hàng của user kèm thông tin chi tiết sản phẩm
+        $orders = Order::with('order_items')->where('user_id', $user->id)->get();
+
+        // Trả về view với danh sách đơn hàng
         return view('client.my_order', compact('orders'));
     }
 
+
+
     public function storeAddress(Request $request)
     {
+
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'contact_number' => 'required|string|max:15',
-            'city' => 'required|string',
-            'state' => 'required|string',
-            'commune' => 'required|string',
+            'city' => 'required|string',  // Lưu tên tỉnh
+            'state' => 'required|string', // Lưu tên huyện
+            'commune' => 'required|string', // Lưu tên xã
             'address' => 'required|string',
         ]);
+
+        Address::create([
+            'user_id' => auth()->id(),
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
+            'email' => $validated['email'],
+            'contact_number' => $validated['contact_number'],
+            'city' => $validated['city'],   // Lưu tên tỉnh
+            'state' => $validated['state'], // Lưu tên huyện
+            'commune' => $validated['commune'], // Lưu tên xã
+            'address' => $validated['address'],
+        ]);
+
+        return redirect()->back()->with('success', 'Address added successfully!');
+    }
+    public function updateAddress(Request $request, $id)
+    {
+        // Lấy địa chỉ từ ID
+        $address = Address::findOrFail($id);
+
+        // Cập nhật thông tin địa chỉ
+        $address->update($request->all());
+
+        // Redirect hoặc trả về thông báo
+        return redirect()->back()->with('success', 'Địa chỉ đã được cập nhật.');
+    }
 
         Address::create([
             'user_id' => auth()->id(),
@@ -246,6 +292,7 @@ class ClientController extends Controller
             'commune' => $validated['commune'],
             'address' => $validated['address'],
         ]);
+
 
         return redirect()->back()->with('success', 'Address added successfully!');
     }
@@ -266,6 +313,29 @@ class ClientController extends Controller
         return $pdf->download('invoice-' . $order->id . '.pdf');
     }
 
+
+    public function destroy($id)
+    {
+        // Tìm địa chỉ theo ID và xóa
+        $address = Address::findOrFail($id);
+        $address->delete();
+
+        // Redirect về trang trước đó với thông báo
+        return redirect()->back()->with('success', 'Địa chỉ đã được xóa thành công!');
+    }
+
+
+    public function exportInvoice($id)
+    {
+        // Lấy thông tin chi tiết đơn hàng
+        $order = Order::with('product')->findOrFail($id);
+
+        // Sử dụng Facade PDF để render view và tạo file PDF
+        $pdf = Pdf::loadView('client.invoice', compact('order'));
+
+        // Trả file PDF về cho người dùng tải xuống
+        return $pdf->download('invoice-' . $order->id . '.pdf');
+    }
     public function searchWarranty(Request $request)
     {
         $sku = $request->input('sku');
@@ -278,4 +348,29 @@ class ClientController extends Controller
             return view('client.warranty', compact('message'));
         }
     }
+
+    public function showUpdateAvatarForm()
+    {
+        return view('user.update-avatar'); // Tạo một view form để tải ảnh
+    }
+
+    public function updateAvatar(Request $request)
+    {
+        $request->validate([
+            'avatar' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Kiểm tra file upload
+        ]);
+
+        $user = auth()->user();
+
+        // Lưu ảnh mới vào Storage và cập nhật đường dẫn trong DB
+        if ($request->file('avatar')) {
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $user->img_use = $path;
+            $user->save();
+
+        }
+
+        return redirect()->back()->with('success', 'Cập nhật ảnh đại diện thành công.');
+    }
+
 }

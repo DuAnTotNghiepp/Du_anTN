@@ -24,6 +24,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'img_use',
         'address',
         'password',
         'role'
@@ -56,5 +57,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Product::class, 'product_favorites', 'user_id', 'product_id');
     }
+    public function isActive()
+    {
+        return $this->is_active; // Trả về true nếu tài khoản đang hoạt động, ngược lại là false
+    }
 
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

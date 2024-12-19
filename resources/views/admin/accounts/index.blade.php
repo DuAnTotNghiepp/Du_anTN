@@ -122,7 +122,8 @@
                                         <th class="" data-sort="name" scope="col">Tên</th>
                                         <th class="" data-sort="email" scope="col">Email</th> 
                                         <th class="" data-sort="create_at" scope="col">Create_at</th> 
-                                        <th scope="col">Hành động</th>
+                                        <th class="" data-sort="Status" scope="col">Status</th>
+                                        <th scope="cols" colspan="2">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody class="list form-check-all">
@@ -142,12 +143,33 @@
                                                 <td>{{ $user->email }}</td>
                                                 <td>{{ $user->created_at }}</td>
                                                 <td>
-                                                    <a href="{{ route('accounts.edit', $user->id) }}" class="btn btn-warning">Sửa</a>
+                                                    @if($user->is_active)
+                                                        <span style="color: green;">Hoạt Động</span>
+                                                    @else
+                                                        <span style="color: red;">Đã Ẩn</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    {{-- <a href="{{ route('accounts.edit', $user->id) }}" class="btn btn-warning">Sửa</a> --}}
                                                     {{-- <form action="{{ route('accounts.destroy', $user->id) }}" method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản này không?')">Xóa</button>
                                                     </form> --}}
+                                                </td>
+                                                
+                                                <td>
+                                                    <form action="{{ route('admin.users.toggle', $user->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <button type="submit" class="btn btn-danger">
+                                                            @if($user->is_active)
+                                                                Ẩn Tài Khoản
+                                                            @else
+                                                                Kích Hoạt Tài Khoản
+                                                            @endif
+                                                        </button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                         @endforeach

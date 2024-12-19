@@ -107,7 +107,7 @@
                                     <input type="password" name="re_enter_password" id="form3Example4" class="form-control" />
                                     <label class="form-label" for="form3Example4">Re-enter password</label>
                                 </div>
-                                @error('re_enter_password') <smaill>{{$message}}</smaill> @enderror
+                              <div class="btn-danger">  @error('re_enter_password') <smaill>{{$message}}</smaill> @enderror</div>
   
                                 <!-- Checkbox -->
                                 {{-- <div class="form-check d-flex justify-content-center mb-4">

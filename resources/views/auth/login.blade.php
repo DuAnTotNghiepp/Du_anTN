@@ -95,8 +95,8 @@
             <div class="row gx-lg-5 align-items-center mb-5">
                 <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
                     <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
-                        <img src="{{ Storage::url('logo.png') }}">
-                    </h1>
+                        <img src="{{ asset('image/logo.png') }}" alt="Logo">
+                    </h1>                    
                     <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
                         "Tinh Tế & Đẳng Cấp: Lựa Chọn Hoàn Hảo Cho Phong Cách Cuộc Sống"
                     </p>
@@ -139,7 +139,15 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                                 <div class="row mb-0">
                                     <div class="col-md-8 offset-md-4">
                                         <button type="submit" class="btn btn-primary ms-4">
