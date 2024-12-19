@@ -3,26 +3,31 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreBlogRequest;
 use App\Models\Blog;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
-
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $posts = Blog::all();
-        return view('admin.blog.index', compact('posts'));
+        $posts = Blog::all(); // Lấy danh sách blog
+        return view('admin.blog.index', compact('posts')); // Gửi dữ liệu đến view
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
         return view('admin.blog.create');
     }
 
-
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         // Kiểm tra phương thức POST
@@ -61,62 +66,30 @@ class BlogController extends Controller
         };
     }
 
+    /**
+     * Display the specified resource.
+     */
 
+
+    /**
+     * Show the form for editing the specified resource.
+     */
     public function edit(string $id)
     {
-        $listBl = Blog::find($id);
-        return view('admin.blog.edit', compact('listBl'));
+        //
     }
 
-
-    public function update(Request $request, int $id)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
     {
-        // Tìm bài viết theo ID
-        $blogPost = Blog::findOrFail($id);
-
-        // Xác thực dữ liệu đầu vào
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // File ảnh không bắt buộc
-        ]);
-
-        // Lấy tất cả dữ liệu từ request ngoại trừ token
-        $params = $request->except('_token');
-
-        // Kiểm tra và xử lý hình ảnh
-        if ($request->hasFile('image')) {
-            // Lưu file hình ảnh mới vào thư mục public/images
-            $params['image'] = $request->file('image')->store('images', 'public');
-
-            // Xóa file hình ảnh cũ nếu tồn tại
-            if ($blogPost->image && Storage::disk('public')->exists($blogPost->image)) {
-                Storage::disk('public')->delete($blogPost->image);
-            }
-        } else {
-            // Giữ nguyên hình ảnh cũ nếu không tải lên ảnh mới
-            $params['image'] = $blogPost->image;
-        }
-
-        // Cập nhật dữ liệu bài viết
-        $res = $blogPost->update([
-            'title' => $params['title'],
-            'content' => $params['content'],
-            'image' => $params['image'],
-        ]);
-
-        // Kiểm tra kết quả cập nhật
-        if ($res) {
-            return redirect()->route('blog.index')->with('success', 'Bài viết đã được cập nhật thành công');
-        } else {
-            return redirect()->back()->with('error', 'Bài viết không thể được cập nhật');
-        }
+        //
     }
 
-
-
-
-
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(string $id)
     {
         $post = Blog::findOrFail($id);
@@ -124,6 +97,12 @@ class BlogController extends Controller
 
         return redirect()->route('blog.index')->with('success', 'Voucher deleted successfully!');
     }
+    public function show($id)
+    {
+        // Lấy bài viết từ cơ sở dữ liệu
+        $blog = Blog::findOrFail($id);
 
-
+        // Trả về view kèm dữ liệu
+        return view('client.blog', compact('blog'));
+    }
 }

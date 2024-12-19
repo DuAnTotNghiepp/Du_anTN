@@ -284,11 +284,13 @@
                                     </div>
                                     <div class="product-content-xl text-center">
                                         <ul class="d-flex product-rating-xl">
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star-fill"></i></li>
-                                            <li><i class="bi bi-star"></i></li>
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                @if ($i <= round($item->average_rating))
+                                                    <li><i class="bi bi-star-fill" style="color: gold;"></i></li>
+                                                @else
+                                                    <li><i class="bi bi-star"></i></li>
+                                                @endif
+                                            @endfor
                                         </ul>
                                         <a href="product-details.html" class="product-title">{{ $item->name }}</a>
                                         <div class="product-price">
@@ -475,8 +477,6 @@
                                                     <span class="new">New</span>
                                                 </div>
                                                 <div class="product-actions">
-                                                    <a href="product-details.html"><i class="flaticon-search"></i></a>
-                                                    <a href="cart.html"><i class="flaticon-shopping-cart"></i></a>
                                                 </div>
                                             </div>
                                             <div class="product-body">

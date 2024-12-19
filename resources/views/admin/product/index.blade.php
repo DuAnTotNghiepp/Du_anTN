@@ -224,7 +224,7 @@
                                                                             class="ri-pencil-fill align-bottom me-2 text-muted"></i>
                                                                         Edit</a></li>
                                                                 <li><a href="{{ url('/products/' . $pr->id . '/update-quantity') }}"
-                                                                        class="btn btn-primary">
+                                                                        class="btn btn-light">
                                                                         Cập nhật số lượng
                                                                     </a>
                                                                 </li>
