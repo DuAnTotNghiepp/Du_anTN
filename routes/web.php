@@ -89,7 +89,7 @@ Route::get('/checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'
 Route::get('/checkout1/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('checkout.applyVoucher');
 //status
 Route::post('/orders/cancel/{id}', [OrderController::class, 'cancelOrder']);
-Route::post('/orders/{order}/mark-received', [OrderController::class, 'markOrderAsReceived']);
+Route::post('/orders/mark-received/{id}', [OrderController::class, 'markOrderAsReceived']);
 
 
 

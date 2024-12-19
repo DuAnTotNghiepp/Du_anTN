@@ -22,7 +22,15 @@ class StoreVariantsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'value' => [ 'string', 'max:255', 'unique:variants,value'],
+   
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'value.unique' => 'Tên biến thể đã Tồn Tại',
         ];
     }
 }
