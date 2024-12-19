@@ -95,7 +95,19 @@ class OrderController extends Controller
     }
 
 
+    public function show($id)
+    {
+        // Tìm đơn hàng theo ID
+        $order = Order::with('items', 'user')->find($id);
 
+        // Kiểm tra nếu không tìm thấy đơn hàng
+        if (!$order) {
+            return redirect()->back()->with('error', 'Đơn hàng không tồn tại.');
+        }
+
+        // Trả về view với dữ liệu đơn hàng
+        return view('client.my_order', compact('order'));
+    }
 
 
     public function vnpayPayment($order, Request $request)

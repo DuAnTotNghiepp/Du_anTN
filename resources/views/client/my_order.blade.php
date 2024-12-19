@@ -109,7 +109,7 @@
                                             <button class="btn btn-primary" onclick="cancelOrder({{ $order->id }})">Hủy
                                                 đơn hàng</button>
                                         @elseif ($order->status === 'delivered')
-                                            <button onclick="markOrderAsReceived({{ $order->id }})">Đã nhận hàng</button>
+                                            <button class="btn btn-dark" onclick="markOrderAsReceived({{ $order->id }})">Đã nhận hàng</button>
                                         @endif
                                     </td>
                                     <td colspan="2">
@@ -180,32 +180,44 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            @php
-                                                                $totalAmount = 0;
-                                                                $subTotal =
-                                                                    $item->quantity *
-                                                                    $item->product_price_sale;
-                                                                $totalAmount += $subTotal;
-                                                            @endphp
-                                                    
-                                                            <tr>
-                                                                <td> <strong>{{ $item->product_name }}</strong></td>
-                                                                <td> <div class="row " style="text-align: center;" >
-                                                                    ( {{$item->size}} /  
-                                                                        <div class="rounded-circle" style="width: 7px; height: 20px; background-color: {{$item->color}}; border: 1px solid #000; margin-left: 5px;"></div> )
-                                                                        - {{ $item->quantity }}
-                                                                    </div></td>
-                                                                <td>{{ number_format($item->product_price_sale) }} VND
-                                                                </td>
-                                                                <td>{{ number_format($subTotal) }} VND</td>
-                                                            </tr>
                                                           
+                                                   @foreach ($order->order_items as $item)
+                                                   @php
+                                                   $totalAmount = 0;
+                                                   $subTotal =
+                                                       $item->quantity *
+                                                       $item->product_price_sale;
+                                                   $totalAmount += $subTotal;
+                                               @endphp
+                                                   <tr class="text-center">
+                                                   <td>
+                                                           <ul>
+                                                                   <li>
+                                                                       <strong>{{ $item->product_name }}</strong> 
+                                                                   </li>
+                                                             
+                                                           </ul>
+                                                       </td>
+                                                       <td> <div class="row " style="text-align: center;" >
+                                                        ( {{$item->size}} /  
+                                                            <div class="rounded-circle" style="width: 7px; height: 20px; background-color: {{$item->color}}; border: 1px solid #000; margin-left: 5px;"></div> )
+                                                            - {{ $item->quantity }}
+                                                        </div></td>
+                                                       <td>
+                                                           {{ number_format($item->product_price_sale) }} VND
+                                                       </td>
+                                                       <td>
+                                                        {{ number_format($subTotal) }} VND
+                                                       </td>
+                                                       </tr>
+                                                       @endforeach
+                                                      
                                                         </tbody>
                                                         <tfoot>
                                                             <tr>
                                                                 <td colspan="3" class="invoice-summary "><strong>Tổng
                                                                         cộng:</strong></td>
-                                                                <td>{{ number_format($totalAmount) }} VND</td>
+                                                                <td>{{ number_format($order->order_items->sum(fn($item) => $item->product_price_sale * $item->quantity)) }} VND</td>
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="3" class="invoice-summary"><strong>Thuế
@@ -216,7 +228,7 @@
                                                             <tr>
                                                                 <td colspan="3" class="invoice-summary"><strong>TỔNG
                                                                         TIỀN:</strong></td>
-                                                                <td>{{ number_format($totalAmount) }} VND</td>
+                                                                <td>{{ number_format($order->order_items->sum(fn($item) => $item->product_price_sale * $item->quantity)) }} VND</td>
                                                             </tr>
                                                         </tfoot>
                                                     </table>

@@ -194,7 +194,7 @@
                                 </div>
                                 <div>
                                     <label class="form-label">City</label>
-                                    <select class="form-select form-select-sm mb-3" id="editCity" name="city">
+                                    <select class="form-select form-select-sm mb-3" id="editCity" name="city" required>
                                         <option value="" selected>Select province</option>
                                     </select>
                                     <label class="form-label">District</label>
@@ -202,7 +202,7 @@
                                         <option value="" selected>Select district</option>
                                     </select>
                                     <label class="form-label">Ward</label>
-                                    <select class="form-select form-select-sm" id="editWard" name="commune">
+                                    <select class="form-select form-select-sm" id="editWard" name="commune" required>
                                         <option value="" selected>Select ward</option>
                                     </select>
                                     <input type="hidden" id="editCityName" name="city_name">

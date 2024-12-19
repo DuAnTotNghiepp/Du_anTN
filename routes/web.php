@@ -61,8 +61,8 @@ Route::post('profile', [ClientController::class, 'updateProfile'])->name('update
 // });
 Route::get('/checkout', [CheckoutController::class, 'form'])->name('checkout');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
+Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
 Route::get('product/{id}', [ClientController::class, 'show'])->middleware('save.redirect')->name('product.product_detail');
-
 Route::get('/api/variant-stock', [ClientController::class, 'getVariantStock']);
 // Route::post('/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
 
