@@ -42,7 +42,7 @@ class CheckoutController extends Controller
         $orderTotal = session('order_total', 0);
         // Kiểm tra nếu thiếu bất kỳ dữ liệu nào
         if (!$colorId || !$sizeId || !$quantity || !$image || !$productName || !$productPrice) {
-            return redirect()->back()->withErrors(['message' => 'Dữ liệu không đầy đủ']);
+            return redirect()->back()->withErrors(['message' => 'Bạn chưa chọn Màu hoặc Size hoặc biến thể này đã hết số lượng']);
         }
         $color = Variant::where('id', $colorId)->first();
         $size = Variant::where('id', $sizeId)->first();

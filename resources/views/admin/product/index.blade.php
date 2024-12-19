@@ -71,6 +71,15 @@
         }
     </style>
     <!-- start page title -->
+    {{-- @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif --}}
     <div class="row">
 
         <div class="col-12">
@@ -165,8 +174,7 @@
                                         <th class="sort" data-sort="name" scope="col">Tên Sản Phẩm</th>
                                         <th class="sort" data-sort="company_name" scope="col">Giá Thường</th>
                                         <th class="sort" data-sort="email_id" scope="col">Giá Khuyến Mãi</th>
-                                        <th class="sort" data-sort="category_name" scope="col">Danh Mục Sản Phẩm
-                                        </th>
+                                        <th class="sort" data-sort="category_name" scope="col">Danh Mục Sản Phẩm </th>
                                         <th class="sort" data-sort="phone" scope="col">Số Lượng</th>
                                         <th class="sort" data-sort="lead_score" scope="col">Mã Sản Phẩm</th>
                                         <th class="sort" data-sort="tags" scope="col">Trạng Thái</th>
@@ -216,7 +224,7 @@
                                                                             class="ri-pencil-fill align-bottom me-2 text-muted"></i>
                                                                         Edit</a></li>
                                                                 <li><a href="{{ url('/products/' . $pr->id . '/update-quantity') }}"
-                                                                        class="btn btn-primary">
+                                                                        class="btn btn-light">
                                                                         Cập nhật số lượng
                                                                     </a>
                                                                 </li>

@@ -4,7 +4,7 @@ use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CataloguesController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\Product_VariantController;
-use App\Http\Controllers\Admin\ProductController;
+
 use App\Http\Controllers\Admin\VariantsController;
 use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\AdminController;
@@ -12,19 +12,19 @@ use Illuminate\Support\Facades\Route;
 
 
 
-
 Route::prefix('admin')
     ->as('admin.')
     ->group(function () {
         Route::get('/list', [CataloguesController::class, 'index'])->name('index');
-        Route::get('create', [CataloguesController::class, 'create'])->name('create');
-        Route::post('store', [CataloguesController::class, 'store'])->name('store');
-        Route::get('/edit/{id}', [CataloguesController::class, 'edit'])->name('edit');
+        Route::post('/store', [CataloguesController::class, 'store'])->name('store');
         Route::put('/update/{id}', [CataloguesController::class, 'update'])->name('update');
         Route::get('/{id}/destroy', [CataloguesController::class, 'destroy'])->name('destroy');
     });
 
-Route::controller(ProductController::class)
+
+
+Route::post('/api/orders/{id}/update-status', [OrderController::class, 'updateStatus']);
+Route::controller(BlogController::class)
     ->name('product.')
     ->prefix('admin/products/')
     ->group(function () {
@@ -52,7 +52,9 @@ Route::controller(ProductController::class)
                 Route::get('{id}/edit', 'edit')->name('edit');
                 Route::put('{id}/update', 'update')->name('update');
             });
+
     });
+
     Route::middleware(['auth', 'admin'])->group(function () {
         Route::controller(Product_VariantController::class)
             ->name('product_variant.')
@@ -62,7 +64,7 @@ Route::controller(ProductController::class)
             });
             Route::post('/product-variant/update-stock', [Product_VariantController::class, 'updateStock'])->name('product_variant.update_stock');
             Route::delete('/product-variant/{id}', [Product_VariantController::class, 'destroy'])->name('product_variant.destroy');
-            Route::get('/products/{id}/update-quantity', [ProductController::class, 'updateQuantity']);
+            Route::get('/products/{id}/update-quantity', [BlogController::class, 'updateQuantity']);
     });
 
 Route::controller(VariantsController::class)

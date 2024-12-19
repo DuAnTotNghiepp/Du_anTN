@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('catalogues', function (Blueprint $table) {
+        Schema::create('materials', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->boolean('is_active')->default(true);
-            $table->unsignedInteger('total_product')->default(0)->after('is_active');
-            $table->softDeletes(); // Thêm cột deleted_at
-
             $table->timestamps();
         });
     }
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('catalogues');
+        Schema::dropIfExists('materials');
     }
 };

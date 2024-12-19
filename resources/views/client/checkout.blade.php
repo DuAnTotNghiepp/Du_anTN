@@ -79,7 +79,7 @@
                                 </div>
 
                                 <div class="eg-input-group mb-0">
-                                    <textarea cols="30" rows="7" name="user_note" placeholder="Order Notes (Optional)"></textarea>
+                                    <textarea cols="30" rows="7" name="user_note" required placeholder="Order Notes (Optional)"></textarea>
                                 </div>
                             </div>
                         </div>

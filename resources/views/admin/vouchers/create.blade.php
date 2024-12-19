@@ -87,7 +87,8 @@
                     <div class="row g-3">
                         <div class="col-md-4">
                             <div class="search-box">
-                                <input type="text" class="form-control search" id="searchInput" placeholder="Search for contact...">
+                                <input type="text" class="form-control search" id="searchInput"
+                                    placeholder="Search for contact...">
                                 <i class="ri-search-line search-icon"></i>
                             </div>
                         </div>
@@ -105,6 +106,18 @@
                     </div>
                 </div>
                 <div class="card-body m-3">
+                    <h2>
+                        @if (session('success'))
+                            <div>
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                        @if (session('error'))
+                            <div>
+                                {{ session('error') }}
+                            </div>
+                        @endif
+                    </h2>
                     <div>
                         <div class="table-responsive table-card mb-3">
                             <table class="table align-middle table-nowrap mb-0 " id="customerTable">
@@ -117,39 +130,68 @@
                                             <!-- Mã Voucher -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="code" class="form-label">Mã Voucher</label>
-                                                <input type="text" name="code" id="code" class="form-control" required>
+                                                <input type="text" name="code" id="code"
+                                                    class="form-control">
+                                                @error('code')
+                                                    <span style="color: red">{{ $message }}</span>
+                                                @enderror
                                             </div>
 
                                             <!-- Loại Voucher -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="type" class="form-label">Loại Voucher</label>
-                                                <select name="type" id="type" class="form-select" required>
+                                                <select name="type" id="type" class="form-select">
                                                     <option value="fixed">Cố định</option>
                                                     {{-- <option value="percent">Phần trăm</option> --}}
                                                 </select>
+                                                @error('type')
+                                                    <span style="color: red">{{ $message }}</span>
+                                                @enderror
                                             </div>
 
                                             <!-- Giá trị -->
                                             <div class="col-md-6 mb-3">
+
+                                                <label for="value" class="form-label">Giá trị</label>
+                                                <input type="number" name="value" id="value"
+                                                    class="form-control">
+                                                @error('value')
+                                                    <span style="color: red">{{ $message }}</span>
+                                                @enderror
+
                                                 <label for="value" class="form-label">Giá trị mã giảm giá</label>
                                                 <input type="number" name="value" id="value" class="form-control" required>
                                             </div>
 
                                             <!-- Giá trị đơn hàng tối thiểu -->
                                             <div class="col-md-6 mb-3">
-                                                <label for="minimum_order_value" class="form-label">Giá trị đơn hàng tối thiểu</label>
-                                                <input type="number" name="minimum_order_value" id="minimum_order_value" class="form-control" required>
+                                                <label for="minimum_order_value" class="form-label">Giá trị đơn hàng tối
+                                                    thiểu</label>
+                                                <input type="number" name="minimum_order_value" id="minimum_order_value"
+                                                    class="form-control">
+                                                @error('minimum_order_value')
+                                                    <span style="color: red">{{ $message }}</span>
+                                                @enderror
                                             </div>
 
                                             <!-- Giới hạn sử dụng -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="usage_limit" class="form-label">Giới hạn sử dụng</label>
-                                                <input type="number" name="usage_limit" id="usage_limit" class="form-control" required>
+                                                <input type="number" name="usage_limit" id="usage_limit"
+                                                    class="form-control">
+                                                @error('usage_limit')
+                                                    <span style="color: red">{{ $message }}</span>
+                                                @enderror
                                             </div>
 
                                             <!-- Ngày bắt đầu -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="start_date" class="form-label">Ngày bắt đầu</label>
+                                                <input type="datetime-local" name="start_date" id="start_date"
+                                                    class="form-control">
+                                                @error('start_date')
+                                                    <span style="color: red">{{ $message }}</span>
+                                                @enderror
                                                 <input 
                                                     type="datetime-local" 
                                                     name="start_date" 
@@ -163,6 +205,11 @@
                                             <!-- Ngày kết thúc -->
                                             <div class="col-md-6 mb-3">
                                                 <label for="end_date" class="form-label">Ngày kết thúc</label>
+                                                <input type="datetime-local" name="end_date" id="end_date"
+                                                    class="form-control">
+                                                @error('end_date')
+                                                    <span style="color: red">{{ $message }}</span>
+                                                @enderror
                                                 <input 
                                                     type="datetime-local" 
                                                     name="end_date" 
@@ -171,21 +218,34 @@
                                                     min="{{ now()->format('Y-m-d\TH:i') }}" 
                                                     required>
                                             </div>
+
+
                                             <!-- Trạng thái -->
-                                                <div class="col-md-6 mb-3">
-                                                    <select name="status" id="status" class="choices-categories-input" style="width: 290px;border: 2px solid #ced4da; border-radius: 5px" required>
-                                                        <option value="">Chọn Trạng Thái</option>
-                                                        <option value="active">Hoạt động</option>
-                                                        <option value="expired">Hết hạn</option>
-                                                        <option value="disabled">Tắt</option>
-                                                    </select>
-                                                </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="status" class="form-label">Trạng Thái</label>   
+                                                <select name="status" id="status"
+                                                    class="form-select choices-categories-input"
+                                                    style="width: 290px; border: 2px solid #ced4da; border-radius: 5px;">
+                                                    <option value="" disabled selected>Chọn Trạng Thái</option>
+                                                    <option value="active">Hoạt động</option>
+                                                    <option value="expired">Hết hạn</option>
+                                                    <option value="disabled">Tắt</option>
+                                                </select>
+                                                @error('status')
+                                                    <span style="color: red">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+
+
+
+
                                             <!-- Button Actions -->
                                             <div class="col-12 d-flex justify-content-between">
                                                 <button type="submit" class="btn btn-primary">
                                                     {{ isset($voucher) ? 'Cập nhật' : 'Tạo mới' }}
                                                 </button>
-                                                <a href="{{ route('vouchers.index') }}" class="btn btn-secondary">Quay lại</a>
+                                                <a href="{{ route('vouchers.index') }}" class="btn btn-secondary">Quay
+                                                    lại</a>
                                             </div>
                                         </div>
                                     </div>
@@ -365,55 +425,55 @@
     </div>
     <!-- end main content-->
     <script>
+        document.getElementById('searchInput').addEventListener('input', function() {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll('#customerTable tbody tr');
 
-document.getElementById('searchInput').addEventListener('input', function () {
-    let filter = this.value.toLowerCase();
-    let rows = document.querySelectorAll('#customerTable tbody tr');
-
-    rows.forEach(function (row) {
-        let productName = row.querySelector('.name .flex-grow-1').textContent.toLowerCase();
-        let productPrice = row.querySelector('.company_name').textContent.toLowerCase();
-        let productCate = row.querySelector('.category_name').textContent.toLowerCase();
-        // Kiểm tra nếu tên sản phẩm hoặc giá khớp với giá trị tìm kiếm
-        if (productName.includes(filter) || productPrice.includes(filter) || productCate.includes(filter)) {
-            row.style.display = ''; // Hiển thị nếu tên hoặc giá khớp với kết quả tìm kiếm
-        } else {
-            row.style.display = 'none'; // Ẩn nếu không khớp
-        }
-    });
-});
+            rows.forEach(function(row) {
+                let productName = row.querySelector('.name .flex-grow-1').textContent.toLowerCase();
+                let productPrice = row.querySelector('.company_name').textContent.toLowerCase();
+                let productCate = row.querySelector('.category_name').textContent.toLowerCase();
+                // Kiểm tra nếu tên sản phẩm hoặc giá khớp với giá trị tìm kiếm
+                if (productName.includes(filter) || productPrice.includes(filter) || productCate.includes(
+                        filter)) {
+                    row.style.display = ''; // Hiển thị nếu tên hoặc giá khớp với kết quả tìm kiếm
+                } else {
+                    row.style.display = 'none'; // Ẩn nếu không khớp
+                }
+            });
+        });
 
 
 
         document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            var productId = this.getAttribute('data-id');
-            var deleteModal = new bootstrap.Modal(document.getElementById('deleteRecordModal'));
-            deleteModal.show();
+            button.addEventListener('click', function() {
+                var productId = this.getAttribute('data-id');
+                var deleteModal = new bootstrap.Modal(document.getElementById('deleteRecordModal'));
+                deleteModal.show();
 
-            document.getElementById('confirmDelete').onclick = function() {
-                fetch('/admin/products/' + productId + '/destroy', {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Content-Type': 'application/json',
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert(data.message);
-                            window.location.reload(); // Reload lại trang sau khi xóa
-                        } else {
-                            alert('Lỗi: ' + data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Có lỗi xảy ra:', error);
-                    });
-            };
+                document.getElementById('confirmDelete').onclick = function() {
+                    fetch('/admin/products/' + productId + '/destroy', {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json',
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert(data.message);
+                                window.location.reload(); // Reload lại trang sau khi xóa
+                            } else {
+                                alert('Lỗi: ' + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Có lỗi xảy ra:', error);
+                        });
+                };
+            });
         });
-    });
     </script>
 
     <script>
@@ -429,5 +489,3 @@ document.getElementById('searchInput').addEventListener('input', function () {
 
     </html>
 @endsection
-
-
