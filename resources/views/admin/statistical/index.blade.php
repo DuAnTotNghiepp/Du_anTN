@@ -17,6 +17,42 @@
             </div>
         </form>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const startDateInput = document.getElementById('start-date');
+            const endDateInput = document.getElementById('end-date');
+            const currentDate = new Date().toISOString().split('T')[0]; 
+    
+            startDateInput.setAttribute('max', currentDate);
+    
+            startDateInput.addEventListener('input', function() {
+                const startDate = startDateInput.value;
+    
+                if (startDate) {
+                    endDateInput.setAttribute('min', startDate);
+                    endDateInput.setAttribute('max', currentDate);
+    
+                    if (endDateInput.value && (endDateInput.value < startDate || endDateInput.value > currentDate)) {
+                        endDateInput.value = '';
+                    }
+                }
+            });
+    
+            if (startDateInput.value) {
+                const startDate = startDateInput.value;
+    
+                endDateInput.setAttribute('min', startDate);
+                endDateInput.setAttribute('max', currentDate);
+    
+                if (endDateInput.value && (endDateInput.value < startDate || endDateInput.value > currentDate)) {
+                    endDateInput.value = '';
+                }
+            }
+        });
+    </script>
+    
+    
     <div class="col-xl-6">
         <div class="card">
             <div class="card-header align-items-center d-flex">

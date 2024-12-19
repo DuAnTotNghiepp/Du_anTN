@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Models\Address;
 use App\Models\Blog;
 use App\Models\Cart;
+use App\Models\Order_Items;
 use App\Models\Vouchers;
 
 class ClientController extends Controller
@@ -77,21 +78,18 @@ class ClientController extends Controller
 
 
 
-
     public function shop(Request $request)
     {
         $data = Catalogues::query()->get();
-
-    // Lấy tất cả sản phẩm
-    $listSp = Product::where('is_active', 1)->get(); // Hiển thị tất cả sản phẩm
-
-    // Lấy sản phẩm hot
-    $listHot = Product::where('is_hot_deal', 1)->get();
-    //list sp moi
-    $products = Product::orderBy('created_at', 'desc')->paginate(12);
-
-    return view('client.shop', compact(['listSp', 'listHot', 'data','products']));
+    
+        $products = Product::where('is_active', 1) 
+            ->orderBy('created_at', 'desc') 
+            ->paginate(16); 
+    
+        return view('client.shop', compact('data', 'products'));
     }
+    
+
     //tim kiem
     public function search(Request $request)
 {
@@ -99,7 +97,7 @@ class ClientController extends Controller
     $minPrice = $request->input('price_min');
     $maxPrice = $request->input('price_max');
     $luachon = $request->input('category-sort', 'default');
-    // tại ra quẻyy tìm kiếm
+
     $query = Product::query();
 
     if ($searchTerm) {
@@ -107,18 +105,43 @@ class ClientController extends Controller
     }
 
     if (is_numeric($minPrice) && is_numeric($maxPrice)) {
-        $query->whereBetween('price_regular', [$minPrice, $maxPrice]);
+        $query->where(function ($query) use ($minPrice, $maxPrice) {
+            $query->where(function ($subQuery) use ($minPrice, $maxPrice) {
+                $subQuery->whereNotNull('price_sale')
+                         ->whereBetween('price_sale', [$minPrice, $maxPrice]);
+            })->orWhere(function ($subQuery) use ($minPrice, $maxPrice) {
+                $subQuery->whereNull('price_sale')
+                         ->whereBetween('price_regular', [$minPrice, $maxPrice]);
+            });
+        });
     }
+
     if ($luachon == 'price_asc') {
-        $query->orderBy('price_regular', 'asc'); // Sắp xếp theo giá từ thấp đến cao
+        $query->orderByRaw('COALESCE(price_sale, price_regular) ASC'); 
     } elseif ($luachon == 'price_desc') {
-        $query->orderBy('price_regular', 'desc'); // Sắp xếp theo giá từ cao đến thấp
+        $query->orderByRaw('COALESCE(price_sale, price_regular) DESC'); 
     }
 
     $products = $query->get();
 
     return view('client.shop', compact('products'));
 }
+public function getTopSales()
+{
+    $completedOrders = Order::where('status', 'hoanthanh')->pluck('id');
+
+    $orderItems = Order_Items::whereIn('order_id', $completedOrders)
+        ->selectRaw('product_id, product_name, product_img_thumbnail, product_price_regular, product_price_sale, SUM(quantity) as quantity')
+        ->groupBy('product_id', 'product_name', 'product_img_thumbnail', 'product_price_regular', 'product_price_sale')
+        ->orderBy('quantity', 'desc')
+        ->take(5)
+        ->get();
+
+    return response()->json($orderItems);
+}
+
+
+
 
 
     // public function show($id)

@@ -190,6 +190,9 @@ Route::prefix('admin')->group(function () {
 });
 Route::get('/get-pending-orders', [AdminOrderController::class, 'getPendingOrders']);
 
+Route::get('/api/top-sales', [ClientController::class, 'getTopSales']);
+
+
 
 
 
