@@ -3,16 +3,16 @@
 @section('content')
 <style>
     .order-detail {
-        border: 1px solid #ddd; /* Màu sắc và độ dày của border */
-        padding: 20px; /* Khoảng cách bên trong */
-        border-radius: 5px; /* Để bo góc cho border */
-        background-color: #f9f9f9; /* Màu nền cho vùng chi tiết đơn hàng */
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
     }
     .color-box {
-        width: 20px; /* Đặt chiều rộng cho ô màu */
-        height: 20px; /* Đặt chiều cao cho ô màu */
-        border: 1px solid #ccc; /* Thêm border cho ô màu */
-        margin: 0 auto; /* Căn giữa ô màu */
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ccc;
+        margin: 0 auto;
     }
 </style>
 
@@ -27,8 +27,7 @@
                     <li class="list-group-item"><strong>Tên khách hàng:</strong> {{ $order->user_name }}</li>
                     <li class="list-group-item"><strong>Email:</strong> {{ $order->user_email }}</li>
                     <li class="list-group-item"><strong>Số điện thoại:</strong> {{ $order->user_phone }}</li>
-                    <li class="list-group-item"><strong>Địa chỉ:</strong> {{ $order->address->address }}, {{ $order->address->city }}, {{ $order->address->state }}</li>
-                    <li class="list-group-item"><strong>Ghi chú:</strong> {{ $order->user_note ?? 'Không có' }}</li>
+                    <li class="list-group-item"><strong>Địa chỉ:</strong> {{ $order->address->address }}, {{ $order->address->city }}, {{ $order->address->state }}</li>                    <li class="list-group-item"><strong>Ghi chú:</strong> {{ $order->user_note ?? 'Không có' }}</li>
                     <li class="list-group-item"><strong>Phương thức thanh toán:</strong> {{ ucfirst($order->payment_method) }}</li>
                     <li class="list-group-item"><strong>Trạng thái:</strong>  
                         @if($order->status == 'pending')
@@ -79,7 +78,7 @@
                                 <td>{{ $item->size ?? 'N/A' }}</td>
                                 <!-- Màu sắc -->
                                 <td>
-                                    <div class="color-box" style="background-color: {{ $item['color'] }};"></div>
+                                    <div class="color-box" style="background-color: {{ $item->color }};"></div>
                                 </td>
                                 <!-- Số lượng -->
                                 <td>{{ $item->quantity }}</td>

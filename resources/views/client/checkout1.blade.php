@@ -53,7 +53,7 @@
                                             @foreach ($addresses as $address)
                                                 <option value="{{ $address->id }}">
                                                     {{ $address->address }}, {{ $address->commune }}, {{ $address->city }},
-                                                    {{ $address->state }}
+{{ $address->state }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -97,7 +97,7 @@
                                                 <img src="{{ asset('storage/' . $item->product->img_thumbnail) }}"
                                                     alt="{{ $item->product->name }}"
                                                     style="max-width: 100px; border-radius: 5px;">
-                                            </div>
+</div>
                                             <div class="product-info">
                                                 <h5 class="product-title">{{ $item->product->name }}</h5>
                                                 <div class="product-total">
@@ -130,8 +130,7 @@
                             </div>
 
                         </div>
-
-                        <div class="total-cost-summary">
+<div class="total-cost-summary">
                             <ul>
                                 <!-- Hiển thị Tổng Giá -->
                                 <li class="subtotal">Tổng Giá
@@ -179,7 +178,7 @@
                                     <label for="bank_code">Bank</label>
                                     <select name="bank_code" id="bank_code" class="form-control">
                                         <option value="NCB">NCB</option>
-                                        <option value="Vietcombank">Vietcombank</option>
+<option value="Vietcombank">Vietcombank</option>
                                     </select>
                                 </div>
                             </div>
@@ -246,7 +245,7 @@
                 totalElement.textContent = total.toLocaleString('vi-VN') + ' VND';
             });
         });
-        let appliedVouchers = []; // Mảng để lưu trữ các mã đã áp dụng
+let appliedVouchers = []; // Mảng để lưu trữ các mã đã áp dụng
 
         function getVoucherInfo() {
             const errorMessage = document.getElementById('errorMessage');

@@ -296,7 +296,7 @@
                                             <input style="width: 20px; height: 20px;" type="checkbox"
                                                    class="form-check-input"
                                                    name="selected_variants[{{ $color->id }}][{{ $size->id }}]"
-                                                   value="{{ old('selected_variants') }}">
+                                                  >
                                             <div
                                                 style="width: 20px; height: 20px; border-radius: 10px; background-color: {{ $color->value }}; display: inline-block; border: 1px solid #ccc;"></div>
                                             - {{ $size->value }}

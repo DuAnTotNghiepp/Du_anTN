@@ -151,12 +151,16 @@
 
                                             <!-- Giá trị -->
                                             <div class="col-md-6 mb-3">
+
                                                 <label for="value" class="form-label">Giá trị</label>
                                                 <input type="number" name="value" id="value"
                                                     class="form-control">
                                                 @error('value')
                                                     <span style="color: red">{{ $message }}</span>
                                                 @enderror
+
+                                                <label for="value" class="form-label">Giá trị mã giảm giá</label>
+                                                <input type="number" name="value" id="value" class="form-control" required>
                                             </div>
 
                                             <!-- Giá trị đơn hàng tối thiểu -->
@@ -188,6 +192,14 @@
                                                 @error('start_date')
                                                     <span style="color: red">{{ $message }}</span>
                                                 @enderror
+                                                <input 
+                                                    type="datetime-local" 
+                                                    name="start_date" 
+                                                    id="start_date" 
+                                                    class="form-control" 
+                                                    min="{{ now()->format('Y-m-d\TH:i') }}" 
+                                                    required
+                                                    onchange="updateEndDateMin()">
                                             </div>
 
                                             <!-- Ngày kết thúc -->
@@ -198,6 +210,13 @@
                                                 @error('end_date')
                                                     <span style="color: red">{{ $message }}</span>
                                                 @enderror
+                                                <input 
+                                                    type="datetime-local" 
+                                                    name="end_date" 
+                                                    id="end_date" 
+                                                    class="form-control" 
+                                                    min="{{ now()->format('Y-m-d\TH:i') }}" 
+                                                    required>
                                             </div>
 
 
@@ -457,7 +476,15 @@
         });
     </script>
 
-
+    <script>
+         function updateEndDateMin() {
+        const startDate = document.getElementById('start_date').value;
+        const endDate = document.getElementById('end_date');
+        if (startDate) {
+            endDate.min = startDate;
+        }
+    }
+    </script>
 
 
     </html>

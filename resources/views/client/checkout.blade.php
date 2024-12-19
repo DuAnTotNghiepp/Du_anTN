@@ -158,6 +158,8 @@
                                     <span id="errorMessage" class="error-message"></span><br>
                                 </div>
                             </div>
+
+
                         </div>
 
                         <div class="payment-form">
