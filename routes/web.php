@@ -14,7 +14,7 @@ use App\Http\Controllers\Client\Checkout1Controller;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\Client\Order1Controller;
-use App\Http\Controllers\Client\OrderController;
+
 use App\Http\Controllers\Client\ProductCatalogueController;
 use App\Http\Controllers\Client\ProductFavoriteController;
 use App\Http\Controllers\Client\VoucherController as ClientVoucherController;
