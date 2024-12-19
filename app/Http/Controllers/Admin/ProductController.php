@@ -10,7 +10,6 @@ use App\Models\Product;
 use App\Models\Product_Variant;
 use App\Models\ProductGallerie;
 use App\Models\Variant;
-use App\Models\Variants;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -300,7 +299,7 @@ class ProductController extends Controller
 
         return redirect()->route('product.index')->with('success', 'Số lượng sản phẩm đã được cập nhật!');
     }
-    }
+
 
     public function bestSellingProducts(Request $request)
     {

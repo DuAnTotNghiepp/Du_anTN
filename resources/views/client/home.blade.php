@@ -221,6 +221,7 @@
                                         <button class="favorite-btn" style="background: none; border: none" data-product-id="{{ $item->id }}">
                                             <i class="flaticon-heart"></i>
                                         </button>
+
                                     </div>
                                 </div>
                                 <div class="product-content-xl text-center">
@@ -278,6 +279,7 @@
                                                 data-product-id="{{ $item->id }}">
                                                 <i class="flaticon-heart"></i>
                                             </button>
+
                                         </div>
                                     </div>
                                     <div class="product-content-xl text-center">
@@ -309,31 +311,31 @@
     </div>
 
 
-    <div class="banner-xl-area ml-110 mt-100">
-        <div class="container-fluid p-0">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="banner-xl-bg d-flex align-items-center position-relative">
-                        <div class="banner-shapes">
-                            <img src="" alt class="position-absolute top-0 end-0">
-                            <img src="" alt class="position-absolute top0 bottom-0">
-                        </div>
-                        <div class="banner-content-wrap">
-                            <h5 class="banner-xl-subtitle">Today Top Offer</h5>
-                            <h2 class="banner-xl-title">Lining Casual Winter Sale Only 250$</h2>
-                            <p>Lorem ipsum dolor sit amet consectetur adipiscing elitsed do eiusmod tempor incididunt
-                                utlabore et dolore magna aliqua. Utenim ad minim veniam quis nostrud exercitation
-                                ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                            <div class="banner-xl-btns">
-                                <a href="product.html" class="eg-btn-md">Shop Now</a>
-                                <a href="product-details.html" class="eg-btn-md v2">About Product</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+{{--    <div class="banner-xl-area ml-110 mt-100">--}}
+{{--        <div class="container-fluid p-0">--}}
+{{--            <div class="row">--}}
+{{--                <div class="col-lg-12">--}}
+{{--                    <div class="banner-xl-bg d-flex align-items-center position-relative">--}}
+{{--                        <div class="banner-shapes">--}}
+{{--                            <img src="" alt class="position-absolute top-0 end-0">--}}
+{{--                            <img src="" alt class="position-absolute top0 bottom-0">--}}
+{{--                        </div>--}}
+{{--                        <div class="banner-content-wrap">--}}
+{{--                            <h5 class="banner-xl-subtitle">Today Top Offer</h5>--}}
+{{--                            <h2 class="banner-xl-title">Lining Casual Winter Sale Only 250$</h2>--}}
+{{--                            <p>Lorem ipsum dolor sit amet consectetur adipiscing elitsed do eiusmod tempor incididunt--}}
+{{--                                utlabore et dolore magna aliqua. Utenim ad minim veniam quis nostrud exercitation--}}
+{{--                                ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>--}}
+{{--                            <div class="banner-xl-btns">--}}
+{{--                                <a href="product.html" class="eg-btn-md">Shop Now</a>--}}
+{{--                                <a href="product-details.html" class="eg-btn-md v2">About Product</a>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 
 
     <div class="recent-product-wrapper ml-110 mt-100">
@@ -341,7 +343,7 @@
             <div class="row">
                 <div class="col-lg-12 mb-25">
                     <div class="section-head">
-                        <h2 class="section-title">Các Bộ Sưu Tập Bạn Có Thể Thích</h2>
+                        <h2 class="section-title">Bộ sưu tập</h2>
                     </div>
                 </div>
             </div>

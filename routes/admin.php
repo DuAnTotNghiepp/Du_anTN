@@ -4,7 +4,7 @@ use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CataloguesController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\Product_VariantController;
-use App\Http\Controllers\Admin\ProductController;
+
 use App\Http\Controllers\Admin\VariantsController;
 use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\AdminController;
@@ -24,7 +24,7 @@ Route::prefix('admin')
 
 
 Route::post('/api/orders/{id}/update-status', [OrderController::class, 'updateStatus']);
-Route::controller(ProductController::class)
+Route::controller(BlogController::class)
     ->name('product.')
     ->prefix('admin/products/')
     ->group(function () {
@@ -64,7 +64,7 @@ Route::controller(ProductController::class)
             });
             Route::post('/product-variant/update-stock', [Product_VariantController::class, 'updateStock'])->name('product_variant.update_stock');
             Route::delete('/product-variant/{id}', [Product_VariantController::class, 'destroy'])->name('product_variant.destroy');
-            Route::get('/products/{id}/update-quantity', [ProductController::class, 'updateQuantity']);
+            Route::get('/products/{id}/update-quantity', [BlogController::class, 'updateQuantity']);
     });
 
 Route::controller(VariantsController::class)

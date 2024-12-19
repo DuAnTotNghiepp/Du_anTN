@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Cart;
 use App\Models\Catalogues;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -32,5 +33,12 @@ class AppServiceProvider extends ServiceProvider
         }
         view()->share('cartItems', $cartItems);
        Paginator::useBootstrap();
+       View::composer('*', function ($view) {
+           $cartCount = 0;
+           if (auth()->check()) {
+               $cartCount = \App\Models\Cart::where('user_id', auth()->id())->sum('quantity');
+           }
+           $view->with('cartCount', $cartCount);
+       });
    }
 }
