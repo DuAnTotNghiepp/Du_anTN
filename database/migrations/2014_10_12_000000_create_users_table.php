@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->string('facebook_id')->nullable()->unique();
+            $table->softDeletes(); // Thêm cột deleted_at
             $table->timestamps();
         });
     }
